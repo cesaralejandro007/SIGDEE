@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Style the body */
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+/* Header/logo Title */
+.header {
+  background: #3399e7;
+  padding: 0px 10px;
+  color: white;
+  display: flex;
+}
+
+.iconnotificacion {
+  color: white;
+  font-size: 20px;
+}
+
+.iconodeoff {
+  font-size: 24px;
+}
+
+/* Main column */
+.main {
+  flex: 70%;
+  background-color: burlywood;
+  padding: 20px;
+}
+
+/* Footer, lo puse por si acaso pero realmente no lo use  */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+
+/* Responsive , lo que hace es acomodorar los flex box en columnas para dispositivos moviles :3 */
+@media screen and (max-width: 700px) {
+  .row,
+  .navbar {
+    flex-direction: column;
+  }
+}
+
+/* titulo de Bienvenida*/
+.textbienvenida {
+  font-family: Verdana;
+  font-size: 18px;
+  text-align: center;
+  text-shadow: 2px 2px black;
+  padding: 5px;
+}
+
+/* boton de salir*/
+
+.botonsalir {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btnasalir {
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.aboton {
+  font-weight: bold;
+}
+
+/* contenedores de filas para las opciones de las vistas*/
+.cajas {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+}
+
+/* columnas de las opciones de las vistas*/
+.columnas {
+  margin: 15px;
+  border-radius: 15px;
+  border: 1px solid #cdb6a3;
+}
+
+/*titulo de las cajas de las opciones vistas*/
+.titulodecajas {
+  font-size: 16px;
+  text-shadow: 1px 1px #000;
+}
+.parrafocaja {
+  font-size: 12px;
+}
+.botones {
+  font-size: 12px;
+  color: rgb(8, 9, 9);
+  border-radius: 5px;
+  background: #8b9194;
+  font-weight: bold;
+  margin: 5px;
+}
+/* Colours */
+.red {
+  background-color: #5bb4c7;
+}
+.teal {
+  background-color: #5bb4c7;
+}
+.sky {
+  background-color: #5bb4c7;
+}
+.black {
+  background-color: #5bb4c7;
+}
+.gray {
+  color: black;
+  background-color: #5bb4c7;
+}
+.orange {
+  background-color: #5bb4c7;
+}
+.pink {
+  background-color: #5bb4c7;
+}
+.green {
+  background-color: #5bb4c7;
+}
+.blue {
+  background-color: #5bb4c7;
+}
+.yellow {
+  background-color: #5bb4c7;
+}
+.purple {
+  background-color: #5bb4c7;
+}
+
+.cajas1 {
+  box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
