@@ -52,11 +52,11 @@ if (isset($response[0]["registrar"])) {
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                             <div class="tab-pane active" id="aulas">
-                                <div class="card border border-secondary">
+                                <div class="card border">
                                     <div class="table-responsive p-2">
                                         <div class="d-flex flex-wrap justify-content-between m-1">
                                         </div>
-                                        <table id="funcionpaginacion" class="table table-bordered table-hover">
+                                        <table id="funcionpaginacion" class="table table-striped table-hover border">
                                             <thead>
                                                 <tr>
                                                     <th>Opciones</th>
@@ -77,15 +77,15 @@ if (isset($response[0]["consultar"])) {
                                             <?php
                                                 if (isset($response[0]["modificar"])) {
                                             if ($response[0]["modificar"] == 'true') {?>
-                                            <button class="btn btn-sm" data-toggle="modal"
+                                            <button class="btn p-2" style="background:#E67E22;color:white" data-toggle="modal"data-toggle="tooltip" data-placement="top" title="Editar"
                                                 onclick="edita_aula(<?=$valor[4];?>, <?=$valor[8];?>);" name="editar"
                                                 id="editar" data-target="#editar-area"><i
-                                                    class="fas fa-edit"></i> Editar</button>
+                                                    class="fas fa-edit"></i></button>
                                             <?php }}?>
                                             <?php
                                             if (isset($response[0]["eliminar"])) {
                                             if ($response[0]["eliminar"] == 'true') {?>
-                                            <div class="form-check form-switch mx-3">
+                                            <div class="form-check form-switch mx-5">
                                                 <input class='form-check-input' type='checkbox'
                                                     id="desh<?=$valor[4];?>"
                                                     onclick="activarod(<?=$valor[4];?>);">
@@ -119,6 +119,16 @@ if (isset($response[0]["consultar"])) {
                                            
                                             <?php }}?>
                                             </tbody>
+                                            <thead>
+                                                <tr>
+                                                    <th>Opciones</th>
+                                                    <th>Área</th>
+                                                    <th>Emprendimiento</th>
+                                                    <th>Modulo</th>
+                                                    <th>Aula</th>
+                                                    <th>Docente</th>
+                                                </tr>
+                                            </thead>
                                         </table>
                                     </div>
                                 </div>

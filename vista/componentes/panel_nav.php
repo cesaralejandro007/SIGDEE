@@ -1,8 +1,8 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white" style="background:#0D47AD; color:white">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
 
     </ul>
@@ -12,11 +12,11 @@
         <!-- Navbar Search -->
         <li class="nav-item dropdown no-arrow">
         <a href="?pagina=Ayuda" class="nav-link">
-        <i class="fas fa-question-circle text-primary" style="font-size:20px"></i>
+        <i class="fas fa-question-circle text-white" style="font-size:25px"></i>
         </a>
         </li>
         <li onclick="notificacionclick();" class="nav-item dropdown no-arrow">
-            <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+            <a class="nav-link mt-1" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
@@ -43,7 +43,7 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in p-0" aria-labelledby="userDropdown">
                 <div class="card-header m-0 p-0 d-flex justify-content-center">
-                    <div  style="top: 0;left: 0;width: 250px; height: 150px;background:#337ab7"></div>
+                    <div  style="top: 0;left: 0;width: 250px; height: 100px;background:#063587"></div>
 
                     <?php 
                         $directory="content/usuarios/";
@@ -62,7 +62,7 @@
                         $dirint->close(); 
                     ?>
                     <img class="imagen2"
-                        style="position: absolute; top: 95px; width: 120px; height: 105px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
+                        style="position: absolute; top: 42px; width: 120px; height: 105px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
                         src="content/usuarios/<?php echo $imagen1;?>">
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
@@ -73,9 +73,9 @@
                 <hr class="m-1">
                 <div class="m-0 d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-primary m-2" href="?pagina=Perfil" style="font-size:13px">Perfil</a>
+                        <a class="btn btn-primary m-1" href="?pagina=Perfil" style="font-size:13px">Perfil</a>
                     </div>
-                    <a href="?pagina=Login" class="btn btn-danger m-2" style="font-size:13px">Salir</a>
+                    <a href="?pagina=Login" class="btn m-1" style="font-size:13px; background:#9D2323; color:white">Salir</a>
                 </div>
             </div>
         </li>

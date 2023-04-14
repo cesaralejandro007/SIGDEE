@@ -5,7 +5,7 @@ var keyup_select = /^[0-9]{1,10}$/;
 $(document).ready(function() {    
   var table = $('#funcionpaginacion').DataTable({      
       language: {
-              "lengthMenu": "Mostrar _MENU_ registros",
+              "lengthMenu": "<div class='d-flex m-1'><div><p class='p-1' style='font-size:14px'>Mostrar</p></div> <div>_MENU_</div> <div><p class='p-1' style='font-size:14px'>registros</p></div></div>",
               "zeroRecords": "No se encontraron resultados",
               "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
               "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
@@ -35,9 +35,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Aula"
       },
-      text:      '<i class="fas fa-file-excel"></i> ',
+      text:      '<i class="fas fa-file-excel text-success"></i> ',
       titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
+      className: 'btn border border-success bg-white mr-1',
       exportOptions: {
         columns: [1,3,5,7,9]
     }
@@ -51,9 +51,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Aula"
       },
-      text:      '<i class="fas fa-file-pdf"></i> ',
+      text:      '<i class="fas fa-file-pdf text-danger "></i> ',
       titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
+      className: 'btn border border-danger bg-white mr-1',
       exportOptions: {
         columns: [1,3,5,7,9]
     }
@@ -67,9 +67,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Aula"
       },
-      text:      '<i class="fa fa-print"></i> ',
+      text:      '<i class="fa fa-print text-info"></i> ',
       titleAttr: 'Imprimir',
-      className: 'btn btn-info',
+      className: 'btn border border-info bg-white mr-1',
       exportOptions: {
         columns: [1,3,5,7,9]
     }
