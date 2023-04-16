@@ -28,22 +28,28 @@ class EmprendimientoModuloModelo extends connectDB
                 return $e->getMessage();
             }
         } else if ($v == "true" and $status == "false") {
+            $emprendimiento_aula = $this->validar_emprendimiento_aula($id_modulo, $id_emprendimiento);
+            if($emprendimiento_aula){
                 $resultado = $this->conex->prepare("DELETE from emprendimiento_modulo
-					WHERE
-					 id_emprendimiento = '$id_emprendimiento' and id_modulo = '$id_modulo'
-					");
-            try {
-                $resultado->execute();
-                $fila = $resultado->rowCount();
-                if ($fila > 0) {
-                    $respuesta['resultado'] = 1;
-                    $respuesta['mensaje'] = "Eliminación exitosa";
-                } else {
-                    $respuesta['resultado'] = 2;
-                    $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculos con Emprendimiento Modulo.";
+                    WHERE
+                    id_emprendimiento = '$id_emprendimiento' and id_modulo = '$id_modulo'
+                    ");
+                try {
+                    $resultado->execute();
+                    $fila = $resultado->rowCount();
+                    if ($fila > 0) {
+                        $respuesta['resultado'] = 1;
+                        $respuesta['mensaje'] = "Eliminación exitosa";
+                    } else {
+                        $respuesta['resultado'] = 2;
+                        $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculos con Emprendimiento Modulo.";
+                    }
+                } catch (Exception $e) {
+                    return $e->getMessage();
                 }
-            } catch (Exception $e) {
-                return $e->getMessage();
+            }else{
+                $respuesta['resultado'] = 2;
+                $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculo con Aula.";
             }
         } else {
             $respuesta['resultado'] = 1;
@@ -238,6 +244,22 @@ class EmprendimientoModuloModelo extends connectDB
                 return "true";
             } else {
                 return "false";
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function validar_emprendimiento_aula($id_modulo, $id_emprendimiento)
+    {
+        $resultado = $this->conex->prepare("SELECT * FROM emprendimiento,emprendimiento_modulo,aula WHERE emprendimiento.id = emprendimiento_modulo.id_emprendimiento AND aula.id_emprendimiento_modulo = emprendimiento_modulo.id and emprendimiento_modulo.id_emprendimiento = '$id_emprendimiento' and emprendimiento_modulo.id_modulo ='$id_modulo'");
+        try {
+            $resultado->execute();
+            $respuesta1 = $resultado->rowCount();
+            if ($respuesta1 > 0) {
+                return false;
+            } else {
+                return true;
             }
         } catch (Exception $e) {
             return false;

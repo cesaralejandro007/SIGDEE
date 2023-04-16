@@ -131,10 +131,11 @@ function valida_registrar1() {
 }
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    toast: true,
-    position: "top-right",
+    position: "top-center",
     showConfirmButton: false,
-    timer: 2000,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
     timerProgressBar: true,
   });
   $.ajax({

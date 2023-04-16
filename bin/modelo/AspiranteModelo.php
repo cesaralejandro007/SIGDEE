@@ -104,7 +104,6 @@ class AspiranteModelo extends connectDB
     {
         try {
             $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id'");
-            $resultado->bindParam(':id', $id);
             $resultado->execute();
             $fila = $resultado->fetchAll();
             if ($fila) {

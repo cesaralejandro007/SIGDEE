@@ -64,10 +64,10 @@ class EmprendimientoModelo extends connectDB
             $this->conex->query("UPDATE emprendimiento SET estatus = '$status' WHERE id = '$id'");
             if($status=="true"){
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Registro exitoso";
+                $respuesta['mensaje'] = "Activado";
             }else{
                 $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "Eliminación exitosa";
+                $respuesta['mensaje'] = "Desactivado";
             }
 
         } catch (Exception $e) {
@@ -330,8 +330,6 @@ class EmprendimientoModelo extends connectDB
 
             $resultado = $this->conex->prepare("select emprendimiento.id, emprendimiento.nombre from emprendimiento
             where id_area =:area AND estatus='true'");
-            $resultado->BindParam(":area", $area);
-
             $resultado->execute();
 
             $x = '<option disabled selected>Seleccione</option>';

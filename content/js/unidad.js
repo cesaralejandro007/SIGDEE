@@ -218,10 +218,11 @@ function eliminar_evaluacion(id) {
 /*--------------------FUNCIONES CON AJAX----------------------*/
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    toast: true,
-    position: "top-right",
+    position: "top-center",
     showConfirmButton: false,
-    timer: 2000,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
     timerProgressBar: true,
   });
   $.ajax({
@@ -276,10 +277,11 @@ function enviaAjax(datos) {
 
 function confirm_eliminar(datos) {
   var toastMixin = Swal.mixin({
-    toast: true,
-    position: "top-right",
+    position: "top-center",
     showConfirmButton: false,
-    timer: 2000,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
     timerProgressBar: true,
   });
   $.ajax({

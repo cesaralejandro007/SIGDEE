@@ -5,6 +5,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>SIGDEE</title>
+    <link rel="shortcut icon" href="assets/font/log.png">
     <link href="content/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="content/css/main.css">  
     <link rel="stylesheet"  type="text/css" href="plugins/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
