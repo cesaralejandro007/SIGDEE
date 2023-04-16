@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -29,7 +30,7 @@
                                 <?php
 if (isset($response[0]["registrar"])) {
     if ($response[0]["registrar"] == 'true') {?>
-                                <button class="btn btn-primary fw-bold p-1 my-1" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar</button>
+                                <button class="btn btn-primary p-1 my-1" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar</button>
                                 <?php }}?>
                             </div>
                             <!-- /.card-header -->
@@ -37,10 +38,10 @@ if (isset($response[0]["registrar"])) {
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                             <div class="card border">
-                                <div class="table-responsive-xl px-2">
+                                <div class="table-responsive-xl p-2">
                                     <div class="d-flex flex-wrap justify-content-between m-1">
                                     </div>
-                                    <table id="funcionpaginacion" class="table table-striped table-hover border">
+                                    <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
                                         <thead>
                                             <tr>
                                                 <th>Opciones</th>
@@ -57,7 +58,7 @@ foreach ($r1 as $valor) {
                                                         <?php
 if (isset($response[0]["modificar"])) {
             if ($response[0]["modificar"] == 'true') {?>
-                                                        <button class="btn p-2 mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
+                                                        <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="cargar_datos(<?=$valor['id'];?>);" name="editar"
                                                             id="editar" data-target="#editar-area"><i
                                                             class="fas fa-edit"></i></button>
@@ -75,12 +76,12 @@ if (isset($response[0]["eliminar"])) {
                                             </tr>
                                             <?php }}?>
                                         </tbody>
-                                        <thead>
+                                        <tfoot>
                                             <tr>
                                                 <th>Opciones</th>
                                                 <th>Nombre</th>
                                             </tr>
-                                        </thead>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <!-- /.card-body -->
@@ -132,6 +133,8 @@ if (isset($response[0]["eliminar"])) {
             <!-- /.modal Editar -->
 
             <!-- /.modal -->
+        </div>
+        </div>
         </div>
         <!-- /.content-wrapper -->
         <?php include_once 'componentes/footer.php';?>

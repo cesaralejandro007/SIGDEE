@@ -8,8 +8,7 @@
     <link href="content/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="content/css/main.css">  
     <link rel="stylesheet"  type="text/css" href="plugins/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
-    <link href="content/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="content/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Theme style -->
     <link rel="stylesheet" href="content/css/adminlte.min.css">
     <!-- overlayScrollbars -->

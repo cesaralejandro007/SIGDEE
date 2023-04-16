@@ -68,6 +68,7 @@
                 </div>
             </main>
         </div>
+        </div>
 
         <?php include_once 'componentes/footer.php';?>
         <script>

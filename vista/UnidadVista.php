@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
@@ -7,7 +8,7 @@
 <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -16,15 +17,14 @@
 
         <!-- /.modal Registrar -->
         <div class="content-wrapper">
-            <div class="card m-2 border border-dark">
-                <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+        <div class="card m-2 border border-secondary">
+                <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Unidad</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="#" style="font-size:18px;">Inicio</a> >
-                            <a href="#" style="font-size:18px;">Unidad</a>
+                        <div class="">
+                            <a href="#" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

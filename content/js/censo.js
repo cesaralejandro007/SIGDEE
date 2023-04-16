@@ -33,9 +33,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Censo"
       },
-      text:      '<i class="fas fa-file-excel"></i> ',
+      text:      '<i class="fas fa-file-excel text-success"></i> ',
       titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
+      className: 'btn border border-success bg-white mr-1',
       exportOptions: {
         columns: [1,2,3]
     }
@@ -49,9 +49,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Censo"
       },
-      text:      '<i class="fas fa-file-pdf"></i> ',
+      text:      '<i class="fas fa-file-pdf text-danger "></i> ',
       titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
+      className: 'btn border border-danger bg-white mr-1',
       exportOptions: {
         columns: [1,2,3]
     }
@@ -65,9 +65,9 @@ $(document).ready(function() {
         var searchString = table.search();        
         return searchString.length? "Search: " + searchString : "Reporte de Censo"
       },
-      text:      '<i class="fa fa-print"></i> ',
+      text:      '<i class="fa fa-print text-info"></i> ',
       titleAttr: 'Imprimir',
-      className: 'btn btn-info',
+      className: 'btn border border-info bg-white mr-1',
       exportOptions: {
         columns: [1,2,3]
     }

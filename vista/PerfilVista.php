@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -9,20 +10,19 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="card m-2 border border-dark">
-                <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+            <div class="card m-2 border border-secondary">
+                <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Perfil</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="#" style="font-size:18px;">Inicio</a> >
-                            <a href="?pagina=Perfil" style="font-size:18px;">Perfil</a>
+                        <div class="">
+                            <a href="#" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- Main content -->
-                <div class="card-body">
+                <div class="card-body px-2 py-1">
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center">
                             <div class="card mb-3 " style="max-width: 950px;">
@@ -56,11 +56,11 @@
                                                         <tr>
                                                             <th scope="col">Datos Personales:</th>
                                                             <th scope="col">
-                                                                <a class="btn btn-sm btn-dark text-light"
+                                                                <button class="btn btn-primary p-1 my-1" 
                                                                     onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
                                                                     style="cursor: pointer">
                                                                     <i class="fas fa-user-edit"></i> Editar perfil
-                                                                </a>
+                                                                </button>
                                                             </th>
                                                         </tr>
                                                     </thead>
@@ -158,8 +158,8 @@
                 <!-- /.modal-content -->
             </div>
         </div>
-
-
+    </div>
+</div>
           <?php include_once('componentes/footer.php'); ?>
 
             <script src="content/js/perfil.js"></script>

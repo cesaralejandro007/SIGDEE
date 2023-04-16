@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -12,20 +13,19 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-            <div class="card m-2 border border-dark">
-                <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+            <div class="card m-2 border border-secondary">
+                <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Emprendimiento</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="#" style="font-size:18px;">Inicio</a> >
-                            <a href="?pagina=Emprendimiento" style="font-size:18px;">Emprendimiento</a>
+                        <div class="">
+                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- Main content -->
-                <div class="card-body">
+                <div class="card-body px-2 py-1">
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex">
@@ -34,7 +34,7 @@
 
 if (isset($response[0]["registrar"])) {
     if ($response[0]["registrar"] == 'true') {?>
-                                    <button class="btn btn-sm my-1" id="nuevo">+ Registrar Emprendimiento</button>
+                                <button class="btn btn-primary p-1 my-1" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar Emprendimiento</button>
                                     <?php }}?>
                                 </div>
                             </div>
@@ -42,11 +42,11 @@ if (isset($response[0]["registrar"])) {
                             <?php
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
-                            <div class="card border border-secondary">
+                            <div class="card border">
                                 <div class="table-responsive-xl p-2">
                                     <div class="d-flex flex-wrap justify-content-between m-1">
                                     </div>
-                                    <table id="funcionpaginacion" class="table table-bordered table-hover">
+                                    <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
                                         <thead>
                                             <tr>
                                                 <th>Opciones</th>
@@ -62,21 +62,21 @@ if (isset($response[0]["consultar"])) {
                                                         <?php
 if (isset($response[0]["modificar"])) {
         if ($response[0]["modificar"] == 'true') {?>
-                                                        <button class="btn btn-sm"
+                                                        <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="cargar_datos(<?=$valor['id'];?>);" name="editar"><i
-                                                                class="fas fa-edit"></i>Editar</button>
+                                                                class="fas fa-edit"></i></button>
                                                         <?php }}?>
                                                         <?php
 if (isset($response[0]["eliminar"])) {
         if ($response[0]["eliminar"] == 'true') {?>
-                                                        <button class="btn btn-sm" type="button" id="eliminardato"
+                                                        <button class="btn mr-2" style="background:#9D2323;color:white"  type="button" id="eliminardato"data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Eliminar"
                                                             onclick="eliminar(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-trash "></i>Eliminar</button>
+                                                                class="fas fa-trash "></i></button>
                                                         <?php }}?>
-                                                        <button class="btn btn-sm"
+                                                        <button class="btn mr-2 text-white" style="background:#196F3D;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Modulo"
                                                             onclick="asignarmodulo(<?=$valor['id'];?>); cargar_checkboxme(<?php echo $valor['id']; ?>);"
-                                                            name="editar"><i class="fas fa-plus"></i>Modulo</button>
-                                                        <div class="form-check form-switch mx-3">
+                                                            name="editar"><i class="fas fa-plus"></i></button>
+                                                        <div class="form-check form-switch mx-4 mt-2">
                                                             <input class='form-check-input' type='checkbox'
                                                                 id="desh<?=$valor['id'];?>"
                                                                 onclick="activarod(<?=$valor['id'];?>);">
@@ -91,6 +91,13 @@ if (isset($response[0]["eliminar"])) {
                                             </tr>
                                             <?php }?>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Opciones</th>
+                                                <th>Nombre</th>
+                                                <th>Area de Emprendimiento</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <!-- /.card-body -->
@@ -227,7 +234,7 @@ if (isset($response[0]["eliminar"])) {
                 <!-- /.modal -->
             </div>
 
-
+            </div>
 
         </div>
         <!-- /.content-wrapper -->

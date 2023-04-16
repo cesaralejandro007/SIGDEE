@@ -10,28 +10,27 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="card m-2 border border-dark">
-                <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+            <div class="card m-2 border border-secondary">
+                <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Aspirantes</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="?pagina=Principal" style="font-size:18px;">Inicio</a> >
-                            <a href="?pagina=Aspirante" style="font-size:18px;">Aspirantes</a>
+                        <div class="">
+                            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- Main content -->
-                <div class="card-body">
+                <div class="card-body px-2 py-1">
                     <div class="row">
                         <div class="col-12">
                             <!-- /.card-header -->
-                            <div class="card border border-secondary">
-                                <div class="table-responsive p-2">
+                            <div class="card border">
+                                <div class="table-responsive-xl px-2">
                                     <div class="d-flex flex-wrap justify-content-between m-1">
                                     </div>
-                                    <table id="funcionpaginacion" class="table table-bordered table-hover">
+                                    <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
                                         <thead>
                                             <tr>
                                                 <th>Opciones</th>
@@ -49,12 +48,12 @@
                                             <tr>
                                                 <td class="project-actions text-left">
                                                     <div class="d-flex">
-                                                        <button class="btn btn-sm"
+                                                        <button class="btn mr-2 text-white" style="background:#E67E22;"  data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="cargar_datos(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-edit"></i>Editar</button>
-                                                        <button class="btn btn-sm" type="button"
+                                                            class="fas fa-edit"></i></button>
+                                                        <button class="btn mr-2 text-white" style="background:#9D2323;color:white" type="button" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="eliminar(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-trash"></i>Eliminar</button>
+                                                                class="fas fa-trash"></i></button>
                                                     </div>
                                                 </td>
                                                 <td id="cedulausuario<?php echo $valor['id']; ?>" class=" project-actions
@@ -75,6 +74,17 @@
                                             </tr>
                                             <?php }?>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Opciones</th>
+                                                <th>Cedula</th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Correo</th>
+                                                <th>direccion</th>
+                                                <th>Telefono</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -150,7 +160,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <?php include_once 'componentes/footer.php';?>
 
 

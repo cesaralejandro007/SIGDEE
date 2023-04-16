@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
@@ -5,7 +6,7 @@
 <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -14,18 +15,17 @@
         <div class="content-wrapper">
             <div class="card m-2 border border-dark">
                 <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Aulas</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="#" style="font-size:18px;">Inicio</a> >
-                            <a href="#" style="font-size:18px;">Aulas</a>
+                        <div class="">
+                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- Main content -->
-                <div class="card-body">
+                <div class="card-body px-2 py-1">
                     <div class="col-12">
                         <div class="d-flex">
                             <ul class="nav nav-pills ">
@@ -56,7 +56,7 @@ if (isset($response[0]["consultar"])) {
                                     <div class="table-responsive p-2">
                                         <div class="d-flex flex-wrap justify-content-between m-1">
                                         </div>
-                                        <table id="funcionpaginacion" class="table table-striped table-hover border">
+                                        <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
                                             <thead>
                                                 <tr>
                                                     <th>Opciones</th>
@@ -77,7 +77,7 @@ if (isset($response[0]["consultar"])) {
                                             <?php
                                                 if (isset($response[0]["modificar"])) {
                                             if ($response[0]["modificar"] == 'true') {?>
-                                            <button class="btn p-2" style="background:#E67E22;color:white" data-toggle="modal"data-toggle="tooltip" data-placement="top" title="Editar"
+                                            <button class="btn mr-2 text-white" style="background:#E67E22;color:white" data-toggle="modal"data-toggle="tooltip" data-placement="top" title="Editar"
                                                 onclick="edita_aula(<?=$valor[4];?>, <?=$valor[8];?>);" name="editar"
                                                 id="editar" data-target="#editar-area"><i
                                                     class="fas fa-edit"></i></button>
@@ -85,7 +85,7 @@ if (isset($response[0]["consultar"])) {
                                             <?php
                                             if (isset($response[0]["eliminar"])) {
                                             if ($response[0]["eliminar"] == 'true') {?>
-                                            <div class="form-check form-switch mx-5">
+                                            <div class="form-check form-switch mx-5 mt-2">
                                                 <input class='form-check-input' type='checkbox'
                                                     id="desh<?=$valor[4];?>"
                                                     onclick="activarod(<?=$valor[4];?>);">
@@ -119,7 +119,7 @@ if (isset($response[0]["consultar"])) {
                                            
                                             <?php }}?>
                                             </tbody>
-                                            <thead>
+                                            <tfoot>
                                                 <tr>
                                                     <th>Opciones</th>
                                                     <th>Área</th>
@@ -128,7 +128,7 @@ if (isset($response[0]["consultar"])) {
                                                     <th>Aula</th>
                                                     <th>Docente</th>
                                                 </tr>
-                                            </thead>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -209,6 +209,7 @@ if (isset($response[0]["consultar"])) {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <?php include_once 'componentes/footer.php';?>
         <aside class="control-sidebar control-sidebar-dark">

@@ -13,7 +13,7 @@
 <?php include_once 'componentes/head.php';?>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Preloader -->
 
@@ -42,7 +42,7 @@
             <!-- /.content-header -->
         </div>
         <!-- /.content-wrapper -->
-
+        </div>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->

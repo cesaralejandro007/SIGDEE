@@ -1,8 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <?php include_once 'componentes/head.php';?>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -13,9 +13,12 @@
         <div class="content-wrapper">
             <div class="card m-2 border border-dark">
                 <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Evaluación</h5>
+                        </div>
+                        <div class="">
+                            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

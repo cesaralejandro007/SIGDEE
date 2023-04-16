@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="es">
 <?php include_once('componentes/head.php'); ?>
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <?php include_once('componentes/panel_nav.php'); ?>
     <!-- Main Sidebar Container -->
@@ -10,31 +11,30 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       
-        <div class="card m-2 border border-dark">
-        <div class="card-header">
-          <div class="container-fluid d-flex justify-content-start">
+        <div class="card m-2 border border-secondary">
+        <div class="card-header pb-1 px-1">
+          <div class="container-fluid d-flex justify-content-between">
             <div>
               <h5>Modulos del Sistema</h5>
             </div>
-            <div class="px-5">
-              <a href="#" style="font-size:18px;">Inicio</a> 
-              <a href="?pagina=AreaEmprendimiento" style="font-size:18px;">Modulo del Sistema</a>
+            <div class="">
+            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
             </div>
           </div><!-- /.container-fluid -->
         </div>
         <!-- Main content -->
-        <div class="card-body">
+        <div class="card-body px-2 py-1">
           <div class="row">
             <div class="col-12">
               <div class="d-flex">
                 <!-- <button class="btn btn-primary m-1" id="nuevo">+ Registrar Modulo</button> -->
               </div>
               <!-- /.card-header -->
-              <div class="card border border-secondary">
+              <div class="card border">
                 <div class="table-responsive-xl p-2">
                   <div class="d-flex flex-wrap justify-content-between m-1">
                   </div>
-                  <table id="funcionpaginacion" class="table table-bordered table-hover">
+                  <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
                     <thead>
                       <tr>
                         <th>Nombre</th>                        
@@ -49,6 +49,11 @@
                           </tr>
                         <?php }} ?>
                       </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>Nombre</th>                        
+                      </tr>
+                    </tfoot>
                     </table>
                   </div>
                   <!-- /.card-body -->
@@ -98,6 +103,8 @@
     </div>
   <!-- /.modal -->
   </div>
+  </div>
+  
   <!-- /.content-wrapper -->
   <?php include_once('componentes/footer.php'); ?>
   <!-- Control Sidebar -->

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
@@ -6,22 +7,21 @@
 <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
         <?php include_once 'componentes/panel_sidenav.php';?>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <div class="card m-2 border border-dark">
-                <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-start">
+        <div class="card m-2 border border-secondary">
+                <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between">
                         <div>
                             <h5>Aulas</h5>
                         </div>
-                        <div class="px-5">
-                            <a href="#" style="font-size:18px;">Inicio</a> >
-                            <a href="#" style="font-size:18px;">Aulas</a>
+                        <div class="">
+                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

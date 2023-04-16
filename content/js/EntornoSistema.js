@@ -20,7 +20,6 @@
 			dom: "B<'row'<'col-sm-6'><'col-sm-6'f>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'il><'col-sm-7'p>>",
-			responsive:"true",
 			colReorder: true,
 			lengthMenu: [5, 10, 20, 30, 40, 50, 100],   
 			buttons:[ 
@@ -33,9 +32,9 @@
 			  var searchString = table.search();        
 			  return searchString.length? "Search: " + searchString : "Reporte de Entornos de Sistema"
 			},
-			text:      '<i class="fas fa-file-excel"></i> ',
+			text:      '<i class="fas fa-file-excel text-success"></i> ',
 			titleAttr: 'Exportar a Excel',
-			className: 'btn btn-success',
+			className: 'btn border border-success bg-white mr-1',
 			exportOptions: {
 			  columns: [0]
 		  }
@@ -49,9 +48,9 @@
 			  var searchString = table.search();        
 			  return searchString.length? "Search: " + searchString : "Reporte de Entornos de Sistema"
 			},
-			text:      '<i class="fas fa-file-pdf"></i> ',
+			text:      '<i class="fas fa-file-pdf text-danger "></i> ',
 			titleAttr: 'Exportar a PDF',
-			className: 'btn btn-danger',
+			className: 'btn border border-danger bg-white mr-1',
 			exportOptions: {
 			  columns: [0]
 		  }
@@ -65,9 +64,9 @@
 			  var searchString = table.search();        
 			  return searchString.length? "Search: " + searchString : "Reporte de Entornos de Sistema"
 			},
-			text:      '<i class="fa fa-print"></i> ',
+			text:      '<i class="fa fa-print text-info"></i> ',
 			titleAttr: 'Imprimir',
-			className: 'btn btn-info',
+			className: 'btn border border-info bg-white mr-1',
 			exportOptions: {
 			  columns: [0]
 		  }
