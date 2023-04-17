@@ -17,7 +17,8 @@
                             <h5>Usuarios</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                         <a href="?pagina=Usuario" class="px-1" style="font-size:18px;">Usuarios</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
@@ -194,7 +195,7 @@
                                                 <thead>
                                                     <tr style="text-align:center;">
                                                         <th>Rol</th>
-                                                        <th>Opciones</th>
+                                                        <th>Opción</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="">
@@ -203,20 +204,17 @@
                                                         <input type="hidden" id="id_rol<?php echo $dato['id']; ?>"
                                                             value="<?php echo $dato['id']; ?>">
                                                         <td>
-                                                            <div class="form-check form-switch mx-3">
-                                                                <input class='form-check-input' type='checkbox'
-                                                                    id="check2<?php echo $dato['id']; ?>"
-                                                                    onclick="activar(<?=$dato['id'];?>);">
-                                                                <label
-                                                                    for="check2<?php echo $dato['id']; ?>"><?php echo $dato['nombre']; ?>
-                                                                </label>
-                                                            </div>
+                                                        <h5><?php echo $dato['nombre']; ?></h5>
                                                         </td>
-                                                        <td style="width:26%;">
-                                                            <button class="btn btn-sm bg-primary" type="button"
-                                                                id="botonguardar<?php echo $dato['id']; ?>"
-                                                                onclick="gestionar_rol(<?=$dato['id'];?>);"
-                                                                disabled><i class="fas fa-save"></i>Guardar</button>
+                                                        <td>
+                                                        <label class="mycheckbox d-flex justify-content-center align-items-center">
+                                                            <input type="checkbox"id="check2<?php echo $dato['id']; ?>"
+                                                                    onclick="gestionar_rol(<?=$dato['id'];?>);">
+                                                            <span>
+                                                            <i class="fas fa-check on"></i>
+                                                            <i class="fas fa-times off"></i>
+                                                            </span>
+                                                        </label>
                                                         </td>
                                                         <?php }?>
                                                     </tr>

@@ -17,7 +17,8 @@
                             <h5>Evaluaciones</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Evaluacion" class="px-1" style="font-size:18px;">Evaluacion</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

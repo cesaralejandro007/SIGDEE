@@ -437,10 +437,10 @@ class AulaModelo extends connectDB
             $this->conex->query("UPDATE aula SET estatus = '$status' WHERE id = '$id'");
             if($status =="true"){
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Registro exitoso";
+                $respuesta['mensaje'] = "Activado";
             }else{
                 $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "Eliminación exitoso";
+                $respuesta['mensaje'] = "Desactivado";
             }
 
         } catch (Exception $e) {

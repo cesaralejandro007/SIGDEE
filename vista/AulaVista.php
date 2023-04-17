@@ -20,7 +20,8 @@
                             <h5>Aulas</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Aula" class="px-1" style="font-size:18px;">Aula</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
@@ -71,7 +72,7 @@ if (isset($response[0]["consultar"])) {
                                                  <?php
                                                 foreach ($r1 as $valor) {
                                                  if (isset($valor[1])) {?>
-                                                     <tr>
+                                                     <tr>   
                                     <td class="project-actions text-left" style="width:25%;">
                                         <div class="d-flex">
                                             <?php
@@ -85,13 +86,15 @@ if (isset($response[0]["consultar"])) {
                                             <?php
                                             if (isset($response[0]["eliminar"])) {
                                             if ($response[0]["eliminar"] == 'true') {?>
-                                            <div class="form-check form-switch mx-5 mt-2">
-                                                <input class='form-check-input' type='checkbox'
-                                                    id="desh<?=$valor[4];?>"
-                                                    onclick="activarod(<?=$valor[4];?>);">
-                                                <label id="labelad<?=$valor[4];?>">Desactivado
-                                                </label>
-                                            </div>
+                                                 
+                                                                <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
+                                                                    <input type="checkbox" id="desh<?=$valor[4];?>" onclick="activarod(<?=$valor[4];?>);">
+                                                                    <span>
+                                                                        <i class="fas fa-check on"></i>
+                                                                        <i class="fas fa-times off"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <h5 id="labelad<?=$valor[4];?>" class="d-flex justify-content-center align-items-center">Desactivado</h5>
                                             <?php }}?>
                                         </div>
                                     </td>

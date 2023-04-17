@@ -16,9 +16,6 @@ var keyup_direccion = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,100}$/;
   }
 } */
 
-function activar(id) {
-  $("#botonguardar" + id).attr("disabled", false);
-}
 
 /* $(document).ready(function () {
   //CheckBox mostrar contraseña
@@ -389,7 +386,6 @@ function cargar_checkbox(id) {
 }
 
 function gestionar_rol(id) {
-  $("#botonguardar" + id).attr("disabled", true);
   var datos = new FormData();
   datos.append("accion", "registrarroles");
   datos.append("idrol", id);

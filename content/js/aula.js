@@ -290,7 +290,7 @@ function activarod(id) {
   datos.append("accion", "act_des");
   datos.append("id_aula", id);
   datos.append("status", $("#desh" + id).prop("checked"));
-  recibe_ajax(datos);
+  recibe_ajaxcheck(datos);
 }
 
 (function () {
@@ -564,6 +564,56 @@ function recibe_ajax(datos) {
   });
 }
 
+function recibe_ajaxcheck(datos) {
+	var toastMixin = Swal.mixin({
+		toast: true,
+		position: 'top-right',
+		showConfirmButton: false, 
+		timer: 2000,
+		timerProgressBar: true
+	});
+  $.ajax({
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      if (res.estatus == 1) {
+        toastMixin.fire({
+          animation: true,
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+        setTimeout(function () {
+          window.location.reload();
+        }, 2500);
+      }else if (res.estatus =="check") {
+        toastMixin.fire({
+          animation: true,
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+      } else {
+        toastMixin.fire({
+          animation: true,
+          text: res.message,
+          title: res.title,
+          icon: res.icon,
+        });
+      }
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: res.error,
+      });
+    },
+  });
+}
 function mostrar(datos) {
   $.ajax({
     async: true,

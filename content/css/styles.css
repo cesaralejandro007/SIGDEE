@@ -1,4 +1,82 @@
 @charset "UTF-8";
+.mycheckbox input:checked ~ span::after{
+  background: rgb(12, 114, 12);
+  transform: scale(0.85) translate(35px);
+}
+.mycheckbox input:checked ~ span .on{
+  transform: translate(30px);
+  opacity: 1;
+}
+
+.mycheckbox input:checked ~ span .off{
+  transform: translate(30px);
+  opacity: 0;
+}
+
+.mycheckbox input:checked ~ span .on-bell{
+  transform: translate(30px);
+}
+
+.mycheckbox input {
+  display: none;
+}
+
+.mycheckbox span {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  border-radius: 30px;
+  background: rgb(187, 186, 186);
+  cursor: pointer;
+  box-shadow: inset 0px 0px 2px rgb(15, 15, 15);
+  position: relative;
+}
+.deshabilitado span {
+opacity: 0.5;
+}
+
+.mycheckbox span::after {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 30px;
+  transform: scale(0.85);
+  border-radius: 30px;
+  background: rgb(156, 13, 13);
+  transition: 0.5s;
+  box-shadow: inset 0px 0px 2px rgb(37, 37, 37);
+}
+
+.mycheckbox i {
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  color: white;
+  transition: 0.5s;
+}
+
+.mycheckbox .on {
+  position: absolute;
+  font-size: 16px;
+  color: white;
+  opacity: 0;
+  left: 7px;
+  top: 7px;
+  z-index: 1;
+}
+
+.mycheckbox .off {
+  color: white;
+  position: absolute;
+  font-size: 15px;
+  left: 10px;
+  top: 7px;
+  z-index: 1;
+}
+
+.mycheckbox .off-bell {
+  left: 5px;
+}
 /*!
 * Start Bootstrap - SB Admin v6.0.0 (https://startbootstrap.com/templates/sb-admin)
 * Copyright 2013-2020 Start Bootstrap

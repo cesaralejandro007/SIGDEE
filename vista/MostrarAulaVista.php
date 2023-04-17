@@ -21,7 +21,8 @@
                             <h5>Aulas</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="#" class="px-1" style="font-size:18px;">Aula</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

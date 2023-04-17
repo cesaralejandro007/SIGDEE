@@ -20,7 +20,8 @@
                             <h5>Roles</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Rol" class="px-1" style="font-size:18px;">Roles</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
@@ -158,9 +159,9 @@ foreach ($r1 as $valor) {
                                     <h1 id="nombre_rol"></h1>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card-body">
-                                            <div class="table-responsive p-2">
-                                                <table class="table table-bordered table-striped">
+                                            <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table border">
                                                     <thead>
                                                         <tr style="text-align:center;">
                                                             <th>Nombre</th>
@@ -168,7 +169,6 @@ foreach ($r1 as $valor) {
                                                             <th>Modificar</th>
                                                             <th>Eliminar</th>
                                                             <th>Consultar</th>
-                                                            <th>Opcion</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="">
@@ -177,80 +177,69 @@ foreach ($r1 as $valor) {
                                                             <input type="hidden" id="idmodulo"
                                                                 value="<?php echo $dato['id'] ?>">
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
+                                                            <td class="d-flex">
+                                                                <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
+                                                                    <input type="checkbox" id="check1<?php echo $dato['id']; ?>" onclick="activar(<?php echo $dato['id']; ?>); gestionar_permisos(<?=$dato['id'];?>);">
+                                                                    <span>
+                                                                        <i class="fas fa-check on"></i>
+                                                                        <i class="fas fa-times off"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <h5 class="d-flex justify-content-center align-items-center"><?php echo $dato['nombre']; ?></h5>
+                                                            </td>
+                                                            <?php }?>
+                                                            <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <div class="form-check form-switch mx-3">
-                                                                    <input class='form-check-input' type='checkbox'
-                                                                        id="check1<?php echo $dato['id']; ?>"
-                                                                        onclick="activar(<?php echo $dato['id']; ?>); activarboton(<?php echo $dato['id']; ?>)">
-                                                                    <label
-                                                                        for="check1<?php echo $dato['id']; ?>"><?php echo $dato['nombre']; ?>
+                                                                <?php if ($dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                    <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
+                                                                        <input type="checkbox" name='registrar[]' id="registrar<?php echo $dato['id'];?>" onclick="gestionar_permisos(<?=$dato['id'];?>);"
+                                                                            disabled>
+                                                                        <span>
+                                                                            <i class="fas fa-check on"></i>
+                                                                            <i class="fas fa-times off"></i>
+                                                                        </span>
                                                                     </label>
-                                                                </div>
+                                                                <?php }?>
                                                             </td>
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <div
-                                                                    class='form-check form-switch d-flex justify-content-center'>
-                                                                    <?php if ($dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
-                                                                    <input class='form-check-input' type='checkbox'
-                                                                        role='switch' name='registrar[]'
-                                                                        id="registrar<?php echo $dato['id']; ?>"
-                                                                        onclick="activarboton(<?php echo $dato['id']; ?>)"
-                                                                        disabled>
-                                                                    <?php }?>
-                                                                </div>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                    <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
+                                                                        <input type="checkbox" name='modificar[]' id="modificar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
+                                                                        <span>
+                                                                            <i class="fas fa-check on"></i>
+                                                                            <i class="fas fa-times off"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                <?php }?>
                                                             </td>
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <div
-                                                                    class='form-check form-switch d-flex justify-content-center'>
-                                                                    <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
-                                                                    <input class='form-check-input' type='checkbox'
-                                                                        role='switch' name='modificar[]'
-                                                                        id="modificar<?php echo $dato['id']; ?>"
-                                                                        onclick="activarboton(<?php echo $dato['id']; ?>)"
-                                                                        disabled>
-                                                                    <?php }?>
-                                                                </div>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                    <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
+                                                                        <input type="checkbox" name='eliminar[]'id="eliminar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
+                                                                        <span>
+                                                                            <i class="fas fa-check on"></i>
+                                                                            <i class="fas fa-times off"></i>
+                                                                        </span>
+                                                                    </label>
+                                                                <?php }?>
                                                             </td>
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <div
-                                                                    class='form-check form-switch d-flex justify-content-center'>
-                                                                    <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
-                                                                    <input class='form-check-input' type='checkbox'
-                                                                        role='switch' name='eliminar[]'
-                                                                        id="eliminar<?php echo $dato['id']; ?>"
-                                                                        onclick="activarboton(<?php echo $dato['id']; ?>)"
-                                                                        disabled>
-                                                                    <?php }?>
-                                                                </div>
-                                                            </td>
-                                                            <?php }?>
-                                                            <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
-                                                            <td>
-                                                                <div
-                                                                    class='form-check form-switch d-flex justify-content-center'>
-                                                                    <?php if ($dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
-                                                                        <script>var bool ="true";</script>
-                                                                    <input class='form-check-input' type='checkbox'
-                                                                        role='switch' name='consultar[]'
-                                                                        id="consultar<?php echo $dato['id']; ?>"
-                                                                        onclick="activarboton(<?php echo $dato['id']; ?>)"
-                                                                        disabled>
-                                                                    <?php }else{?><script>var bool ="false";</script><?php }?>
-                                                                </div>
-                                                            </td>
-                                                            <?php }?>
-                                                            <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
-                                                            <td style="width:15%;">
-                                                                <button class="btn btn-sm bg-primary" type="button"
-                                                                    id="botonguardar<?php echo $dato['id']; ?>"
-                                                                    onclick="gestionar_permisos(<?=$dato['id'];?>);"
-                                                                    disabled><i class="fas fa-save"></i>Guardar</button>
+                                                                <?php if ($dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
+                                                                    <input type="checkbox"  name='consultar[]' id="consultar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
+                                                                    <span>
+                                                                        <i class="fas fa-check on"></i>
+                                                                        <i class="fas fa-times off"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <script>var bool ="true";</script>
+                                                                <?php }else{?><script>var bool ="false";</script><?php }?>
                                                             </td>
                                                             <?php }?>
                                                         </tr>

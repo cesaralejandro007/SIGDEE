@@ -18,7 +18,8 @@
               <h5>Modulos del Sistema</h5>
             </div>
             <div class="">
-            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+            <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+            <a href="?pagina=EntornoSistema" class="px-1" style="font-size:18px;">Entornos de Sistema</a>
             </div>
           </div><!-- /.container-fluid -->
         </div>

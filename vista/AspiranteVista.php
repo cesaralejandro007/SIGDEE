@@ -17,7 +17,8 @@
                             <h5>Aspirantes</h5>
                         </div>
                         <div class="">
-                            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Aspirante" class="px-1" style="font-size:18px;">Aspirante</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

@@ -18,7 +18,9 @@
                             <h5>Evaluación</h5>
                         </div>
                         <div class="">
-                            <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                            <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                            <a href="javascript:history.back()" class="text-secondary px-1" style="font-size:18px;">Unidad</a>
+                            <a href="#" class="px-1" style="font-size:18px;">Evaluación</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

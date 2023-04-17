@@ -20,7 +20,8 @@
                             <h5>Emprendimiento</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Emprendimiento" class="px-1" style="font-size:18px;">Emprendimiento</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
@@ -76,13 +77,14 @@ if (isset($response[0]["eliminar"])) {
                                                         <button class="btn mr-2 text-white" style="background:#196F3D;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Modulo"
                                                             onclick="asignarmodulo(<?=$valor['id'];?>); cargar_checkboxme(<?php echo $valor['id']; ?>);"
                                                             name="editar"><i class="fas fa-plus"></i></button>
-                                                        <div class="form-check form-switch mx-4 mt-2">
-                                                            <input class='form-check-input' type='checkbox'
-                                                                id="desh<?=$valor['id'];?>"
-                                                                onclick="activarod(<?=$valor['id'];?>);">
-                                                            <label id="labelad<?=$valor['id'];?>">Desactivado
-                                                            </label>
-                                                        </div>
+                                                            <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
+                                                                    <input  type='checkbox' id="desh<?=$valor['id'];?>" onclick="activarod(<?=$valor['id'];?>);">
+                                                                    <span>
+                                                                        <i class="fas fa-check on"></i>
+                                                                        <i class="fas fa-times off"></i>
+                                                                    </span>
+                                                                </label>
+                                                        <h5 id="labelad<?=$valor['id'];?>" class="d-flex justify-content-center align-items-center">Desactivado</h5>
                                                     </div>
                                                 </td>
                                                 <td id="nomemprendimiento<?php echo $valor['id']; ?>">
@@ -186,7 +188,6 @@ if (isset($response[0]["eliminar"])) {
                                                         <thead>
                                                             <tr style="text-align:center;">
                                                                 <th>Modulo</th>
-                                                                <th>Opciones</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="">
@@ -195,22 +196,15 @@ if (isset($response[0]["eliminar"])) {
                                                                 <input type="hidden"
                                                                     id="idmodulo<?php echo $dato['id']; ?>"
                                                                     value="<?php echo $dato['id']; ?>">
-                                                                <td>
-                                                                    <div class="form-check form-switch mx-3">
-                                                                        <input class='form-check-input' type='checkbox'
-                                                                            id="check2<?php echo $dato['id']; ?>"
-                                                                            onclick="activar(<?=$dato['id'];?>);">
-                                                                        <label
-                                                                            for="check2<?php echo $dato['id']; ?>"><?php echo $dato['nombre']; ?>
-                                                                        </label>
-                                                                    </div>
-                                                                </td>
-                                                                <td style="width:26%;">
-                                                                    <button class="btn btn-sm bg-primary" type="button"
-                                                                        id="botonasignar<?php echo $dato['id']; ?>"
-                                                                        onclick="gestionar_em(<?=$dato['id'];?>);"
-                                                                        disabled><i
-                                                                            class="fas fa-save"></i>Guardar</button>
+                                                                <td class="d-flex">
+                                                                <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
+                                                                    <input type="checkbox"id="check2<?php echo $dato['id']; ?>" id="botonasignar<?php echo $dato['id']; ?>" onclick="gestionar_em(<?=$dato['id'];?>);">
+                                                                    <span>
+                                                                    <i class="fas fa-check on"></i>
+                                                                    <i class="fas fa-times off"></i>
+                                                                    </span>
+                                                                </label>
+                                                                <h5 class="d-flex justify-content-center align-items-center"><?php echo $dato['nombre']; ?></h5>
                                                                 </td>
                                                                 <?php }?>
                                                             </tr>

@@ -24,7 +24,9 @@
                             <h5>Unidad</h5>
                         </div>
                         <div class="">
-                            <a href="#" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="javascript:history.back()" class="text-secondary px-1" style="font-size:18px;">Aula</a>
+                        <a href="#" class="px-1" style="font-size:18px;">Unidad</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

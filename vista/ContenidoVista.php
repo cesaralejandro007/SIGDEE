@@ -17,7 +17,8 @@
                             <h5>Contenidos</h5>
                         </div>
                         <div class="">
-                        <a href="?pagina=principal" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Contenido" class="px-1" style="font-size:18px;">Contenido</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

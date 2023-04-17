@@ -1,3 +1,5 @@
+
+
 var keyup_nombre = /^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{3,30}$/;
 function cerrarmodalpermisos() {
   window.location.reload();
@@ -100,19 +102,18 @@ function cargar_usuario(id) {
 
 function activar(id) {
   if ($("#check1" + id).prop("checked") == false) {
+    $(".on_off"+ id).addClass("deshabilitado");
     $("#registrar" + id).prop("disabled", true);
     $("#consultar" + id).prop("disabled", true);
     $("#eliminar" + id).prop("disabled", true);
     $("#modificar" + id).prop("disabled", true);
   } else {
+    $(".on_off"+ id).removeClass("deshabilitado");
     $("#registrar" + id).prop("disabled", false);
     $("#consultar" + id).prop("disabled", false);
     $("#eliminar" + id).prop("disabled", false);
     $("#modificar" + id).prop("disabled", false);
   }
-}
-function activarboton(id) {
-  $("#botonguardar" + id).attr("disabled", false);
 }
 document.onload = carga();
 function carga() {
@@ -219,6 +220,7 @@ function cargar_modulos(id_rol) {
 }
 
 function cargar_checkbox(nombre) {
+
   document.getElementById("f1").reset();
   var datos = new FormData();
   datos.append("accion", "cargarp");
@@ -227,7 +229,6 @@ function cargar_checkbox(nombre) {
 }
 
 function gestionar_permisos(id) {
-  $("#botonguardar" + id).attr("disabled", true);
   var datos = new FormData();
   datos.append("accion", "registrarpermisos");
   datos.append("id_entorno", id);
@@ -283,7 +284,6 @@ function enviarpermisos1(datos) {
     cache: false,
     success: (response) => {
       var res = JSON.parse(response);
-
       for (let propiedad in res) {
         if (res != undefined) {
           if (res[propiedad]["id_entorno"] != undefined) {
@@ -304,7 +304,7 @@ function enviarpermisos1(datos) {
               "disabled",
               false
             );
-          } else {
+          } else {         
             $("#check1" + res[propiedad]["id_entorno"]).prop("checked", false);
           }
         } else {
@@ -316,7 +316,7 @@ function enviarpermisos1(datos) {
             $("#registrar" + res[propiedad]["id_entorno"]).prop(
               "checked",
               true
-            );
+            ); 
           } else {
             $("#registrar" + res[propiedad]["id_entorno"]).prop(
               "checked",
@@ -370,6 +370,13 @@ function enviarpermisos1(datos) {
           }
         } else {
           $("#modificar" + res[propiedad]["id_entorno"]).prop("checked", false);
+        }
+      }
+      for (i = 1; i <= 17 ; i++ ){
+        if ($("#check1" + i).prop("checked") == false) {
+          $(".on_off"+ i).addClass("deshabilitado");
+        }else{
+          $(".on_off"+ i).removeClass("deshabilitado");
         }
       }
     },
