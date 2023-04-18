@@ -127,10 +127,11 @@ function enviaAjax(datos) {
 
 function enviaAjaxcorreo(datos) {
   var toastMixin = Swal.mixin({
-    toast: true,
-    position: "top-right",
+    position: "top-center",
     showConfirmButton: false,
-    timer: 2000,
+    width: 450,
+    padding: '3.5em',
+    timer: 3000,
     timerProgressBar: true,
   });
   $.ajax({
@@ -159,7 +160,7 @@ function enviaAjaxcorreo(datos) {
             "Se envio la informacion de su clave al correo electronico." +
             '<button type="button" id="cerrarventanamensaje" class="btn-close" data-dismiss="alert" aria-label="Close"></button>' +
             "</div>";
-        }, 2000);
+        }, 3000);
         setTimeout(function () {
           $("#cerrarventanamensaje").click();
         }, 10000);

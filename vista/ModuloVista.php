@@ -31,7 +31,7 @@
                                 <?php
 if (isset($response[0]["registrar"])) {
     if ($response[0]["registrar"] == 'true') {?>
-                                <button class="btn btn-primary p-1 my-1" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar modulo</button>
+                                <button class="btn p-1 my-1 text-white" style="background:#0C72C4" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar modulo</button>
                                 <?php }}?>
                             </div>
                             <!-- /.card-header -->

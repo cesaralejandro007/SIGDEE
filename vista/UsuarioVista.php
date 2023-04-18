@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex">
-                            <button class="btn btn-primary p-1 my-1" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar usuario</button>
+                            <button class="btn p-1 my-1 text-white" style="background:#0C72C4" id="nuevo"><i class="fas fa-plus-square mx-1"></i>Registrar usuario</button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card border">
