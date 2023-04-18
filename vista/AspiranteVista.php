@@ -12,11 +12,11 @@
             <!-- Content Header (Page header) -->
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Aspirantes</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                         <a href="?pagina=Aspirante" class="px-1" style="font-size:18px;">Aspirante</a>
                         </div>
@@ -177,12 +177,6 @@
     <!-- Bootstrap 4 -->
 
     <!-- DataTables  & Plugins -->
-
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script src="content/js/aspirantes.js"></script>
 
     <!-- Page specific script -->

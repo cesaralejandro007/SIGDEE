@@ -15,13 +15,17 @@
 
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Emprendimiento</h5>
                         </div>
-                        <div class="">
-                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
-                        <a href="?pagina=Emprendimiento" class="px-1" style="font-size:18px;">Emprendimiento</a>
+                        <div class="d-flex flex-wrap">
+                            <div>
+                                <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                            </div>
+                            <div>
+                                <a href="?pagina=Emprendimiento" class="px-1" style="font-size:18px;">Emprendimiento</a>
+                            </div>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
@@ -168,7 +172,7 @@ if (isset($response[0]["eliminar"])) {
                     <div class="modal-content">
                         <div class="modal-header">
 
-                            <h4 class="modal-title">Agregar Modulos:</h4>
+                            <h3 class="modal-title">Agregar Modulos:</h3>
 
                             <butto type="button" class="close" data-dismiss="modal" aria-label="Close"
                                 onclick="cerrarmodalme()">
@@ -176,7 +180,6 @@ if (isset($response[0]["eliminar"])) {
                             </butto>
                         </div>
                         <div class="modal-body">
-                            <h6 class="modal-title" id="cargaremprendimiento"></h6>
                             <section class="content">
                                 <input type="hidden" id="id_emprendimiento">
                                 <div class="container-fluid">
@@ -184,8 +187,9 @@ if (isset($response[0]["eliminar"])) {
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
-                                                    <table class="table table-bordered table-striped">
-                                                        <thead>
+                                                    <h5 class="modal-title fw-bold pb-2" id="cargaremprendimiento"></h5>
+                                                    <table class="table table-striped">
+                                                        <thead class="thead-dark">
                                                             <tr style="text-align:center;">
                                                                 <th>Modulo</th>
                                                             </tr>
@@ -230,6 +234,7 @@ if (isset($response[0]["eliminar"])) {
 
             </div>
 
+        </div>
         </div>
         <!-- /.content-wrapper -->
         <?php include_once 'componentes/footer.php';?>

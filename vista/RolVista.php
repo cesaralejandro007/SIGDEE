@@ -15,11 +15,11 @@
 
         <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Roles</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                         <a href="?pagina=Rol" class="px-1" style="font-size:18px;">Roles</a>
                         </div>
@@ -143,26 +143,26 @@ foreach ($r1 as $valor) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="d-flex justify-content-center">
-                            <h4 class="modal-title">Configuración de permisos</h4>
-                            <h4 class="modal-title" id="userpermisos"></h4>
+                            <h3 class="modal-title">Configuración de permisos</h3>
                         </div>
                         <butto type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="cerrarmodalpermisos()">
-                            <span aria-hidden="true">&times;</span>
-                        </butto>
-                    </div>
-                    <div class="modal-body">
-                        <section class="content">
-                            <div class="container-fluid">
-                                <form id="f1" method="post">
-                                    <input type="hidden" id="id_rol">
-                                    <h1 id="nombre_rol"></h1>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                        onclick="cerrarmodalpermisos()">
+                        <span aria-hidden="true">&times;</span>
+                    </butto>
+                </div>
+                <div class="modal-body">
+                    <section class="content">
+                        <div class="container-fluid">
+                            <form id="f1" method="post">
+                                <input type="hidden" id="id_rol">
+                                <h1 id="nombre_rol"></h1>
+                                <div class="row">
+                                    <h5 class="modal-title pb-2 fw-bold" id="userpermisos"></h5>
+                                    <div class="col-md-12">
                                             <div class="card-body p-0">
                                             <div class="table-responsive">
-                                                <table class="table border">
-                                                    <thead>
+                                                <table class="table table-striped">
+                                                    <thead class="thead-dark">
                                                         <tr>
                                                             <th>Nombre</th>
                                                             <th>Registrar</th>

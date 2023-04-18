@@ -12,11 +12,11 @@
             <!-- Content Header (Page header) -->
             <div class="card m-2 border border-secondary">
             <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Estudiantes</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                         <a href="?pagina=Estudiante" class="px-1" style="font-size:18px;">Estudiante</a>
                         </div>

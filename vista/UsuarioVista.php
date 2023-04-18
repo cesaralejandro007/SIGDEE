@@ -12,11 +12,11 @@
             <!-- Content Header (Page header) -->
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Usuarios</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                          <a href="?pagina=Usuario" class="px-1" style="font-size:18px;">Usuarios</a>
                         </div>
@@ -191,9 +191,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card-body">
-                                            <table class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr style="text-align:center;">
+                                            <table class="table table-striped">
+                                                <thead class="thead-dark">
+                                                    <tr>
                                                         <th>Rol</th>
                                                         <th>Opción</th>
                                                     </tr>
@@ -207,7 +207,7 @@
                                                         <h5><?php echo $dato['nombre']; ?></h5>
                                                         </td>
                                                         <td>
-                                                        <label class="mycheckbox d-flex justify-content-center align-items-center">
+                                                        <label class="mycheckbox d-flex align-items-center">
                                                             <input type="checkbox"id="check2<?php echo $dato['id']; ?>"
                                                                     onclick="gestionar_rol(<?=$dato['id'];?>);">
                                                             <span>

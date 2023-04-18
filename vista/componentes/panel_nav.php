@@ -4,7 +4,6 @@
         <li class="nav-item">
             <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -43,7 +42,7 @@
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in p-0" aria-labelledby="userDropdown">
                 <div class="card-header m-0 p-0 d-flex justify-content-center">
-                    <div  style="top: 0;left: 0;width: 250px; height: 100px;background:#063587"></div>
+                    <div  style="top: 0;left: 0;width: 250px; height: 120px;background:#063587"></div>
 
                     <?php 
                         $directory="content/usuarios/";
@@ -62,7 +61,7 @@
                         $dirint->close(); 
                     ?>
                     <img class="imagen2"
-                        style="position: absolute; top: 42px; width: 120px; height: 105px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
+                        style="position: absolute; top: 42px; width: 120px; height: 120px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
                         src="content/usuarios/<?php echo $imagen1;?>">
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
@@ -73,7 +72,7 @@
                 <hr class="m-1">
                 <div class="m-0 d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-primary m-1" href="?pagina=Perfil" style="font-size:13px">Perfil</a>
+                        <a class="btn m-1" style="background:#0C72C4; color:white;font-size:13px" href="?pagina=Perfil">Perfil</a>
                     </div>
                     <a href="?pagina=Login" class="btn m-1" style="font-size:13px; background:#9D2323; color:white">Salir</a>
                 </div>

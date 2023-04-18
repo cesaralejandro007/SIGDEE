@@ -17,7 +17,7 @@
                         <div>
                             <h5>Bitacora</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                         <a href="?pagina=Bitacora" class="px-1" style="font-size:18px;">Bitacora</a>
                         </div>

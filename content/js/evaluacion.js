@@ -228,13 +228,13 @@ function cargar_datos(valor) {
 
 function eliminar(idnombre) {
   Swal.fire({
-    title: "¿Desea Eliminar el Registro?",
+    title: "¿Está seguro de eliminar el registro?",
     text: "¡No podrás revertir esto!",
     icon: "warning",
     showCloseButton: true,
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
+    confirmButtonColor: "#0C72C4",
+    cancelButtonColor: "#9D2323",
     confirmButtonText: "Confirmar",
     cancelButtonText: "Cancelar",
   }).then(function (result) {

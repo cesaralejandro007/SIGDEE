@@ -12,12 +12,13 @@
             <!-- Content Header (Page header) -->
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
-                    <div class="container-fluid d-flex justify-content-between">
+                <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Perfil</h5>
                         </div>
-                        <div class="">
-                            <a href="#" style="font-size:18px;">Inicio</a>
+                        <div class="d-flex flex-wrap">
+                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=Perfil" class="px-1" style="font-size:18px;">Perfil</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

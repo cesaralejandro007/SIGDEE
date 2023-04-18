@@ -13,11 +13,11 @@
         <div class="content-wrapper">
             <div class="card m-2 border border-dark">
                 <div class="card-header">
-                    <div class="container-fluid d-flex justify-content-between">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Evaluación</h5>
                         </div>
-                        <div class="">
+                        <div class="d-flex flex-wrap">
                             <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                             <a href="javascript:history.back()" class="text-secondary px-1" style="font-size:18px;">Unidad</a>
                             <a href="#" class="px-1" style="font-size:18px;">Evaluación</a>

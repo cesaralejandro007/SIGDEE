@@ -17,22 +17,22 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link p-0 m-1">
         <img src="content/imagenes/logo.png" alt="AdminLTE Logo" style="display: flex;
         width: 100%;">
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="info d-flex">
-                <p class="text-light"><?php echo $_SESSION['usuario']['tipo_usuario'] . ": " ?></p>
-                <a href="#"
-                    class="px-1"><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></a>
+        <div class="user-panel mt-2">
+            <div class="info d-flex p-1">
+                <p class="text-light fw-bold pr-1 "><?php echo $_SESSION['usuario']['tipo_usuario'] . ": " ?></p>
+                <a href="?pagina=Perfil"
+                    class=""><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></a>
             </div>
         </div>
         <!-- SidebarSearch Form -->
-        <div class="form-inline">
+        <div class="form-inline mt-4">
             <div class="input-group" data-widget="sidebar-search">
                 <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
                 <div class="input-group-append">
@@ -48,7 +48,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                 <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="?pagina=principal" class="nav-link active">
+                    <a href="?pagina=principal" class="nav-link active" style="background:#0C72C4">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Inicio
@@ -288,6 +288,12 @@ if ($confirm) {?>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="?pagina=Usuario" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="?pagina=Rol" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Permisos</p>
@@ -297,12 +303,6 @@ if ($confirm) {?>
                             <a href="?pagina=EntornoSistema" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Entornos del Sistema</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="?pagina=Usuario" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Usuarios</p>
                             </a>
                         </li>
                         <li class="nav-item">

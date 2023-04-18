@@ -26,8 +26,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title font fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white">
                     Login
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -47,12 +47,12 @@
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title fw-bold">1.Iniciar Sistema <br></h4>
+                    <h4 class="card-title fw-bold text-white">1.Iniciar Sistema <br></h4>
                                 <p><br>
                                     Al iniciar el sistema nos encontramos con un login,
                                     en el que debera rellenar sus respectivos datos para ingresar al sistema.
                                 </p>
-                            <h4 class="card-title fw-bold">2.Recuperar Contraseña<br></h4>
+                            <h4 class="card-title fw-bold text-white">2.Recuperar Contraseña<br></h4>
                                 <p><br>
                                     En el caso de estraviar su contraseña y si desea recuperarla, pulsar en 
                                     el boton Recupererar contraseña que se encuentra en el login, luego aparecera una ventana con un formulario donde tiene que responder las preguntas de seguridad,
@@ -96,8 +96,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                     Inicio
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -157,8 +157,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                     Botones
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -235,8 +235,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                     Mensajes de alerta
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -319,8 +319,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                     Gestión
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -389,8 +389,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                    Aula
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -504,8 +504,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                   Seguridad
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
@@ -651,8 +651,8 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header bg-primary" data-card-widget="collapse">
-                <h3 class="card-title fw-bold">
+            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+                <h3 class="card-title fw-bold text-white">
                     Cerrar Sesion
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
