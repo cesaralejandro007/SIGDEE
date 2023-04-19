@@ -221,8 +221,8 @@ if (isset($response[0]["consultar"])) {
         <!-- /.control-sidebar -->
     </div>
     <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-    <script src="content/js/aula.js"></script>
     <script src="plugins/select2/js/select2.full.min.js"></script>
+    <script src="content/js/aula.js"></script>
     <!-- Page specific script -->
     <script>
     $(function() {

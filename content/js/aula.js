@@ -567,6 +567,7 @@ function recibe_ajax(datos) {
 function recibe_ajaxcheck(datos) {
 	var toastMixin = Swal.mixin({
 		toast: true,
+    width: 250,
 		position: 'top-right',
 		showConfirmButton: false, 
 		timer: 2000,

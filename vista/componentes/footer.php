@@ -10,28 +10,30 @@
         </div>
     </div>
 </footer>
-
+<script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
 <script src="plugins/jquery/jquery.js" crossorigin="anonymous"></script>
 <script src="plugins/popper/popper.min.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="plugins/datatables/datatables.min.js"></script>
-<script src="plugins/datatables/JSZip-2.5.0/jszip.min.js"></script>   
-<script src="plugins/datatables/pdfmake-0.1.36/pdfmake.min.js"></script>    
-<script src="plugins/datatables/pdfmake-0.1.36/vfs_fonts.js"></script>
-<script src="plugins/datatables/Buttons-1.5.6/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script src="plugins/datatables/js/jszip.min.js"></script>
+<script src="plugins/datatables/js/pdfmake.min.js"></script>
+<script src="plugins/datatables/js/vfs_fonts.js"></script>
+<script src="plugins/datatables/js/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/js/dataTables.bootstrap5.min.js"></script>
+<script src="plugins/datatables/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables/js/buttons.bootstrap5.min.js"></script>
+<script src="plugins/datatables/js/buttons.colVis.min.js"></script>
+<script src="plugins/datatables/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables/js/buttons.print.min.js"></script>
+<script src="plugins/datatables/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables/js/responsive.bootstrap5.js"></script>
 
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="content/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="plugins/adminlte/js/adminlte.js"></script>
 <script src="content/js/scripts.js"></script>
 
-<script src="content/js/sweetalert2.all.min.js"></script>
-
-<script src="content/js/adminlte.js"></script>
 <input type="hidden" name="name" id="name" value="<?php echo $_SESSION['usuario']['nombre']." ".$_SESSION['usuario']['apellido'] ?>" />
 <?php
 $confirm = 0;

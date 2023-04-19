@@ -72,7 +72,6 @@ var FancyWebSocket = function(url){
 			if(message[0] == "V"){
 
 			}else{
-
 				var JSONdata = JSON.parse(message);
 				if(JSONdata[0].accion =="eliminar"){
 				var id = JSONdata[0].id;   

@@ -372,13 +372,14 @@ function mostrar(datos) {
 }
 
 function enviadatosAjax(datos) {
-  var toastMixin = Swal.mixin({
-    toast: true,
-    position: "top-right",
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-  });
+	var toastMixin = Swal.mixin({
+		toast: true,
+    width: 300,
+		position: 'top-right',
+		showConfirmButton: false, 
+		timer: 2000,
+		timerProgressBar: true
+	});
   $.ajax({
     url: "",
     type: "POST",

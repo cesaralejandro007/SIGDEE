@@ -253,12 +253,6 @@
     <!-- Bootstrap 4 -->
 
     <!-- DataTables  & Plugins -->
-
-    <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script src="content/js/usuario.js"></script>
 
     <!-- Page specific script -->

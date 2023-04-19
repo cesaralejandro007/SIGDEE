@@ -76,9 +76,7 @@
                           <div class="input-group-append">
                             <button id="show_password" class="btn border
                               border-left-0" type="button"
-                              onclick="mostrarPassword()"> <span class="fa
-                                fa-eye-slash icon"></span>
-                            </button>
+                              onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:21px"></i>
                           </div>
                         </div>
                         <button class="btn btn-primary text-white w-100 mt-4
@@ -152,11 +150,11 @@
                 </div>
               </section>
             </div>
-            <script src="content/js/jquery-3.5.1.min.js"
-              crossorigin="anonymous"></script>
-            <script src="content/js/sweetalert2.all.min.js"></script>
-            <script src="content/js/bootstrap.bundle.min.js"
-              crossorigin="anonymous"></script>
+            <script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
+            <script src="plugins/jquery/jquery.js" crossorigin="anonymous"></script>
+              <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+              <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
+              <script src="plugins/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="content/js/login.js"></script>
           </body>
 

@@ -138,7 +138,7 @@
                                         Class="form-control">
                                     <div class="input-group-append">
                                         <button id="show_password" class="btn btn-primary" type="button"
-                                            onclick="mostrarPassword()"> <span class="fa fa-eye-slash icon"></span>
+                                            onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
                                         </button>
                                     </div>
                                 </div>

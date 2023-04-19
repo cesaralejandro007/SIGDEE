@@ -472,6 +472,7 @@ function enviaAjax(datos) {
 function enviadatosAjax(datos) {
   var toastMixin = Swal.mixin({
     toast: true,
+    width: 300,
     position: "top-right",
     showConfirmButton: false,
     timer: 2000,

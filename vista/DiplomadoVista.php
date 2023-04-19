@@ -10,7 +10,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
         <div class="container px-4">
             <a class="navbar-brand" href="#inicio">Inicio</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
             class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -153,12 +153,10 @@
         <p class="m-0 text-center text-white">Derechos reservados 2022</p>
     </div>
 </footer>
-<script src="content/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script src="content/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="content/js/scriptsprincipal.js"></script>
+<script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
+<script src="plugins/jquery/jquery.js" crossorigin="anonymous"></script>
+<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="content/js/diplomado.js"></script>
 </body>
 
