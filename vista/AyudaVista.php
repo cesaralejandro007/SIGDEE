@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-center">Manual de Usuario</h1>
+                    <h1 class="text-center">Manual de Usuario</h1>
                 </div><!-- /.col -->
                 <!-- /.col -->
             </div><!-- /.row -->
@@ -26,20 +26,18 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
                 <h3 class="card-title font fw-bold text-white">
                     Login
                 </h3>
-                <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
+                <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize">
                         <i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
@@ -47,13 +45,13 @@
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title fw-bold text-white">1.Iniciar Sistema <br></h4>
-                                <p><br>
+                    <h4 class="fw-bold">1. Iniciar Sistema </h4>
+                                <p>
                                     Al iniciar el sistema nos encontramos con un login,
                                     en el que debera rellenar sus respectivos datos para ingresar al sistema.
                                 </p>
-                            <h4 class="card-title fw-bold text-white">2.Recuperar Contraseña<br></h4>
-                                <p><br>
+                            <h4 class="fw-bold">2. Recuperar Contraseña</h4>
+                                <p>
                                     En el caso de estraviar su contraseña y si desea recuperarla, pulsar en 
                                     el boton Recupererar contraseña que se encuentra en el login, luego aparecera una ventana con un formulario donde tiene que responder las preguntas de seguridad,
                                     una vez respondida las preguntas correctamente, finaliza enviando a su correo electronico la información de su contraseña.
@@ -96,31 +94,29 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                     Inicio
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold">3. Inicio <br></h4>
-                                <p><br>
+                    <h4 class="fw-bold">3. Inicio</h4>
+                                <p>
                                     Una vez que ingrese sus datos en el formulario del login y sea verificado con el sistema que sus datos estan correctamente, sera llevado a la pagina de inicio del sistema.
                                 </p>
-                                <h4 class="card-title m-t-40 fw-bold">4.Menu<br></h4>
-                                <p><br>
+                                <h4 class="fw-bold">4. Menu</h4>
+                                <p>
                                 En la parte izquierda de la pagina de inicio se encuentra el menu de navegacion.
                                 </p>
                                 <div id="carouselExample2" class="carousel slide">
@@ -157,33 +153,31 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                     Botones
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">5. Botones  <br></h4>
-                                <p><br>
+                    <h4 class="fw-bold" id="4">5. Botones  </h4>
+                                <p>
                                    En todos los modulos de consulta se visualizaran 3 botos,
                                    cada uno ellos tiene funciones distintas.
                                 </p>
 
-                    <h4 class="card-title m-t-40" id="4">Registrar<br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Registrar:</strong>
                                   El boton que dice Registrar al hacerle click o pulsarlo se despliega una ventana 
                                   con un formulario, en donde tiene que llenar cada uno de los campos con sus datos correspondientes
                                    y luego pulsar el boton de resgistrar, de esta manera se registra la información.
@@ -194,8 +188,8 @@
                                 </img>
                                 </div>
 
-                    <h4 class="card-title m-t-40" id="4">Editar  <br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Editar:</strong>
                                 El boton de editar que se representa con el color amarillo oscuro con un icono de editar, al hacerle click o pulsarlo se despliega una ventana 
                                   con un formulario y  la informacion cargada que se desea editar, una vez modificada la informacion se tiene que pulsar el boton de modificar, y de esta manera se edita la información.
                                 </p>
@@ -204,10 +198,10 @@
                                      <img class="rounded" src="assets/img/Editar.png">
                                 </img>
                                 </div>
-                                <br>
+                                
 
-                    <h4 class="card-title m-t-40" id="4">Eliminar  <br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Eliminar:</strong>
                                   El boton de color rojo oscuro con un icono de una papelera, al hacerle 
                                   click o pulsarlo se despliega una ventana con un mensaje de alerta preguntando si esta seguro 
                                   de eliminar el registro, en caso de no estarlo el usuario puede cancelar la 
@@ -218,7 +212,7 @@
                                      <img class="rounded" src="assets/img/botoneliminar.png">
                                 </img>
                                 </div>
-                                <br>
+                                
                 </div>
 
             </div>
@@ -235,47 +229,45 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                     Mensajes de alerta
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">6. Mensajes de alerta <br></h4>
-                                <p><br>
+                    <h4 class="fw-bold" id="4">6. Mensajes de alerta </h4>
+                                <p>
                                     En la parte superior izquierda y en el centro de la pagina se mostrara 4 tipos de mensajes de alerta a la hora de 
                                     ejecurtar funciones en el sistema. Dichos mensajes apareceran con una descripción para que sea interactivo con 
                                     el usuario.
                                 </p>
-                                <p><br>
-                                    Mensaje Exisitoso:
+                                <p>
+                                <strong>Mensaje Exisitoso:</strong>
                                     Este mensaje ocurre cuando la información filtrada en el sistema fue procesada con exito. 
                                 </p>
-                                <p><br>
-                                    Mensaje de información:
+                                <p>
+                                <strong>Mensaje de información:</strong>
                                     Este mensaje ocurre cuando la información filtrada en el sistema no puede ser procesada devido
                                     a que puede tener relación con otro modulo o le hace falta corregir algun dato en el formulario. 
                                 </p>
-                                <p><br>
-                                    Mensaje de Eliminación:
+                                <p>
+                                <strong>Mensaje de Eliminación:</strong>
                                     Este mensaje ocurre en el centro de la pantalla cuando se pulsan el boton de elimniar de un determinado modulo del sistema.
                                     De manera que el usuario confirme su operacion por medidas de seguridad.
                                 </p>
-                                <p><br>
-                                    Mensaje de Error:
+                                <p>
+                                <strong>Mensaje de Error:</strong>
                                     Este mensaje ocurre cuando la información filtrada en el sistema no puedo ser procesada devido
                                     a ocurrio algun fallo en el sistema.  
                                 </p>
@@ -319,27 +311,25 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                     Gestión
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">7. Gestionar Registro<br></h4>
-                                <p><br>
+                    <h4 class="fw-bold" id="4">7. Gestionar Registros</h4>
+                                <p>
                                   Al Hacer Click en Registros que se encuentra en el menu lateral del sistema, se despliegara todas las 
                                   opciones de gestión, en donde podemos consultar, registrar, editar y eliminar las informaciones.
                                 </p>
@@ -389,36 +379,34 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                    Aula
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">8. Opciones de Unidad<br></h4>
-                                <p><br>
+                    <h4 class="fw-bold" id="4">8. Opciones de Unidad</h4>
+                                <p>
                                     Al entrar en el modulo de Aula nos encotraremos con las opciones de unidad.
                                 </p>
                                 <p>
-                                    Crear Unidad:
+                                    <strong>Crear Unidad:</strong>
                                     Para crear una unidad tenemos que pulsar el boton (Crear Unidad) en donde se despliega una 
                                     ventana con un formulario, que debe ser llenado para crear la nueva unidad de Aula.
                                 </p>
                                 <p>
-                                    Ver Unidad:
+                                    <strong>Ver Unidad:</strong>
                                     Una vez Creada, se visualizara una unidad en el aula en donde podemos entrar
                                     para ver la unidad, editarla y eliminarla, ademas nos encontraremos con otras opciones de agregar contenidos, 
                                     agregar evaluaciones, ver contenido, ver evaluación, subir evaluacion y calificar Evaluación.
@@ -453,14 +441,15 @@
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Siguiente</span>
                                 </button>
-                            </div>
-                                 <p><br>
-                                    Publicar Foro:
+                            </div>  <br>
+                                 <p>
+                                 <strong>Publicar Foro:</strong>
                                     Al entrar en el modulo de Aula nos encotraremos con un sub-modulo que se utiliza para publicar y comentar
                                     foros, con la finalidad de mantenernos en informados o hacer evaluaciones de tipo foro en el Aula.
                                 </p>
                                 <p>
-                                    Ver Participantes:
+                                  
+                                <strong>Ver Participantes:</strong>
                                     Al entrar en el modulo de Aula nos encotraremos con un sub-nodulo que se llama participantes, aqui
                                     nos mostrara todos los usuarios que participan en el foro.
                                 </p>
@@ -504,38 +493,36 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                   Seguridad
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">9. Gestionar Seguridad<br></h4>
-                                <p><br>
+                    <h4 class="fw-bold" id="4">9. Gestionar Seguridad</h4>
+                                <p>
                                    Al hacer pulsar en la opcion del modulo de seguridad en el menu lateral, desplegara 4 opciones: Permisos, Entornos del Sistema
                                    Usuarios y Bitacora.
                                 </p>
-                                <h4 class="card-title m-t-40" id="4">Gestionar permisos<br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Gestionar permisos:</strong>
                                    Al entrar en el modulo de permisos,
                                    podra gestionar los roles del sistema y sus respectivos permisos de cada rol.
                                 </p>
 
-                                <h4 class="card-title m-t-40" id="4"> Botones <br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Botones:</strong>
                                    En la consulta del modulo de Permisos, se podran visualizar un boton de color azul oscuro con un icono de candado como se muestra en la siguiente imagen.
                                 </p>
 
@@ -546,8 +533,8 @@
 
                                  
 
-                                <h4 class="card-title m-t-40" id="4">Asignar Permisos<br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Asignar Permisos:</strong>
                                    Al momento de hacer Click en el boton de permisos se despliga una ventana en donde se mostraran de lado izquierdo todos los
                                    modulos del sistema, de cada modulo tendra un switch que le permitira tener el control de ese rol seleccionado,
                                    y una vez que se haya configurado los permisos, se guarda la configuración automaticamente.
@@ -571,27 +558,27 @@
                                     <span class="visually-hidden">Siguiente</span>
                                 </button>
                             </div>
-<br>
-                            <h4 class="card-title m-t-40" id="4">Gestionar Usuarios<br></h4>
-                                <p><br>
+                            <br>
+                            <p>
+                                <strong>Gestionar Usuarios:</strong>
                                    Al entrar en el modulo de usuarios,
                                    podra gestionar los usuarios del sistema y tambien asignarle sus respectivos 
                                    roles.
                                 </p>
 
-                                <h4 class="card-title m-t-40" id="4"> Botones <br></h4>
-                                <p><br>
+                                <p>
+                                <strong>Botones:</strong>
                                    En la consulta del modulo de Usuario se podran ver un boton de color azul oscuro y un icono de una persona con etiqueta que representa los roles.
                                 </p>
 
                                 <div class="text-center">
                                      <img class="rounded" src="assets/img/botonrol.png">
                                 </img>
-                                <br>
+                                
                                 </div>
 
-                                <h4 class="card-title m-t-40" id="4">Asignar Rol<br></h4>
-                                <p><br>
+                                <p>
+                                    <strong>Asignar Rol:</strong>
                                    Al momento de hacer Click en el boton de Rol se despliga una ventana en donde se mostraran de lado izquierdo todos los
                                    Roles del sistema, para cada Rol registrado tendra un switch que le permitira tener el control de ese usuario seleccionado,
                                    y una vez que se haya configurado los Rolos para ese usuario, se guarda la configuración automaticamente.
@@ -616,8 +603,8 @@
                                 </button>
                             </div>
                                 <br>
-                                <h4 class="card-title m-t-40" id="4"> Bitacora  <br></h4>
-                                <p><br>
+                                <p>
+                                    <strong>Bitacora:</strong>
                                     Aqui se podra consultar todas las acciones del usuario.
                                 </p>
 
@@ -651,29 +638,27 @@
     <section class="content">
         <!-- Default box -->
         <div class="card card-outline card-dark collapsed-card">
-            <div class="card-header" style="background:#0C72C4" data-card-widget="collapse">
-                <h3 class="card-title fw-bold text-white">
+            <div class="card-header p-1 pt-2 pl-2" style="background:#0C72C4;cursor:pointer;" data-card-widget="collapse">
+                <h3 class="card-title font fw-bold text-white" style="cursor:pointer;">
                     Cerrar Sesion
                 </h3>
                 <span class="direct-chat-timestamp float-left text-white" style="margin-left: 15px;">
                     (Haz Click) Para mas Informacion.
                 </span>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                    <button type="button" class="btn btn-tool pr-3" data-card-widget="maximize"><i class="fas fa-expand"></i>
                     </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Expandir">
-                        <i class="fas fa-minus"></i>
-                    </button>
+
                 </div>
             </div>
 
             <!-- card-body -->
             <div class="card-body">
                 <div class="card-block">
-                    <h4 class="card-title m-t-40 fw-bold" id="4">10. Salir del sistema  <br></h4>
-                                <p><br>
-                                   Para salir del sistema hay que hacer click en el nombre de Usuario que se 
-                                   visualiza en la parte superior derecha de la pagina, luego se despliega la opcion de salir del sistema.
+                                <p>
+                                    <strong>10. Salir del sistema:</strong>
+                                    Para salir del sistema hay que hacer click en el nombre de Usuario que se 
+                                    visualiza en la parte superior derecha de la pagina, luego se despliega la opcion de salir del sistema.
                                 </p>
 
                                 <div id="carouselExample7" class="carousel slide">
@@ -725,12 +710,12 @@
     <!-- Bootstrap 4 -->
 
     <!-- DataTables  & Plugins -->
-
+    <script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
     <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="plugins/datatables/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables/js/responsive.bootstrap5.js"></script>
+    <script src="plugins/datatables/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables/js/buttons.bootstrap5.min.js"></script>
 
     <!-- Page specific script -->
 
