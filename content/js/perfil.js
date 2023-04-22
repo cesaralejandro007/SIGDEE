@@ -2,6 +2,7 @@ var keyup_telefono = /^[0-9]{11}$/;
 var keyup_correo =/^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
 var keyup_clave = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{6,20}$/;
 
+
 document.getElementById("telefono").maxLength = 11;
 document.getElementById("telefono").onkeypress = function (e) {
   er = /^[JGVEP0-9-]*$/;
@@ -75,16 +76,55 @@ $("#modificarp").click(function () {
     datos.append("id", $("#id").val());
     datos.append("correo", $("#correo").val());
     datos.append("telefono", $("#telefono").val());
-    datos.append("cedula", $("#cedula_usuario").val());
     datos.append("clave", $("#floatingPassword").val());
-    if ($("#archivo_adjunto")[0].files[0] != null) {
-        datos.append("archivo", $("#archivo_adjunto")[0].files[0]);
-    }
     enviaAjax(datos);
   }
   }); 
 
+  function readURL(input) {
+    if (input.files && input.files[0]) {
   
+      var reader = new FileReader();
+  
+      reader.onload = function(e) {
+        $('.image-upload-wrap').hide();
+  
+        $('.file-upload-image').attr('src', e.target.result);
+        $('.file-upload-content').show();
+  
+        $('.image-title').html(input.files[0].name);
+      };
+  
+      reader.readAsDataURL(input.files[0]);
+  
+    } else {
+      removeUpload();
+    }
+  }
+  
+  function removeUpload() {
+    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+    $('.file-upload-content').hide();
+    $('.image-upload-wrap').show();
+    $('#archivo_adjunto').val("");
+  }
+  $('.image-upload-wrap').bind('dragover', function () {
+      $('.image-upload-wrap').addClass('image-dropping');
+    });
+    $('.image-upload-wrap').bind('dragleave', function () {
+      $('.image-upload-wrap').removeClass('image-dropping');
+  });
+
+  $("#modificarf").click(function () {
+      var datos = new FormData();
+      datos.append("accion", "modificarfotoperfil");
+      datos.append("cedula", $("#cedula_usuario_foto").val());
+      if ($("#archivo_adjunto")[0].files[0] != null) {
+          datos.append("archivo", $("#archivo_adjunto")[0].files[0]);
+      }
+      enviaAjax(datos);
+    });  
+
   function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
     a = er.test(etiqueta.value);
     if (!a) {
@@ -178,7 +218,7 @@ function enviaAjax(datos) {
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -189,7 +229,7 @@ function enviaAjax(datos) {
         }, 2000);
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

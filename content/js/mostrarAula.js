@@ -131,7 +131,6 @@ function valida_registrar1() {
 }
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -150,7 +149,7 @@ function enviaAjax(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -162,7 +161,7 @@ function enviaAjax(datos) {
         }, 2000);
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

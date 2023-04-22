@@ -374,7 +374,6 @@ function eliminar(idnombre) {
 /*--------------------FUNCIONES CON AJAX----------------------*/
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -393,7 +392,7 @@ function enviaAjax(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -403,7 +402,7 @@ function enviaAjax(datos) {
         }, 2500);
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,
@@ -473,7 +472,7 @@ function mostrarregistrar(datos) {
 
       if (res.estatus == 0) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,

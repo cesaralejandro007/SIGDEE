@@ -423,7 +423,6 @@ function eliminar(id) {
 
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -442,7 +441,7 @@ function enviaAjax(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -454,7 +453,7 @@ function enviaAjax(datos) {
         }, 3000);
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,
@@ -490,14 +489,14 @@ function enviadatosAjax(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
         });
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

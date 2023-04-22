@@ -29,8 +29,7 @@
 <script src="plugins/datatables/js/dataTables.responsive.min.js"></script>
 <script src="plugins/datatables/js/responsive.bootstrap5.js"></script>
 
-<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="plugins/adminlte/js/adminlte.js"></script>
 <script src="content/js/scripts.js"></script>
 

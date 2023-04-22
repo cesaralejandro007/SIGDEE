@@ -42,28 +42,36 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
 
 
             $response = $perfil->modificar($_POST['id'],$_POST['telefono'],$_POST['correo'],$claveencriptada);
-            if (isset($_FILES['archivo']['tmp_name'])) {
-                    $ruta = "content/usuarios/";
-                    move_uploaded_file($_FILES['archivo']['tmp_name'], 
-                    $ruta.$_POST['cedula'].'.png');
-                    if ($response == 1) {
-                        echo json_encode([
-                            'estatus' => '1',
-                            'icon' => 'success',
-                            'title' => $modulo,
-                            'message' => 'Modificacion exitosa'
-                        ]);
-                }
-            } else {
+            if ($response == 1) {
                 echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
+                    'estatus' => '1',
+                    'icon' => 'success',
                     'title' => $modulo,
-                    'message' => 'Seleccione Archivos'
+                    'message' => 'Modificacion exitosa'
                 ]);
-            } 
+            }
             return 0;
             exit;
+        }else if ($accion == 'modificarfotoperfil') {
+        if (isset($_FILES['archivo']['tmp_name'])) {
+            $ruta = "content/usuarios/";
+            move_uploaded_file($_FILES['archivo']['tmp_name'], 
+            $ruta.$_POST['cedula'].'.png');
+                echo json_encode([
+                    'estatus' => '1',
+                    'icon' => 'success',
+                    'title' => $modulo,
+                    'message' => 'Modificacion exitosa'
+                ]);
+        } else {
+            echo json_encode([
+                'estatus' => '2',
+                'icon' => 'info',
+                'title' => $modulo,
+                'message' => 'Seleccione Archivos'
+            ]);
+        } 
+            return 0;
         } else if ($accion == 'editarperfil') {
 
             $datos = $perfil->cargar($_POST['id']);

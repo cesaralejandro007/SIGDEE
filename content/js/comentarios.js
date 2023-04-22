@@ -76,7 +76,7 @@ function enviaAjaxcomentario(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -86,7 +86,7 @@ function enviaAjaxcomentario(datos) {
         }, 2000);
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,
@@ -149,7 +149,7 @@ function cargarcomentariosajax(datos) {
       });
       if (res.estatus == 2) {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

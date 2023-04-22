@@ -514,7 +514,6 @@ function enviaAjax(datos) {
 
 function recibe_ajax(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -532,7 +531,7 @@ function recibe_ajax(datos) {
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -542,14 +541,14 @@ function recibe_ajax(datos) {
         }, 2500);
       }else if (res.estatus =="check") {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
         });
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,
@@ -584,7 +583,7 @@ function recibe_ajaxcheck(datos) {
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -594,14 +593,14 @@ function recibe_ajaxcheck(datos) {
         }, 2500);
       }else if (res.estatus =="check") {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
         });
       } else {
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

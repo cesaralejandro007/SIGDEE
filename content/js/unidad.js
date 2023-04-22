@@ -218,7 +218,7 @@ function eliminar_evaluacion(id) {
 /*--------------------FUNCIONES CON AJAX----------------------*/
 function enviaAjax(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
+
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -236,7 +236,7 @@ function enviaAjax(datos) {
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -247,7 +247,7 @@ function enviaAjax(datos) {
         }, 2000);
       } else if (res.estatus == 2) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -258,7 +258,7 @@ function enviaAjax(datos) {
         }, 2000);
       }else if (res.estatus == 3){
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,
@@ -277,7 +277,7 @@ function enviaAjax(datos) {
 
 function confirm_eliminar(datos) {
   var toastMixin = Swal.mixin({
-    position: "top-center",
+
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
@@ -296,7 +296,7 @@ function confirm_eliminar(datos) {
       //alert(res.title);
       if (res.estatus == 1) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -307,7 +307,7 @@ function confirm_eliminar(datos) {
         }, 2000);
       } else if (res.estatus == 2) {
         toastMixin.fire({
-          animation: true,
+
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -318,7 +318,7 @@ function confirm_eliminar(datos) {
         }, 2000);
       }else if (res.estatus == 3){
         toastMixin.fire({
-          animation: true,
+
           text: res.message,
           title: res.title,
           icon: res.icon,

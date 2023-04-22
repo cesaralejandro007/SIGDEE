@@ -1,7 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
+<style>
 
+.file-upload {
+
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.file-upload-btn {
+    padding: 5px;
+    width: 98%;
+}
+
+.file-upload-btn:hover {
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 1px dashed #566573;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  border: 2px dashed #566573;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+}
+
+.drag-text h3 {
+  font-weight: 100;
+  padding: 30px 0;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+}
+
+
+.remove-image:active {
+  border: 0;
+  transition: all .2s ease;
+}
+</style>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
@@ -11,25 +83,31 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="card m-2 border border-secondary">
-                <div class="card-header pb-1 px-1">
-                <div class="container-fluid d-flex justify-content-between flex-wrap">
+            <section style="background-color: #eee;">
+            <div class="card-header pb-1 px-1">
+                    <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
                             <h5>Perfil</h5>
                         </div>
                         <div class="d-flex flex-wrap">
-                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
-                        <a href="?pagina=Perfil" class="px-1" style="font-size:18px;">Perfil</a>
+                            <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                            <a href="?pagina=Perfil" class="px-1" style="font-size:18px;">Perfil</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>
-                <!-- Main content -->
-                <div class="card-body px-2 py-1">
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-                            <div class="card mb-3 " style="max-width: 950px;">
-                                <div class="d-flex">
-                                    <div class="row g-0">
-                                    <?php 
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+        <div class="card-header pb-1 px-1">
+            <div class="container-fluid">
+                <div>
+                    <h6 class="p-0 m-2">Foto de perfil</h6>
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+          <div class="card-body text-center">
+          <?php 
                         $directory="content/usuarios/";
                         $dirint = dir($directory);
                         $bandera = false;
@@ -45,64 +123,86 @@
                         }
                         $dirint->close(); 
                     ?>
-                                        <div class="col-md-4 d-flex aling">
-                                            <img src= "content/usuarios/<?php echo $imagen1; ?>" class="img-fluid rounded-start"
-                                                alt="">
-                                        </div>
-
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <table class="table table-striped  table-bordered ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Datos Personales:</th>
-                                                            <th scope="col">
-                                                                <button class="btn btn-primary p-1 my-1" 
-                                                                    onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
-                                                                    style="cursor: pointer">
-                                                                    <i class="fas fa-user-edit"></i> Editar perfil
-                                                                </button>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                         foreach ($infoU as $valor) {?>
-                                                        <tr>
-                                                            <td>Cedula:</td>
-                                                            <td><?php echo $valor['cedula'] ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Nombre:</td>
-                                                            <td><?php echo $valor['nombre'] ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Apellido:</td>
-                                                            <td><?php echo $valor['apellido'] ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Telefono</td>
-                                                            <td><?php echo $valor['telefono'] ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Correo:</td>
-                                                            <td><?php echo $valor['correo'] ?></td>
-                                                        </tr>
-                                                        <?php }?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
+        <img src= "content/usuarios/<?php echo $imagen1; ?>"  alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px; height:150px;">
+            <h5 class="my-3"><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></h5>
+            <div class="d-flex justify-content-center mb-2">
+            <button class="btn btn-outline-primary ms-1" 
+                    data-toggle="modal" data-target="#foto-perfil"
+                    style="cursor: pointer">
+                    <i class="fas fa-user-edit"></i> Editar Foto
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+        <div class="card-header pb-1 px-1">
+            <div class="container-fluid d-flex justify-content-between flex-wrap">
+                <div>
+                    <h6 class="p-0 m-1">Datos personales</h6>
                 </div>
-                <!-- /.row -->
+                <button class="btn btn-outline-primary m-1 px-2"  style="padding:2px"
+                    onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
+                    style="cursor: pointer">
+                    <i class="fas fa-user-edit"></i> Editar datos
+                </button>
+            </div><!-- /.container-fluid -->
+        </div>
+          <div class="card-body">
+            <div class="row">
+            <?php
+            foreach ($infoU as $valor) {?>               
+              <div class="col-sm-3">
+                <p class="mb-0">Cedula:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['cedula'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Nombre:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['nombre'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Apellido</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['apellido'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Telefono:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['telefono'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Correo:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['correo'] ?></p>
+              </div>
+            </div>
+            <?php }?>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -111,15 +211,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="titulo">Modificar datos</h4>
+                        <h4 class="modal-title" id="titulo">Modificar datos de perfil</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <form action="" method="post" id="f">
-                        <input type="hidden" name="cedula_usuario" id="cedula_usuario"
-                        value="<?php echo $_SESSION['usuario']['cedula'] ?>" />
                             <div class="modal-body">
                                 <input type="hidden" class="form-control" id="id">
                                 <div class="input-group">
@@ -130,6 +228,10 @@
                                 <div class="input-group mt-2">
                                     <span class="input-group-text">Telefono:</span>
                                     <input type="text" class="form-control" id="telefono">
+                                </div>
+                                <div class="input-group mt-2 d-none">
+                                    <span class="input-group-text">Usuario:</span>
+                                    <input type="text" class="form-control" id="user">
                                 </div>
                                 <span id="stelefono"></span>
                                 <div class="input-group mt-2">
@@ -143,10 +245,6 @@
                                     </div>
                                 </div>
                                 <span id="sclave"></span>
-                                <div class="input-group mt-2">
-                                    <span class="input-group-text">Nueva foto:</span>
-                                    <input type="file" class="form-control" id="archivo_adjunto" name="archivo_adjunto">
-                                </div>
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <input class="btn btn-default" type="reset" onclick="limpiar()"
@@ -159,10 +257,49 @@
                 <!-- /.modal-content -->
             </div>
         </div>
+        <div class="modal fade show" id="foto-perfil">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="titulo">Modificar foto de perfil</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <form action="" method="post" id="f1">
+                        <input type="hidden" name="cedula_usuario" id="cedula_usuario_foto"
+                        value="<?php echo $_SESSION['usuario']['cedula'] ?>" />
+                            <div class="modal-body">
+                            <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+                        <div class="file-upload">
+                        <button class="file-upload-btn btn btn-outline-secondary ms-1" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Añadir imagen</button>
+
+                        <div class="image-upload-wrap">
+                            <input id="archivo_adjunto" name="archivo_adjunto" class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                            <div class="drag-text text-secondary">
+                            <h3>Arrastre y suelte un archivo o seleccione agregar imagen</h3>
+                            </div>
+                        </div>
+                        <div class="file-upload-content">
+                            <img class="file-upload-image" src="#" alt="your image" />
+                            <div class="image-title-wrap">
+                            <button type="button" onclick="removeUpload()" class="remove-image btn btn-sm" style="color:#9D2323;">Eliminar <span class="image-title">Uploaded Image</span></button>
+                            </div>
+                        </div>
+                        </div>
+                            <div class="modal-footer justify-content-end">
+                                <button type="button" class="btn btn-primary" id="modificarf">Modificar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
     </div>
 </div>
           <?php include_once('componentes/footer.php'); ?>
-
             <script src="content/js/perfil.js"></script>
     </div>
     <!-- ./wrapper -->
