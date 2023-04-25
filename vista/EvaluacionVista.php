@@ -1,7 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
+<style>
 
+.file-upload {
+
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.file-upload-btn {
+    padding: 5px;
+    width: 98%;
+}
+
+.file-upload-btn:hover {
+  transition: all .2s ease;
+  cursor: pointer;
+}
+
+
+.file-upload-content {
+  display: none;
+  text-align: center;
+}
+
+.file-upload-input {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.image-upload-wrap {
+  margin-top: 20px;
+  border: 1px dashed #566573;
+  position: relative;
+}
+
+.image-dropping,
+.image-upload-wrap:hover {
+  border: 2px dashed #566573;
+}
+
+.image-title-wrap {
+  padding: 0 15px 15px 15px;
+  color: #222;
+}
+
+.drag-text {
+  text-align: center;
+}
+
+.drag-text h3 {
+  font-weight: 100;
+  padding: 30px 0;
+}
+
+.file-upload-image {
+  max-height: 200px;
+  max-width: 200px;
+  margin: auto;
+  padding: 20px;
+}
+
+
+.remove-image:active {
+  border: 0;
+  transition: all .2s ease;
+}
+</style>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
@@ -139,15 +211,28 @@ if (isset($response[0]["eliminar"])) {
                                 <a target="_blank" id="archivo_antes" name="archivo_antes">Ver Archivo Anterior</a>
                                 <input type="hidden" name="nombre_antes" id="nombre_antes">
                             </div>
-                            <div class="form-group row">
-                                <label for="archivo_adjunto" class="col-sm-3 col-form-label">Archivo Nuevo</label>
-                                <div class="col-sm-9">
-                                    <input type="file" class="form-control" id="archivo_adjunto" name="archivo_adjunto">
+                            <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+                            <div class="file-upload">
+                            <button class="file-upload-btn btn btn-outline-secondary ms-1" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Añadir Archivo</button>
+
+                            <div class="image-upload-wrap">
+                                <input id="archivo_adjunto" name="archivo_adjunto" class="file-upload-input" type='file' onchange="readURL(this);"/>
+                                <div class="drag-text text-secondary">
+                                    <h3>Arrastre y suelte un archivo o seleccione agregar archivo</h3>
+                                    </div>
                                 </div>
+                                <div class="file-upload-content">
+                                <div id="icono" class="">
+                                    
+                                </div>
+                                <div class="image-title-wrap">
+                                <button id="eliminardoc" type="button" onclick="removeUpload()" class="remove-image btn btn-sm" style="color:#9D2323;">Eliminar <span class="image-title">Uploaded Image</span></button>
+                                </div>
+                            </div>
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <input class="btn btn-default" type="reset" value="Limpiar Campos" />
-                                <button type="button" id="enviar" class="btn btn-primary" />Registrar</button>
+                                <button type="button" id="enviar" class="btn btn-primary">Registrar</button>
                             </div>
                     </div>
                     </form>

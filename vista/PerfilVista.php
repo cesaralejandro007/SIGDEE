@@ -127,7 +127,7 @@
               class="rounded-circle img-fluid" style="width: 150px; height:150px;">
             <h5 class="my-3"><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></h5>
             <div class="d-flex justify-content-center mb-2">
-            <button class="btn btn-outline-primary ms-1" 
+            <button class="btn btn-outline-primary m-1 px-2" style="padding:3px"
                     data-toggle="modal" data-target="#foto-perfil"
                     style="cursor: pointer">
                     <i class="fas fa-user-edit"></i> Editar Foto
@@ -143,7 +143,7 @@
                 <div>
                     <h6 class="p-0 m-1">Datos personales</h6>
                 </div>
-                <button class="btn btn-outline-primary m-1 px-2"  style="padding:2px"
+                <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px"
                     onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
                     style="cursor: pointer">
                     <i class="fas fa-user-edit"></i> Editar datos

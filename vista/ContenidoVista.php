@@ -221,13 +221,15 @@ foreach ($r1 as $valor) {?>
                           <div class="image-upload-wrap">
                               <input id="archivo_adjunto" name="archivo_adjunto" class="file-upload-input" type='file' onchange="readURL(this);"/>
                               <div class="drag-text text-secondary">
-                              <h3>Arrastre y suelte un archivo o seleccione agregar archivo</h3>
+                                  <h3>Arrastre y suelte un archivo o seleccione agregar archivo</h3>
+                                </div>
+                            </div>
+                            <div class="file-upload-content">
+                              <div id="icono" class="">
+                                
                               </div>
-                          </div>
-                          <div class="file-upload-content">
-                              <embed class="file-upload-image" src="#"/>
                               <div class="image-title-wrap">
-                              <button type="button" onclick="removeUpload()" class="remove-image btn btn-sm" style="color:#9D2323;">Eliminar <span class="image-title">Uploaded Image</span></button>
+                              <button id="eliminardoc" type="button" onclick="removeUpload()" class="remove-image btn btn-sm" style="color:#9D2323;">Eliminar <span class="image-title">Uploaded Image</span></button>
                               </div>
                           </div>
                         </div>

@@ -1,14 +1,30 @@
 var keyup_nombre = /^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/;
 var keyup_descripcion = /^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{2,200}$/;
+
+
 function readURL(input) {
   if (input.files && input.files[0]) {
-
     var reader = new FileReader();
-
     reader.onload = function(e) {
       $('.image-upload-wrap').hide();
       var formato = input.files[0].name;
-      alert(formato.charAt(formato.length - 4));
+      if(formato.charAt(formato.length - 1)=="f"){
+        $('.icono1').remove();
+        $('#icono').append('<i class="far fa-file-pdf text-danger mt-2 icono1" style="font-size:50px;"></i>');
+      }else if(formato.charAt(formato.length - 1)=="g"){
+        $('.icono1').remove();
+        $('#icono').append('<i class="fas fa-image text-primary mt-2 icono1" style="font-size:50px;"></i>');
+      }else if(formato.charAt(formato.length - 4)=="d"){
+        $('.icono1').remove();
+        $('#icono').append('<i class="far fa-file-word text-primary mt-2 icono1" style="font-size:50px;"></i>');
+      }else if(formato.charAt(formato.length - 1)=="x"){
+        $('.icono1').remove();
+        $('#icono').append('<i class="far fa-file-excel text-success mt-2 icono1" style="font-size:50px;"></i>');
+      }else{
+        $('.icono1').remove();
+        $('#icono').append('<i class="fas fa-question text-warning mt-2 icono1" style="font-size:50px;"></i>');
+      }
+
       $('.file-upload-image').attr('src', e.target.result);
       $('.file-upload-content').show();
 
@@ -19,9 +35,9 @@ function readURL(input) {
 
   } else {
     removeUpload();
+    
   }
 }
-
 function removeUpload() {
   $('.file-upload-input').replaceWith($('.file-upload-input').clone());
   $('.file-upload-content').hide();

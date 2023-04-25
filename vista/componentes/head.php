@@ -6,7 +6,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="assets/font/log.png">
     <title>SIGDEE</title>
-    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="plugins/adminlte/css/adminlte.css">
     <link rel="stylesheet" href="plugins/OverlayScrollbars/css/OverlayScrollbars.min.css">
     <link href="plugins/dataTables/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
