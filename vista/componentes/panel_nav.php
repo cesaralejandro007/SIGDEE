@@ -11,11 +11,11 @@
         <!-- Navbar Search -->
         <li class="nav-item dropdown no-arrow">
         <a href="?pagina=Ayuda" class="nav-link">
-        <i class="fas fa-question-circle text-white" style="font-size:25px"></i>
+        <i class="fas fa-question-circle text-white" style="font-size:18; margin-top:3px"></i>
         </a>
         </li>
         <li onclick="notificacionclick();" class="nav-item dropdown no-arrow">
-            <a class="nav-link mt-1" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+            <a class="nav-link" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
