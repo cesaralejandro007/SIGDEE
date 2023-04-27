@@ -65,9 +65,8 @@
   max-height: 200px;
   max-width: 200px;
   margin: auto;
-  padding: 20px;
+  padding-top: 20px;
 }
-
 
 .remove-image:active {
   border: 0;
@@ -222,6 +221,7 @@ if (isset($response[0]["eliminar"])) {
                                     </div>
                                 </div>
                                 <div class="file-upload-content">
+                                <img class="file-upload-image d-none" src="#" alt="your image" />
                                 <div id="icono" class="">
                                     
                                 </div>

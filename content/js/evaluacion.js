@@ -9,22 +9,25 @@ function readURL(input) {
       var formato = input.files[0].name;
       if(formato.charAt(formato.length - 1)=="f"){
         $('.icono1').remove();
-        $('#icono').append('<i class="far fa-file-pdf text-danger mt-2 icono1" style="font-size:50px;"></i>');
+        $('.file-upload-image').addClass("d-none");
+        $('#icono').append('<i class="fas fa-file-pdf text-danger mt-3 icono1" style="font-size:50px;color: #9e0505;"></i>');
       }else if(formato.charAt(formato.length - 1)=="g"){
         $('.icono1').remove();
-        $('#icono').append('<i class="fas fa-image text-primary mt-2 icono1" style="font-size:50px;"></i>');
+        $('.file-upload-image').removeClass("d-none");
+        $('.file-upload-image').attr('src', e.target.result);
       }else if(formato.charAt(formato.length - 4)=="d"){
         $('.icono1').remove();
-        $('#icono').append('<i class="far fa-file-word text-primary mt-2 icono1" style="font-size:50px;"></i>');
+        $('.file-upload-image').addClass("d-none");
+        $('#icono').append('<i class="fas fa-file-word mt-3 icono1" style="font-size:50px; color: #2152a6;"></i>');
       }else if(formato.charAt(formato.length - 1)=="x"){
         $('.icono1').remove();
-        $('#icono').append('<i class="far fa-file-excel text-success mt-2 icono1" style="font-size:50px;"></i>');
+        $('.file-upload-image').addClass("d-none");
+        $('#icono').append('<i class="fas fa-file-excel mt-3 icono1" style="font-size:50px;color: #046c28;"></i>');
       }else{
         $('.icono1').remove();
-        $('#icono').append('<i class="fas fa-question text-warning mt-2 icono1" style="font-size:50px;"></i>');
+        $('.file-upload-image').addClass("d-none");
+        $('#icono').append('<i class="fas fa-question text-warning mt-3 icono1" style="font-size:50px;"></i>');
       }
-
-      $('.file-upload-image').attr('src', e.target.result);
       $('.file-upload-content').show();
 
       $('.image-title').html(input.files[0].name);
@@ -49,7 +52,6 @@ $('.image-upload-wrap').bind('dragover', function () {
   $('.image-upload-wrap').bind('dragleave', function () {
     $('.image-upload-wrap').removeClass('image-dropping');
 });
-
 $(document).ready(function() {    
   var table = $('#funcionpaginacion').DataTable({      
       language: {

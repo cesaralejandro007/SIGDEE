@@ -65,7 +65,7 @@
   max-height: 200px;
   max-width: 200px;
   margin: auto;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 
@@ -225,6 +225,7 @@ foreach ($r1 as $valor) {?>
                                 </div>
                             </div>
                             <div class="file-upload-content">
+                            <img class="file-upload-image d-none" src="#" alt="your image" />
                               <div id="icono" class="">
                                 
                               </div>
