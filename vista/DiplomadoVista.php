@@ -100,15 +100,11 @@
     </div>
 </section>
 <!-- Contact section-->
-<section id="contact">
-    <div class="container px-4">
-        <div class="row gx-4 justify-content-center">
-            <div class="col-lg-8">
-                <h2>Contact us</h2>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat
-                    voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et
-                repudiandae ipsa exercitationem, in, quo totam.</p>
-            </div>
+<section id="about">
+    <div class="container">
+        <h2>Contactanos</h2>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15714.349395199926!2d-69.3630052!3d10.0508695!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8766b9ad2ae25b%3A0xa1b16cf446857ad1!2sUPTAEB%20-%20Universidad%20Polit%C3%A9cnica%20Territorial%20Andr%C3%A9s%20Eloy%20Blanco!5e0!3m2!1ses-419!2sve!4v1683017005338!5m2!1ses-419!2sve" width="1100" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> 
         </div>
     </div>
 </section>
