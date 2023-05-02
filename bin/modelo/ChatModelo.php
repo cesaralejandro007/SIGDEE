@@ -34,7 +34,7 @@ class ChatModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT chat_virtual.id as id, chat_virtual.cedula_usuario as cedula,usuario.nombre as nombre,usuario.apellido as apellido, chat_virtual.mensajes as mensajes, chat_virtual.facha as fecha FROM chat_virtual,usuario WHERE  chat_virtual.cedula_usuario = usuario.cedula ORDER BY chat_virtual.facha ASC");
+        $resultado = $this->conex->prepare("SELECT chat_virtual.id as id, chat_virtual.cedula_usuario as cedula,usuario.primer_nombre as nombre,usuario.primer_apellido as apellido, chat_virtual.mensajes as mensajes, chat_virtual.facha as fecha FROM chat_virtual,usuario WHERE  chat_virtual.cedula_usuario = usuario.cedula ORDER BY chat_virtual.facha ASC");
         $respuestaArreglo = [];
         try {
             $resultado->execute();

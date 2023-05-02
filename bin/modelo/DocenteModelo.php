@@ -11,10 +11,10 @@ class DocenteModelo extends connectDB
     private $correo;
     private $direccion;
 
-    public function incluir($cedula,$nombre,$apellido,$telefono,$correo,$direccion,$clave)
+    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
         $validar_registro = $this->existeregistrar($cedula);
-        $validar_expresion = $this->validar_expresiones($cedula,$nombre,$apellido,$correo,$direccion,$telefono);
+        $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         if ($validar_registro) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "La cedula esta repetida";
@@ -25,21 +25,25 @@ class DocenteModelo extends connectDB
             try {
                 $this->conex->query("INSERT INTO usuario(
         					cedula,
-        					nombre,
-        					apellido,
+        					primer_nombre,
+                            segundo_nombre,
+        					primer_apellido,
+                            segundo_apellido,
+                            genero,
         					telefono,
         					correo,
-        					direccion,
-                            clave
+        					direccion
         					)
         				VALUES(
         					'$cedula',
-        					'$nombre',
-        					'$apellido',
+        					'$primer_nombre',
+                            '$segundo_nombre',
+        					'$primer_apellido',
+                            '$segundo_apellido',
+                            '$genero',
         					'$telefono',
         					'$correo',
-        					'$direccion',
-                            '$clave'
+        					'$direccion'
         				)");
             $respuesta['resultado'] = 1;
             $respuesta['mensaje'] = "Registro exitoso";
@@ -51,7 +55,7 @@ class DocenteModelo extends connectDB
         return $respuesta;
     }
 
-    public function modificar($id, $cedula, $nombre, $apellido, $telefono, $correo, $direccion)
+    public function modificar($id,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
         $this->id = $id;
         $this->cedula = $cedula;
@@ -62,7 +66,7 @@ class DocenteModelo extends connectDB
         $this->direccion = $direccion;
 
         $validar_modificar = $this->validar_modificar($cedula,$id);
-        $validar_expresion = $this->validar_expresiones($cedula,$nombre,$apellido,$correo,$direccion,$telefono);
+        $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario no Existe";
@@ -74,8 +78,7 @@ class DocenteModelo extends connectDB
             $respuesta['mensaje'] = 'La cedula esta repetida';
         }else {
             try {
-                $this->conex->query("UPDATE usuario SET cedula= '$this->cedula', nombre = '$this->nombre', apellido = '$this->apellido'
-				, telefono = '$this->telefono', correo = '$this->correo' , direccion = '$this->direccion'  WHERE id = '$this->id'");
+                $this->conex->query("UPDATE usuario SET cedula= '$cedula', primer_nombre = '$primer_nombre',segundo_nombre = '$segundo_nombre', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido', genero = '$genero', telefono = '$telefono', correo = '$correo' , direccion = '$direccion' WHERE id = '$id'");
             $respuesta['resultado'] = 1;
             $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {
@@ -88,7 +91,7 @@ class DocenteModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT r.nombre as rol, u.id, u.cedula, u.nombre, u.apellido, u.telefono, u.correo, u.direccion, u.clave FROM usuario u INNER JOIN usuarios_roles ur ON ur.id_usuario=u.id INNER JOIN rol r ON ur.id_rol=r.id WHERE r.nombre='Docente'; ");
+        $resultado = $this->conex->prepare("SELECT u.id as id, u.cedula as cedula, u.primer_nombre as primer_nombre, u.segundo_nombre as segundo_nombre, u.primer_apellido as primer_apellido, u.segundo_apellido as segundo_apellido, u.genero as genero, u.telefono as telefono, u.correo as correo, u.direccion as direccion FROM usuario u INNER JOIN usuarios_roles ur ON ur.id_usuario=u.id INNER JOIN rol r ON ur.id_rol=r.id WHERE r.nombre='Docente';");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
@@ -230,36 +233,41 @@ class DocenteModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function validar_expresiones($cedula,$nombre,$apellido,$correo,$direccion,$telefono){
+    public function validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono){
         $er_cedula = '/^[0-9]{7,8}$/';
         $er_nombre = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/';
+        $er_genero = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú]{7,8}$/';
         $er_correo = '/^[A-Za-z0-9]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/';
         $er_telefono= '/^[0-9]{10,11}$/';
         $er_direccion = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,200}$/';
         if(!preg_match_all($er_cedula,$cedula) || trim($cedula)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Cedula debe ser 99999999 y solo de 7 a 8 caracteres";
-        }else if(!preg_match_all($er_nombre,$nombre) || trim($nombre)==''){
+        }else if(!preg_match_all($er_nombre,$primer_nombre) || trim($primer_nombre)==''){
             $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Nombre de contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }
-        else if(!preg_match_all($er_nombre,$apellido) || trim($apellido)==''){
+            $respuesta["mensaje"]="El campo Primer nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+        }else if(!preg_match_all($er_nombre,$segundo_nombre) || trim($segundo_nombre)==''){
             $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Apellido de contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }
-        else if(!preg_match_all($er_telefono,$telefono) || trim($telefono)==''){
+            $respuesta["mensaje"]="El campo Segundo nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+        }else if(!preg_match_all($er_nombre,$primer_apellido) || trim($primer_apellido)==''){
             $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo telefono de contener Solo numeros de 11 digitos";
-        }
-        else if(!preg_match_all($er_correo,$correo) || trim($correo)==''){
+            $respuesta["mensaje"]="El campo Primer apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+        }else if(!preg_match_all($er_nombre,$segundo_apellido) || trim($segundo_apellido)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo Segundo apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+        }else if(!preg_match_all($er_genero,$genero) || trim($genero)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="Debe seleccionar un Genero.";
+        }else if(!preg_match_all($er_telefono,$telefono) || trim($telefono)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo telefono debe contener Solo numeros de 11 digitos";
+        }else if(!preg_match_all($er_correo,$correo) || trim($correo)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Correo debe ser ejemplo@gmail.com";
-        }
-        else if(!preg_match_all($er_direccion,$direccion) || trim($direccion)==''){
+        }else if(!preg_match_all($er_direccion,$direccion) || trim($direccion)==''){
             $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo dirección de contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
-        }
-        else{
+            $respuesta["mensaje"]="El campo dirección debe contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
+        }else{
             $respuesta["resultado"]=false;
             $respuesta["mensaje"]="";
         }

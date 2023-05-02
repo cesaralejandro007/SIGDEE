@@ -15,21 +15,38 @@ class AspiranteModelo extends connectDB
     private $id_rol;
     private $status;
 
-
-    public function registrar_aspirante($cedula,$nombre,$apellido,$correo)
+    public function registrar_aspirante($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
             try {
-                $this->conex->query("INSERT INTO usuario(cedula, nombre,  apellido, correo)
-                    VALUES('$cedula', '$nombre', '$apellido', '$correo')");
+                $this->conex->query("INSERT INTO usuario(
+        					cedula,
+        					primer_nombre,
+                            segundo_nombre,
+        					primer_apellido,
+                            segundo_apellido,
+                            genero,
+        					correo,
+        					direccion,
+        					telefono
+        					)
+        				VALUES(
+        					'$cedula',
+        					'$primer_nombre',
+                            '$segundo_nombre',
+        					'$primer_apellido',
+                            '$segundo_apellido',
+                            '$genero',
+        					'$correo',
+        					'$direccion',
+        					'$telefono'
+        				)");
                     return true;
             } catch (Exception $e) {
                 return false;
             }
-        
-        return false;
     }
 
-    public function modificar($id,$cedula,$nombre,$apellido,$telefono,$correo,$direccion)
+    public function modificar($id,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
         $expresiones_regulares = $this->validar_expresiones($nombre,$apellido);
         $validar_modificar = $this->validar_modificar($cedula, $id);

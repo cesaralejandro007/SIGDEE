@@ -48,43 +48,67 @@
                               <a class="btn btn-primary" onclick="next()" style="color: white !important">Siguiente</a>
                             </div>
                             <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger" style="padding: 3%;">
-                              <div class="row">
+                              <div class="row pb-2">
                                 <input type="hidden" name="id" id="id">
                                 <div class="col-md-6">
-                                    <label>Nombres</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control">
-                                    <span id="snombre"></span>
+                                    <label>Primer nombres:</label>
+                                    <input type="text" name="primer_nombre" id="primer_nombre" class="form-control">
+                                    <span id="spnombre"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Apellido</label>
-                                    <input type="text" name="apellido" id="apellido" class="form-control">
-                                    <span id="sapellido"></span>
+                                    <label>Segundo nombres:</label>
+                                    <input type="text" name="segundo_nombre" id="segundo_nombre" class="form-control">
+                                    <span id="ssnombre"></span>
                                 </div>
                               </div>
-                              <div class="row pb-4" >
-                                  <div class="col-4">
-                                    <label>Correo</label>
+                              <div class="row pb-2">
+                                <div class="col-md-6">
+                                    <label>Primer apellido:</label>
+                                    <input type="text" name="primer_apellido" id="primer_apellido" class="form-control">
+                                    <span id="spapellido"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Segundo apellido:</label>
+                                    <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control">
+                                    <span id="ssapellido"></span>
+                                </div>
+                              </div>
+                              <div class="row pb-2" >
+                              <div class="col-md-4">
+                                    <label for="genero">Genero:</label>
+                                    <select type="select" class="form-control" id="genero" name="genero">
+                                        <option value="0">--Seleccione--</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
+                                    <span id="sgenero"></span>
+                                </div>
+                                  <div class="col-md-4">
+                                    <label>Correo:</label>
                                     <input type="email" name="correo" id="correo" class="form-control">
                                     <span id="scorreo"></span>
                                   </div>
-                                  <div class="col-4">
-                                    <label>Telefono</label>
+                                  <div class="col-md-4">
+                                    <label>Telefono:</label>
                                     <input type="text" name="telefono" id="telefono" class="form-control">
-                                    <span id="scorreo"></span>
-                                  </div>
-                                  <div class="col-4">
-                                    <label>Dirección</label>
-                                    <input type="text" name="direccion" id="direccion" class="form-control">
-                                    <span id="scorreo"></span>
+                                    <span id="stelefono"></span>
                                   </div>
                               </div>
+                              <div class="row pb-4">
+                                <div class="col-12">
+                                    <label for="message-text" class="col-form-label" for="direccion">Direccion:</label>
+                                    <textarea type="text" cols="15" rows="4" name="direccion" id="direccion"
+                                        class="form-control"></textarea>
+                                    <span id="sdireccion"></span>
+                                </div>
+                            </div>
                               <hr>
                               <div>
-                                <h5>Emprendimientos</h5>
+                                <h5>Emprendimientos:</h5>
                                 <?php echo $listar_emprendimientos; ?>
                               </div>
                               <button class="btn btn-primary" onclick="previous()">Anterior</button>
-                              <a type="button" id="registrar" class="btn btn-primary" style="color: white !important">Enviar</a>
+                              <button type="button" id="registrar" class="btn btn-primary" style="color: white !important">Enviar</button>
                             </div>
                             </form>
                           </div>

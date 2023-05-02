@@ -74,22 +74,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 return 0;
                 exit;
             }else{
-            //encriptacion
-            $clave = "m3m0c0d3";
-            function encrypt($string, $key)
-            {
-                $result = '';
-                for ($i = 0; $i < strlen($string); $i++) {
-                    $char = substr($string, $i, 1);
-                    $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-                    $char = chr(ord($char) + ord($keychar));
-                    $result .= $char;
-                }
-                return base64_encode($result);
-            }       
-            $claveencriptada = encrypt($_POST['clave'], $clave);
-
-                $response = $estudiante->incluir($_POST['cedula'],$_POST['nombre'],$_POST['apellido'],$_POST['telefono'],$_POST['correo'],$_POST['direccion'],$claveencriptada);
+                $response = $estudiante->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
                 if ($response['resultado']==1) {
                     $r1 = $estudiante->buscarestudiante($_POST['cedula']);
                     $r2 = $usuario_rol->buscar_rol('Estudiante');
@@ -167,7 +152,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 ]);
             }
         } else if ($accion == 'modificar') {
-            $response = $estudiante->modificar($_POST['id'],$_POST['cedula'],$_POST['nombre'],$_POST['apellido'],$_POST['telefono'],$_POST['correo'],$_POST['direccion']);
+            $response = $estudiante->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
             if ($response['resultado']==1) {
                 echo json_encode([
                     'estatus' => '1',
@@ -215,8 +200,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'id' => $valor['id'],
                     'cedula' => $valor['cedula'],
-                    'nombre' => $valor['nombre'],
-                    'apellido' => $valor['apellido'],
+                    'primer_nombre' => $valor['primer_nombre'],
+                    'segundo_nombre' => $valor['segundo_nombre'],
+                    'primer_apellido' => $valor['primer_apellido'],
+                    'segundo_apellido' => $valor['segundo_apellido'],
+                    'genero' => $valor['genero'],
                     'telefono' => $valor['telefono'],
                     'correo' => $valor['correo'],
                     'direccion' => $valor['direccion']
@@ -237,8 +225,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'id' => $valor['id'],
                         'cedula' => $valor['cedula'],
-                        'nombre' => $valor['nombre'],
-                        'apellido' => $valor['apellido'],
+                        'primer_nombre' => $valor['primer_nombre'],
+                        'segundo_nombre' => $valor['segundo_nombre'],
+                        'primer_apellido' => $valor['primer_apellido'],
+                        'segundo_apellido' => $valor['segundo_apellido'],
+                        'genero' => $valor['genero'],
                         'telefono' => $valor['telefono'],
                         'correo' => $valor['correo'],
                         'direccion' => $valor['direccion']

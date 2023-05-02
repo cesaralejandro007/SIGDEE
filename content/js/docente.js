@@ -1,12 +1,10 @@
 var keyup_cedula = /^[0-9]{7,8}$/;
 var keyup_nombre = /^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/;
 var keyup_apellido = /^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/;
+var keyup_genero = /^[A-ZÁÉÍÓÚ][a-zñáéíóú]{7,8}$/;
 var keyup_telefono = /^[0-9]{11}$/;
-var keyup_correo = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
+var keyup_correo =/^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
 var keyup_direccion = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,100}$/;
-
-
-
 $(document).ready(function() {    
   var table = $('#funcionpaginacion').DataTable({      
       language: {
@@ -118,36 +116,74 @@ function carga() {
   /*--------------FIN VALIDACION PARA CEDULA--------------------*/
 
   /*--------------VALIDACION PARA NOMBRE--------------------*/
-  document.getElementById("nombre").maxLength = 30;
-  document.getElementById("nombre").onkeypress = function (e) {
+  document.getElementById("primer_nombre").maxLength = 30;
+  document.getElementById("primer_nombre").onkeypress = function (e) {
     er = /^[A-Za-z\b\u00f1\u00d1\u00E0-\u00FC]*$/;
     validarkeypress(er, e);
   };
-  document.getElementById("nombre").onkeyup = function () {
+  document.getElementById("primer_nombre").onkeyup = function () {
     r = validarkeyup(
       keyup_nombre,
       this,
-      document.getElementById("snombre"),
+      document.getElementById("spnombre"),
+      "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
+    );
+  };
+  document.getElementById("segundo_nombre").maxLength = 30;
+  document.getElementById("segundo_nombre").onkeypress = function (e) {
+    er = /^[A-Za-z\b\u00f1\u00d1\u00E0-\u00FC]*$/;
+    validarkeypress(er, e);
+  };
+  document.getElementById("segundo_nombre").onkeyup = function () {
+    r = validarkeyup(
+      keyup_nombre,
+      this,
+      document.getElementById("ssnombre"),
       "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
     );
   };
   /*--------------FIN VALIDACION PARA NOMBRE--------------------*/
 
   /*--------------VALIDACION PARA APELLIDO--------------------*/
-  document.getElementById("apellido").maxLength = 30;
-  document.getElementById("apellido").onkeypress = function (e) {
+  document.getElementById("primer_apellido").maxLength = 30;
+  document.getElementById("primer_apellido").onkeypress = function (e) {
     er = /^[A-Za-z\b\u00f1\u00d1\u00E0-\u00FC]*$/;
     validarkeypress(er, e);
   };
-  document.getElementById("apellido").onkeyup = function () {
+  document.getElementById("primer_apellido").onkeyup = function () {
     r = validarkeyup(
       keyup_apellido,
       this,
-      document.getElementById("sapellido"),
+      document.getElementById("spapellido"),
+      "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
+    );
+  };
+  document.getElementById("segundo_apellido").maxLength = 30;
+  document.getElementById("segundo_apellido").onkeypress = function (e) {
+    er = /^[A-Za-z\b\u00f1\u00d1\u00E0-\u00FC]*$/;
+    validarkeypress(er, e);
+  };
+  document.getElementById("segundo_apellido").onkeyup = function () {
+    r = validarkeyup(
+      keyup_apellido,
+      this,
+      document.getElementById("ssapellido"),
       "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
     );
   };
   /*--------------FIN VALIDACION PARA APELLIDO--------------------*/
+  document.getElementById("genero").maxLength = 9;
+  document.getElementById("genero").onkeypress = function (e) {
+    er = /^[A-Za-z\b\u00f1\u00d1\u00E0-\u00FC]*$/;
+    validarkeypress(er, e);
+  };
+  document.getElementById("genero").onchange = function () {
+    r = validarselect(
+      this,
+      document.getElementById("sgenero"),
+      "* Seleccione un genero"
+    );
+  };
 
   /*--------------VALIDACION PARA TELEFONO--------------------*/
   document.getElementById("telefono").maxLength = 11;
@@ -200,28 +236,30 @@ function carga() {
 
   /*----------------------CRUD DEL MODULO------------------------*/
   document.getElementById("enviar").onclick = function () {
-    a = valida_registrar();
+/*     a = valida_registrar();
     if (a != "") {
-    } else {
+    } else { */
       var datos = new FormData();
-
       datos.append("accion", $("#accion").val());
       datos.append("cedula", $("#cedula").val());
       datos.append("id", $("#id").val());
-      datos.append("nombre", $("#nombre").val());
-      datos.append("apellido", $("#apellido").val());
+      datos.append("primer_nombre", $("#primer_nombre").val());
+      datos.append("segundo_nombre", $("#segundo_nombre").val());
+      datos.append("primer_apellido", $("#primer_apellido").val());
+      datos.append("segundo_apellido", $("#segundo_apellido").val());
+      datos.append("genero", $("#genero").val());
       datos.append("telefono", $("#telefono").val());
       datos.append("correo", $("#correo").val());
       datos.append("direccion", $("#direccion").val());
       datos.append("clave", "Diplomado2023");
       enviaAjax(datos);
-    }
+   /*  } */
   };
 
   document.getElementById("nuevo").onclick = function () {
     limpiar();
     $("#accion").val("registrar");
-    $("#titulo").text("Registrar nuevo docente");
+    $("#titulo").text("Registrar docente");
     $("#enviar").text("Registrar");
     $("#gestion-docente").modal("show");
   };
@@ -235,6 +273,18 @@ function validarkeypress(er, e) {
   a = er.test(tecla);
   if (!a) {
     e.preventDefault();
+  }
+}
+
+function validarselect(etiqueta, etiquetamensaje, mensaje) {
+  if(etiqueta.value == 0){
+    etiquetamensaje.innerText = mensaje;
+    etiquetamensaje.style.color = "red";
+    etiqueta.classList.add("is-invalid");
+  }else{
+    etiquetamensaje.innerText = "";
+    etiqueta.classList.remove("is-invalid");
+    etiqueta.classList.add("is-valid");
   }
 }
 
@@ -255,28 +305,34 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 
 function limpiar() {
   $("#cedula").val("");
-  $("#nombre").val("");
-  $("#apellido").val("");
+  $("#primer_nombre").val("");
+  $("#segundo_nombre").val("");
+  $("#primer_apellido").val("");
+  $("#segundo_apellido").val("");
   $("#correo").val("");
   $("#telefono").val("");
   $("#direccion").val("");
   document.getElementById("scedula").innerText = "";
-  document.getElementById("snombre").innerText = "";
-  document.getElementById("sapellido").innerText = "";
+  document.getElementById("spnombre").innerText = "";
+  document.getElementById("ssnombre").innerText = "";
+  document.getElementById("spapellido").innerText = "";
+  document.getElementById("ssapellido").innerText = "";
+  document.getElementById("sgenero").innerText = "";
   document.getElementById("scorreo").innerText = "";
   document.getElementById("stelefono").innerText = "";
   document.getElementById("sdireccion").innerText = "";
   document.getElementById("cedula").classList.remove("is-invalid", "is-valid");
-  document.getElementById("nombre").classList.remove("is-invalid", "is-valid");
+  document.getElementById("primer_nombre").classList.remove("is-invalid", "is-valid");
+  document.getElementById("segundo_nombre").classList.remove("is-invalid", "is-valid");
+  document.getElementById("direccion").classList.remove("is-invalid", "is-valid");
   document
-    .getElementById("apellido")
+    .getElementById("primer_apellido")
     .classList.remove("is-invalid", "is-valid");
   document.getElementById("correo").classList.remove("is-invalid", "is-valid");
+  document.getElementById("segundo_apellido").classList.remove("is-invalid", "is-valid");
+  document.getElementById("genero").classList.remove("is-invalid", "is-valid");
   document
     .getElementById("telefono")
-    .classList.remove("is-invalid", "is-valid");
-  document
-    .getElementById("direccion")
     .classList.remove("is-invalid", "is-valid");
 }
 
@@ -286,20 +342,41 @@ function valida_registrar() {
     keyup_cedula,
     document.getElementById("cedula"),
     document.getElementById("scedula"),
-    "El formato debe ser 99999999."
+    "* El formato debe ser 99999999."
   );
-  nombre = validarkeyup(
+  pnombre = validarkeyup(
     keyup_nombre,
-    document.getElementById("nombre"),
-    document.getElementById("snombre"),
+    document.getElementById("primer_nombre"),
+    document.getElementById("spnombre"),
     "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
   );
-  apellido = validarkeyup(
+  snombre = validarkeyup(
+    keyup_nombre,
+    document.getElementById("segundo_nombre"),
+    document.getElementById("ssnombre"),
+    "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
+  );
+  papellido = validarkeyup(
     keyup_apellido,
-    document.getElementById("apellido"),
-    document.getElementById("sapellido"),
+    document.getElementById("primer_apellido"),
+    document.getElementById("spapellido"),
     "Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
   );
+  sapellido = validarkeyup(
+    keyup_apellido,
+    document.getElementById("segundo_apellido"),
+    document.getElementById("ssapellido"),
+    "Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
+  );
+    if(document.getElementById("genero").value == 0){
+      document.getElementById("sgenero").innerHTML ="* Seleccione un genero";
+      document.getElementById("sgenero").style.color = "red";
+      document.getElementById("genero").classList.add("is-invalid");
+    }else{
+      document.getElementById("sgenero").innerHTML ="";
+      document.getElementById("genero").classList.remove("is-invalid");
+      document.getElementById("genero").classList.add("is-valid");
+    }
   correo = validarkeyup(
     keyup_correo,
     document.getElementById("correo"),
@@ -320,11 +397,14 @@ function valida_registrar() {
   );
   if (
     cedula == 0 ||
-    nombre == 0 ||
-    apellido == 0 ||
+    pnombre == 0 ||
+    snombre == 0 ||
+    papellido == 0 ||
+    sapellido == 0 ||
+    document.getElementById("genero").value == 0 ||
     correo == 0 ||
     telefono == 0 ||
-    direccion == 0
+    direccion == 0 
   ) {
     //variable==0, indica que hubo error en la validacion de la etiqueta
     error = true;
@@ -432,8 +512,11 @@ function mostrar(datos) {
       limpiar();
       $("#id").val(res.id);
       $("#cedula").val(res.cedula);
-      $("#nombre").val(res.nombre);
-      $("#apellido").val(res.apellido);
+      $("#primer_nombre").val(res.primer_nombre);
+      $("#segundo_nombre").val(res.segundo_nombre);
+      $("#primer_apellido").val(res.primer_apellido);
+      $("#segundo_apellido").val(res.segundo_nombre);
+      $("#genero").val(res.genero);
       $("#telefono").val(res.telefono);
       $("#correo").val(res.correo);
       $("#direccion").val(res.direccion);
@@ -481,8 +564,11 @@ function mostrarregistrar(datos) {
       limpiar();
       $("#id").val(res.id);
       $("#cedula").val(res.cedula);
-      $("#nombre").val(res.nombre);
-      $("#apellido").val(res.apellido);
+      $("#primer_nombre").val(res.primer_nombre);
+      $("#segundo_nombre").val(res.segundo_nombre);
+      $("#primer_apellido").val(res.primer_apellido);
+      $("#segundo_apellido").val(res.segundo_nombre);
+      $("#genero").val(res.genero);
       $("#telefono").val(res.telefono);
       $("#correo").val(res.correo);
       $("#direccion").val(res.direccion);

@@ -22,7 +22,7 @@ class BitacoraModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.apellido, ' ', u.nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno;");
+        $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno;");
         $respuestaArreglo = [];
         try {
             $resultado->execute();

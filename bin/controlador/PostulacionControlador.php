@@ -32,8 +32,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'id' => $valor['id'],
                     'cedula' => $valor['cedula'],
-                    'nombre' => $valor['nombre'],
-                    'apellido' => $valor['apellido'],
+                    'primer_nombre' => $valor['primer_nombre'],
+                    'segundo_nombre' => $valor['segundo_nombre'],
+                    'primer_apellido' => $valor['primer_apellido'],
+                    'segundo_apellido' => $valor['segundo_apellido'],
+                    'genero' => $valor['genero'],
                     'correo' => $valor['correo'],
                     'telefono' => $valor['telefono'],
                     'direccion' => $valor['direccion']
@@ -47,7 +50,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             else
             {
-                $response = $aspirante->registrar_aspirante($_POST['cedula'],$_POST['nombre'],$_POST['apellido'],$_POST['correo']);
+                $response = $aspirante->registrar_aspirante($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
                 if($response)
                 {
                     $datos = $usuario->buscar_cedula($_POST['cedula']);
@@ -59,10 +62,18 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     exit();
                 }
             }
-            foreach($_POST['emprendimiento'] as $id_emprendimiento){
-                $response = $aspirante_emprendimiento->incluir($id_aspirante, $id_emprendimiento);
-            } 
-            echo "<script>window.location.replace('?pagina=Diplomado');</script>";
+            if(!empty($_POST['emprendimiento'])){
+                foreach($_POST['emprendimiento'] as $id_emprendimiento){
+                    $response = $aspirante_emprendimiento->incluir($id_aspirante, $id_emprendimiento);
+                } 
+            }else{
+                echo "<script>
+                swal({
+                    title: '¡ERROR!',
+                    text: 'Esto es un mensaje de error',
+                    type: 'error',
+                });</script>";
+            }
             //$config->confirmar('Postulación', 'Registro exitoso');
             //return 0;
         }

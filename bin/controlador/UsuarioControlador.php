@@ -28,20 +28,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $clave = "m3m0c0d3";
-            function encrypt($string, $key)
-            {
-                $result = '';
-                for ($i = 0; $i < strlen($string); $i++) {
-                    $char = substr($string, $i, 1);
-                    $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-                    $char = chr(ord($char) + ord($keychar));
-                    $result .= $char;
-                }
-                return base64_encode($result);
-            }       
-            $claveencriptada = encrypt($_POST['clave'], $clave);
-            $response = $usuario->incluir($_POST['cedula'],$_POST['nombre'],$_POST['apellido'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$claveencriptada);
+            $response = $usuario->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
             if ($response["resultado"]==1) {
                 echo json_encode([
                     'estatus' => '1',
@@ -136,7 +123,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
             exit;
         } else if ($accion == 'modificar') {
-            $response = $usuario->modificar($_POST['id'],$_POST['cedula'],$_POST['nombre'],$_POST['apellido'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$_POST['clave']);
+            $response = $usuario->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
             if ($response['resultado']== 1) {
                 echo json_encode([
                     'estatus' => '1',
@@ -182,12 +169,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'id' => $valor['id'],
                     'cedula' => $valor['cedula'],
-                    'nombre' => $valor['nombre'],
-                    'apellido' => $valor['apellido'],
+                    'primer_nombre' => $valor['primer_nombre'],
+                    'segundo_nombre' => $valor['segundo_nombre'],
+                    'primer_apellido' => $valor['primer_apellido'],
+                    'segundo_apellido' => $valor['segundo_apellido'],
+                    'genero' => $valor['genero'],
                     'correo' => $valor['correo'],
                     'direccion' => $valor['direccion'],
-                    'telefono' => $valor['telefono'],
-                    'clave' => $valor['clave'],
+                    'telefono' => $valor['telefono']
                 ]);
             }
             return 0;

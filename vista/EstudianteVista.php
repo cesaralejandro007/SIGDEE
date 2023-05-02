@@ -41,7 +41,7 @@ if (isset($response[0]["registrar"])) {
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                             <div class="card border">
-                                <div class="table-responsive-xl px-2">
+                                <div class="table-responsive px-2">
                                     <div class="d-flex flex-wrap justify-content-between m-1">
                                     </div>
                                     <table id="funcionpaginacion" class="table table-striped table-hover border border-secondary">
@@ -49,11 +49,14 @@ if (isset($response[0]["consultar"])) {
                                             <tr>
                                                 <th>Opciones</th>
                                                 <th>Cedula</th>
-                                                <th>Nombre</th>
-                                                <th>Apellido</th>
-                                                <th>Telefono</th>
+                                                <th>Primer nombre</th>
+                                                <th>Segundo nombre</th>
+                                                <th>Primer apellido</th>
+                                                <th>Segundo apellido</th>
+                                                <th>Genero</th>
                                                 <th>Correo</th>
-                                                <th>Direccion</th>
+                                                <th>direccion</th>
+                                                <th>Telefono</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -81,9 +84,15 @@ if (isset($response[0]["eliminar"])) {
                                                 <td class="project-actions text-left">
                                                     <?php echo $valor['cedula']; ?></td>
                                                 <td class="project-actions text-left">
-                                                    <?php echo $valor['nombre']; ?></td>
+                                                    <?php echo $valor['primer_nombre']; ?></td>
                                                 <td class="project-actions text-left">
-                                                    <?php echo $valor['apellido']; ?></td>
+                                                    <?php echo $valor['segundo_nombre']; ?></td>
+                                                <td class="project-actions text-left">
+                                                    <?php echo $valor['primer_apellido']; ?></td>
+                                                <td class="project-actions text-left">
+                                                    <?php echo $valor['segundo_apellido']; ?></td>
+                                                <td class="project-actions text-left">
+                                                    <?php echo $valor['genero']; ?></td>
                                                 <td class="project-actions text-left">
                                                     <?php echo $valor['telefono']; ?></td>
                                                 <td class="project-actions text-left">
@@ -97,11 +106,14 @@ if (isset($response[0]["eliminar"])) {
                                             <tr>
                                                 <th>Opciones</th>
                                                 <th>Cedula</th>
-                                                <th>Nombre</th>
-                                                <th>Apellido</th>
-                                                <th>Telefono</th>
+                                                <th>Primer nombre</th>
+                                                <th>Segundo nombre</th>
+                                                <th>Primer apellido</th>
+                                                <th>Segundo apellido</th>
+                                                <th>Genero</th>
                                                 <th>Correo</th>
-                                                <th>Direccion</th>
+                                                <th>direccion</th>
+                                                <th>Telefono</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -140,14 +152,35 @@ if (isset($response[0]["eliminar"])) {
                                     <span id="scedula"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="nombre">Nombre:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control">
-                                    <span id="snombre"></span>
+                                    <label for="message-text" class="col-form-label" for="nombre">Primer nombre:</label>
+                                    <input type="text" name="nombre" id="primer_nombre" class="form-control">
+                                    <span id="spnombre"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="apellido">Apellido:</label>
-                                    <input type="text" name="apellido" id="apellido" class="form-control">
-                                    <span id="sapellido"></span>
+                                    <label for="message-text" class="col-form-label" for="segundo_nombre">Segundo nombre:</label>
+                                    <input type="text" name="segundo_nombre" id="segundo_nombre" class="form-control">
+                                    <span id="ssnombre"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label for="message-text" class="col-form-label" for="apellido">Primer apellido:</label>
+                                    <input type="text" name="apellido" id="primer_apellido" class="form-control">
+                                    <span id="spapellido"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="message-text" class="col-form-label" for="apellido">Segundo apellido:</label>
+                                    <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control">
+                                    <span id="ssapellido"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-form-label" for="genero">Genero:</label>
+                                    <select type="select" class="form-control form-select" id="genero" name="genero">
+                                        <option value="0">--Seleccione--</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
+                                    <span id="sgenero"></span>
                                 </div>
                             </div>
                             <div class="form-group row">

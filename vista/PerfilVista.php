@@ -125,7 +125,7 @@
                     ?>
         <img src= "content/usuarios/<?php echo $imagen1; ?>"  alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px; height:150px;">
-            <h5 class="my-3"><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></h5>
+            <h5 class="my-3"><?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?></h5>
             <div class="d-flex justify-content-center mb-2">
             <button class="btn btn-outline-primary m-1 px-2" style="padding:3px"
                     data-toggle="modal" data-target="#foto-perfil"
@@ -164,19 +164,46 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Nombre:</p>
+                <p class="mb-0">Primer nombre:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['nombre'] ?></p>
+                <p class="text-muted mb-0"><?php echo $valor['primer_nombre'] ?></p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Apellido</p>
+                <p class="mb-0">Segundo nombre:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['apellido'] ?></p>
+                <p class="text-muted mb-0"><?php echo $valor['segundo_nombre'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Primer apellido</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['primer_apellido'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Segundo apellido</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['segundo_apellido'] ?></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Genero</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><?php echo $valor['genero'] ?></p>
               </div>
             </div>
             <hr>

@@ -131,7 +131,7 @@ class AulaModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT a.id as id, ae.nombre as area, e.nombre as emprendimiento, a.nombre as aula, u.nombre as docente FROM area_emprendimiento as ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo as em ON em.id_emprendimiento=e.id INNER JOIN aula as a ON a.id_emprendimiento_modulo= em.id INNER JOIN aula_docente as ad ON a.id= ad.id_aula INNER JOIN usuario u ON u.id=ad.id_docente WHERE a.estatus='true'");
+        $resultado = $this->conex->prepare("SELECT a.id as id, ae.nombre as area, e.nombre as emprendimiento, a.nombre as aula, u.primer_nombre as docente FROM area_emprendimiento as ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo as em ON em.id_emprendimiento=e.id INNER JOIN aula as a ON a.id_emprendimiento_modulo= em.id INNER JOIN aula_docente as ad ON a.id= ad.id_aula INNER JOIN usuario u ON u.id=ad.id_docente WHERE a.estatus='true'");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
@@ -143,7 +143,7 @@ class AulaModelo extends connectDB
     }
     public function cargar($id)
     {
-        $resultado = $this->conex->prepare("SELECT a.id as id, a.nombre as aula, d.id as id_docente, d.cedula as cedula, d.nombre as nombre, d.apellido as apellido FROM aula as a INNER JOIN aula_docente as ad ON a.id=ad.id_aula INNER JOIN usuario as d ON d.id= ad.id_docente WHERE a.id ='$id'
+        $resultado = $this->conex->prepare("SELECT a.id as id, a.nombre as aula, d.id as id_docente, d.cedula as cedula, d.primer_nombre as nombre, d.primer_apellido as apellido FROM aula as a INNER JOIN aula_docente as ad ON a.id=ad.id_aula INNER JOIN usuario as d ON d.id= ad.id_docente WHERE a.id ='$id'
 			");
         $respuestaArreglo = [];
         try {
@@ -255,7 +255,7 @@ class AulaModelo extends connectDB
 			e.id as id_modulo,
 			e.nombre as nombre_modulo,
 			f.id as id_docente,
-			concat(f.cedula, ' / ', f.apellido, ' ', f.nombre) as docente
+			concat(f.cedula, ' / ', f.primer_apellido, ' ', f.primer_nombre) as docente
 			FROM
 			area_emprendimiento as a,
 			emprendimiento as b,
@@ -358,7 +358,7 @@ class AulaModelo extends connectDB
             e.id as id_modulo,
             e.nombre as nombre_modulo,
             f.id as id_docente,
-            concat(f.cedula, ' / ', f.apellido, ' ', f.nombre) as docente
+            concat(f.cedula, ' / ', f.primer_apellido, ' ', f.primer_nombre) as docente
             FROM
             area_emprendimiento as a,
             emprendimiento as b,

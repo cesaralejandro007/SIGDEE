@@ -1,3 +1,24 @@
+<style>
+.table-responsive::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+.table-responsive-xl::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+body::-webkit-scrollbar-track {
+  background: #FBFCFC;        /* color of the tracking area */
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #909497;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid #FBFCFC;  /* creates padding around scroll thumb */
+}
+.table-responsive-xl::-webkit-scrollbar-thumb {
+  background-color: #909497;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid #FBFCFC;  /* creates padding around scroll thumb */
+}
+</style>
 <nav class="main-header navbar navbar-expand navbar-white" style="background:#0D47AD; color:white">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -36,7 +57,7 @@
             <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <spam class="">
-                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
+                    <?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?>
                 </spam>
             </a>
             <!-- Dropdown - User Information -->
@@ -66,7 +87,7 @@
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
                     <p class="m-0">
-                        <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
+                        <?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?>
                     </p>
                 </div>
                 <hr class="m-1">
