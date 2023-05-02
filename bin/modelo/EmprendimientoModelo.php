@@ -330,6 +330,7 @@ class EmprendimientoModelo extends connectDB
 
             $resultado = $this->conex->prepare("select emprendimiento.id, emprendimiento.nombre from emprendimiento
             where id_area =:area AND estatus='true'");
+	    $resultado->BindParam(":area", $area);
             $resultado->execute();
 
             $x = '<option disabled selected>Seleccione</option>';
