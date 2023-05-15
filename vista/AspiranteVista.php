@@ -155,9 +155,25 @@
                                     <span id="ssapellido"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="genero">Genero:</label>
-                                    <input type="text" name="genero" id="genero" class="form-control">
+                                    <label class="col-form-label" for="genero">Genero:</label>
+                                    <select type="select" class="form-control form-select" id="genero" name="genero">
+                                        <option value="0">--Seleccione--</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
                                     <span id="sgenero"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="message-text" class="col-form-label" for="telefono">Telefono:</label>
+                                    <input type="text" name="telefono" id="telefono" class="form-control">
+                                    <span id="stelefono"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="message-text" class="col-form-label" for="correo">Correo:</label>
+                                    <input type="text" name="correo" id="correo" class="form-control">
+                                    <span id="scorreo"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -172,7 +188,7 @@
                                 <input class="btn btn-default" type="reset" value="Limpiar Campos" />
                                 <button type="button" id="enviar" class="btn btn-primary">Registrar</button>
                             </div>
-                    </div>
+                        </div>
                     </form>
                 </div>
             </div>

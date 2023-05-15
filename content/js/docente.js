@@ -42,7 +42,7 @@ $(document).ready(function() {
       titleAttr: 'Exportar a Excel',
       className: 'btn border border-success bg-white mr-1',
       exportOptions: {
-        columns: [1,2,3,4,5,6]
+        columns: [1,2,3,4,5,6,7,8,9]
     }
     },
     {
@@ -58,7 +58,7 @@ $(document).ready(function() {
       titleAttr: 'Exportar a PDF',
       className: 'btn border border-danger bg-white mr-1',
       customize: function ( doc ) {
-        doc.pageMargins = [30, 60, 30,20 ];
+        doc.pageMargins = [15,60,15,20];
         var cols = [];
         cols[0] = {        
         margin: [ 10, 0, 0, 2 ],
@@ -73,7 +73,7 @@ $(document).ready(function() {
         // Splice the image in after the header, but before the table
         },
       exportOptions: {
-        columns: [1,2,3,4,5,6]
+        columns: [1,2,3,4,5,6,7,8,9]
     }
   },
     {
@@ -89,7 +89,7 @@ $(document).ready(function() {
       titleAttr: 'Imprimir',
       className: 'btn border border-info bg-white mr-1',
       exportOptions: {
-        columns: [1,2,3,4,5,6]
+        columns: [1,2,3,4,5,6,7,8,9]
     }
     },    
   ]  
