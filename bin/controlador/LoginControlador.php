@@ -48,7 +48,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             if ($responseU == true) {
                 if (!empty($infoU)) {
                     foreach ($infoU as $datos) {
-                        $_SESSION['usuario'] = array('id' => $datos['id'], 'primer_nombre' => $datos['primer_nombre'], 'segundo_nombre' => $datos['segundo_nombre'], 'primer_apellido' => $datos['primer_apellido'],'segundo_apellido' => $datos['segundo_apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
+                        $_SESSION['usuario'] = array('id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
                         $id_rol = $rol->obtener_rol($datos['cedula'], $datos['nombreusuario']);
                         if ($id_rol == null) {
                             $config->informacion('Error', 'No tiene privilegios para acceder');

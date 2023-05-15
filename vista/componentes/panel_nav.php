@@ -57,7 +57,7 @@ body::-webkit-scrollbar-track {
             <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <spam class="">
-                    <?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?>
+                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
                 </spam>
             </a>
             <!-- Dropdown - User Information -->
@@ -87,7 +87,7 @@ body::-webkit-scrollbar-track {
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
                     <p class="m-0">
-                        <?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?>
+                        <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
                     </p>
                 </div>
                 <hr class="m-1">

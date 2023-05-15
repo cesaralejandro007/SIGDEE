@@ -149,7 +149,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function mostar_calificacion($id)
 	{
-		$resultado = $this->conex->prepare("SELECT ee.id as id, ee.archivo_adjunto as archivo_adjunto, concat(e.cedula, ' / ', e.apellido, ' ', e.nombre) as estudiante, ee.calificacion as calificacion FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE ee.id='$id'");
+		$resultado = $this->conex->prepare("SELECT ee.id as id, ee.archivo_adjunto as archivo_adjunto, concat(e.cedula, ' / ', e.primer_nombre, ' ', e.primer_apellido) as estudiante, ee.calificacion as calificacion FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE ee.id='$id'");
 		$respuestaArreglo = [];
 		try {
 			$resultado->execute();
@@ -180,7 +180,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 	}
 
 	public function mostrarEntregas($evaluacion){
-		$resultado = $this->conex->prepare("SELECT e.id, ee.id as id, u.id as id_estudiante, u.cedula as cedula, u.nombre as nombre_estudiante, ee.id as id_evaluacion, ee.calificacion as calificacion, ee.descripcion as descripcion_evaluacion, ee.fecha_entrega as fecha, ee.archivo_adjunto as archivo FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN estudiante_evaluacion ee ON ee.id_usuario=u.id INNER JOIN unidad_evaluaciones ue ON ue.id=ee.id_unidad_evaluacion INNER JOIN evaluaciones e ON e.id= ue.id_evaluacion WHERE ue.id='$evaluacion' AND r.nombre='Estudiante' GROUP BY u.id;");
+		$resultado = $this->conex->prepare("SELECT e.id, ee.id as id, u.id as id_estudiante, u.cedula as cedula, CONCAT(u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as nombre_estudiante, ee.id as id_evaluacion, ee.calificacion as calificacion, ee.descripcion as descripcion_evaluacion, ee.fecha_entrega as fecha, ee.archivo_adjunto as archivo FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN estudiante_evaluacion ee ON ee.id_usuario=u.id INNER JOIN unidad_evaluaciones ue ON ue.id=ee.id_unidad_evaluacion INNER JOIN evaluaciones e ON e.id= ue.id_evaluacion WHERE ue.id='$evaluacion' AND r.nombre='Estudiante' GROUP BY u.id;");
 		$respuestaArreglo = [];
 		try{
 			$resultado->execute();

@@ -172,7 +172,7 @@ class AulaDocenteModelo extends connectDB
     public function listar_por_aula($id_aula)
     {
         $this->id_aula = $id_aula;
-        $resultado = $this->conex->prepare("SELECT  u.cedula as cedula, u.id as id, u.nombre as nombre, u.apellido as apellido, u.imagen as foto FROM aula a INNER JOIN aula_docente ae ON a.id=ae.id_aula INNER JOIN usuario u ON u.id= ae.id_docente WHERE a.id=' $this->id_aula'");
+        $resultado = $this->conex->prepare("SELECT  u.cedula as cedula, u.id as id, CONCAT(u.primer_nombre, ' ', u.segundo_nombre) as nombre, CONCAT(u.primer_apellido, ' ', u.segundo_apellido) as apellido, u.imagen as foto FROM aula a INNER JOIN aula_docente ae ON a.id=ae.id_aula INNER JOIN usuario u ON u.id= ae.id_docente WHERE a.id=' $this->id_aula'");
         $respuestaArreglo = [];
         try {
             $resultado->execute();

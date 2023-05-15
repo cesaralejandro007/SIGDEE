@@ -28,7 +28,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             <div class="info d-flex p-1">
                 <p class="text-light fw-bold pr-1 "><?php echo $_SESSION['usuario']['tipo_usuario'] . ": " ?></p>
                 <a href="?pagina=Perfil"
-                    class=""><?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?></a>
+                    class=""><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></a>
             </div>
         </div>
         <!-- SidebarSearch Form -->

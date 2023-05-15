@@ -33,7 +33,7 @@
 <script src="plugins/adminlte/js/adminlte.js"></script>
 <script src="content/js/scripts.js"></script>
 
-<input type="hidden" name="name" id="name" value="<?php echo $_SESSION['usuario']['primer_nombre']." ".$_SESSION['usuario']['primer_apellido'] ?>" />
+<input type="hidden" name="name" id="name" value="<?php echo $_SESSION['usuario']['nombre']." ".$_SESSION['usuario']['apellido'] ?>" />
 <?php
 $confirm = 0;
 for ($i = 0; $i < count($response1); $i++) {

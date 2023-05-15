@@ -68,7 +68,7 @@ class PublicacionesModelo extends connectDB
 
     public function listarpublicacion($id)
     {
-        $resultado = $this->conex->prepare("SELECT p.id as id, p.titulo as titulo, p.mensaje as mensaje, date_format(p.fecha, '%d-%m-%Y %H:%m:%s') as fecha, u.nombre as nombre, u.apellido as apellido, p.cedula_usuario as cedula FROM publicacion p INNER JOIN usuario u ON p.cedula_usuario= u.cedula WHERE id_aula='$id' ORDER BY p.fecha");
+        $resultado = $this->conex->prepare("SELECT p.id as id, p.titulo as titulo, p.mensaje as mensaje, date_format(p.fecha, '%d-%m-%Y %H:%m:%s') as fecha, CONCAT(u.primer_nombre, ' ', u.segundo_nombre) as nombre, CONCAT(u.primer_apellido, ' ', u.segundo_apellido) as apellido, p.cedula_usuario as cedula FROM publicacion p INNER JOIN usuario u ON p.cedula_usuario= u.cedula WHERE id_aula='$id' ORDER BY p.fecha");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
