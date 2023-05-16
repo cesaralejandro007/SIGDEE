@@ -74,7 +74,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                                     </a>
                                 </li>
                             <?php }
-                        } else  if ($listar_auladocente) {
+                        } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $listar_auladocente) {
     foreach ($listar_auladocente as $aula) {?>
                         <li class="nav-item">
                             <a href="?pagina=Aula&visualizar=true&aula=<?=$aula['id']?>" class="nav-link">
@@ -83,7 +83,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                             </a>
                         </li>
                         <?php }
-} else if ($listar_aulaestudiante) {
+} else if ($_SESSION['usuario']['tipo_usuario'] == 'Estudiante' && $listar_aulaestudiante) {
     foreach ($listar_aulaestudiante as $aula) {?>
                         <li class="nav-item">
                             <a href="?pagina=Aula&visualizar=true&aula=<?=$aula['id']?>" class="nav-link">

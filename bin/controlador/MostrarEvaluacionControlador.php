@@ -226,24 +226,30 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_GET['id_unidad_evaluacion'])) {
         $id_unidad_evaluacion = $_GET['id_unidad_evaluacion']; 
         $mostrar_unidad = $unidad_evaluacion->cargar($id_unidad_evaluacion); 
-        $mostrar_estudiante_evaluacion = $estudiante_evaluacion->cargar($_SESSION['usuario']['id'], $id_unidad_evaluacion);
-        $nombre_evaluacion_entregada = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion'] : '<p style="color:red;">No ha entregado</p>';
-        $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
-        $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
-        $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
-        $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="../content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']['id'].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
-        $nombre_archivo = $mostrar_unidad[0]['archivo'];
-        $examen = '<a target="_blank" href="../content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
-
-        $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
-        $entregas = $estudiante_evaluacion->mostrarEntregas($nombre_archivo = $mostrar_unidad[0]['id']);
-        $status = 0;
-        if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 2){
-            $status = 2;
+        if($mostrar_unidad == null){
+            require_once "vista/error_404Vista.php";
+            exit;
         }
-        else
-        if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 1){
-            $status = 1;
+        else{
+            $mostrar_estudiante_evaluacion = $estudiante_evaluacion->cargar($_SESSION['usuario']['id'], $id_unidad_evaluacion);
+            $nombre_evaluacion_entregada = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion'] : '<p style="color:red;">No ha entregado</p>';
+            $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
+            $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
+            $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
+            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="../content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']['id'].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
+            $nombre_archivo = $mostrar_unidad[0]['archivo'];
+            $examen = '<a target="_blank" href="../content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
+    
+            $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
+            $entregas = $estudiante_evaluacion->mostrarEntregas($nombre_archivo = $mostrar_unidad[0]['id']);
+            $status = 0;
+            if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 2){
+                $status = 2;
+            }
+            else
+            if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 1){
+                $status = 1;
+            }
         }
     }
     require_once "vista/MostrarEvaluacionVista.php";

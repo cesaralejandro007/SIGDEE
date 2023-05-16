@@ -30,15 +30,44 @@ class LoginModelo extends connectDB
 
     public function verificarU()
     {
-        $resultado = $this->conex->prepare("SELECT  * FROM usuario u, usuarios_roles ur, rol r WHERE u.id = ur.id_usuario AND ur.id_rol = r.id AND r.nombre = '$this->tipousuario' AND u.cedula ='$this->user' AND u.clave ='$this->password'");
+        $resultado = $this->conex->prepare("SELECT u.id as id_usuario, r.nombre as rol FROM usuario u, usuarios_roles ur, rol r WHERE u.id = ur.id_usuario AND ur.id_rol = r.id AND r.nombre = '$this->tipousuario' AND u.cedula ='$this->user' AND u.clave ='$this->password'");
         try {
             $resultado->execute();
             $respuesta1 = $resultado->rowCount();
-            if ($respuesta1 > 0) {
-                return true;
-            } else {
-                return false;
+            $datos = $resultado->fetchAll();
+            $estudiante = $resultado->rowCount() ? $datos[0]['id_usuario'] : 0;
+            if($respuesta1 == 0) {
+                return 0;
             }
+            else
+            if ($respuesta1 > 0 && $datos[0]['rol']== "Super Usuario" && $datos[0]['rol']== "Administrador") {
+                return 2;
+            }
+            else
+            if ($respuesta1 > 0 && $datos[0]['rol']== "Estudiante") {
+                $aula_estudiante = $this->conex->prepare("SELECT  * FROM aula_estudiante WHERE id_estudiante=$estudiante");
+                $aula_estudiante->execute();
+                $respuesta2 = $aula_estudiante->rowCount();
+                if($respuesta2 > 0){
+                    return 1;
+                }
+                else{
+                    return 2;
+                }
+            }
+            else
+            if ($respuesta1 > 0 && $datos[0]['rol']== "Docente") {
+                $aula_docente = $this->conex->prepare("SELECT  * FROM aula_docente WHERE id_docente= $estudiante");
+                $aula_docente->execute();
+                $respuesta2 = $aula_docente->rowCount();
+                if($respuesta2 > 0){
+                    return 1;
+                }
+                else{
+                    return 2;
+                }
+            }
+            
         } catch (Exception $e) {
             return $e->getMessage();
         }

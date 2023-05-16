@@ -45,7 +45,17 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $login->set_password($claveencriptada);
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
-            if ($responseU == true) {
+            if($responseU == 0){
+                $config->error($modulo, 'Verifique sus datos');
+                return 0;
+            }
+            else
+            if($responseU == 2){
+                $config->informacion('Error', 'No posee aulas asignadas con el rol elegido');
+                return 0;
+            }
+            else
+            if ($responseU == 1) {
                 if (!empty($infoU)) {
                     foreach ($infoU as $datos) {
                         $_SESSION['usuario'] = array('id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);

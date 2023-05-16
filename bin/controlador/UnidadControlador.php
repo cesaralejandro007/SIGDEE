@@ -307,10 +307,18 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_GET['id_unidad'])) {
         $id_unidad = $_GET['id_unidad'];
         $mostrar_unidad = $unidad->cargar($id_unidad);
-        $listar_contenidos = $unidad_contenido->listar($id_unidad);
-        $listar_evaluaciones = $unidad_evaluacion->listar($id_unidad);
-        //$mostrar_contenidos = $contenidos->mostrar($id_unidad);
-        //$mostrar_evaluaciones = $evaluaciones->mostrar($id_unidad);
+        if($mostrar_unidad != null){
+            $listar_contenidos = $unidad_contenido->listar($id_unidad);
+            $listar_evaluaciones = $unidad_evaluacion->listar($id_unidad);
+            //$mostrar_contenidos = $contenidos->mostrar($id_unidad);
+            //$mostrar_evaluaciones = $evaluaciones->mostrar($id_unidad);
+        }
+        else
+        {
+            require_once "vista/error_404Vista.php";
+            exit;
+        }
+        
     }
     $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Unidad");
     $response3 = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Agregar Contenido");
