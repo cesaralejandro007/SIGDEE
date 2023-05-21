@@ -36,12 +36,12 @@ class LoginModelo extends connectDB
             $respuesta1 = $resultado->rowCount();
             $datos = $resultado->fetchAll();
             $estudiante = $resultado->rowCount() ? $datos[0]['id_usuario'] : 0;
-            if($respuesta1 == 0) {
+            if($datos === null) {
                 return 0;
             }
             else
-            if ($respuesta1 > 0 && $datos[0]['rol']== "Super Usuario" && $datos[0]['rol']== "Administrador") {
-                return 2;
+            if ($respuesta1 > 0 && ($datos[0]['rol']=== "Super Usuario" || $datos[0]['rol']=== "Administrador")) {
+                return 1;
             }
             else
             if ($respuesta1 > 0 && $datos[0]['rol']== "Estudiante") {

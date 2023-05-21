@@ -37,7 +37,7 @@ class AreaEmprendimientoModelo extends connectDB
         $expresiones_regulares = $this->validar_expresiones($nombre);
         if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
-            $respuesta['mensaje'] = "El Area de Emprendimiento de no Existe";
+            $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
         }else if($validar_modificar) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
@@ -66,7 +66,7 @@ class AreaEmprendimientoModelo extends connectDB
 
         if ($this->existe($id)==false) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Area de Emprendimiento de no Existe";
+            $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
             return $respuesta;
         }else{
             if ($validar_tipo) {
