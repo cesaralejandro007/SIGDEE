@@ -35,19 +35,6 @@ document.getElementById("correo").onkeyup = function () {
 /*--------------FIN VALIDACION PARA CORREO--------------------*/
 
 /*--------------VALIDACION PARA CLAVE--------------------*/
-document.getElementById("floatingPassword").maxLength = 20;
-document.getElementById("floatingPassword").onkeypress = function (e) {
-  er = /^[A-Za-z0-9\b\s\u00f1\u00d1\u00E0-\u00FC]*$/;
-  validarkeypress(er, e);
-};
-document.getElementById("floatingPassword").onkeyup = function () {
-  r = validarkeyup(
-    keyup_clave,
-    this,
-    document.getElementById("sclave"),
-    "* El campo debe contener de 6 a 20 caracteres."
-  );
-};
 
 function cargar_datos(valor) {
   var datos = new FormData();
@@ -57,7 +44,7 @@ function cargar_datos(valor) {
 }
 
 function mostrarPassword() {
-  var cambio = document.getElementById("floatingPassword");
+  var cambio = document.getElementById("Password_actual");
   if (cambio.type == "password") {
     cambio.type = "text";
     $(".icon").removeClass("fa fa-eye-slash").addClass("fa fa-eye");
@@ -76,7 +63,6 @@ $("#modificarp").click(function () {
     datos.append("id", $("#id").val());
     datos.append("correo", $("#correo").val());
     datos.append("telefono", $("#telefono").val());
-    datos.append("clave", $("#floatingPassword").val());
     enviaAjax(datos);
   }
   }); 
@@ -155,16 +141,9 @@ function valida_registrar() {
     document.getElementById("stelefono"),
     "* El formato debe ser ejemplo@gmail.com"
   );
-  clave = validarkeyup(
-    keyup_clave,
-    document.getElementById("floatingPassword"),
-    document.getElementById("sclave"),
-    "* El campo debe contener de 6 a 20 caracteres."
-  );
   if (
     correo == 0 ||
-    telefono == 0 ||
-    clave == 0 
+    telefono == 0
   ) {
     //variable==0, indica que hubo error en la validacion de la etiqueta
     error = true;
@@ -196,7 +175,6 @@ function valida_registrar() {
 function limpiar() {
     $("#correo").val("");
     $("#telefono").val("");
-    $("#floatingPassword").val("");
 }
 
 function enviaAjax(datos) {

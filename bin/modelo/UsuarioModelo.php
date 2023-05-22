@@ -15,7 +15,7 @@ class UsuarioModelo extends connectDB
     private $id_rol;
     private $status;
 
-    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave)
     {
         $validar_registro = $this->validar_registro($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
@@ -27,8 +27,8 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         } else {
             try {
-                $this->conex->query("INSERT INTO usuario(cedula, primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,genero,correo, direccion, telefono)
-					VALUES('$cedula', '$primer_nombre','$segundo_nombre', '$primer_apellido','$segundo_apellido','$genero', '$correo', '$direccion','$telefono')");
+                $this->conex->query("INSERT INTO usuario(cedula, primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,genero,correo, direccion, telefono,clave)
+					VALUES('$cedula', '$primer_nombre','$segundo_nombre', '$primer_apellido','$segundo_apellido','$genero', '$correo', '$direccion','$telefono','$clave')");
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Registro Exitoso.";
             } catch (Exception $e) {

@@ -27,19 +27,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $usuario = $_POST['user'];
             
             //encriptacion
-            $clave = "m3m0c0d3";
-            function encrypt($string, $key)
+            
+            function Codificar($string)
             {
-                $result = '';
+                $codec = '';
                 for ($i = 0; $i < strlen($string); $i++) {
-                    $char = substr($string, $i, 1);
-                    $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-                    $char = chr(ord($char) + ord($keychar));
-                    $result .= $char;
+                    $codec = $codec . base64_encode($string[$i]) . "#";
                 }
-                return base64_encode($result);
-            }       
-            $claveencriptada = encrypt($_POST['password'], $clave);
+                $string = base64_encode(base64_encode($codec));
+                $string = base64_encode($string);
+                return $string;
+            }
+        
+            function Decodificar($string)
+            {
+                $decodec = '';
+                $string  = base64_decode(base64_decode($string));
+                $string  = base64_decode($string);
+                $string  = explode("#", $string);
+        
+                foreach ($string as $str) {
+                    $decodec = $decodec . base64_decode($str);
+                }
+                return $decodec;
+            }
+            
+            $claveencriptada = Codificar($_POST['password']);
             $login->set_tipo($tipo);
             $login->set_user($usuario);
             $login->set_password($claveencriptada);

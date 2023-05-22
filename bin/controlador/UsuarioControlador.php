@@ -28,7 +28,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $response = $usuario->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
+
+            function Codificar($string)
+            {
+                $codec = '';
+                for ($i = 0; $i < strlen($string); $i++) {
+                    $codec = $codec . base64_encode($string[$i]) . "#";
+                }
+                $string = base64_encode(base64_encode($codec));
+                $string = base64_encode($string);
+                return $string;
+            }
+        
+            function Decodificar($string)
+            {
+                $decodec = '';
+                $string  = base64_decode(base64_decode($string));
+                $string  = base64_decode($string);
+                $string  = explode("#", $string);
+        
+                foreach ($string as $str) {
+                    $decodec = $decodec . base64_decode($str);
+                }
+                return $decodec;
+            }
+            $clave = Codificar("Diplomado");
+            $response = $usuario->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
             if ($response["resultado"]==1) {
                 echo json_encode([
                     'estatus' => '1',

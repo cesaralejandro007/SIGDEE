@@ -61,8 +61,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }  
                     return 0;
                     exit;
-                }else{     
-                    $response = $docente->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
+                }else{  
+                function Codificar($string)
+                {
+                    $codec = '';
+                    for ($i = 0; $i < strlen($string); $i++) {
+                        $codec = $codec . base64_encode($string[$i]) . "#";
+                    }
+                    $string = base64_encode(base64_encode($codec));
+                    $string = base64_encode($string);
+                    return $string;
+                }
+            
+                function Decodificar($string)
+                {
+                    $decodec = '';
+                    $string  = base64_decode(base64_decode($string));
+                    $string  = base64_decode($string);
+                    $string  = explode("#", $string);
+            
+                    foreach ($string as $str) {
+                        $decodec = $decodec . base64_decode($str);
+                    }
+                    return $decodec;
+                }
+                $clave = Codificar("Diplomado");
+                    $response = $docente->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
                     if ($response['resultado']==1) {
                         $r2 = $usuario_rol->buscar_rol('Docente');
                         $r1 = $docente->buscardocente($_POST['cedula']);

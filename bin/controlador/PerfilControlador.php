@@ -24,24 +24,22 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'modificarperfil') {
-            $clave = "m3m0c0d3";
 
-            function encrypt($string, $key)
+/*             function Codificar($string)
             {
-                $result = '';
+                $codec = '';
                 for ($i = 0; $i < strlen($string); $i++) {
-                    $char = substr($string, $i, 1);
-                    $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-                    $char = chr(ord($char) + ord($keychar));
-                    $result .= $char;
+                    $codec = $codec . base64_encode($string[$i]) . "#";
                 }
-                return base64_encode($result);
-            }       
+                $string = base64_encode(base64_encode($codec));
+                $string = base64_encode($string);
+                return $string;
+            }
 
-            $claveencriptada = encrypt($_POST['clave'], $clave);
+            $claveencriptada = Codificar($_POST['clave']);
+ */
 
-
-            $response = $perfil->modificar($_POST['id'],$_POST['telefono'],$_POST['correo'],$claveencriptada);
+            $response = $perfil->modificar($_POST['id'],$_POST['telefono'],$_POST['correo']);
             if ($response == 1) {
                 echo json_encode([
                     'estatus' => '1',

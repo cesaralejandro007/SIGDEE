@@ -19,10 +19,10 @@ class PerfilModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function modificar($id,$telefono,$correo,$clave)
+    public function modificar($id,$telefono,$correo)
     {
         try {
-            $this->conex->query("UPDATE usuario SET telefono = '$telefono', correo = '$correo', clave = '$clave' WHERE id = '$id'");
+            $this->conex->query("UPDATE usuario SET telefono = '$telefono', correo = '$correo' WHERE id = '$id'");
             return 1;
         } catch (Exception $e) {
             return $e->getMessage();

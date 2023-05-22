@@ -125,7 +125,7 @@
                     ?>
         <img src= "content/usuarios/<?php echo $imagen1; ?>"  alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px; height:150px;">
-            <h5 class="my-3"><?php echo $_SESSION['usuario']['primer_nombre'] . " " . $_SESSION['usuario']['primer_apellido'] ?></h5>
+            <h5 class="my-3"><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></h5>
             <div class="d-flex justify-content-center mb-2">
             <button class="btn btn-outline-primary m-1 px-2" style="padding:3px"
                     data-toggle="modal" data-target="#foto-perfil"
@@ -143,11 +143,17 @@
                 <div>
                     <h6 class="p-0 m-1">Datos personales</h6>
                 </div>
-                <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px"
-                    onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
-                    style="cursor: pointer">
-                    <i class="fas fa-user-edit"></i> Editar datos
-                </button>
+                <div>
+                  <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px"
+                      onclick="cargar_datos(<?=$infoU[0]['id']?>)" 
+                      style="cursor: pointer">
+                      <i class="fas fa-user-edit"></i> Editar información
+                  </button>
+                  <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px" data-toggle="modal" data-target="#cambiar_clave"
+                      style="cursor: pointer">
+                      <i class="fas fa-key"></i> Seguridad
+                  </button>
+                </div>
             </div><!-- /.container-fluid -->
         </div>
           <div class="card-body">
@@ -261,22 +267,48 @@
                                     <input type="text" class="form-control" id="user">
                                 </div>
                                 <span id="stelefono"></span>
-                                <div class="input-group mt-2">
-                                <span class="input-group-text">Nueva Clave:</span>
-                                    <input id="floatingPassword" placeholder="Clave:" type="Password"
-                                        Class="form-control">
-                                    <div class="input-group-append">
-                                        <button id="show_password" class="btn btn-primary" type="button"
-                                            onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <span id="sclave"></span>
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <input class="btn btn-default" type="reset" onclick="limpiar()"
                                     value="Limpiar Campos" />
                                 <button type="button" class="btn btn-primary" id="modificarp">Modificar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+        <div class="modal fade show" id="cambiar_clave">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="titulo">Varificación de clave</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post" id="f">
+                            <div class="modal-body">
+                            <div class="input-group mt-1">
+                          <div class="input-group-text bg-light">
+                            <i class="fas fa-key"></i>
+                          </div>
+                          <input id="Password_actual"
+                            class="form-control bg-light"
+                            type="password"
+                            placeholder="Ingrese su clave actual"
+                            />
+                          <div class="input-group-append">
+                            <button id="show_password" class="btn border
+                              border-left-0" type="button"
+                              onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
+                          </div>
+                        </div>
+                            </div>
+                            <div class="modal-footer justify-content-end">
+                                <button type="button" class="btn btn-primary" id="verificar">Siguiente</button>
                             </div>
                         </form>
                     </div>

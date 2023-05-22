@@ -11,7 +11,7 @@ class DocenteModelo extends connectDB
     private $correo;
     private $direccion;
 
-    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave)
     {
         $validar_registro = $this->existeregistrar($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
@@ -32,7 +32,8 @@ class DocenteModelo extends connectDB
                             genero,
         					telefono,
         					correo,
-        					direccion
+        					direccion,
+                            clave
         					)
         				VALUES(
         					'$cedula',
@@ -43,7 +44,8 @@ class DocenteModelo extends connectDB
                             '$genero',
         					'$telefono',
         					'$correo',
-        					'$direccion'
+        					'$direccion',
+                            '$clave'
         				)");
             $respuesta['resultado'] = 1;
             $respuesta['mensaje'] = "Registro exitoso";

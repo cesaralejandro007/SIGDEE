@@ -76,7 +76,7 @@
                           <div class="input-group-append">
                             <button id="show_password" class="btn border
                               border-left-0" type="button"
-                              onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:21px"></i>
+                              onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
                           </div>
                         </div>
                         <button class="btn btn-primary text-white w-100 mt-4
