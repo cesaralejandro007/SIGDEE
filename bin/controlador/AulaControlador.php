@@ -570,49 +570,49 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 break;
 
             case 'listadoaulas':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $aula->listadoaulas();
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'listadoareas':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $area->listadoareas();
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'listadoemprendimientos':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $emprendimiento->listadoemprendimientos($_POST['area']);
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'listadomodulos':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $modulo_e->listadomodulos($_POST['emprendimiento']);
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'listadodocentes':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $aula_docente->listadodocentes();
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'listadoaspirantes':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $aspirante->listadoaspirantes($_POST['emprendimiento']);
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'editarlistadodocentes':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $aula_docente->listadodocentes_aula($_POST['id_aula'],$_POST['id_docente']);
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
             case 'editarlistadoaspirantes':
-                //llamo al metodo de la clase aulajuan que lista las aulas
+                //llamo al metodo de la clase auladocente que lista las aulas
                 $respuesta = $aspirante->listadoaspirantes_aula($_POST['id_aula']);
                 usleep(5);
                 echo json_encode($respuesta);

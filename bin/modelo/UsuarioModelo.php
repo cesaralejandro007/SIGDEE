@@ -400,6 +400,40 @@ class UsuarioModelo extends connectDB
         return $respuestaArreglo;
     }
 
+    public function buscar_token($token)
+    {
+        $resultado = $this->conex->prepare("SELECT *FROM usuario WHERE token ='$token'; ");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
+    /**************************************
+    *   VALIDAR EL TOKEN DE SEGURIDAD
+    **************************************/
+    public function validar_token($token){
+        //Validar que exista el usuario con ese token
+        $datos = $this->buscar_token($token);
+        if($datos != null){
+            //VALIDAR FECHA DE EXPIRACION
+            date_default_timezone_set('America/Caracas');
+            $fecha_actual = date('Y-m-d H:i:s', time()); 
+            if($fecha_actual > $datos[0]['fecha_expiracion']){
+                return 'expired';
+            }
+            else
+                return 'success';
+        }
+        else
+            return 'not-token';
+        
+    }
+
     public function validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono){
         $er_cedula = '/^[0-9]{7,8}$/';
         $er_nombre = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/';

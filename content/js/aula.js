@@ -468,7 +468,7 @@ function enviaAjax(datos) {
           $("#docente1").html(lee.mensaje);
           $("#enviar").text("Modificar");
           $("#id").val(lee.aula);
-          //$("#id_aula_docente").val(lee.docente_aula);
+          $("#id_aula_docente").val(lee.docente_aula);
           $("#nombre").val(lee.nombre_aula);
           document.getElementById("selectores").style.display = "none";
           $("#accion").val("modificar");

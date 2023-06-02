@@ -107,5 +107,53 @@ class LoginModelo extends connectDB
         }
         return $respuestaArreglo;
     }
+    
+    /**************************************
+    *  CREAR TOKEN DE SEGURIDAD AL ACCEDER
+    **************************************/
+    public function token($id, $email){
+        //VALIDAR QUE ID DEL USUARIO EXISTA EN LA BD
+        if ($this->existe($id)==false) {
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "El Usuario no Existe";
+        }
+        else {
+            //ESTABLECER LA ZONA HORARIA
+            date_default_timezone_set('America/Caracas');
+            $time = time();
+
+            //CREAR LA FECHA DE EXPIRACION (A 1 HORA)
+            $fecha = date('Y-m-d H:i:s', $time + (60*60));
+            //CREAR EL TOKEN CON RESPECTO A LA FECHA EN UNIX, CORREO Y ID DE USUARIO
+            $token = hash("sha256", $time . $email. $id);
+            try {
+                $this->conex->query("UPDATE usuario SET token = '$token', fecha_expiracion = '$fecha' WHERE id = '$id'");
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Modificación exitosa";
+                $respuesta['token'] = $token;
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
+        }
+        return $respuesta;
+    }
+
+    public function existe($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 
 }

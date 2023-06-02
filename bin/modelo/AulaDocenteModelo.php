@@ -188,7 +188,7 @@ class AulaDocenteModelo extends connectDB
         $r = array();
         try {
 
-            $resultado = $this->conex->prepare("select u.id, concat(u.cedula,' / ',u.apellido, ' ', u.nombre) as usuarios from usuario as u, rol as r, usuarios_roles as ur where u.id=ur.id_usuario and ur.id_rol=r.id and r.nombre='Docente';");
+            $resultado = $this->conex->prepare("select u.id, concat(u.cedula,' / ',u.primer_apellido, ' ',u.segundo_apellido, ' ',u.primer_nombre, ' ',u.segundo_nombre) as usuarios from usuario as u, rol as r, usuarios_roles as ur where u.id=ur.id_usuario and ur.id_rol=r.id and r.nombre='Docente';");
 
             $resultado->execute();
 
@@ -231,7 +231,7 @@ class AulaDocenteModelo extends connectDB
             $existente->BindParam(':id_aula', $id_aula);
             $existente->execute();
 
-            $resultado = $this->conex->prepare("select u.id, concat(u.cedula,' / ',u.apellido, ' ', u.nombre) as usuarios from usuario as u, rol as r, usuarios_roles as ur where u.id=ur.id_usuario and ur.id_rol=r.id and r.nombre='Docente';");
+            $resultado = $this->conex->prepare("select u.id, concat(u.cedula,' / ',u.primer_apellido, ' ',u.segundo_apellido, ' ',u.primer_nombre, ' ',u.segundo_nombre) as usuarios from usuario as u, rol as r, usuarios_roles as ur where u.id=ur.id_usuario and ur.id_rol=r.id and r.nombre='Docente';");
             $resultado->execute();
 
             $x = '';

@@ -15,7 +15,7 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $login = new login();
-    $config = new Mensaje();
+    $mensaje = new Mensaje();
     $rol = new Rol();
     $permiso_usuario = new Permiso();
     $modulo = 'Iniciar Sesion:';
@@ -59,31 +59,35 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
             if($responseU == 0){
-                $config->error($modulo, 'Verifique sus datos');
+                $mensaje->error($modulo, 'Verifique sus datos');
                 return 0;
             }
             else
             if($responseU == 2){
-                $config->informacion('Error', 'No posee aulas asignadas con el rol elegido');
+                $mensaje->informacion('Error', 'No posee aulas asignadas con el rol elegido');
                 return 0;
             }
             else
             if ($responseU == 1) {
                 if (!empty($infoU)) {
                     foreach ($infoU as $datos) {
-                        $_SESSION['usuario'] = array('id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
                         $id_rol = $rol->obtener_rol($datos['cedula'], $datos['nombreusuario']);
                         if ($id_rol == null) {
-                            $config->informacion('Error', 'No tiene privilegios para acceder');
+                            $mensaje->informacion('Error', 'No tiene privilegios para acceder');
                             exit();
                         }
+                        $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
+
+                        $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
                         $_SESSION['rol'] = $id_rol;
+                        
+
                     }
                 }
-                $config->confirmar($modulo, 'Inicio exitoso');
+                $mensaje->confirmar($modulo, 'Inicio exitoso');
                 return 0;
             } else {
-                $config->error($modulo, 'Verifique sus datos');
+                $mensaje->error($modulo, 'Verifique sus datos');
                 return 0;
             }
         } else if ($accion == 'recuperar') {
@@ -99,13 +103,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
                 if ($_POST['nombre'] == $nombre && $_POST['apellido'] == $apellido && $_POST['correo'] == $correo && $_POST['telefono'] == $telefono) {
                     mail($correo, 'Recuperación de contraseña', 'Su contraseña es: ' . $clave, 'Aula virtual-diplomado', 'Aula virtual-diplomado');
-                    $config->confirmar('Correo gmail:', 'Se envio la clave al correo: ' . $correo);
+                    $mensaje->confirmar('Correo gmail:', 'Se envio la clave al correo: ' . $correo);
                 } else {
-                    $config->error($modulo, 'Verifique sus datos');
+                    $mensaje->error($modulo, 'Verifique sus datos');
                 }
                 return 0;
             } else {
-                $config->error($modulo, 'Verifique sus datos');
+                $mensaje->error($modulo, 'Verifique sus datos');
             }
             return 0;
         }

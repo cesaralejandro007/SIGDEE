@@ -207,7 +207,7 @@ class AspiranteModelo extends connectDB
             }
 
             //Buscar todos los aspirantes del emprendimiento
-            $resultado = $this->conex->prepare("SELECT a.id, concat(a.cedula, ' / ', a.apellido, ' ', a.nombre) as aspirante, a.id as id_aspirante from usuario as a INNER JOIN aspirante_emprendimiento as b ON b.id_usuario=a.id WHERE b.id_emprendimiento='$id_emprendimiento';");
+            $resultado = $this->conex->prepare("SELECT a.id, concat(a.cedula,' / ',a.primer_apellido, ' ',a.segundo_apellido, ' ',a.primer_nombre, ' ',a.segundo_nombre) as aspirante, a.id as id_aspirante from usuario as a INNER JOIN aspirante_emprendimiento as b ON b.id_usuario=a.id WHERE b.id_emprendimiento='$id_emprendimiento';");
             $resultado->execute();
             $x = '';
             if ($resultado) {
@@ -261,7 +261,7 @@ class AspiranteModelo extends connectDB
         $r = array();
         try {
 
-            $resultado = $this->conex->prepare("select a.id, concat(a.cedula, ' / ', a.apellido, ' ', a.nombre) as aspirante from usuario as a, aspirante_emprendimiento as b WHERE b.id_emprendimiento=:emprendimiento AND a.id = b.id_usuario;
+            $resultado = $this->conex->prepare("select a.id, concat(a.cedula,' / ',a.primer_apellido, ' ',a.segundo_apellido, ' ',a.primer_nombre, ' ',a.segundo_nombre) as aspirante from usuario as a, aspirante_emprendimiento as b WHERE b.id_emprendimiento=:emprendimiento AND a.id = b.id_usuario;
             ");
             $resultado->BindParam(":emprendimiento", $emprendimiento);
 
