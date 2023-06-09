@@ -149,9 +149,9 @@
                       style="cursor: pointer">
                       <i class="fas fa-user-edit"></i> Editar información
                   </button>
-                  <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px" data-toggle="modal" data-target="#cambiar_clave"
+                  <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px"  id="cambiar_clave"
                       style="cursor: pointer">
-                      <i class="fas fa-key"></i> Seguridad
+                      <i class="fas fa-key"></i> Cambiar Contraseña
                   </button>
                 </div>
             </div><!-- /.container-fluid -->

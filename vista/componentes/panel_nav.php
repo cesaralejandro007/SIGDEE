@@ -93,9 +93,9 @@ body::-webkit-scrollbar-track {
                 <hr class="m-1">
                 <div class="m-0 d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-sm m-1" style="background:#0C72C4; color:white;font-size:13px" href="?pagina=Perfil"><i class="fas fa-user"></i> Perfil</a>
+                        <a class="btn btn-sm rounded-0" style="background:#0C72C4; color:white;font-size:13px; margin:2px;" href="?pagina=Perfil"><i class="fas fa-user"></i> Perfil</a>
                     </div>
-                    <a href="?pagina=Login" class="btn btn-sm m-1" style="font-size:13px; background:#9D2323; color:white"><i class="fas fa-power-off"></i> Salir</a>
+                    <a href="?pagina=Login" class="btn btn-sm  rounded-0" style="font-size:13px; background:#9D2323; color:white; margin:2px;"><i class="fas fa-power-off"></i> Salir</a>
                 </div>
             </div>
         </li>
