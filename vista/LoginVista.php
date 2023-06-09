@@ -88,66 +88,68 @@
                     </div>
                   </div>
                 </div>
-                <div class="modal fade" id="gestion-recuperar" tabindex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Preguntas
-                          de seguridad</h1>
-                        <button type="button" class="btn-close"
-                          data-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="input-group mb-3">
-                          <span class="input-group-text"
-                            id="inputGroup-sizing-default">Usuario:</span>
-                          <input type="text" class="form-control"
-                            aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default"
-                            id="usuarior">
-                        </div>
-                        <div class="input-group mb-3">
-                          <span class="input-group-text"
-                            id="inputGroup-sizing-default">Nombre:</span>
-                          <input type="text" class="form-control"
-                            aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default"
-                            id="nombrer">
-                        </div>
-                        <div class="input-group mb-3">
-                          <span class="input-group-text"
-                            id="inputGroup-sizing-default">Apellido:</span>
-                          <input type="text" class="form-control"
-                            aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default"
-                            id="apellidor">
-                        </div>
-                        <div class="input-group mb-3">
-                          <span class="input-group-text"
-                            id="inputGroup-sizing-default">Correo:</span>
-                          <input type="text" class="form-control"
-                            aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default"
-                            id="correor">
-                        </div>
-                        <div class="input-group mb-3">
-                          <span class="input-group-text"
-                            id="inputGroup-sizing-default">Telefono:</span>
-                          <input type="text" class="form-control"
-                            aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default"
-                            id="telefonor">
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"
-                          id="recuperarc">Recuperar</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+
+<div id="gestion-recuperar" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-center">Recuperación de contraseña</h3>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<form method="POST" enctype="multipart/form-data" action="" name="" id="cambioForm">
+				<div class="modal-body">
+					<div class="panel-body">
+
+						<h5 class="modal-title text-center" style="margin-bottom: 8px;">Datos del usuario</h5>
+
+						<input type="number" class="form-control input-number" placeholder="Ingrese su cédula" id="cedulaEmergente" name="cedulaEmergente" />
+						<div id="textoCedula" style='color:red; text-align:center;'></div>
+
+						<br>
+                        <div id='info' style='display:none'>
+						<h5 class="modal-title text-center" style="margin-bottom: 8px;">Preguntas de seguridad</h5>
+
+						<input type="text" class="form-control validar-letras validar-simbolos" id="mascota" name="mascota" placeholder="Nombre de su primera mascota" style="margin-bottom: 4px;">
+						<div id="textoMascota" style='color:red'></div>
+						<br>
+
+						<div class="">
+							<input class="form-control select" style="margin-bottom: 4px;" placeholder="Escriba su animal favorito" id="animFav" name="animFav">
+
+						</div>
+						<div id="textoAnimFav" style='color:red'></div>
+						<br>
+
+						<div>
+							<input class="form-control validar-letras validar-simbolos" id="colorFav" placeholder='Escriba su color favorito' name="colorFav">
+
+						</div>
+						<div id="textoColorFav" style='color:red'></div>
+
+						</br>
+
+						<h5 class="modal-title text-center" style="margin-bottom: 8px;">Nueva contraseña</h5>
+
+
+						<input type="password" class="form-control espacios" name="passwordEmergente" id="passwordEmergente" placeholder="Contraseña" style="margin-bottom: 4px;">
+						<div id="textoClave1" style='color:red'></div>
+						<input type="password" class="form-control espacios" name="passwordEmergente2" id="passwordEmergente2" placeholder="Confirmar contraseña">
+
+
+						<div id="textoClave2" style='color:red'></div>
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" value="Consultar" class="btn btn-primary " id="modificarContrasenia" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
               </section>
             </div>
             <script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 

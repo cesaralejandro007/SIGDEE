@@ -22,36 +22,35 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
+        //encriptacion
+        function Codificar($string)
+        {
+            $codec = '';
+            for ($i = 0; $i < strlen($string); $i++) {
+                $codec = $codec . base64_encode($string[$i]) . "#";
+            }
+            $string = base64_encode(base64_encode($codec));
+            $string = base64_encode($string);
+            return $string;
+        }
+        function Decodificar($string)
+        {
+            $decodec = '';
+            $string  = base64_decode(base64_decode($string));
+            $string  = base64_decode($string);
+            $string  = explode("#", $string);
+    
+            foreach ($string as $str) {
+                $decodec = $decodec . base64_decode($str);
+            }
+            return $decodec;
+        }
         if ($accion == 'ingresar') {
             $tipo = $_POST['tipo'];
             $usuario = $_POST['user'];
             
-            //encriptacion
             
-            function Codificar($string)
-            {
-                $codec = '';
-                for ($i = 0; $i < strlen($string); $i++) {
-                    $codec = $codec . base64_encode($string[$i]) . "#";
-                }
-                $string = base64_encode(base64_encode($codec));
-                $string = base64_encode($string);
-                return $string;
-            }
-        
-            function Decodificar($string)
-            {
-                $decodec = '';
-                $string  = base64_decode(base64_decode($string));
-                $string  = base64_decode($string);
-                $string  = explode("#", $string);
-        
-                foreach ($string as $str) {
-                    $decodec = $decodec . base64_decode($str);
-                }
-                return $decodec;
-            }
-            
+                    
             $claveencriptada = Codificar($_POST['password']);
             $login->set_tipo($tipo);
             $login->set_user($usuario);
@@ -90,27 +89,25 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $mensaje->error($modulo, 'Verifique sus datos');
                 return 0;
             }
-        } else if ($accion == 'recuperar') {
-            $login->set_user($_POST['user']);
-            $infoRD = $login->datos_UserRU();
-            if (!empty($infoRD)) {
-                foreach ($infoRD as $datos) {
-                    $nombre = $datos['primer_nombre'];
-                    $apellido = $datos['primer_apellido'];
-                    $correo = $datos['correo'];
-                    $telefono = $datos['telefono'];
-                    $clave = $datos['clave'];
+        } else if ($accion == 'verificar_usuario') {
+            $login->set_user($_POST['cedula']);
+            $infoVD = $login->datos_UserRU();
+            if (!empty($infoVD)) {
+                foreach ($infoVD as $valor) {
+                    echo json_encode([
+                        'cedula' => $valor['cedula'],
+                        'primer_nombre' => $valor['primer_nombre'],
+                        'primer_apellido' => $valor['primer_apellido'],
+                        'preguntas_seguridad' => Decodificar($valor['preguntas_seguridad'])
+                    ]);
                 }
-                if ($_POST['nombre'] == $nombre && $_POST['apellido'] == $apellido && $_POST['correo'] == $correo && $_POST['telefono'] == $telefono) {
-                    mail($correo, 'Recuperación de contraseña', 'Su contraseña es: ' . $clave, 'Aula virtual-diplomado', 'Aula virtual-diplomado');
-                    $mensaje->confirmar('Correo gmail:', 'Se envio la clave al correo: ' . $correo);
-                } else {
-                    $mensaje->error($modulo, 'Verifique sus datos');
-                }
-                return 0;
-            } else {
-                $mensaje->error($modulo, 'Verifique sus datos');
+            }else{
+                echo 0;
             }
+            return 0;
+        }else if ($accion == 'cambiar_clave') {
+            $resul = $login->cambiar_password($_POST['cedula'],Codificar($_POST['clave_actualizada']));
+            echo $resul;
             return 0;
         }
     } else {

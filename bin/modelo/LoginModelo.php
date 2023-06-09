@@ -95,6 +95,18 @@ class LoginModelo extends connectDB
         return $respuestaArreglo;
     }
 
+    public function cambiar_password($cedula,$clave_encriptada)
+    {   
+        $resultado = $this->conex->query("UPDATE usuario SET clave = '$clave_encriptada' WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
     public function listartipo_usuario()
     {
         $resultado = $this->conex->prepare("SELECT nombre FROM rol");
