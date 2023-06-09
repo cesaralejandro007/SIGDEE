@@ -197,6 +197,9 @@ document.getElementById("modificarContrasenia").onclick = function() {
                               icon: "success",
                             });
                             $('#gestion-recuperar').modal('hide');
+                            setTimeout(function () {
+                              window.location.replace("?pagina=Login");
+                            }, 3000);
                         }else{
                           toastMixin.fire({
                             title: "Error",
