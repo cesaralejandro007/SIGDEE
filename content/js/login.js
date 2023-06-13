@@ -1,5 +1,6 @@
 var keyup_cedula = /^[0-9]{7,8}$/;
-
+var keyup_clave = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{6,15}$/;
+var keyup_seguridad = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.@#%$^&*!?:]{3,25}$/;
 document.onload = carga();
 function carga() {
   /*--------------VALIDACION PARA CEDULA--------------------*/
@@ -28,6 +29,25 @@ function mostrarPassword() {
     $(".icon").removeClass("fa fa-eye").addClass("fa fa-eye-slash");
   }
 }
+
+function mostrarpasswordr() {
+  var cambio = document.getElementById("passwordEmergente");
+  if (cambio.type == "password") {
+    cambio.type = "text";
+  } else {
+    cambio.type = "password";
+  }
+}
+
+function mostrarpasswordr2() {
+  var cambio = document.getElementById("passwordEmergente2");
+  if (cambio.type == "password") {
+    cambio.type = "text";
+  } else {
+    cambio.type = "password";
+  }
+}
+
 
 $("#recuperarcontrasena").click(function () {
   $("#gestion-recuperar").modal("show");
@@ -155,13 +175,17 @@ document.getElementById("modificarContrasenia").onclick = function() {
                         document.getElementById("textoCedula").style.color = "green";
                         pregunta_bd = resultado.preguntas_seguridad;
                         document.getElementById("textoCedula").innerHTML = resultado.primer_nombre + " " + resultado.primer_apellido;
-                        document.getElementById("modificarContrasenia").value = 'Listo';
+                        document.getElementById("modificarContrasenia").value = 'Recuperar';
                         $("#info").show(500);
                     }
                 }
             });
         }
     } else {
+      a = valida_registrar1();
+      if (a != "") {
+          return false;
+          } else {
         if (document.getElementById("mascota").value == "" || document.getElementById("animFav").value == "" || document.getElementById("colorFav").value == "") {
             toastMixin.fire({
               title: "Error",
@@ -209,6 +233,7 @@ document.getElementById("modificarContrasenia").onclick = function() {
                         }
                     })
                 }
+              
             } else {
               toastMixin.fire({
                 title: "Error",
@@ -217,7 +242,139 @@ document.getElementById("modificarContrasenia").onclick = function() {
               });
             }
         }
+      }
     }
+    document.getElementById("passwordEmergente").onkeypress = function (e) {
+      er = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC@,.#%$^&*!?:]*$/;
+      validarkeypress(er, e);
+    };
+    document.getElementById("passwordEmergente").onkeyup = function () {
+      r = validarkeyup(
+        keyup_clave,
+        this,
+        document.getElementById("vcontrasena"),
+        "El campo debe contener de 6 a 15 caracteres"
+      );
+    };
+    document.getElementById("passwordEmergente2").onkeypress = function (e) {
+      er = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC@,.#%$^&*!?:]*$/;
+      validarkeypress(er, e);
+    };
+    document.getElementById("passwordEmergente2").onkeyup = function () {
+      r = validarkeyup(
+        keyup_clave,
+        this,
+        document.getElementById("vcontrasena"),
+        "El campo debe contener de 6 a 15 caracteres"
+      );
+    };
+    document.getElementById("colorFav").onkeypress = function (e) {
+      er = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC@,.#%$^&*!?:]*$/;
+      validarkeypress(er, e);
+    };
+  document.getElementById("colorFav").onkeyup = function () {
+      r = validarkeyup(
+        keyup_seguridad,
+        this,
+        document.getElementById("vcolor"),
+        "El campo debe contener de 3 a 25 caracteres"
+      );
+    };
+      document.getElementById("animFav").onkeypress = function (e) {
+        er = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC@,.#%$^&*!?:]*$/;
+        validarkeypress(er, e);
+      };
+    document.getElementById("animFav").onkeyup = function () {
+        r = validarkeyup(
+          keyup_seguridad,
+          this,
+          document.getElementById("vanimal"),
+          "El campo debe contener de 3 a 25 caracteres"
+        );
+      };
+    
+    document.getElementById("mascota").onkeypress = function (e) {
+      er = /^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC@,.#%$^&*!?:]*$/;
+        validarkeypress(er, e);
+      };
+    document.getElementById("mascota").onkeyup = function () {
+        r = validarkeyup(
+          keyup_seguridad,
+          this,
+          document.getElementById("vmascota"),
+          "El campo debe contener de 3 a 25 caracteres"
+        );
+    };
+}
+
+function validarkeypress(er, e) {
+  key = e.keyCode || e.which;
+  tecla = String.fromCharCode(key);
+  a = er.test(tecla);
+  if (!a) {
+    e.preventDefault();
+  }
+}
+
+function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
+  a = er.test(etiqueta.value);
+  if (!a) {
+    etiquetamensaje.innerText = mensaje;
+    etiquetamensaje.style.color = "red";
+    etiqueta.classList.add("is-invalid");
+    return 0;
+  } else {
+    etiquetamensaje.innerText = "";
+    etiqueta.classList.remove("is-invalid");
+    etiqueta.classList.add("is-valid");
+    return 1;
+  }
+}
+
+function valida_registrar1() {
+  var error = false;
+  contrasena1 = validarkeyup(
+    keyup_clave,
+    document.getElementById("passwordEmergente"),
+    document.getElementById("vcontrasena"),
+    "El campo debe contener de 5 a 8 caracteres"
+  );
+  contrasena2 = validarkeyup(
+    keyup_clave,
+    document.getElementById("passwordEmergente2"),
+    document.getElementById("vcontrasena"),
+    "El campo debe contener de 5 a 8 caracteres"
+  );
+  color = validarkeyup(
+    keyup_seguridad,
+    document.getElementById("colorFav"),
+    document.getElementById("vcolor"),
+    "El campo debe contener de 3 a 25 caracteres"
+  );
+  animal = validarkeyup(
+    keyup_seguridad,
+    document.getElementById("animFav"),
+    document.getElementById("vanimal"),
+    "El campo debe contener de 3 a 25 caracteres"
+  );
+  mascota = validarkeyup(
+    keyup_seguridad,
+    document.getElementById("mascota"),
+    document.getElementById("vmascota"),
+    "El campo debe contener de 3 a 25 caracteres"
+  );
+
+  if (
+    contrasena1 == 0 ||
+    contrasena2 == 0 ||
+    color == 0 || 
+    animal == 0 || 
+    mascota == 0 
+  ) {
+    //variable==0, indica que hubo error en la validacion de la etiqueta
+    error = true;
+  }
+  return error;
 }
 
 /*--------------------FIN DE FUNCIONES CON AJAX----------------------*/

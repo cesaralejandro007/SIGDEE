@@ -1,6 +1,6 @@
 var keyup_telefono = /^[0-9]{11}$/;
 var keyup_correo =/^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
-var keyup_clave = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{6,20}$/;
+var keyup_clave = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{6,15}$/;
 var keyup_seguridad = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.@#%$^&*!?:]{3,25}$/;
 
       document.getElementById("cambiar_clave"). onclick = function(){
@@ -81,8 +81,8 @@ var keyup_seguridad = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.@#%$^&*!?:]{3,25}$/;
               html:                        
                 '<span id="validarcontrasena1"></span>' +
                 '<label for="message-text" style="color: rgb(21, 64, 109);" class="col-form-label">Informacion de contraseña:</label><br>'+
-                '<span id="v1" style="font-size:14px"></span><div class="input-group mt-1"><input id="input1" maxlength="8" class="form-control mb-2" type="password" placeholder="Contraseña"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>' +
-                '<span id="v2" style="font-size:14px"></span><div class="input-group mt-1"><input id="input2" maxlength="8" class="form-control mb-2" type="password" placeholder="Confirmar contraseña"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword1()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>'+
+                '<span id="v1" style="font-size:14px"></span><div class="input-group mt-1"><input id="input1" maxlength="15" class="form-control mb-2" type="password" placeholder="Contraseña"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>' +
+                '<span id="v2" style="font-size:14px"></span><div class="input-group mt-1"><input id="input2" maxlength="15" class="form-control mb-2" type="password" placeholder="Confirmar contraseña"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword1()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>'+
                 '<label for="message-text" style="color: rgb(21, 64, 109);" class="col-form-label">Preguntas de seguridad:</label><br>'+
                 '<span id="v3" style="font-size:14px"></span><input type="text" maxlength="25" id="color" placeholder="Ingrese el color favorito" class="form-control mb-2">' +
                 '<span id="v4" style="font-size:14px"></span><input type="text" maxlength="25" id="animal" placeholder="Ingrese el animal favorito" class="form-control mb-2">' +
@@ -130,7 +130,7 @@ var keyup_seguridad = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.@#%$^&*!?:]{3,25}$/;
               keyup_clave,
               this,
               document.getElementById("v1"),
-              "El campo debe contener de 5 a 8 caracteres"
+              "El campo debe contener de 6 a 15 caracteres"
             );
           };
           document.getElementById("color").onkeypress = function (e) {
