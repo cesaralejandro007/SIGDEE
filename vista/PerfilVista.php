@@ -151,7 +151,7 @@
                   </button>
                   <button class="btn btn-outline-primary m-1 px-2"  style="padding:3px"  id="cambiar_clave"
                       style="cursor: pointer">
-                      <i class="fas fa-key"></i> Cambiar Contraseña
+                      <i class="fas fa-key"></i> Cambiar seguridad
                   </button>
                 </div>
             </div><!-- /.container-fluid -->

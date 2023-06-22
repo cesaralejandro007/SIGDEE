@@ -105,23 +105,29 @@
 
 						<input type="number" class="form-control input-number" placeholder="Ingrese su cédula" id="cedulaEmergente" name="cedulaEmergente" />
 						<div id="textoCedula" style='color:red; text-align:center;'></div>
-
-						<br>
             <div id='info' style='display:none'>
-						<h5 class="modal-title text-center" style="margin-bottom: 8px;">Preguntas de seguridad</h5>
-						<input type="text" class="form-control validar-letras validar-simbolos" maxlength="25" id="mascota" name="mascota" placeholder="Nombre de su primera mascota" style="margin-bottom: 4px;">
-						<div id="textoMascota" style='color:red'><span id="vmascota" style="font-size:14px"></div>
-						<br>
-
-						<div class=""><input class="form-control select" maxlength="25" style="margin-bottom: 4px;" placeholder="Escriba su animal favorito" id="animFav" name="animFav"></div>
-						<div id="textoAnimFav" style='color:red'><span id="vanimal" style="font-size:14px"></div>
-						<br>
-
-						<div><input class="form-control validar-letras validar-simbolos" maxlength="25" id="colorFav" placeholder='Escriba su color favorito' name="colorFav"></div>
-						<div id="textoColorFav" style='color:red'><span id="vcolor" style="font-size:14px"></div>
-            
+              <br>
+                <h5 class="modal-title text-center" style="margin-bottom: 8px;">Preguntas de seguridad</h5>
+                <div id="pregunta0">
+                </div>
+						  <br>
+                <div id="pregunta1">
+                </div>
+              <br>
+                <div id="pregunta2">
+                </div>
 						</br>
-
+            <script>
+            var preguntas = [
+              '<input type="text" class="form-control validar-letras validar-simbolos" maxlength="25" id="mascota" name="mascota" placeholder="Nombre de su primera mascota" style="margin-bottom: 4px;"><div id="textoMascota" style="color:red"><span id="vmascota" style="font-size:14px"></div>',
+              '<input class="form-control select" maxlength="25" style="margin-bottom: 4px;" placeholder="Escriba su animal favorito" id="animFav" name="animFav"><div id="textoAnimFav" style="color:red"><span id="vanimal" style="font-size:14px"></div>',
+              '<input class="form-control validar-letras validar-simbolos" maxlength="25" id="colorFav" placeholder="Escriba su color favorito" name="colorFav"><div id="textoColorFav" style="color:red"><span id="vcolor" style="font-size:14px"></div>'
+            ];
+            preguntas.sort(()=> Math.random() - 0.3);
+            for(i=0; i<3; i++){
+              document.getElementById("pregunta"+i).innerHTML=preguntas[i];
+            }
+            </script>
 						<h5 class="modal-title text-center" style="margin-bottom: 8px;">Nueva contraseña</h5>
             <div class="input-group mt-1">
                           <div class="input-group-text bg-light">
