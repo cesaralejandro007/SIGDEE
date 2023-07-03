@@ -19,17 +19,12 @@ class PerfilModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function verificarcambio_password($cedula,$clave_encriptada)
+    public function verificarcambio_password($cedula)
     {
-        $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula = '$cedula' AND clave ='$clave_encriptada'");
+        $resultado = $this->conex->prepare("SELECT clave FROM usuario WHERE cedula = '$cedula'");
         try {
             $resultado->execute();
-            $respuesta1 = $resultado->rowCount();
-           if( $respuesta1 > 0){
-            return 1;
-           }else{
-            return 0;
-           }
+            $respuestaArreglo = $resultado->fetchAll();
         } catch (Exception $e) {
             return $e->getMessage();
         }

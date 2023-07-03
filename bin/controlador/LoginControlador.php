@@ -39,56 +39,85 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $string  = base64_decode(base64_decode($string));
             $string  = base64_decode($string);
             $string  = explode("#", $string);
-    
             foreach ($string as $str) {
                 $decodec = $decodec . base64_decode($str);
             }
             return $decodec;
         }
+
         if ($accion == 'ingresar') {
+            $num_intentos = isset($_COOKIE['intentos'][$_POST['user']]) ? $_COOKIE['intentos'][$_POST['user']] : 1;
             $tipo = $_POST['tipo'];
-            $usuario = $_POST['user'];
-            
-            
-                    
+            $usuario = $_POST['user'];        
             $claveencriptada = Codificar($_POST['password']);
             $login->set_tipo($tipo);
             $login->set_user($usuario);
             $login->set_password($claveencriptada);
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
-            if($responseU == 0){
-                $mensaje->error($modulo, 'Verifique sus datos');
-                return 0;
+            if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""){
+                echo 0;
             }
-            else
-            if($responseU == 2){
+            else if($responseU == 0){   
+                if($login->comprobar_usuario($usuario)){  
+                    if($num_intentos <= 3){             
+                        setcookie('intentos[' . $_POST['user'] . ']', $num_intentos + 1, time() + 30); 
+                    } 
+                    if ($num_intentos >= 3) {
+                        $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
+                        return 0; 
+                    }
+                    $contador = 3 - $num_intentos;
+                    $error_message = "Credenciales incorrectas, tiene ".$contador." intentos.";
+                    $mensaje->error($modulo,$error_message);     
+                    return 0; 
+                }else{
+                    echo 1;   
+                }       
+            }
+            else if($responseU == 2){
                 $mensaje->informacion('Error', 'No posee aulas asignadas con el rol elegido');
                 return 0;
             }
-            else
-            if ($responseU == 1) {
+            else if ($responseU == 1) {
                 if (!empty($infoU)) {
-                    foreach ($infoU as $datos) {
-                        $id_rol = $rol->obtener_rol($datos['cedula'], $datos['nombreusuario']);
-                        if ($id_rol == null) {
-                            $mensaje->informacion('Error', 'No tiene privilegios para acceder');
-                            exit();
+                    if ($num_intentos >= 3) {
+                        $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
+                        return 0; 
+                    }
+                    //VERIFICAR CLAVE (password_hash)
+                    else if(password_verify($_POST['password'], $infoU[0]['clave'])){
+
+                        setcookie('intentos', 0, time() - 3600);
+
+                        foreach ($infoU as $datos) {
+                            $id_rol = $rol->obtener_rol($datos['cedula'], $datos['nombreusuario']);
+                            if ($id_rol == null) {
+                                $mensaje->informacion('Error', 'No tiene privilegios para acceder');
+                                exit();
+                            }
+                            $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
+
+                            $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
+                            $_SESSION['rol'] = $id_rol;
                         }
-                        $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
-
-                        $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
-                        $_SESSION['rol'] = $id_rol;
-                        
-
+                        $mensaje->confirmar($modulo, 'Inicio exitoso');
+                        return 0;
+                    }else{
+                        if($num_intentos <= 3){             
+                            setcookie('intentos[' . $_POST['user'] . ']', $num_intentos + 1, time() + 30); 
+                        }  
+                        $contador = 3 - $num_intentos;
+                        $error_message = "Credenciales incorrectas, tiene ".$contador." intentos.";
+                        $mensaje->error($modulo, $error_message);
                     }
                 }
-                $mensaje->confirmar($modulo, 'Inicio exitoso');
-                return 0;
-            } else {
-                $mensaje->error($modulo, 'Verifique sus datos');
+            }else{
+                $error_message = "Error BD";
+                $mensaje->error($modulo, $error_message);
                 return 0;
             }
+            return 0;
         } else if ($accion == 'verificar_usuario') {
             $login->set_user($_POST['cedula']);
             $infoVD = $login->datos_UserRU();
@@ -106,7 +135,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             return 0;
         }else if ($accion == 'cambiar_clave') {
-            $resul = $login->cambiar_password($_POST['cedula'],Codificar($_POST['clave_actualizada']));
+             //ENCRIPTAR CLAVE (password_hash)
+            $clave_encriptada_nueva = password_hash($_POST['clave_actualizada'], PASSWORD_DEFAULT);
+            $resul = $login->cambiar_password($_POST['cedula'],$clave_encriptada_nueva);
             echo $resul;
             return 0;
         }

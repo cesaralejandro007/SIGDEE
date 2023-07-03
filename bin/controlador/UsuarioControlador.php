@@ -52,7 +52,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
                 return $decodec;
             }
-            $clave = Codificar("Diplomado");
+            $clave_nueva ="Diplomado";
+            $clave = password_hash($clave_nueva, PASSWORD_DEFAULT);
             $response = $usuario->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
             if ($response["resultado"]==1) {
                 echo json_encode([
@@ -131,6 +132,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 ]);
             }            
             else if($response['resultado']== 6) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+            }
+            else if($response['resultado']== 7) {
                 echo json_encode([
                     'estatus' => '2',
                     'icon' => 'info',

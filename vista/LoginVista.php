@@ -31,8 +31,7 @@
                           <h2 class="m-0 font-weight-bold" style="font-family:Arial, Helvetica, sans-serif">SIGDEE</h2>
                       </div>
                 <div class="card-body px-4 ">
-                  <div id="mensajedecorreo">
-                  </div>
+                  <center><div id="validarusuario"></div></center>
                   <div class="d-flex justify-content-center">
                     <img
                       src="assets/font/login-icon.svg"
@@ -46,7 +45,7 @@
                       <i class="fas fa-user-tag"></i>
                     </div>
                         <select class="custom-select" id="tipodeusuario">
-                        <option value="0" disabled selected>--Seleccione rol--</option>
+                        <option value="">--Seleccione rol--</option>
                         <?php foreach ($r2 as $key=> $value) {?>
                             <option value="<?=$value['nombre'];?>"> <?php echo
                                 $value['nombre']; ?>
@@ -123,7 +122,7 @@
               '<input class="form-control select" maxlength="25" style="margin-bottom: 4px;" placeholder="Escriba su animal favorito" id="animFav" name="animFav"><div id="textoAnimFav" style="color:red"><span id="vanimal" style="font-size:14px"></div>',
               '<input class="form-control validar-letras validar-simbolos" maxlength="25" id="colorFav" placeholder="Escriba su color favorito" name="colorFav"><div id="textoColorFav" style="color:red"><span id="vcolor" style="font-size:14px"></div>'
             ];
-            preguntas.sort(()=> Math.random() - 0.3);
+            preguntas.sort(()=> Math.random() - 0.5);
             for(i=0; i<3; i++){
               document.getElementById("pregunta"+i).innerHTML=preguntas[i];
             }

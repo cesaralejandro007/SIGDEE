@@ -99,9 +99,20 @@ function enviaAjax(datos) {
     success: function (response) {
       var res = JSON.parse(response);
       //alert(res.title);
-      if (res.estatus == 1) {
+      if(res == 0){
+        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">Complete los datos solicitados.<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
+        setTimeout(function () {
+          $("#cerraralert").click();
+        }, 6000);
+      }
+      else if(res == 1){
+        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">El usuario no existe.<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
+        setTimeout(function () {
+          $("#cerraralert").click();
+        }, 6000);
+      }
+      else if (res.estatus == 1) {
         toastMixin.fire({
-
           title: res.title,
           text: res.message,
           icon: res.icon,
@@ -111,12 +122,10 @@ function enviaAjax(datos) {
           window.location.replace("?pagina=principal");
         }, 2000);
       } else {
-        toastMixin.fire({
-
-          text: res.message,
-          title: res.title,
-          icon: res.icon,
-        });
+        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">'+res.message+'<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
+        setTimeout(function () {
+          $("#cerraralert").click();
+        }, 6000);
       }
     },
     error: function (err) {

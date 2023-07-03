@@ -97,18 +97,19 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
         } 
             return 0;
         }else if ($accion == 'verificar_perfil') {
-            $clave_encriptada = Codificar($_POST['clave_actual']);
-            $response = $perfil->verificarcambio_password($_POST['cedula'],$clave_encriptada);
-            if ($response == 1) {
+            $response = $perfil->verificarcambio_password($_POST['cedula']);
+            //VERIFICAR CLAVE (password_hash)
+            if(password_verify($_POST['clave_actual'], $response[0]['clave'])){
                 echo 1;
             }else{
                 echo 0;
             }
             return 0;
         }else if ($accion == 'cambiar_pasword') {
-            $clave_encriptada = Codificar($_POST['nueva_clave']);
+            //CLAVE ENCRIPTADA (password_hash)
+            $clave_encriptada_nueva = password_hash($_POST['nueva_clave'], PASSWORD_DEFAULT);
             $preguntas_encriptadas = Codificar($_POST['preguntas_seguridad']);
-            $response = $perfil->cambiar_password($_POST['cedula'],$clave_encriptada,$preguntas_encriptadas);
+            $response = $perfil->cambiar_password($_POST['cedula'],$clave_encriptada_nueva,$preguntas_encriptadas);
             if($response == 1){
                 echo json_encode([
                     'estatus' => '1',

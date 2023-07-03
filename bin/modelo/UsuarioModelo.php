@@ -133,26 +133,31 @@ class UsuarioModelo extends connectDB
         $validacion_Censo = $this->validar_relacion_censo($id);
         $validacion_evalucion = $this->validar_estudiante_evaluacion($id);
         $validacion_aula_estudiante = $this->validar_estudiante_aula($id);
+        $validacion_aula_docente = $this->validar_docente_aula($id);
         if ($this->existe_usuario_rol($cedula)==false) {
             $respuesta['resultado'] = 6;
             $respuesta['mensaje'] = "El Usuario no Existe";
             return $respuesta;
         }else{
             if ($validacion_rol){
-                $respuesta["resultado"]=6;
+                $respuesta["resultado"]=7;
                 $respuesta["mensaje"]="El Usuario no puede ser borrado, existe un vinculo con Rol.";
                 return $respuesta;
             }else if($validacion_Aspirante){
-                $respuesta["resultado"]=5;
+                $respuesta["resultado"]=6;
                 $respuesta["mensaje"]="El Usuario no puede ser borrado, existe un vinculo con Aspirante.";
                 return $respuesta;
             }else if($validacion_Censo){
-                $respuesta["resultado"]=4;
+                $respuesta["resultado"]=5;
                 $respuesta["mensaje"]="El Usuario no puede ser borrado, existe un vinculo con Censo.";
                 return $respuesta;
             }else if($validacion_aula_estudiante){
-                $respuesta["resultado"]=3;
+                $respuesta["resultado"]=4;
                 $respuesta["mensaje"]="El Usuario no puede ser borrado, existe un vinculo con Aula Estudiante.";
+                return $respuesta;
+            }else if($validacion_aula_docente){
+                $respuesta["resultado"]=3;
+                $respuesta["mensaje"]="El Usuario no puede ser borrado, existe un vinculo con Aula Docente.";
                 return $respuesta;
             }else if($validacion_evalucion){
                 $respuesta["resultado"]=2;
@@ -251,6 +256,22 @@ class UsuarioModelo extends connectDB
         }
     }
 
+    public function validar_docente_aula($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM aula_docente WHERE id_docente ='".$id."'");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return 'false';
+        }
+    }
+
     public function listar()
     {
         $resultado = $this->conex->prepare("SELECT * FROM usuario");
@@ -263,6 +284,20 @@ class UsuarioModelo extends connectDB
         }
         return $respuestaArreglo;
     }
+
+    public function consultarid($cedula)
+    {
+        $resultado = $this->conex->prepare("SELECT id,cedula,primer_nombre,primer_apellido FROM usuario WHERE cedula = $cedula");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
 
 
     public function cargar_rol()
