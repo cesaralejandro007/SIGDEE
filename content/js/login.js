@@ -88,6 +88,7 @@ function enviaAjax(datos) {
     padding: '3.5em',
     timer: 2000,
     timerProgressBar: true,
+    allowOutsideClick: false
   });
   $.ajax({
     url: "",
@@ -115,7 +116,7 @@ function enviaAjax(datos) {
         toastMixin.fire({
           title: res.title,
           text: res.message,
-          icon: res.icon,
+          icon: res.icon
         });
         limpiar();
         setTimeout(function () {
