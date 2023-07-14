@@ -10,6 +10,8 @@ $aulaestudiante = new AulaEstudiante;
 $permiso = new Permiso;
 $listar_auladocente = $auladocente->listard($_SESSION['usuario']['cedula']);
 $listar_aulaestudiante = $aulaestudiante->listare($_SESSION['usuario']['cedula']);
+$listar_docente_estudiante = $aulaestudiante->listardocente($_SESSION['usuario']['id']);
+$docente_estudiante_aula = json_encode( $listar_docente_estudiante);
 $listar_aula = $aula->listar();
 
 $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"]);

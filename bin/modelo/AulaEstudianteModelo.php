@@ -270,4 +270,19 @@ class AulaEstudianteModelo extends connectDB
         }
         return $respuestaArreglo;
     }
+
+    public function listardocente($id)
+    {
+        $resultado = $this->conex->prepare("SELECT CONCAT('Prof: ',usuario.primer_nombre, ' ', usuario.primer_apellido) as nombre_docente FROM usuario,aula_estudiante,aula,aula_docente WHERE aula_estudiante.id_aula = aula.id and aula.id = aula_docente.id_aula and aula_docente.id_docente = usuario.id and aula_estudiante.id_estudiante = $id");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
+    
 }

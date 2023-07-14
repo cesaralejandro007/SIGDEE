@@ -9,7 +9,7 @@ class UnidadModelo extends connectDB
     private $id_aula;
 
 
-    public function incluir($nombre, $descripcion, $id_aula)
+    public function incluir($id,$nombre, $descripcion, $id_aula)
     {
         $validar_nombre = $this->validar_registro($nombre);
         if ($validar_nombre) {

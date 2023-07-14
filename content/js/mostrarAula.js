@@ -39,17 +39,19 @@ function carga() {
   document.getElementById("enviar").onclick = function () {
 
       var datos = new FormData();
-      datos.append("accion", "unidad");
+      alert($("#accion").val());
+      datos.append("accion", $("#accion").val());
+      datos.append("id", $("#id").val());
       datos.append("nombre", $("#nombre").val());
       datos.append("descripcion", $("#descripcion").val());
       datos.append("id_aula", $("#aula_id").val());
-      enviaAjax(datos);
+      enviaAjaxUnidad(datos);
 
   };
 
   document.getElementById("nuevo").onclick = function () {
     limpiar1();
-    $("#accion").val("registrar");
+    $("#accion").val("unidad");
     $("#titulo").text("Registrar nueva Unidad");
     $("#enviar").text("Registrar");
     $("#gestion-unidad").modal("show");
@@ -99,6 +101,124 @@ function validarkeyup1(er, etiqueta, etiquetamensaje, mensaje) {
   }
 }
 
+function eliminarUnidad(idnombre) {
+  Swal.fire({
+    title: "¿Está seguro de eliminar el registro?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCloseButton: true,
+    showCancelButton: true,
+    confirmButtonColor: "#0C72C4",
+    cancelButtonColor: "#9D2323",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      setTimeout(function () {
+        var datos = new FormData();
+        datos.append("accion", "eliminarUnidad");
+        datos.append("id", idnombre);
+        confirm_eliminar(datos);
+      }, 10);
+    }
+  });
+}
+
+function cargar_datos_Unidad(valor) {
+  var datos = new FormData();
+  datos.append("accion", "editarUnidad");
+  datos.append("id", valor);
+  mostrarUnidad(datos);
+}
+
+function mostrarUnidad(datos) {
+  $.ajax({
+    async: true,
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      limpiar1();
+      $("#accion").val("actulizar_unidad");
+      $("#titulo").text("Modificar unidad");
+      $("#id").val(res.id);
+      $("#nombre").val(res.nombre);
+      $("#descripcion").val(res.descripcion);
+      $("#enviar").text("Modificar");
+      $("#gestion-unidad").modal("show");
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: error.icon,
+      });
+    },
+  });
+}
+
+
+function confirm_eliminar(datos) {
+  var toastMixin = Swal.mixin({
+
+    showConfirmButton: false,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
+    timerProgressBar: true,
+  });
+  $.ajax({
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      //alert(res.title);
+      if (res.estatus == 1) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      } else if (res.estatus == 2) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      }else if (res.estatus == 3){
+        toastMixin.fire({
+
+          text: res.message,
+          title: res.title,
+          icon: res.icon,
+        });
+      }
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: res.error,
+      });
+    },
+  });
+}
+
+
 function limpiar1() {
   $("#nombre").val("");
   $("#descripcion").val("");
@@ -129,7 +249,7 @@ function valida_registrar1() {
     return false;
   }
 }
-function enviaAjax(datos) {
+function enviaAjaxUnidad(datos) {
   var toastMixin = Swal.mixin({
     showConfirmButton: false,
     width: 450,

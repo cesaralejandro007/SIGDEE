@@ -169,7 +169,7 @@ function evaluaciones(valor) {
   mostrar_evaluaciones(datos);
 }
 
-function eliminar(idnombre) {
+function eliminarUnidad(idnombre) {
   Swal.fire({
     title: "¿Está seguro de eliminar el registro?",
     text: "¡No podrás revertir esto!",
@@ -184,13 +184,14 @@ function eliminar(idnombre) {
     if (result.isConfirmed) {
       setTimeout(function () {
         var datos = new FormData();
-        datos.append("accion", "eliminar");
+        datos.append("accion", "eliminarUnidad");
         datos.append("id", idnombre);
         confirm_eliminar(datos);
       }, 10);
     }
   });
 }
+
 function eliminar_evaluacion(id) {
   Swal.fire({
     title: "¿Está seguro de eliminar el registro?",

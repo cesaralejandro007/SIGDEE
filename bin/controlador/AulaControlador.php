@@ -68,7 +68,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $entornoU = $bitacora->buscar_id_entorno('Unidad');
                 $fechaU = date('Y-m-d h:i:s', time());
 
-                $response = $unidad->incluir($_POST['nombre'],$_POST['descripcion'],$_POST['id_aula']);
+                $response = $unidad->incluir($_POST['id'],$_POST['nombre'],$_POST['descripcion'],$_POST['id_aula']);
                 if ($response) {
                     echo json_encode([
                         'estatus' => '1',
@@ -405,6 +405,59 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo $nombre_buscar;
                 return 0;
                 break;
+            case 'eliminarUnidad':
+                $response = $unidad->eliminar($_POST['id']);
+                if ($response['resultado'] == 1) {
+                echo json_encode([
+                    'estatus' => '1',
+                    'icon' => 'success',
+                    'title' => "Usuario: ",
+                    'message' => $response['mensaje']
+                ]);
+                $bitacora->incluir($id_usuario_rol,"Unidad",$fecha,"Eliminación");
+                return 0;
+            } else  {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+                return 0;
+            }
+                break;
+            case 'editarUnidad':
+                $datos = $unidad->cargar($_POST['id']);
+                foreach ($datos as $valor) {
+                    echo json_encode([
+                        'id' => $valor['id'],
+                        'nombre' => $valor['nombre'],
+                        'descripcion' => $valor['descripcion'],
+                        'id_aula' => $valor['id_aula']
+                    ]);
+                }
+                break;
+            case 'actulizar_unidad':
+                $response = $unidad->modificar($_POST['id'], $_POST['nombre'], $_POST['descripcion'], $_POST['id_aula']);
+                if ($response['resultado']== 1) {
+                echo json_encode([
+                    'estatus' => '1',
+                    'icon' => 'success',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
+                return 0;
+            } else {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+                return 0;
+            }
+                break;  
             case 'registrarforo':
                 $response = $publicacion->incluir($_POST['titulo'],$_POST['mensaje'],$_POST['id_aula'],$_POST['cedula_usuario']);
                 if ($response["resultado"]==1) {

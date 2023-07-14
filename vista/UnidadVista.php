@@ -38,31 +38,19 @@
                         <div class="col-12">
                             <!-- Custom Tabs -->
                             <div class="card">
-                                <div class="card-header d-flex p-0">
-                                    <h3 class="card-title p-3"><?php echo $mostrar_unidad[0]['nombre']; ?></h3>
-                                    <ul class="nav nav-pills ml-auto p-2">
-                                        <li class="nav-item dropdown"></li>
                                         <?php
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
+                                <div class="card-header d-flex p-0">
+                                    <h3 class="card-title p-3"><?php echo $mostrar_unidad[0]['nombre']; ?></h3>
+                                    <ul class="nav nav-pills ml-auto p-2">
+                                        <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                                             Unidad <span class="caret"></span>
                                         </a>
-                                        <?php }}?>
+                                       
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="#unidades" data-toggle="tab">Ver</a>
-
-                                            <?php
-if (isset($response[0]["modificar"])) {
-    if ($response[0]["modificar"] == 'true') {?>
-                                            <a class="dropdown-item" href="#editar" data-toggle="tab">Editar</a>
-                                            <?php }}?>
-                                            <?php
-if (isset($response[0]["eliminar"])) {
-    if ($response[0]["eliminar"] == 'true') {?>
-                                            <button class="dropdown-item"
-                                                onclick="eliminar(<?=$mostrar_unidad[0]['id'];?>);">Eliminar</button>
-                                            <?php }}?>
                                         </div>
                                         </li>
                                         <li class="nav-item dropdown">
@@ -72,18 +60,18 @@ if (isset($response3[0]["consultar"])) {
                                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                                                 Contenidos <span class="caret"></span>
                                             </a>
-                                            <?php }}?>
-
+                                            
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#contenidos" data-toggle="tab">Ver</a>
                                                 <?php
 if (isset($response3[0]["registrar"])) {
     if ($response3[0]["registrar"] == 'true') {?>
                                                 <a class="dropdown-item"
-                                                    onclick="contenidos(<?=$id_unidad?>);">Agregar</a>
+                                                onclick="contenidos(<?=$id_unidad?>);">Agregar/Quitar</a>
                                             </div>
                                             <?php }}?>
                                         </li>
+                                        <?php }}?>
                                         <li class="nav-item dropdown">
                                             <?php
 if (isset($response2[0]["consultar"])) {
@@ -91,19 +79,23 @@ if (isset($response2[0]["consultar"])) {
                                             <a  class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                                                 Evaluaciones <span class="caret"></span>
                                             </a>
-                                            <?php }}?>
                                             <div class="dropdown-menu">
                                                 <a id="Veractive" class="dropdown-item" href="#evaluaciones" data-toggle="tab">Ver</a>
                                                 <?php
 if (isset($response2[0]["registrar"])) {
     if ($response2[0]["registrar"] == 'true') {?>
                                                 <a id="Evaluacionesactive" class="dropdown-item" href="#agregar-evaluacion"
-                                                    data-toggle="tab">Agregar</a>
+                                                data-toggle="tab">Agregar</a>
                                                 <?php }}?>
                                             </div>
                                         </li>
+                                        <?php }}?>
                                     </ul>
                                 </div><!-- /.card-header -->
+                                    <?php }else{
+                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        No tiene permisos para este modulo.</div>';
+                                    }}?>
                                 <div class="card-body">
                                     <div class="tab-content">
                                         <!--Mostrar Unidad-->
@@ -111,11 +103,89 @@ if (isset($response2[0]["registrar"])) {
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                                         <div class="tab-pane active" id="unidades">
-                                            <div class="card-body">
-                                                <blockquote>
-                                                    <p><?php echo $mostrar_unidad[0]['descripcion'] ?></p>
-                                                </blockquote>
+                                            <h6 class="display-6" style="font-size:24px;">Descripción de la unidad:</h6>
+                                            <div class="card-body p-0">
+                                                <div class="card card-light">
+                                                    <blockquote>
+                                                        <p><?php echo $mostrar_unidad[0]['descripcion'] ?></p>
+                                                    </blockquote>
+                                                </div>
+                                                <hr>
                                             </div>
+                                            <?php
+if (isset($response3[0]["consultar"])) {
+    if ($response3[0]["consultar"] == 'true') {?>
+                                            <div class="card-body p-0">
+                                                <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
+                                                    <h6 class="display-6" style="font-size:22px;">Contenido</h6>
+                                                    <hr>
+                                                <div class="card card-light">
+                                                    <blockquote>
+                                                        <h4><?php echo $contenido['nombre'] ?></h4>
+                                                        <p><?php echo $contenido['descripcion'] ?></p>
+                                                        <a href="">Documento Ajunto <i
+                                                                class="fas fa-cloud-download-alt"></i></a>
+                                                    </blockquote>
+                                                </div>
+                                                    <hr>
+                                                <?php }}?>
+                                            </div>
+                                            <?php }}
+                                            if (isset($response2[0]["consultar"])) {
+    if ($response2[0]["consultar"] == 'true') {?>
+                                            <div class="card-body p-0">
+                                                <?php foreach ($listar_evaluaciones as $evaluacion) {?>
+                                                    <h6 class="display-6" style="font-size:22px;">Evaluación</h6>
+                                                    <hr>
+                                                    <div class="card card-light border">
+                                                        <div class="position-relative">
+                                                            <div class="position-absolute top-0 end-0">
+                                                                <ul class="nav nav-pills ml-auto">
+                                                                    <li class="nav-item dropdown">
+                                                                        <a class="nav-link" data-toggle="dropdown"
+                                                                            style="cursor: pointer">
+                                                                            <i class="fas fa-ellipsis-h"></i></i><span
+                                                                                class="caret"></span>
+                                                                        </a>
+                                                                        <div class="dropdown-menu">
+                                                                            <div class="d-flex flex-column">
+                                                                                <a class="d-flex btn btn-sm"
+                                                                                    href=" #comentarios" type="button"
+                                                                                    onclick="cargar_datosEvaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Editar</a>
+                                                                                <a class="d-flex btn btn-sm"
+                                                                                    href="#comentarios" type="button"
+                                                                                    onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <blockquote>
+                                                            <h4><?php echo $evaluacion['nombre'] ?></h4>
+                                                        <p>Fecha de apertura:
+                                                            <?=date('d-m-Y h:i:s', strtotime($evaluacion['inicio']));?>
+                                                            <br>
+                                                        </p>
+                                                        <p>Fecha de cierre:
+                                                            <?=date('d-m-Y h:i:s', strtotime($evaluacion['cierre']));?>
+                                                        </p>
+                                                        <a href="">Documento Ajunto <i
+                                                                class="fas fa-cloud-download-alt"></i></a>
+                                                    </blockquote>
+                                                    <div class="card-footer">
+                                                        <a
+                                                            href="?pagina=MostrarEvaluacion&id_unidad_evaluacion=<?=$evaluacion['unidad_evaluacion'];?>">
+
+                                                            <button type="button" id="entregar" href="#"
+                                                                class="btn btn-primary float-right">Ver</button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <?php }?>
+                                            </div>
+                                            <?php }}?>
                                         </div>
                                         <?php }}?>
                                         <!--/Mostrar Unidad-->
@@ -152,8 +222,8 @@ if (isset($response[0]["consultar"])) {
                                         <!--/Editar Unidad-->
                                         <!--Mostrar Contenidos-->
                                         <div class="tab-pane" id="contenidos">
-                                            <h3>Contenidos</h3>
-                                            <div class="card-body">
+                                            <h6 class="display-6" style="font-size:22px;">Contenidos</h6>
+                                            <div class="card-body p-0">
                                                 <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
                                                 <div class="card card-light">
                                                     <blockquote>
@@ -169,38 +239,35 @@ if (isset($response[0]["consultar"])) {
                                         <!--/Mostrar Contenidos-->
                                         <!--Mostrar evaluaciones-->
                                         <div class="tab-pane" id="evaluaciones">
-                                            <h3>Evaluaciones</h3>
-                                            <div class="card-body">
+                                        <h6 class="display-6" style="font-size:22px;">Evaluaciones</h6>     
+                                            <div class="card-body p-0">
                                                 <?php foreach ($listar_evaluaciones as $evaluacion) {?>
-                                                    <h4><?php echo $evaluacion['nombre'] ?></h4>
-                                                    <div class="card card-light border border-dark">
-                                                        <blockquote>
+                                                    <div class="card card-light border">
                                                         <div class="position-relative">
                                                             <div class="position-absolute top-0 end-0">
-                                                            <ul class="nav nav-pills ml-auto">
-                                                                <li class="nav-item dropdown">
-                                                                    <a class="nav-link" data-toggle="dropdown"
-                                                                        style="cursor: pointer">
-                                                                        <i class="fas fa-ellipsis-h"></i></i><span
-                                                                            class="caret"></span>
-                                                                    </a>
-                                                                    <div class="dropdown-menu">
-                                                                        <div class="d-flex flex-column">
-                                                                            <a class="d-flex btn btn-sm"
-                                                                                href=" #comentarios" type="button"
-                                                                                onclick="cargar_datosEvaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Editar</a>
-                                                                            <a class="d-flex btn btn-sm"
-                                                                                href="#comentarios" type="button"
-                                                                                onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
+                                                                <ul class="nav nav-pills ml-auto">
+                                                                    <li class="nav-item dropdown">
+                                                                        <a class="nav-link" data-toggle="dropdown"
+                                                                            style="cursor: pointer">
+                                                                            <i class="fas fa-ellipsis-h"></i></i><span
+                                                                                class="caret"></span>
+                                                                        </a>
+                                                                        <div class="dropdown-menu">
+                                                                            <div class="d-flex flex-column">
+                                                                                <a class="d-flex btn btn-sm"
+                                                                                    href=" #comentarios" type="button"
+                                                                                    onclick="cargar_datosEvaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Editar</a>
+                                                                                <a class="d-flex btn btn-sm"
+                                                                                    href="#comentarios" type="button"
+                                                                                    onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </li>
+                                                                    </li>
                                                                 </ul>
                                                             </div>
-                                                            
-                                                                
-                                                            
-
+                                                        </div>
+                                                        <blockquote>
+                                                            <h4><?php echo $evaluacion['nombre'] ?></h4>
                                                         <p>Fecha de apertura:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['inicio']));?>
                                                             <br>
@@ -211,7 +278,7 @@ if (isset($response[0]["consultar"])) {
                                                         <a href="">Documento Ajunto <i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
-                                                    <div class="card-footer border border-secondary">
+                                                    <div class="card-footer">
                                                         <a
                                                             href="?pagina=MostrarEvaluacion&id_unidad_evaluacion=<?=$evaluacion['unidad_evaluacion'];?>">
 
@@ -220,6 +287,7 @@ if (isset($response[0]["consultar"])) {
                                                         </a>
                                                     </div>
                                                 </div>
+                                                <hr>
                                                 <?php }?>
                                             </div>
                                         </div>

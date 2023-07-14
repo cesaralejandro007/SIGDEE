@@ -68,15 +68,44 @@
                                             </div>
                                             <div style="margin-top:4%;">
                                                 <?php foreach ($listar_unidad as $unidad) {?>
-                                                <a href="?pagina=Unidad&id_unidad=<?=$unidad['id'];?>">
-                                                    <div class="callout callout-info">
-                                                        <h5><?php echo $unidad['unidad']; ?></h5>
+                                                    <div class="callout callout-info d-flex d-flex justify-content-between">
+                                                        <a class="text-dark" style="width: 100%; height: 100%; text-decoration: none;" href="?pagina=Unidad&id_unidad=<?=$unidad['id'];?>">
+                                                            <div>
+                                                                <h5><?php echo $unidad['unidad']; ?></h5>
 
-                                                        <p><?php echo $unidad['descripcion'] ?>.</p>
+                                                                <p><?php echo $unidad['descripcion'] ?>.</p>
+                                                            </div>
+                                                            <div>
+                                                                <ul class="nav nav-pills ml-auto ">
+                                                                    <li class="nav-item dropdown">
+                                                                        <a class="nav-link"  style="width: 100%; height: 100%; text-decoration: none;" data-toggle="dropdown"
+                                                                            style="cursor: pointer">
+                                                                            <i class="fas fa-ellipsis-h"></i></i><span
+                                                                                class="caret"></span>
+                                                                        </a>
+                                                                        <div class="dropdown-menu">
+                                                                            <div class="d-flex flex-column">
+                                                                                <?php
+                                                                if (isset($unidadpermisos[0]["modificar"])) {
+                                                                    if ($unidadpermisos[0]["modificar"] == 'true') {?>
+                                                                                <a class="d-flex btn btn-sm" style="text-decoration: none;" onclick="cargar_datos_Unidad(<?=$unidad['id'];?>);">Editar</a>
+                                                                                <?php }}
+                                                                if (isset($unidadpermisos[0]["eliminar"])) {
+                                                                    if ($unidadpermisos[0]["eliminar"] == 'true') {?>
+                                                                                <a class="d-flex btn btn-sm" style="text-decoration: none;"
+                                                                                    type="button"
+                                                                                    onclick="eliminarUnidad(<?=$unidad['id'];?>);">Eliminar</a>
+                                                                        <?php }}?>      
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </a>
                                                     </div>
-                                                </a>
                                                 <?php }?>
                                             </div>
+                                            
                                         </div>
                                         <div class="tab-pane" id="participantes">
                                             <div class="card-body p-0">
