@@ -62,14 +62,20 @@ class UnidadEvaluacionModelo extends connectDB{
 
 	public function modificarEvaluacion()
     {
+		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
+		if($resf){
             try {
-                $this->conex->query("UPDATE unidad_evaluaciones SET id_unidad = '$this->id_unidad',id_evaluacion = '$this->id_evaluacion', fecha_inicio = '$this->fecha_inicio', nombre = '$this->fecha_cierre' WHERE id_evaluacion = '$this->id_evaluacion'");
+                $this->conex->query("UPDATE unidad_evaluaciones SET id_unidad = '$this->id_unidad',id_evaluacion = '$this->id_evaluacion', fecha_inicio = '$this->fecha_inicio', fecha_cierre = '$this->fecha_cierre' WHERE id = '$this->id'");
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Modificacion exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
+		}else{
+				$respuesta['resultado'] = 3;
+				$respuesta['mensaje'] = "Verifique la fecha de apertura";
+		}
         return $respuesta;
     }
 

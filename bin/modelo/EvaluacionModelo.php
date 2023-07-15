@@ -114,6 +114,11 @@ class EvaluacionModelo extends connectDB
 
     public function elmininarEvaluacion_unidad($id)
     {
+        $validar_evaluacion_a_eliminar = $this->relacion_evaluacion_calificacion($id);
+        if($validar_evaluacion_a_eliminar){
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "La evaluación no puede ser borrardo, existe un vinculo con calificación del estudiante.";
+        }else{
         try {
                 $this->conex->query("DELETE from unidad_evaluaciones
                 WHERE
@@ -125,6 +130,7 @@ class EvaluacionModelo extends connectDB
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
+        }
         return $respuesta;
     }
 
@@ -201,6 +207,23 @@ class EvaluacionModelo extends connectDB
     {
         try {
             $resultado = $this->conex->prepare("SELECT * FROM unidad_evaluaciones,evaluaciones WHERE evaluaciones.id = unidad_evaluaciones.id_evaluacion and evaluaciones.id='$id'");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function relacion_evaluacion_calificacion($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM estudiante_evaluacion WHERE id_unidad_evaluacion='$id'");
             $resultado->execute();
             $fila = $resultado->fetchAll();
             if ($fila) {

@@ -4,7 +4,7 @@ var keyup_descripcion = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,100}$/;
 document.onload = carga();
 function carga() {
   /*--------------VALIDACION PARA NOMBRE--------------------*/
-  document.getElementById("nombre").maxLength = 30;
+ /*  document.getElementById("nombre").maxLength = 30;
   document.getElementById("nombre").onkeypress = function (e) {
     er = /^[A-Za-z0-9\s\u00f1\u00d1\u00E0-\u00FC]*$/;
     validarkeypress(er, e);
@@ -16,11 +16,11 @@ function carga() {
       document.getElementById("snombre"),
       "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
     );
-  };
+  }; */
   /*--------------FIN VALIDACION PARA NOMBRE--------------------*/
 
   /*--------------VALIDACION PARA DESCRIPCION--------------------*/
-  document.getElementById("descripcion").maxLength = 100;
+ /*  document.getElementById("descripcion").maxLength = 100;
   document.getElementById("descripcion").onkeypress = function (e) {
     er = /^[A-Za-z0-9\b\s\u00f1\u00d1\u00E0-\u00FC]*$/;
     validarkeypress(er, e);
@@ -32,11 +32,11 @@ function carga() {
       document.getElementById("sdescripcion"),
       "* El campo debe contener de 2 a 100 letras."
     );
-  };
+  }; */
   /*--------------FIN VALIDACION PARA DESCRIPCION--------------------*/
 
   /*----------------------CRUD DEL MODULO------------------------*/
-  document.getElementById("enviar").onclick = function () {
+/*   document.getElementById("enviar").onclick = function () {
       var datos = new FormData();
 
       datos.append("accion", "modificar");
@@ -46,10 +46,22 @@ function carga() {
       datos.append("id_aula", $("#aula1").val());
       enviaAjax(datos);
   };
-
+ */ 
+ document.getElementById("Veractive").onclick = function () {
+  $("#Evaluacionesactive").text("Agregar");
+  $("#nombre_evaluacion").val("");
+  $("#fecha_apertura").val("");
+  $("#fecha_cierre").val("");
+}
+  document.getElementById("Evaluacionesactive").onclick = function () {
+    $("#guardar-evaluacion").text("Agregar");
+    document.getElementById("accion_evaluacion").value = "guardar_evaluacion";
+  }
+  
   document.getElementById("guardar-evaluacion").onclick = function () {
     var datos = new FormData();
     datos.append("accion", $("#accion_evaluacion").val());
+    datos.append("id", $("#id_unica").val());
     datos.append("id_unidad", $("#id_unidad").val());
     datos.append("evaluacion", $("#id_evaluacion").val());
     datos.append("fecha_inicio", $("#fecha_apertura").val());
@@ -282,7 +294,7 @@ function confirm_eliminar(datos) {
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
-    timer: 2500,
+    timer: 3000,
     timerProgressBar: true,
   });
   $.ajax({
@@ -305,7 +317,7 @@ function confirm_eliminar(datos) {
 
         setTimeout(function () {
           window.location.reload();
-        }, 2000);
+        }, 3000);
       } else if (res.estatus == 2) {
         toastMixin.fire({
 
@@ -316,7 +328,7 @@ function confirm_eliminar(datos) {
 
         setTimeout(function () {
           window.location.reload();
-        }, 2000);
+        }, 3000);
       }else if (res.estatus == 3){
         toastMixin.fire({
 
@@ -400,11 +412,13 @@ function mostrarEvaUni(datos) {
     cache: false,
     success: function (response) {
       var res = JSON.parse(response);
+      $("#id_unica").val(res.id_unica);
       $("#id_evaluacion").val(res.id);
       $("#nombre_evaluacion").val(res.nombre);
       $("#fecha_apertura").val(res.fechai);
       $("#fecha_cierre").val(res.fechac);
       $("#Evaluacionesactive").click();
+      $("#Evaluacionesactive").text("Modificar");
       $("#guardar-evaluacion").text("Modificar");
       document.getElementById("accion_evaluacion").value = "modificarevaluacion";
     },

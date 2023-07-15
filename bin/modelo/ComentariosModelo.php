@@ -73,7 +73,7 @@ class ComentariosModelo extends connectDB
 
     public function listarcomentario($id)
     {
-        $resul = $this->conex->prepare("SELECT c.id as id, c.mensaje as mensaje, date_format(c.fecha, '%d-%m-%Y %H:%m:%s') as fecha, u.nombre as nombre, u.apellido as apellido, c.cedula_usuario as cedula, c.id_publicacion as id_publicacion FROM comentario c INNER JOIN usuario u ON c.cedula_usuario= u.cedula WHERE id_publicacion='$id' ORDER BY c.fecha");
+        $resul = $this->conex->prepare("SELECT c.id as id, c.mensaje as mensaje, date_format(c.fecha, '%d-%m-%Y %H:%m:%s') as fecha, u.primer_nombre as nombre, u.primer_apellido as apellido, c.cedula_usuario as cedula, c.id_publicacion as id_publicacion FROM comentario c INNER JOIN usuario u ON c.cedula_usuario= u.cedula WHERE id_publicacion='$id' ORDER BY c.fecha");
         try {
             $resul->execute();
             $num = $resul->rowCount();

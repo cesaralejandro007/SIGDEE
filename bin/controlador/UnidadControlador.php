@@ -161,15 +161,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 return 0;
                 break;
                 case 'editarEvaluacion':
+
                     $datos = $evaluaciones->cargarEvaluacion($_POST['id']);
                     foreach ($datos as $valor) {
-                        echo json_encode([
-                            'id' => $valor["id"],
-                            'nombre' => $valor["nombre"],
-                            'fechai' => $valor["fecha_inicio"],
-                            'fechac' => $valor["fecha_cierre"]
-                        ]);
+                        $id = $valor['id'];
+                        $nombre = $valor['nombre'];
+                        $finicio = $valor['fecha_inicio'];
+                        $fcierre = $valor['fecha_cierre'];
                     }
+                    $fi = explode(" ", $finicio);
+                    $fechai = $fi[0];
+                    $horai = $fi[1];
+                    $ffi = explode("-", $fechai);
+                    $fieditar = $ffi[2] . "/" . $ffi[1] . "/" . $ffi[0] . " " . $horai;
+        
+                    $fc = explode(" ", $fcierre);
+                    $fechac = $fc[0];
+                    $horac = $fc[1];
+                    $ffc = explode("-", $fechac);
+                    $fceditar = $ffc[2] . "/" . $ffc[1] . "/" . $ffc[0] . " " . $horac;
+                        echo json_encode([
+                            'id_unica' =>$_POST['id'],
+                            'id' =>  $id,
+                            'nombre' => $nombre,
+                            'fechai' => $fieditar,
+                            'fechac' => $fceditar
+                        ]);
                     return 0;
                     break;
             case 'mostrar_contenidos':
@@ -261,11 +278,22 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Modificar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
-
+                $unidad_evaluacion->set_id($_POST['id']);
                 $unidad_evaluacion->set_id_evaluacion($_POST['evaluacion']);
                 $unidad_evaluacion->set_id_unidad($_POST['id_unidad']);
-                $unidad_evaluacion->set_fecha_inicio($_POST['fecha_inicio']);
-                $unidad_evaluacion->set_fecha_cierre($_POST['fecha_cierre']);
+                $fi = explode(" ", $_POST['fecha_inicio']);
+                $fechai = $fi[0];
+                $horai = $fi[1];
+                $ffi = explode("/", $fechai);
+                $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
+
+                $fc = explode(" ", $_POST['fecha_cierre']);
+                $fechac = $fc[0];
+                $horac = $fc[1];
+                $ffc = explode("/", $fechac);
+                $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+                $unidad_evaluacion->set_fecha_inicio($fisql);
+                $unidad_evaluacion->set_fecha_cierre($fcsql);
                 $response = $unidad_evaluacion->modificarEvaluacion();
                 if ($response['resultado']==1) {
                     $id_unidad_evaluacion = $unidad_evaluacion->obtener_id_unidad_evaluacion();
@@ -278,7 +306,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
-                        'title' => 'Evaluación agregada',
+                        'title' => 'Evaluación modificada',
                         'message' => $response['mensaje']
                     ]);
                     $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Modificar Evaluación");
@@ -286,7 +314,15 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
-                        'title' => 'Evaluación agregada',
+                        'title' => 'Evaluación modificada',
+                        'message' => $response['mensaje']
+                    ]);
+                }
+                else if ($response['resultado']==3) {
+                    echo json_encode([
+                        'estatus' => '3',
+                        'icon' => 'info',
+                        'title' => 'Evaluación modificada',
                         'message' => $response['mensaje']
                     ]);
                 }

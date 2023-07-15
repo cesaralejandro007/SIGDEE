@@ -188,38 +188,6 @@ if (isset($response3[0]["consultar"])) {
                                             <?php }}?>
                                         </div>
                                         <?php }}?>
-                                        <!--/Mostrar Unidad-->
-                                        <!--Editar Unidad-->
-                                        <div class="tab-pane" id="editar">
-                                            <form class="form-horizontal">
-                                                <input type="hidden" name="id" id="id" value="<?=$id_unidad?>">
-                                                <input type="hidden" name="aula1" id="aula1"
-                                                    value="<?=$mostrar_unidad[0]['id_aula']?>">
-                                                <div class="form-group row">
-                                                    <label for="inputName"
-                                                        class="col-sm-2 col-form-label">Nombre</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="nombre"
-                                                            name="nombre" value="<?=$mostrar_unidad[0]['nombre']?>">
-                                                    </div>
-                                                    <span id="snombre"></span>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputExperience"
-                                                        class="col-sm-2 col-form-label">Descripción</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control" id="descripcion" id="descripcion"
-                                                            value="<?=$mostrar_unidad[0]['descripcion'];?>"><?php echo $mostrar_unidad[0]['descripcion']; ?></textarea>
-                                                    </div>
-                                                    <span id="sdescripcion"></span>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <button type="button" id="enviar"
-                                                        class="btn btn-primary">Modificar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--/Editar Unidad-->
                                         <!--Mostrar Contenidos-->
                                         <div class="tab-pane" id="contenidos">
                                             <h6 class="display-6" style="font-size:22px;">Contenidos</h6>
@@ -295,11 +263,12 @@ if (isset($response3[0]["consultar"])) {
                                         <!--Agregar Evaluación-->
                                         <div class="tab-pane" id="agregar-evaluacion">
                                             <form class="form-horizontal">
+                                            <input type="hidden" name="id_unica" id="id_unica">
                                                 <input type="hidden" name="accion_evaluacion" id="accion_evaluacion" value="guardar_evaluacion">
                                                 <input type="hidden" name="id_evaluacion" id="id_evaluacion"
                                                     value="<?=$mostrar_unidad[0]['id_aula']?>">
                                                 <div class="form-group row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <label>Nombre</label>
                                                         <div class="input-group" id="buscar">
                                                             <input type="text" class="form-control"
