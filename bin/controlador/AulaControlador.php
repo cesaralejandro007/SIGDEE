@@ -73,7 +73,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
-                        'title' => $modulo,
+                        'title' => $modulo_unidad,
                         'message' => 'Registro exitoso'
                     ]);
                     $bitacora->incluir($id_usuario_rolU,$entornoU,$fechaU,"Registro");
@@ -411,7 +411,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'estatus' => '1',
                     'icon' => 'success',
-                    'title' => "Usuario: ",
+                    'title' => $modulo_unidad,
                     'message' => $response['mensaje']
                 ]);
                 $bitacora->incluir($id_usuario_rol,"Unidad",$fecha,"Eliminación");

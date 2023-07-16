@@ -76,7 +76,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'estatus' => '1',
                     'icon' => 'success',
-                    'title' => "Usuario: ",
+                    'title' => "Unidad: ",
                     'message' => $response['mensaje']
                 ]);
                 $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");

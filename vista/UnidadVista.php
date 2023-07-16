@@ -103,7 +103,7 @@ if (isset($response2[0]["registrar"])) {
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                                         <div class="tab-pane active" id="unidades">
-                                            <h6 class="display-6" style="font-size:24px;">Descripción de la unidad:</h6>
+                                            <h6 class="display-6" style="font-size:22px;">Descripción de la unidad:</h6>
                                             <div class="card-body p-0">
                                                 <div class="card card-light">
                                                 <blockquote style="border-radius: 4px 0px 0px 0px;">
@@ -117,7 +117,7 @@ if (isset($response3[0]["consultar"])) {
     if ($response3[0]["consultar"] == 'true') {?>
                                             <div class="card-body p-0">
                                                 <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
-                                                    <h6 class="display-6" style="font-size:22px;">Contenido:</h6>
+                                                    <h6 class="display-6" style="font-size:20px;">Contenido:</h6>
                                                     
                                                 <div class="card card-light">
                                                     <blockquote style="border-radius: 4px 0px 0px 0px;">
@@ -135,7 +135,7 @@ if (isset($response3[0]["consultar"])) {
     if ($response2[0]["consultar"] == 'true') {?>
                                             <div class="card-body p-0">
                                                 <?php foreach ($listar_evaluaciones as $evaluacion) {?>
-                                                    <h6 class="display-6" style="font-size:22px;">Evaluación:</h6>
+                                                    <h6 class="display-6" style="font-size:20px;">Evaluación:</h6>
                                                     
                                                     <div class="card card-light border">
                                                         <div class="position-relative">
