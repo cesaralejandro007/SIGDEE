@@ -21,7 +21,7 @@
                 <div class="card-header pb-1 px-1">
                     <div class="container-fluid d-flex justify-content-between flex-wrap">
                         <div>
-                            <h5>Unidad</h5>
+                            <h4>Unidad</h4>
                         </div>
                         <div class="d-flex flex-wrap">
                         <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
@@ -42,7 +42,7 @@
 if (isset($response[0]["consultar"])) {
     if ($response[0]["consultar"] == 'true') {?>
                                 <div class="card-header d-flex p-0">
-                                    <h3 class="card-title p-3"><?php echo $mostrar_unidad[0]['nombre']; ?></h3>
+                                    <h3 class="card-title fw-bold p-3"><?php echo $mostrar_unidad[0]['nombre']; ?></h3>
                                     <ul class="nav nav-pills ml-auto p-2">
                                         <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
@@ -106,28 +106,28 @@ if (isset($response[0]["consultar"])) {
                                             <h6 class="display-6" style="font-size:24px;">Descripción de la unidad:</h6>
                                             <div class="card-body p-0">
                                                 <div class="card card-light">
-                                                    <blockquote>
+                                                <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <p><?php echo $mostrar_unidad[0]['descripcion'] ?></p>
                                                     </blockquote>
                                                 </div>
-                                                <hr>
+                                                <hr style="color: #D7DBDD;">
                                             </div>
                                             <?php
 if (isset($response3[0]["consultar"])) {
     if ($response3[0]["consultar"] == 'true') {?>
                                             <div class="card-body p-0">
                                                 <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
-                                                    <h6 class="display-6" style="font-size:22px;">Contenido</h6>
-                                                    <hr>
+                                                    <h6 class="display-6" style="font-size:22px;">Contenido:</h6>
+                                                    
                                                 <div class="card card-light">
-                                                    <blockquote>
+                                                    <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>
                                                         <a href="">Documento Ajunto <i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                 </div>
-                                                    <hr>
+                                                <hr style="color: #D7DBDD;">
                                                 <?php }}?>
                                             </div>
                                             <?php }}
@@ -135,13 +135,15 @@ if (isset($response3[0]["consultar"])) {
     if ($response2[0]["consultar"] == 'true') {?>
                                             <div class="card-body p-0">
                                                 <?php foreach ($listar_evaluaciones as $evaluacion) {?>
-                                                    <h6 class="display-6" style="font-size:22px;">Evaluación</h6>
-                                                    <hr>
+                                                    <h6 class="display-6" style="font-size:22px;">Evaluación:</h6>
+                                                    
                                                     <div class="card card-light border">
                                                         <div class="position-relative">
                                                             <div class="position-absolute top-0 end-0">
                                                                 <ul class="nav nav-pills ml-auto">
                                                                     <li class="nav-item dropdown">
+                                                                        <?php
+                                                                    if ($response2[0]["modificar"] != 'false' || $response2[0]["eliminar"] != 'false') {?>
                                                                         <a class="nav-link" data-toggle="dropdown"
                                                                             style="cursor: pointer">
                                                                             <i class="fas fa-ellipsis-h"></i></i><span
@@ -149,19 +151,27 @@ if (isset($response3[0]["consultar"])) {
                                                                         </a>
                                                                         <div class="dropdown-menu">
                                                                             <div class="d-flex flex-column">
+                                                                            <?php
+                                                                            if (isset($response2[0]["modificar"])) {
+                                                                                if ($response2[0]["modificar"] == 'true') {?>
                                                                                 <a class="d-flex btn btn-sm"
-                                                                                    href=" #comentarios" type="button"
+                                                                                    type="button"
                                                                                     onclick="cargar_datosEvaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Editar</a>
+                                                                            <?php }}
+                                                                            if (isset($response2[0]["eliminar"])) {
+                                                                                if ($response2[0]["eliminar"] == 'true') {?>
                                                                                 <a class="d-flex btn btn-sm"
-                                                                                    href="#comentarios" type="button"
+                                                                                    type="button"
                                                                                     onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
+                                                                            <?php }}?>
                                                                             </div>
                                                                         </div>
+                                                                    <?php }?>
                                                                     </li>
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                        <blockquote>
+                                                        <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                             <h4><?php echo $evaluacion['nombre'] ?></h4>
                                                         <p>Fecha de apertura:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['inicio']));?>
@@ -182,7 +192,7 @@ if (isset($response3[0]["consultar"])) {
                                                         </a>
                                                     </div>
                                                 </div>
-                                                <hr>
+                                                <hr style="color: #D7DBDD;">
                                                 <?php }?>
                                             </div>
                                             <?php }}?>
@@ -194,7 +204,7 @@ if (isset($response3[0]["consultar"])) {
                                             <div class="card-body p-0">
                                                 <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
                                                 <div class="card card-light">
-                                                    <blockquote>
+                                                    <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>
                                                         <a href="">Documento Ajunto <i
@@ -223,10 +233,10 @@ if (isset($response3[0]["consultar"])) {
                                                                         <div class="dropdown-menu">
                                                                             <div class="d-flex flex-column">
                                                                                 <a class="d-flex btn btn-sm"
-                                                                                    href=" #comentarios" type="button"
+                                                                                    type="button"
                                                                                     onclick="cargar_datosEvaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Editar</a>
                                                                                 <a class="d-flex btn btn-sm"
-                                                                                    href="#comentarios" type="button"
+                                                                                    type="button"
                                                                                     onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
                                                                             </div>
                                                                         </div>
@@ -234,7 +244,7 @@ if (isset($response3[0]["consultar"])) {
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                        <blockquote>
+                                                        <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                             <h4><?php echo $evaluacion['nombre'] ?></h4>
                                                         <p>Fecha de apertura:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['inicio']));?>
@@ -255,7 +265,7 @@ if (isset($response3[0]["consultar"])) {
                                                         </a>
                                                     </div>
                                                 </div>
-                                                <hr>
+                                                <hr style="color: #D7DBDD;">
                                                 <?php }?>
                                             </div>
                                         </div>
