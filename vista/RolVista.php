@@ -49,7 +49,7 @@
 foreach ($r1 as $valor) {
     if (isset($valor["nombre"])) {?>
                                             <tr>
-                                                <?php if ($valor['nombre'] != 'Super Usuario' and $valor['nombre'] != 'Administrador') {?>
+
                                                 <td class="project-actions text-left" style="width:20%;">
                                                     <div class="d-flex">
                                                     <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-placement="top" title="Editar"
@@ -63,18 +63,7 @@ foreach ($r1 as $valor) {
                                                                 class="fa fa-lock"></i></button>
                                                     </div>
                                                 </td>
-                                                <?php } else {?>
-                                                <td class="project-actions text-left" style="width:30%;">
-                                                    <div class="d-flex">
-                                                    <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-placement="top" title="Editar" disabled><i
-                                                                class="fas fa-edit"></i></button>
-                                                                <button class="btn mr-2" style="background:#9D2323;color:white"  type="button" data-toggle="modal" data-placement="top" title="Eliminar" disabled><i
-                                                                class="fas fa-trash"></i></button>
-                                                                <button class="btn mr-2" style="background:#06406F;color:white"  type="button" data-toggle="modal" data-placement="top" title="Permisos" disabled><i
-                                                                class="fa fa-lock"></i></button>
-                                                    </div>
-                                                </td>
-                                                <?php }?>
+
                                                 <td id="usuario<?php echo $valor['id']; ?>">
                                                     <?php echo $valor['nombre']; ?></td>
                                             </tr>
@@ -204,7 +193,7 @@ foreach ($r1 as $valor) {
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
                                                                     <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
                                                                         <input type="checkbox" name='modificar[]' id="modificar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
                                                                         <span>
@@ -217,7 +206,7 @@ foreach ($r1 as $valor) {
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Agregar Evaluacion' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
                                                                     <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
                                                                         <input type="checkbox" name='eliminar[]'id="eliminar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
                                                                         <span>

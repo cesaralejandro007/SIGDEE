@@ -37,9 +37,7 @@ function carga() {
 
   /*----------------------CRUD DEL MODULO------------------------*/
   document.getElementById("enviar").onclick = function () {
-
       var datos = new FormData();
-      alert($("#accion").val());
       datos.append("accion", $("#accion").val());
       datos.append("id", $("#id").val());
       datos.append("nombre", $("#nombre").val());

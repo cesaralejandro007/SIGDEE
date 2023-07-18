@@ -107,9 +107,9 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="tab-pane" id="participantes">
+                                        <div class="tab-pane table-responsive" id="participantes">
                                             <div class="card-body p-0">
-                                              <table id="funcionpaginacion" class="table table-striped projects table-responsive">
+                                              <table id="funcionpaginacion" class="table table-striped projects">
                                                   <thead>
                                                       <tr>
                                                           <th style="width: 20%">
