@@ -105,7 +105,7 @@ document.getElementById("button-addon").onclick = function(){
     fechat2 = convertDateFormat(fecha2);
     if(document.getElementById("fechad").value <= document.getElementById("fechah").value){
 
-      tabla = '<table id="example2" class="table table-striped table-hover m-1" style="font-size: 14px;">'+
+      tabla = '<div class="table-responsive><table id="example2" class="table table-striped table-hover m-1 " style="font-size: 14px;">'+
       '<thead>'+
          '<th>Fecha</th>'+
          '<th>Usuario</th>'+
@@ -170,7 +170,7 @@ data: "entorno"
 data: "accion"
 }
 ],
-responsive: true,
+responsive: false,
 autoWidth: false,
 ordering: true,
 info: true,
@@ -257,7 +257,7 @@ tabla +'<tfoot>'+
       '<th>Accion</th>'+
      '</tr>'+
  '</tfoot>'+
- '</table>';
+ '</table></div>';
 
  Swal.fire({
       title: 'Consulta de bitacora desde: '+fecha1 + ' hasta: '+ fecha2,

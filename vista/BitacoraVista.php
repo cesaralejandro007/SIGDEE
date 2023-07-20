@@ -10,6 +10,9 @@
     width: 80%;
     height: 80%;
   }
+  #swal2-html-container{
+    overflow-x: hidden;
+  }
 </style>
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
