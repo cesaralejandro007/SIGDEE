@@ -2,8 +2,15 @@
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
-
+<link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <body class="hold-transition sidebar-mini">
+<style>
+  .alerta-grande .swal2-popup {
+    width: 80%;
+    height: 80%;
+  }
+</style>
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
         <!-- Main Sidebar Container -->
@@ -25,6 +32,45 @@
                 </div>
                 <!-- Main content -->
                 <div class="card-body px-2 py-1">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header" style="background:#AEB6BF;">
+                            <h3 class="card-title font-weight-bold">CRITERIO DE BUSQUEDA</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" style="color:black"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex justify-content-center">
+                            <div class="row">
+                                    <div class="col-md-5 px-1">
+                                        <label class="col-form-label" for="nombre">Desde:</label>
+                                        <div class="input-group date" data-target-input="nearest">
+                                            <input type="text" id="fechad" class="form-control datetimepicker-input" data-target="#fechad" />
+                                            <div class="input-group-append" data-target="#fechad"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 px-1">
+                                        <label class="col-form-label" for="nombre">Hasta:</label>
+                                        <div class="input-group date" data-target-input="nearest">
+                                            <input type="text" id="fechah"
+                                                class="form-control datetimepicker-input" data-target="#fechah" />
+                                            <div class="input-group-append" data-target="#fechah"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 px-1 d-flex align-items-end">
+                                        <button class="btn btn-outline-primary" id="button-addon" type="button">Buscar</button>
+                                    </div>
+                                    <span class="text-danger" id="val_fecha"></span>
+                                </div>
+                            </div>
+                    </div>
+            </div>
                     <div class="row">
                         <div class="col-12">
                             <!-- /.card-header -->
@@ -100,8 +146,33 @@ foreach ($r1 as $valor) {?>
     <!-- Bootstrap 4 -->
 
     <!-- DataTables  & Plugins -->
-
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/moment/locale/es.js"></script>
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
     <script src="content/js/bitacora.js"></script>
+    <script>
+    $(function() {
+
+        //Date and time picker
+        $('#fechad').datetimepicker({
+            locale: 'es',
+            icons: {
+                time: 'far fa-clock'
+            }
+        });
+        $('#fechah').datetimepicker({
+            locale: 'es',
+            icons: {
+                time: 'far fa-clock'
+            }
+        });
+
+    })
+    </script>
+
 </body>
 
 </html>
