@@ -36,7 +36,7 @@ class BitacoraModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno;");
+        $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
@@ -51,7 +51,6 @@ class BitacoraModelo extends connectDB
     {
         $resultado = $this->conex->prepare("SELECT ur.id as id FROM usuarios_roles as ur INNER JOIN usuario u ON ur.id_usuario=u.id INNER JOIN rol r ON r.id=ur.id_rol WHERE r.nombre= '$nombre' AND u.id='$id_usuario'");
         $dato= "";
-        
         try {
             $resultado->execute();
             $respuestaArreglo = $resultado->fetchAll();
@@ -67,8 +66,7 @@ class BitacoraModelo extends connectDB
 
     public function buscar_id_entorno($entorno){
         $resultado = $this->conex->prepare("SELECT id FROM entorno_sistema WHERE nombre='$entorno';");
-        $dato= "";
-        
+        $respuestaArreglo = [];
         try {
             $resultado->execute();
             $respuestaArreglo = $resultado->fetchAll();

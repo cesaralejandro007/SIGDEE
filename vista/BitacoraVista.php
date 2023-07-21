@@ -38,15 +38,15 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header" style="background:#AEB6BF;">
-                            <h3 class="card-title font-weight-bold">CRITERIOS DE BUSQUEDA</h3>
+                            <h3 class="card-title font-weight-bold">Criterio de busqueda y mantenimiento de la bitacora</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus" style="color:black"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center">
-                                <div class="row">
-                                            <div class="col-md-5 px-1">
+                                <div class="row d-flex justify-content-center">
+                                            <div class="col-md-4 px-1">
                                                 <label class="col-form-label" for="nombre">Desde:</label>
                                                 <div class="input-group date" data-target-input="nearest">
                                                     <input type="text" id="fechad" class="form-control datetimepicker-input" data-target="#fechad" />
@@ -56,7 +56,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-5 px-1">
+                                            <div class="col-md-4 px-1">
                                                 <label class="col-form-label" for="nombre">Hasta:</label>
                                                 <div class="input-group date" data-target-input="nearest">
                                                     <input type="text" id="fechah"
@@ -67,8 +67,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 px-1 d-flex align-items-end">
-                                                <button class="btn btn-outline-primary" id="button-addon" type="button">Buscar</button>
+                                            <div class="col-md-3 px-1 d-flex align-items-end justify-content-end">
+                                                <button class="btn btn-outline-primary mx-1" id="button-addon" type="button">Buscar</button>
+                                                <button class="btn btn-outline-danger" id="Limpiar-bitacora" type="button">Limpiar</button>
                                             </div>
                                             <span class="text-danger" id="val_fecha"></span>
                                         </div>
@@ -132,6 +133,28 @@ foreach ($r1 as $valor) {?>
             </div>
             <!-- /.container-fluid -->
         </div>
+        </div>
+        <div class="modal fade show" id="consulta-bitacora">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="titulo">Consulta de bitacora</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" >
+                        <div class="table-responsive-lg" id="info_modal">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                <!-- /.modal-content -->
+                </div>
+            <!-- /.modal-dialog -->
+            </div>
         </div>
 
         <!-- /.modal -->

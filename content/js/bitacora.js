@@ -103,9 +103,10 @@ document.getElementById("button-addon").onclick = function(){
     fecha2 = document.getElementById("fechah").value;
     fechat1 = convertDateFormat(fecha1);
     fechat2 = convertDateFormat(fecha2);
-    if(document.getElementById("fechad").value <= document.getElementById("fechah").value){
-
-      tabla = '<div class="table-responsive><table id="example2" class="table table-striped table-hover m-1 " style="font-size: 14px;">'+
+    const valor1 = new Date(fechat1);
+    const valor2 = new Date(fechat2);
+    if(valor1.getTime() <= valor2.getTime()){
+      tabla = '<table id="example2" class="table table-striped table-hover m-1 " style="font-size: 14px;">'+
       '<thead>'+
          '<th>Fecha</th>'+
          '<th>Usuario</th>'+
@@ -129,8 +130,9 @@ $.ajax({
   processData: false,
   cache: false
 }).done(function(datos) {
-
-var data = JSON.parse(datos);
+  
+  
+  var data = JSON.parse(datos);
 var table = $("#example2").DataTable({
   language: {
     "lengthMenu": "Mostrar _MENU_ registros",
@@ -257,17 +259,10 @@ tabla +'<tfoot>'+
       '<th>Accion</th>'+
      '</tr>'+
  '</tfoot>'+
- '</table></div>';
+ '</table>';
 
- Swal.fire({
-      title: 'Consulta de bitacora desde: '+fecha1 + ' hasta: '+ fecha2,
-      html: tabla,
-      confirmButtonColor: '#15406D',
-      customClass: {
-        container: 'alerta-grande'
-      },
-      scrollbarPadding: false
-    });
+document.getElementById("info_modal").innerHTML = tabla;
+$("#consulta-bitacora").modal("show");
       document.getElementById("fechad").style.borderColor = "";
       document.getElementById("fechah").style.borderColor = "";
       document.getElementById("val_fecha").innerHTML= "";

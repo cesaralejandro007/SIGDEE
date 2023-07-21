@@ -18,10 +18,20 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'consultarfechabitacora') {
-            $r1 = $bitacora->listar_bitacora_rango($_POST['fecha_inicio'],$_POST['fecha_fin']);
-            echo json_encode($r1);
-            return 0;
+            $info_completa=[];
+            $consul_bitacora = $bitacora->listar_bitacora_rango($_POST['fecha_inicio'],$_POST['fecha_fin']);
+            foreach ($consul_bitacora as $r) {
+                $info_completa[]=[  
+                "fecha"    =>    $r['fecha'],
+                "usuario"    =>    $r['usuario'],
+                "rol"    =>    $r['rol'],
+                "entorno"    =>    $r['entorno'],
+                "accion"  =>$r['accion'],
+            ];
+            }
+            echo json_encode($info_completa);
         }
+        return 0;
     }
     $r1 = $bitacora->listar();
     $datos = [];
