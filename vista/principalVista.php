@@ -38,11 +38,11 @@
                   $usuario  = "root";
                   $password = "";
                   $servidor = "localhost";
-                  $basededatos = "practicas";
+                  $basededatos = "bdsystem";
                   $con = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
                   $db = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
 
-                  $SqlEventos   = ("SELECT * FROM eventoscalendar");
+                  $SqlEventos   = ("SELECT ue.id as id, a.nombre as aula, un.nombre as unidad, e.nombre as nombre, e.descripcion as descripcion, ue.fecha_inicio, ue.fecha_cierre from usuario u inner join aula_estudiante ae on u.id= ae.id_estudiante inner join aula a on ae.id_aula= a.id inner join unidad un on un.id_aula= a.id inner join unidad_evaluaciones ue on ue.id_unidad = un.id inner join evaluaciones as e on e.id= ue.id_evaluacion where u.id = ".$_SESSION['usuario']['id']."");
                   $resulEventos = mysqli_query($con, $SqlEventos);
                 ?>
                 <div id="calendar"></div>
@@ -74,7 +74,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Actividad Pendiente</h5>
+        <h5 class="modal-title">Actividad Pendiente</h5> 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -88,15 +88,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="fecha_inicio" class="col-sm-12 control-label">Fecha Inicio</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="fecha_inicio" id="fecha_inicio" placeholder="Fecha Inicio">
-      </div>
-    </div>
-    <div class="form-group">
       <label for="fecha_fin" class="col-sm-12 control-label">Fecha Final</label>
       <div class="col-sm-10">
         <input type="text" class="form-control" name="fecha_fin" id="fecha_fin" placeholder="Fecha Final">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-10">
+        <a id="referencia" href="">Ir a la evaluación</a>
       </div>
     </div>
   </form>
@@ -113,8 +112,15 @@
 <script type="text/javascript" src="assets/js/fullcalendar.min.js"></script>
 <script src='assets/locales/es.js'></script>
 
-<script type="text/javascript">
-$(document).ready(function() {
+
+        <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        </aside>
+    <!-- /.control-sidebar -->
+    <!-- ./wrapper -->
+</body>
+<script>
+  $(document).ready(function() {
   $("#calendar").fullCalendar({
     header: {
       left: "prev,next today",
@@ -125,49 +131,24 @@ $(document).ready(function() {
     locale: 'es',
 
     defaultView: "month",
-    navLinks: true, 
+    navLinks: false, 
     editable: false,
     eventLimit: true, 
     selectable: true,
     selectHelper: false,
-
-//Nuevo Evento
-  select: function(start, end){
-      $("#exampleModal").modal();
-      $("input[name=fecha_inicio]").val(start.format('DD-MM-YYYY'));
-       
-      var valorFechaFin = end.format("DD-MM-YYYY");
-      var F_final = moment(valorFechaFin, "DD-MM-YYYY").subtract(1, 'days').format('DD-MM-YYYY'); //Le resto 1 dia
-      $('input[name=fecha_fin').val(F_final);  
-
-    },
       
     events: [
       <?php
        while($dataEvento = mysqli_fetch_array($resulEventos)){ ?>
           {
           _id: '<?php echo $dataEvento['id']; ?>',
-          title: '<?php echo $dataEvento['evento']; ?>',
-          start: '<?php echo $dataEvento['fecha_inicio']; ?>',
-          end:   '<?php echo $dataEvento['fecha_fin']; ?>',
-          color: '<?php echo $dataEvento['color_evento']; ?>'
+          title: '<?php echo $dataEvento['nombre']; ?>',
+          start: '<?php echo '2023-07-25 09:00:00'; ?>',
+          end:   '<?php echo $dataEvento['fecha_cierre']; ?>',  
+          color: '#0D47AD'
           },
         <?php } ?>
     ],
-
-
-//Eliminar Evento
-eventRender: function(event, element) {
-    element
-      .find(".fc-content")
-      .prepend("<span id='btnCerrar'; class='closeon material-icons'>&#xe5cd;</span>");
-    
-    //Eliminar evento
-    element.find(".closeon").on("click", function() {
-
-    });
-  },
-
 
 
 //Modificar Evento del Calendario 
@@ -175,9 +156,9 @@ eventClick:function(event){
     var idEvento = event._id;
     $('input[name=idEvento').val(idEvento);
     $('input[name=evento').val(event.title);
-    $('input[name=fecha_inicio').val(event.start.format('DD-MM-YYYY'));
     $('input[name=fecha_fin').val(event.end.format("DD-MM-YYYY"));
-
+    document.getElementById("referencia").href =
+        "?pagina=MostrarEvaluacion&id_unidad_evaluacion=" + event._id;
     $("#modalUpdateEvento").modal();
   },
 
@@ -189,11 +170,4 @@ eventClick:function(event){
 });
 
 </script>
-        <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-        </aside>
-    <!-- /.control-sidebar -->
-    <!-- ./wrapper -->
-</body>
-
 </html>
