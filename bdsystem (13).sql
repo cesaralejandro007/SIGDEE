@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-07-2023 a las 02:35:56
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Tiempo de generación: 23-07-2023 a las 13:38:00
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `area_emprendimiento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `area_emprendimiento`
@@ -52,7 +52,7 @@ CREATE TABLE `aspirante_emprendimiento` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_emprendimiento` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `aspirante_emprendimiento`
@@ -74,7 +74,7 @@ CREATE TABLE `aula` (
   `nombre` varchar(25) NOT NULL,
   `id_emprendimiento_modulo` int(11) NOT NULL,
   `estatus` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `aula`
@@ -94,7 +94,7 @@ CREATE TABLE `aula_docente` (
   `id` int(11) NOT NULL,
   `id_aula` int(11) NOT NULL,
   `id_docente` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `aula_docente`
@@ -114,7 +114,7 @@ CREATE TABLE `aula_estudiante` (
   `id` int(11) NOT NULL,
   `id_aula` int(11) NOT NULL,
   `id_estudiante` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `aula_estudiante`
@@ -136,7 +136,7 @@ CREATE TABLE `bitacora` (
   `id_entorno` int(11) NOT NULL,
   `fecha` datetime NOT NULL,
   `accion` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `bitacora`
@@ -501,7 +501,110 @@ INSERT INTO `bitacora` (`id`, `id_usuario_roles`, `id_entorno`, `fecha`, `accion
 (1554, 235, 13, '2023-07-15 12:40:59', 'Registro'),
 (1555, 235, 0, '2023-07-15 12:41:12', 'Eliminación'),
 (1556, 235, 14, '2023-07-15 12:42:38', 'Agregar Contenido'),
-(1557, 235, 14, '2023-07-15 12:42:48', 'Agregar Contenido');
+(1557, 235, 14, '2023-07-15 12:42:48', 'Agregar Contenido'),
+(1558, 235, 12, '2023-07-22 07:29:02', 'Modificacion'),
+(1559, 235, 12, '2023-07-22 07:29:18', 'Modificacion'),
+(1560, 235, 12, '2023-07-22 07:29:30', 'Modificacion'),
+(1561, 235, 12, '2023-07-22 07:33:12', 'Modificacion'),
+(1562, 235, 12, '2023-07-22 07:37:57', 'Modificacion'),
+(1563, 235, 12, '2023-07-22 07:38:11', 'Modificacion'),
+(1564, 235, 12, '2023-07-23 01:47:29', 'Modificacion'),
+(1565, 235, 12, '2023-07-23 03:26:04', 'Registro'),
+(1566, 235, 12, '2023-07-23 03:27:04', 'Registro'),
+(1567, 235, 12, '2023-07-23 04:49:33', 'Modificacion'),
+(1568, 235, 12, '2023-07-23 05:00:33', 'EliminaciÃ³n'),
+(1569, 235, 12, '2023-07-23 05:12:04', 'Registro de rol'),
+(1570, 235, 12, '2023-07-23 05:12:05', 'EliminaciÃ³n de rol'),
+(1571, 235, 12, '2023-07-23 05:20:35', 'Registro de rol'),
+(1572, 235, 12, '2023-07-23 05:20:38', 'Registro de rol'),
+(1573, 235, 12, '2023-07-23 05:20:39', 'Registro de rol'),
+(1574, 235, 12, '2023-07-23 05:20:42', 'Registro de rol'),
+(1575, 235, 12, '2023-07-23 05:21:20', 'Registro de rol'),
+(1576, 235, 12, '2023-07-23 05:21:53', 'EliminaciÃ³n de rol'),
+(1577, 235, 12, '2023-07-23 05:21:54', 'Registro de rol'),
+(1578, 235, 12, '2023-07-23 05:22:40', 'EliminaciÃ³n'),
+(1579, 235, 12, '2023-07-23 05:23:40', 'EliminaciÃ³n de rol'),
+(1580, 235, 12, '2023-07-23 05:23:54', 'Registro de rol'),
+(1581, 235, 12, '2023-07-23 05:23:55', 'Registro de rol'),
+(1582, 235, 12, '2023-07-23 05:23:55', 'Registro de rol'),
+(1583, 235, 12, '2023-07-23 05:23:56', 'Registro de rol'),
+(1584, 235, 12, '2023-07-23 05:24:02', 'EliminaciÃ³n de rol'),
+(1585, 235, 12, '2023-07-23 05:26:23', 'EliminaciÃ³n de rol'),
+(1586, 235, 12, '2023-07-23 05:30:51', 'Modificacion'),
+(1587, 235, 12, '2023-07-23 05:31:06', 'Modificacion'),
+(1588, 235, 12, '2023-07-23 05:32:20', 'Modificacion'),
+(1589, 235, 12, '2023-07-23 05:34:16', 'Modificacion'),
+(1590, 235, 12, '2023-07-23 05:34:29', 'Modificacion'),
+(1591, 235, 12, '2023-07-23 05:36:42', 'Modificacion'),
+(1592, 235, 12, '2023-07-23 05:36:51', 'Modificacion'),
+(1593, 235, 12, '2023-07-23 05:37:01', 'Modificacion'),
+(1594, 235, 12, '2023-07-23 05:37:45', 'Registro'),
+(1595, 235, 12, '2023-07-23 05:38:11', 'Registro'),
+(1596, 235, 12, '2023-07-23 05:39:02', 'EliminaciÃ³n'),
+(1597, 235, 12, '2023-07-23 05:39:48', 'Modificacion'),
+(1598, 235, 12, '2023-07-23 05:39:56', 'Modificacion'),
+(1599, 235, 12, '2023-07-23 05:40:13', 'Modificacion'),
+(1600, 235, 12, '2023-07-23 05:41:36', 'Modificacion'),
+(1601, 235, 12, '2023-07-23 05:42:59', 'Modificacion'),
+(1602, 235, 12, '2023-07-23 05:43:14', 'Modificacion'),
+(1603, 235, 12, '2023-07-23 05:43:22', 'Modificacion'),
+(1604, 235, 12, '2023-07-23 05:53:21', 'EliminaciÃ³n de rol'),
+(1605, 0, 12, '2023-07-23 05:53:22', 'Registro de rol'),
+(1606, 258, 12, '2023-07-23 05:53:24', 'EliminaciÃ³n de rol'),
+(1607, 0, 12, '2023-07-23 05:53:29', 'Registro de rol'),
+(1608, 259, 12, '2023-07-23 05:53:33', 'EliminaciÃ³n de rol'),
+(1609, 0, 12, '2023-07-23 05:53:38', 'EliminaciÃ³n de rol'),
+(1610, 0, 12, '2023-07-23 05:53:45', 'EliminaciÃ³n de rol'),
+(1611, 0, 12, '2023-07-23 05:53:52', 'EliminaciÃ³n de rol'),
+(1612, 0, 12, '2023-07-23 05:53:56', 'Registro de rol'),
+(1613, 0, 12, '2023-07-23 05:53:57', 'Registro de rol'),
+(1614, 0, 12, '2023-07-23 05:53:57', 'Registro de rol'),
+(1615, 0, 12, '2023-07-23 05:53:57', 'Registro de rol'),
+(1616, 0, 12, '2023-07-23 05:54:07', 'Registro de rol'),
+(1617, 0, 12, '2023-07-23 05:54:09', 'EliminaciÃ³n de rol'),
+(1618, 0, 12, '2023-07-23 05:54:14', 'EliminaciÃ³n de rol'),
+(1619, 0, 12, '2023-07-23 05:54:15', 'Registro de rol'),
+(1620, 0, 12, '2023-07-23 05:54:18', 'EliminaciÃ³n de rol'),
+(1621, 0, 12, '2023-07-23 05:54:25', 'Registro de rol'),
+(1622, 266, 12, '2023-07-23 05:54:25', 'Registro de rol'),
+(1623, 266, 12, '2023-07-23 05:54:26', 'Registro de rol'),
+(1624, 266, 12, '2023-07-23 05:54:26', 'Registro de rol'),
+(1625, 266, 12, '2023-07-23 05:54:30', 'EliminaciÃ³n de rol'),
+(1626, 266, 12, '2023-07-23 05:54:30', 'EliminaciÃ³n de rol'),
+(1627, 266, 12, '2023-07-23 05:55:23', 'Registro de rol'),
+(1628, 266, 12, '2023-07-23 05:55:23', 'Registro de rol'),
+(1629, 266, 12, '2023-07-23 05:55:27', 'Registro de rol'),
+(1630, 266, 12, '2023-07-23 05:55:27', 'Registro de rol'),
+(1631, 266, 12, '2023-07-23 05:55:28', 'Registro de rol'),
+(1632, 266, 12, '2023-07-23 05:55:29', 'Registro de rol'),
+(1633, 266, 12, '2023-07-23 05:55:36', 'Registro de rol'),
+(1634, 266, 12, '2023-07-23 05:55:37', 'EliminaciÃ³n de rol'),
+(1635, 266, 12, '2023-07-23 05:55:38', 'Registro de rol'),
+(1636, 266, 12, '2023-07-23 05:55:44', 'Registro de rol'),
+(1637, 266, 12, '2023-07-23 05:55:45', 'Registro de rol'),
+(1638, 266, 12, '2023-07-23 05:55:46', 'Registro de rol'),
+(1639, 266, 12, '2023-07-23 05:55:46', 'Registro de rol'),
+(1640, 266, 12, '2023-07-23 05:55:59', 'EliminaciÃ³n de rol'),
+(1641, 266, 12, '2023-07-23 05:56:04', 'EliminaciÃ³n de rol'),
+(1642, 266, 12, '2023-07-23 05:56:06', 'EliminaciÃ³n de rol'),
+(1643, 266, 12, '2023-07-23 05:56:10', 'EliminaciÃ³n de rol'),
+(1644, 266, 12, '2023-07-23 05:56:15', 'EliminaciÃ³n de rol'),
+(1645, 266, 12, '2023-07-23 05:56:18', 'Registro de rol'),
+(1646, 266, 12, '2023-07-23 05:56:22', 'EliminaciÃ³n de rol'),
+(1647, 266, 12, '2023-07-23 05:56:23', 'EliminaciÃ³n de rol'),
+(1648, 266, 12, '2023-07-23 05:56:23', 'EliminaciÃ³n de rol'),
+(1649, 266, 12, '2023-07-23 05:56:24', 'EliminaciÃ³n de rol'),
+(1650, 266, 12, '2023-07-23 05:56:26', 'EliminaciÃ³n de rol'),
+(1651, 266, 12, '2023-07-23 05:56:27', 'EliminaciÃ³n de rol'),
+(1652, 266, 12, '2023-07-23 05:56:27', 'EliminaciÃ³n de rol'),
+(1653, 266, 12, '2023-07-23 05:56:40', 'Registro de rol'),
+(1654, 266, 12, '2023-07-23 05:56:44', 'EliminaciÃ³n de rol'),
+(1655, 266, 12, '2023-07-23 05:56:44', 'EliminaciÃ³n de rol'),
+(1656, 266, 12, '2023-07-23 05:56:44', 'Registro de rol'),
+(1657, 266, 12, '2023-07-23 05:56:58', 'EliminaciÃ³n de rol'),
+(1658, 266, 12, '2023-07-23 01:31:57', 'EliminaciÃ³n de rol'),
+(1659, 0, 12, '2023-07-23 01:32:05', 'EliminaciÃ³n'),
+(1660, 0, 12, '2023-07-23 01:32:35', 'Modificacion');
 
 -- --------------------------------------------------------
 
@@ -515,7 +618,7 @@ CREATE TABLE `censo` (
   `fecha_apertura` datetime DEFAULT NULL,
   `fecha_cierre` datetime DEFAULT NULL,
   `descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `censo`
@@ -532,10 +635,10 @@ INSERT INTO `censo` (`id`, `id_usuario`, `fecha_apertura`, `fecha_cierre`, `desc
 
 CREATE TABLE `chat_virtual` (
   `id` int(11) NOT NULL,
-  `cedula_usuario` varchar(10) CHARACTER SET latin1 NOT NULL,
+  `cedula_usuario` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `mensajes` varchar(200) NOT NULL,
   `facha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -549,7 +652,7 @@ CREATE TABLE `comentario` (
   `id_publicacion` int(11) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cedula_usuario` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -562,7 +665,7 @@ CREATE TABLE `contenido` (
   `nombre` varchar(60) NOT NULL,
   `descripcion` varchar(2550) NOT NULL,
   `archivo_adjunto` varchar(120) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `contenido`
@@ -585,7 +688,7 @@ CREATE TABLE `emprendimiento` (
   `nombre` varchar(30) NOT NULL,
   `id_area` int(11) NOT NULL,
   `estatus` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `emprendimiento`
@@ -605,7 +708,7 @@ CREATE TABLE `emprendimiento_modulo` (
   `id` int(11) NOT NULL,
   `id_emprendimiento` int(11) NOT NULL,
   `id_modulo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `emprendimiento_modulo`
@@ -624,7 +727,7 @@ INSERT INTO `emprendimiento_modulo` (`id`, `id_emprendimiento`, `id_modulo`) VAL
 CREATE TABLE `entorno_sistema` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `entorno_sistema`
@@ -664,7 +767,7 @@ CREATE TABLE `estudiante_evaluacion` (
   `fecha_entrega` datetime NOT NULL,
   `calificacion` decimal(5,2) DEFAULT NULL,
   `retroalimentacion` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `estudiante_evaluacion`
@@ -684,7 +787,7 @@ CREATE TABLE `evaluaciones` (
   `nombre` varchar(30) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `archivo_adjunto` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `evaluaciones`
@@ -703,7 +806,7 @@ INSERT INTO `evaluaciones` (`id`, `nombre`, `descripcion`, `archivo_adjunto`) VA
 CREATE TABLE `modulo` (
   `id` int(11) NOT NULL,
   `nombre` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `modulo`
@@ -725,7 +828,7 @@ CREATE TABLE `notificaciones` (
   `id_unidad_evaluaciones` int(11) NOT NULL,
   `id_usuarios_roles` int(11) NOT NULL,
   `fecha` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -741,7 +844,7 @@ CREATE TABLE `permiso` (
   `modificar` varchar(5) NOT NULL,
   `eliminar` varchar(5) NOT NULL,
   `consultar` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `permiso`
@@ -794,7 +897,7 @@ CREATE TABLE `publicacion` (
   `id_aula` int(11) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cedula_usuario` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `publicacion`
@@ -812,7 +915,7 @@ INSERT INTO `publicacion` (`id`, `titulo`, `mensaje`, `id_aula`, `fecha`, `cedul
 CREATE TABLE `rol` (
   `id` int(11) NOT NULL,
   `nombre` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `rol`
@@ -835,7 +938,7 @@ CREATE TABLE `unidad` (
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(120) NOT NULL,
   `id_aula` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `unidad`
@@ -855,7 +958,7 @@ CREATE TABLE `unidad_contenido` (
   `id` int(11) NOT NULL,
   `id_unidad` int(11) NOT NULL,
   `id_contenido` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `unidad_contenido`
@@ -876,7 +979,7 @@ CREATE TABLE `unidad_evaluaciones` (
   `id_evaluacion` int(11) NOT NULL,
   `fecha_inicio` datetime DEFAULT NULL,
   `fecha_cierre` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `unidad_evaluaciones`
@@ -908,16 +1011,16 @@ CREATE TABLE `usuario` (
   `telefono` varchar(15) DEFAULT NULL,
   `clave` varchar(300) DEFAULT 'd9aj2Z/Qkciin2OfYw==',
   `imagen` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `cedula`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `genero`, `correo`, `token`, `fecha_expiracion`, `preguntas_seguridad`, `direccion`, `telefono`, `clave`, `imagen`) VALUES
-(1, '28055655', 'Cesar', 'Alejandro', 'Vides', 'Gonzalez', 'Masculino', 'cesaralejandrovides2@gmail.com', '52756ee331ab4e59b12226231690066e1bd3fa04356bbaea485d3dd4234cbc02', '2023-07-20 17:16:33', 'VkZaRk9WQlRUazVhZWpBNVNUQXhNMUJVTUdwVVZrVTVVRk5PVGxwNk1EbEpNREV6VUZRd2FsUldSVGxRVTA1T1dub3dPVWt3TVROUVZEQnE=', 'Yucatan', '04120318406', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
-(174, '0000000', 'Cesar', 'Alejandro', 'Vides', 'gonzalez', 'Femenino', 'ejemplo@gmail.com', 'b93afa86cb221149fe141cf6d13cba3a37f7fbf24e5d47584ada070dd58b212b', '2023-07-20 17:18:04', NULL, 'yucatan p19', '04120318406', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
-(175, '26197135', 'Maria', 'Jose', 'Diaz', 'Cazorla', 'femenino', '', '7ac8dd16821da51628debb0172e3e22e889899b8c920b1456f7a4e376e9ae7bd', '2023-05-23 06:49:08', NULL, '', '', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
+(1, '28055655', 'Cesar', 'Alejandro', 'Vides', 'Gonzalez', 'Masculino', 'cesaralejandrovides2@gmail.com', '1fb183cd56c4f2c905e5d74434ecece79b444a231e3796f50c1bf4a88a245b1f', '2023-07-23 08:31:42', 'VkZaRk9WQlRUazVhZWpBNVNUQXhNMUJVTUdwVVZrVTVVRk5PVGxwNk1EbEpNREV6VUZRd2FsUldSVGxRVTA1T1dub3dPVWt3TVROUVZEQnE=', 'Yucatan', '04120318406', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
+(174, '0000000', 'Cesar', 'Alejandro', 'Vides', 'Alejandro', 'Femenino', 'ejemplo@gmail.com', '4715d0168a5fbdf76d83a4065f6d07704cc55a075e9ee6445de759999c8d6eda', '2023-07-20 22:59:18', NULL, 'yucatan p19', '04120318406', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
+(175, '26197135', 'Maria', 'Jose', 'Diaz', 'Jose', 'Masculino', 'jbrcesarvides@gmail.com', '7ac8dd16821da51628debb0172e3e22e889899b8c920b1456f7a4e376e9ae7bd', '2023-05-23 06:49:08', NULL, 'asdsadsadsa', '04120318406', '$2y$10$dyNth8E..o5q/hv2E1GM1.rEotuAfF55YajN3P1ccUayMJdR2Tr9W', NULL),
 (176, '10479729', 'Jose', 'Gregorio', 'Diaz', 'Arguinzones', 'Masculino', 'jose@gmail.com', NULL, NULL, NULL, 'Av Antonio Benitez', '04120235422', 'Vld0Rk9WQlRUbWhWVkRBNVNUSk9RbEJVTUdwWmEwVTVVRk5PYVdSNk1EbEpNa3BTVUZRd2FsZFdSVGxRVTA1aFVWUXdPVWt5U2pOUVZEQnE=', NULL);
 
 -- --------------------------------------------------------
@@ -930,19 +1033,48 @@ CREATE TABLE `usuarios_roles` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_rol` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios_roles`
 --
 
 INSERT INTO `usuarios_roles` (`id`, `id_usuario`, `id_rol`) VALUES
-(235, 1, 1),
-(236, 1, 7),
-(239, 1, 5),
-(242, 175, 7),
-(243, 176, 5),
-(244, 174, 7);
+(257, 176, 1),
+(270, 1, 2),
+(271, 1, 5),
+(279, 175, 2),
+(280, 175, 5),
+(283, 1, 7),
+(284, 176, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_usuario`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_usuario` (
+`id` int(11)
+,`cedula` varchar(10)
+,`primer_nombre` varchar(50)
+,`segundo_nombre` varchar(50)
+,`primer_apellido` varchar(50)
+,`segundo_apellido` varchar(50)
+,`genero` varchar(20)
+,`correo` varchar(100)
+,`direccion` varchar(100)
+,`telefono` varchar(15)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_usuario`
+--
+DROP TABLE IF EXISTS `vista_usuario`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuario`  AS SELECT `usuario`.`id` AS `id`, `usuario`.`cedula` AS `cedula`, `usuario`.`primer_nombre` AS `primer_nombre`, `usuario`.`segundo_nombre` AS `segundo_nombre`, `usuario`.`primer_apellido` AS `primer_apellido`, `usuario`.`segundo_apellido` AS `segundo_apellido`, `usuario`.`genero` AS `genero`, `usuario`.`correo` AS `correo`, `usuario`.`direccion` AS `direccion`, `usuario`.`telefono` AS `telefono` FROM `usuario``usuario`  ;
 
 --
 -- Índices para tablas volcadas
@@ -1167,7 +1299,7 @@ ALTER TABLE `aula_estudiante`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1558;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1661;
 
 --
 -- AUTO_INCREMENT de la tabla `censo`
@@ -1275,13 +1407,13 @@ ALTER TABLE `unidad_evaluaciones`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_roles`
 --
 ALTER TABLE `usuarios_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=245;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
 
 --
 -- Restricciones para tablas volcadas
