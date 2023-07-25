@@ -140,7 +140,9 @@
                                     </div>
                                   </div>
                                 </div>
-                              <?php }}?>
+                              <?php }else{
+                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                            }}?>
                               <div class="tab-pane" id="gestion-aula" style="padding-top: 3%;">
                                 <form action="" id="fi" method="post">
                                   <input type="hidden" name="accion" id="accion" value="registrar" />

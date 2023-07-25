@@ -1072,9 +1072,6 @@ CREATE TABLE `vista_usuario` (
 --
 -- Estructura para la vista `vista_usuario`
 --
-DROP TABLE IF EXISTS `vista_usuario`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuario`  AS SELECT `usuario`.`id` AS `id`, `usuario`.`cedula` AS `cedula`, `usuario`.`primer_nombre` AS `primer_nombre`, `usuario`.`segundo_nombre` AS `segundo_nombre`, `usuario`.`primer_apellido` AS `primer_apellido`, `usuario`.`segundo_apellido` AS `segundo_apellido`, `usuario`.`genero` AS `genero`, `usuario`.`correo` AS `correo`, `usuario`.`direccion` AS `direccion`, `usuario`.`telefono` AS `telefono` FROM `usuario``usuario`  ;
 
 --
 -- Índices para tablas volcadas
@@ -1535,3 +1532,6 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+DROP TABLE IF EXISTS `vista_usuario`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuario`  AS SELECT `usuario`.`id` AS `id`, `usuario`.`cedula` AS `cedula`, `usuario`.`primer_nombre` AS `primer_nombre`, `usuario`.`segundo_nombre` AS `segundo_nombre`, `usuario`.`primer_apellido` AS `primer_apellido`, `usuario`.`segundo_apellido` AS `segundo_apellido`, `usuario`.`genero` AS `genero`, `usuario`.`correo` AS `correo`, `usuario`.`direccion` AS `direccion`, `usuario`.`telefono` AS `telefono` FROM `usuario``usuario`  ;

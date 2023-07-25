@@ -97,21 +97,6 @@ $(document).ready(function() {
   });     
 });
 
-//FUNCION DE BUSQUEDA :V
-$("#buscarb").click(function (e) {
-  if ($("#buscar").val() == "") {
-    $("#buscar").addClass("is-invalid");
-    preventDefault(e);
-  } else {
-    $("#buscar").removeClass("is-invalid");
-    var valor = $("#buscar").val();
-    var search = new FormData();
-    search.append("buscarE", valor);
-    search.append("accion", "buscar");
-    buscadorAjax(search);
-  }
-});
-
 document.onload = carga();
 function carga() {
   /*--------------VALIDACION PARA CEDULA--------------------*/
@@ -574,23 +559,6 @@ function enviaAjax(datos) {
       Toast.fire({
         icon: res.error,
       });
-    },
-  });
-}
-
-function buscadorAjax(datos) {
-  $.ajax({
-    async: true,
-    url: "",
-    type: "POST",
-    contentType: false,
-    data: datos,
-    processData: false,
-    cache: false,
-    success: function (response) {
-      $("#titulo1").text("Resultados de busqueda");
-      $("#elementosEncontrados").modal("show");
-      $("#consulta-base").html(response);
     },
   });
 }

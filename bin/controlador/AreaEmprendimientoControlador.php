@@ -26,7 +26,7 @@ if (is_file($conf->_Dir_Vista_().$pagina.$conf->_VISTA_())) {
     $bitacora = new Bitacora();
     $config = new config();
     $modulo = 'Area de Emprendimiento';
-
+$response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Area de Emprendimiento");
     //Establecer el id_usuario_rol para bitacora
 $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
     $entorno = $bitacora->buscar_id_entorno('Area de Emprendimiento');
@@ -219,12 +219,13 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_us
         } 
     }
 
-
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Area de Emprendimiento");
-
     $r1 = $area->listar();
     $datos = [];
-    require_once "vista/" . $pagina . "Vista.php";
+    if (isset($response[0]["nombreentorno"])) {
+        require_once "vista/" . $pagina . "Vista.php";
+    }else{
+        require_once "vista/error_Permisos.php";
+    }
 }  else {
     echo "Pagina en construccion";
 }

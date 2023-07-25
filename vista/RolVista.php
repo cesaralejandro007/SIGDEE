@@ -193,7 +193,7 @@ foreach ($r1 as $valor) {
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual') {?>
                                                                     <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
                                                                         <input type="checkbox" name='modificar[]' id="modificar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
                                                                         <span>
@@ -206,7 +206,7 @@ foreach ($r1 as $valor) {
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <?php if ($dato['nombre'] !== 'Agregar Contenido' and $dato['nombre'] !== 'Chat Virtual') {?>
                                                                     <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
                                                                         <input type="checkbox" name='eliminar[]'id="eliminar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
                                                                         <span>
@@ -219,7 +219,7 @@ foreach ($r1 as $valor) {
                                                             <?php }?>
                                                             <?php if ($dato['nombre'] !== 'Permisos' and $dato['nombre'] !== 'Usuarios' and $dato['nombre'] !== 'Entornos del Sistema') {?>
                                                             <td>
-                                                                <?php if ($dato['nombre'] !== 'Chat Virtual' and $dato['nombre'] !== 'Aspirantes') {?>
+                                                                <?php if ($dato['nombre'] !== 'Chat Virtual') {?>
                                                                 <label  class="mycheckbox d-flex justify-content-center align-items-center mx-1 on_off<?php echo $dato['id']; ?>">
                                                                     <input type="checkbox"  name='consultar[]' id="consultar<?php echo $dato['id']; ?>" onclick="gestionar_permisos(<?=$dato['id'];?>);" disabled>
                                                                     <span>

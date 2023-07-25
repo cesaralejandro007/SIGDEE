@@ -141,7 +141,9 @@
                   <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-              <?php }}?>
+              <?php }else{
+                      echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                    }}?>
             </div>
             <!-- /.col -->
           </div>

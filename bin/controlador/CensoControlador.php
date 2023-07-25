@@ -26,7 +26,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $config = new Mensaje();
     $bitacora = new Bitacora();
     $modulo = 'Censo';
-
+    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Censo");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
     $entorno = $bitacora->buscar_id_entorno('Censo');
@@ -153,14 +153,17 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
     }
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Censo");
 
     $r1 = $censo->listar();
     $datos = [];
 
     $components = new initComponents();
     $header = new header();
-    require_once "vista/".$pagina."Vista.php";
+    if (isset($response[0]["nombreentorno"])) {
+        require_once "vista/" . $pagina . "Vista.php";
+    }else{
+        require_once "vista/error_Permisos.php";
+    }
 } else {
     echo "Pagina en construccion";
 }

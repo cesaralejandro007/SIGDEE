@@ -27,6 +27,9 @@
                     <div class="row">
                         <div class="col-12">
                             <!-- /.card-header -->
+<?php
+if (isset($response[0]["consultar"])) {
+    if ($response[0]["consultar"] == 'true') {?>
                             <div class="card border">
                                 <div class="table-responsive px-2">
                                     <div class="d-flex flex-wrap justify-content-between m-1">
@@ -52,12 +55,23 @@
                                             <tr>
                                                 <td class="project-actions text-left">
                                                     <div class="d-flex">
+                                                    <?php
+                                                        if (isset($response[0]["modificar"])) {
+                                                        if ($response[0]["modificar"] == 'true') {
+                                                    ?>   
                                                         <button class="btn mr-2 text-white" style="background:#E67E22;"  data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="cargar_datos(<?=$valor['id'];?>);"><i
-                                                            class="fas fa-edit"></i></button>
+                                                            class="fas fa-edit"></i>
+                                                        </button>
+                                                        <?php }}
+                                                        if (isset($response[0]["eliminar"])) {
+                                                        if ($response[0]["eliminar"] == 'true') {
+                                                        ?>   
                                                         <button class="btn mr-2 text-white" style="background:#9D2323;color:white" type="button" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
                                                             onclick="eliminar(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-trash"></i></button>
+                                                            class="fas fa-trash"></i>
+                                                        </button>
+                                                        <?php }}?> 
                                                     </div>
                                                 </td>
                                                 <td id="cedulausuario<?php echo $valor['id']; ?>" class=" project-actions
@@ -102,6 +116,9 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                            <?php }else{
+                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                            }}?>
                         </div>
                         <!-- /.card -->
                     </div>

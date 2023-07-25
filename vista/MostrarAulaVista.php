@@ -67,6 +67,8 @@
                                                 <?php }}?>
                                             </div>
                                             <div style="margin-top:4%;">
+                                                <?php if (isset($unidadpermisos[0]["consultar"])) {
+                                                if ($unidadpermisos[0]["consultar"] == 'true') {?>
                                                 <?php foreach ($listar_unidad as $unidad) {?>
                                                     <div class="callout callout-info d-flex d-flex justify-content-between">
                                                         <a class="text-dark" style="width: 100%; height: 100%; text-decoration: none;" href="?pagina=Unidad&id_unidad=<?=$unidad['id'];?>">
@@ -104,6 +106,9 @@
                                                         </a>
                                                     </div>
                                                 <?php }?>
+                                                    <?php }else{
+                                                        echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                                                    }}?>
                                             </div>
                                             
                                         </div>
