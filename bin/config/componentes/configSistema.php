@@ -17,6 +17,7 @@
 	define("EVALUACION", "content/evaluaciones/");
 	define("ENTREGAS", "content/entregas/");
 	define("CONTENIDO", "content/contenidos/");
+	define("JSON", "content/json/");
 
 	class configSistema{
 		public function _int(){
@@ -69,6 +70,9 @@
 		}
 		public function _CONTENIDO_(){
 			return CONTENIDO;
+		}
+		public function _JSON_(){
+			return JSON;
 		}
 	}
 

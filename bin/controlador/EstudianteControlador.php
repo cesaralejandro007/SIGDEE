@@ -22,7 +22,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $permiso_usuario = new Permiso();
     $usuario_rol = new UsuariosRoles();
     $bitacora = new Bitacora();
-    $config = new Mensaje();
     $modulo = 'Estudiante';
 
     //Establecer el id_usuario_rol para bitacora
@@ -266,11 +265,41 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         } else if ($accion == 'buscar') {
             $datos1 = $estudiante->buscar($_POST['buscarE']);
             echo $datos1;
+        } else if($accion == 'listadoareas'){
+            $r = array();
+            $data = file_get_contents($config->_JSON_()."countries.json");
+            $paises = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data)), true);
+            $x = '<option disabled selected>Seleccione</option>';
+            
+            foreach ($paises as $pais) {
+                $x = $x . '<option value="' . $pais['id'] . '">' . $pais['name'] . '</option>';
+            }
+            $r['resultado'] = 'listadoareas';
+            $r['mensaje'] = $x;
+
+            echo json_encode($r);
+        } else if($accion == 'listadoemprendimientos'){
+            $r = array();
+            $data_2 = file_get_contents($config->_JSON_()."states.json");
+            $estados = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data_2)), true);
+            $x = '<option disabled selected>Seleccione</option>';
+            
+            foreach ($estados as $estado) {
+                if($estado['id_country'] == $_POST['area']){
+                    $x = $x . '<option value="' . $estado['id'] . '">' . $estado['name'] . '</option>';
+                }
+            }
+            $r['resultado'] = 'listadoemprendimientos';
+            $r['mensaje'] = $x;
+
+            echo json_encode($r);
         }
+        
         return 0;
     }
     $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Estudiantes");
-    $r1 = $estudiante->listar();
+    $r1 = $estudiante->listar();          
+
     $datos = [];
     require_once "vista/" . $pagina . "Vista.php";
 } else {

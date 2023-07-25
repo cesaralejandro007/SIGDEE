@@ -316,6 +316,26 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
     return 1;
   }
 }
+/****** Mostrar contenido de los selects ******/
+function muestraAreas() {
+  var datos = new FormData();
+  //a ese datos le añadimos la informacion a enviar
+  datos.append("accion", "listadoareas"); //le digo que me muestre un listado de aulas
+  //ahora se envia el formdata por ajax
+  enviaAjax(datos);
+}
+function muestraEmpredimientos() {
+  //cuando cambie el area se hace lo mismo
+  //pero en este caso se le anexa el formdata
+  //el id del area para filtrar los emprendimientos
+  var datos = new FormData();
+  //a ese datos le añadimos la informacion a enviar
+  datos.append("accion", "listadoemprendimientos");
+  datos.append("area", $("#area").val());
+  //ahora se envia el formdata por ajax
+  enviaAjax(datos);
+}
+
 
 function limpiar() {
   $("#cedula").val("");
@@ -357,6 +377,18 @@ function valida_registrar() {
     document.getElementById("cedula"),
     document.getElementById("scedula"),
     "* El formato debe ser 99999999."
+  );
+  area = validarkeyup(
+    keyup_select,
+    document.getElementById("area"),
+    document.getElementById("sarea"),
+    "* Información requerida."
+  );
+  emprendimiento = validarkeyup(
+    keyup_select,
+    document.getElementById("tipo"),
+    document.getElementById("semprendimiento"),
+    "* Información requerida."
   );
   pnombre = validarkeyup(
     keyup_nombre,
@@ -418,6 +450,8 @@ function valida_registrar() {
     document.getElementById("genero").value == 0 ||
     correo == 0 ||
     telefono == 0 ||
+    area == 0 ||
+    emprendimiento == 0 ||
     direccion == 0 
   ) {
     //variable==0, indica que hubo error en la validacion de la etiqueta
@@ -428,6 +462,22 @@ function valida_registrar() {
 
 $(document).ready(function () {
   $("#buscarb").click(function (e) {});
+  
+  document.getElementById("area").onkeyup = function () {
+    r = validarkeyup(
+      keyup_area,
+      this,
+      document.getElementById("sarea"),
+      "* Seleccione un area de emprendimiento."
+    );
+  };
+  muestraAreas();
+
+  $("#area").on("change", function () {
+    $("#tipo").html('<option value="0" disabled selected>Seleccione</option>');
+    muestraEmpredimientos();
+  });
+
 });
 
 function cargar_datos(valor) {
@@ -486,8 +536,19 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     success: function (response) {
+      //si resulto exitosa la transmision
+      vacio = '<option disabled selected>Seleccione</option>';
+      area = $("#area").val();
+      emprendimiento = $("#tipo").val();
       var res = JSON.parse(response);
       //alert(res.title);
+      if (res.resultado == "listadoareas") {
+        $("#area").html(res.mensaje);
+      } 
+      else
+      if (res.resultado == "listadoemprendimientos") {
+        $("#tipo").html(res.mensaje);
+      } 
       if (res.estatus == 1) {
         toastMixin.fire({
 
