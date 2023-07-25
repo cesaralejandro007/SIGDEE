@@ -11,7 +11,7 @@ $(document).ready(function() {
     bProcessing: true,
     bDeferRender: true,	
     bServerSide: true,                
-    sAjaxSource: "use modelo\UsuarioModelo",	  
+    sAjaxSource: "content/serverside/serversideControlador.php?Dato=Usuario",	  
       language: {
               "lengthMenu": "Mostrar _MENU_ registros",
               "zeroRecords": "No se encontraron resultados",

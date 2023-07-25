@@ -55,23 +55,7 @@ foreach ($r1 as $valor) {
         if (isset($valor["nombre"])) {?>
                                             <tr>
                                                 <td class="project-actions text-left" style="width:25%;">
-                                                    <div class="d-flex">
-                                                        <?php
-if (isset($response[0]["modificar"])) {
-            if ($response[0]["modificar"] == 'true') {?>
-                                                        <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar"
-                                                            onclick="cargar_datos(<?=$valor['id'];?>);" name="editar"
-                                                            id="editar" data-target="#editar-area"><i
-                                                            class="fas fa-edit"></i></button>
-                                                        <?php }}?>
-                                                        <?php
-if (isset($response[0]["eliminar"])) {
-            if ($response[0]["eliminar"] == 'true') {?>
-                                                        <button class="btn mr-2" style="background:#9D2323;color:white"  type="button" id="eliminardato"data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Eliminar"
-                                                            onclick="eliminar(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-trash"></i></button>
-                                                        <?php }}?>
-                                                    </div>
+                                                    <div class="d-flex"> <?php if (isset($response[0]["modificar"])) { if ($response[0]["modificar"] == 'true') {?><button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar" onclick="cargar_datos(<?=$valor['id'];?>);" name="editar" id="editar" data-target="#editar-area"><i class="fas fa-edit"></i></button> <?php }}?><?php if (isset($response[0]["eliminar"])) {if ($response[0]["eliminar"] == 'true') {?><button class="btn mr-2" style="background:#9D2323;color:white"  type="button" id="eliminardato"data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="eliminar(<?=$valor['id'];?>);"><i class="fas fa-trash"></i></button><?php }}?></div>
                                                 </td>
                                                 <td><?php echo $valor['nombre']; ?></td>
                                             </tr>
