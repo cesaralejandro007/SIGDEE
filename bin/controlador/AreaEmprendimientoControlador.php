@@ -183,6 +183,10 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_us
                         ]);
                     }
                     return 0;
+                } else if ($accion == 'consultarpermisos') {
+                    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Area de Emprendimiento");
+                    echo json_encode($response);
+                    return 0;
                 }
             }
         }

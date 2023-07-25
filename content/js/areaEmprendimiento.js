@@ -1,7 +1,23 @@
 var keyup_nombre = /^(([A-ZÁÉÍÓÚ]+[a-zñáéíóú.,-]*[\s]?)*)$/;
 
 $(document).ready(function() {    
-  var table = $('#funcionpaginacion').DataTable({      
+$(function() {
+  var formData = new FormData();
+  formData.append("accion", "consultarpermisos");
+$.ajax({
+  url: "",
+  type: "POST",
+  contentType: false,
+  data: formData,
+  processData: false,
+  cache: false
+}).done(function(datos) {
+  var res = JSON.parse(datos);
+  var table = $('#funcionpaginacion').DataTable({   
+      bProcessing: true,
+      bDeferRender: true,	
+      bServerSide: true,                
+      sAjaxSource: "content/serverside/serversideControlador.php?Dato=Area_emprendimiento",	     
       language: {
               "lengthMenu": "Mostrar _MENU_ registros",
               "zeroRecords": "No se encontraron resultados",
@@ -23,6 +39,16 @@ $(document).ready(function() {
       "<'row'<'col-sm-5'il><'col-sm-7'p>>",
       colReorder: true,
       lengthMenu: [5, 10, 20, 30, 40, 50, 100],   
+      "columnDefs": [
+        {
+            "targets": 0,
+            "render": function(data, type, row) {
+                // Definir el contenido predeterminado para la primera columna de cada fila
+                var contenidoPredeterminado = ' <div class="d-flex"> '; if (res[0].modificar != '') { if (res[0].modificar == "true") { contenidoPredeterminado +='<button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Editar" name="editar" id="cargararea" data-target="#editar-area"><i class="fas fa-edit"></i></button>'; }} if (res[0].eliminar != '') { if (res[0].eliminar == "true") { contenidoPredeterminado +='<button class="btn mr-2" style="background:#9D2323;color:white"  type="button" id="delete" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash"></i></button>'; }}contenidoPredeterminado +='</div>';
+                return contenidoPredeterminado;
+            }
+        },
+      ],
       buttons:[ 
     {
       extend:    'excelHtml5',
@@ -88,8 +114,16 @@ $(document).ready(function() {
     }
     },    
   ]  
-  });     
-});
+  });   
+  $('#funcionpaginacion').on('click', '#delete', function() {
+    var fila = table.row($(this).closest('tr')).data();
+    eliminar(fila[0]);
+  });
+  $('#funcionpaginacion').on('click', '#cargararea', function() {
+    var fila = table.row($(this).closest('tr')).data();
+    cargar_datos(fila[0]); 
+  });  
+
 
 document.onload = carga();
 function carga() {
@@ -217,7 +251,7 @@ function enviaAjax(datos) {
     showConfirmButton: false,
     width: 450,
     padding: '3.5em',
-    timer: 2500,
+    timer: 2000,
     timerProgressBar: true,
   });
   $.ajax({
@@ -238,8 +272,9 @@ function enviaAjax(datos) {
           icon: res.icon,
         });
         setTimeout(function () {
-          window.location.reload();
-        }, 2500);
+          table.ajax.reload(null, false);
+          $("#gestion-emprendimiento").modal("hide");
+        }, 2000);
       } else {
         toastMixin.fire({
 
@@ -283,3 +318,6 @@ function mostrar(datos) {
     },
   });
 }
+});
+});     
+});

@@ -49,7 +49,48 @@
                                                 <th>Telefono</th>
                                             </tr>
                                         </thead>
-                                    
+                                        <tbody>
+                                            <?php
+        foreach ($r1 as $valor) {?>
+                                            <tr>
+                                            <input type="hidden" name="idusuario" id="idusuario-<?php echo $valor['id']; ?>" value="<?=$valor['cedula'];?>"/>
+                                                <td class="project-actions text-left" style="width:30%;">
+                                                    <div class="d-flex">
+                                                    <button class="btn mr-2 text-white" style="background:#E67E22;" data-toggle="modal" data-placement="top" title="Editar"
+                                                            onclick="cargar_datos(<?=$valor['id'];?>);"><i
+                                                                class="fas fa-edit"></i></button>
+                                                                <button class="btn mr-2" style="background:#9D2323;color:white"  type="button" data-toggle="modal" data-placement="top" title="Eliminar"
+                                                            onclick="eliminar(<?=$valor['id'];?>);"><i
+                                                                class="fas fa-trash"></i></button>
+                                                                <button class="btn mr-2" style="background:#06406F;color:white"  type="button" data-toggle="modal" data-placement="top" title="Rol"
+                                                            onclick="cargar_rol(<?=$valor['id'];?>); cargar_checkbox(<?php echo $valor['id']; ?>);"><i
+                                                                class="fas fa-user-tag"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td id="cedulausuario<?php echo $valor['id']; ?>" class=" project-actions
+                                                    text-left" style="width:30%;">
+                                                    <?php echo $valor['cedula']; ?></td>
+                                                <td id="nombreusuario<?php echo $valor['id']; ?>" class=" project-actions
+                                                    text-left" style="">
+                                                    <?php echo $valor['primer_nombre']; ?></td>
+                                                    <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['segundo_nombre']; ?></td>
+                                                <td id="apellidousuario<?php echo $valor['id']; ?>" class="
+                                                    project-actions text-left" style="">
+                                                    <?php echo $valor['primer_apellido']; ?></td>
+                                                <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['segundo_apellido']; ?></td>
+                                                <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['genero']; ?></td>
+                                                <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['correo']; ?></td>
+                                                <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['direccion']; ?></td>
+                                                <td class="project-actions text-left" style="">
+                                                    <?php echo $valor['telefono']; ?></td>
+                                            </tr>
+                                            <?php }?>
+                                        </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th>Opciones</th>

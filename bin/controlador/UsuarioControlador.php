@@ -1,4 +1,5 @@
 <?php
+
 use modelo\UsuarioModelo as Usuario;
 use modelo\PermisosModelo as Permiso;
 use modelo\BitacoraModelo as Bitacora;

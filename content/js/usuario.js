@@ -5,13 +5,12 @@ var keyup_genero = /^[A-ZÁÉÍÓÚ][a-zñáéíóú]{7,8}$/;
 var keyup_telefono = /^[0-9]{11}$/;
 var keyup_correo =/^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
 var keyup_direccion = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,100}$/;
-
 $(document).ready(function() {    
   var table = $('#funcionpaginacion').DataTable({ 
     bProcessing: true,
     bDeferRender: true,	
     bServerSide: true,                
-    sAjaxSource: "bin/modelo/serversideUsuarios.php",	  
+    sAjaxSource: "content/serverside/serversideControlador.php?Dato=Usuario",	  
       language: {
               "lengthMenu": "Mostrar _MENU_ registros",
               "zeroRecords": "No se encontraron resultados",
