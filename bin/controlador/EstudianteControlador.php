@@ -36,83 +36,181 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $r1 = $estudiante->buscarestudiante($_POST['cedula']);
-            $r2 = $usuario_rol->buscar_rol('Estudiante');
-            if (empty($r1)==false && empty($r2)==false) {
-                $responseincluirEstudiates = $usuario_rol->incluirEstudiantes($r1[0]['id'],$r2[0]['id']);
-                if ($responseincluirEstudiates['resultado']==1) {
+            if ($response[0]["registrar"] == "true"){
+                $r1 = $estudiante->buscarestudiante($_POST['cedula']);
+                $r2 = $usuario_rol->buscar_rol('Estudiante');
+                if (empty($r1)==false && empty($r2)==false) {
+                    $responseincluirEstudiates = $usuario_rol->incluirEstudiantes($r1[0]['id'],$r2[0]['id']);
+                    if ($responseincluirEstudiates['resultado']==1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $responseincluirEstudiates['mensaje']
+                        ]);
+                        $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+                    }else if ($responseincluirEstudiates['resultado']==2) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $responseincluirEstudiates['mensaje']
+                        ]);
+                    }else if ($responseincluirEstudiates['resultado']==3) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $responseincluirEstudiates['mensaje']
+                        ]);
+                    }else{
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'error',
+                            'title' => $modulo,
+                            'message' => $responseincluirEstudiates['mensaje']
+                        ]);
+                    }  
+                    return 0;
+                    exit;
+                }else{
+
+                    function Codificar($string)
+                    {
+                        $codec = '';
+                        for ($i = 0; $i < strlen($string); $i++) {
+                            $codec = $codec . base64_encode($string[$i]) . "#";
+                        }
+                        $string = base64_encode(base64_encode($codec));
+                        $string = base64_encode($string);
+                        return $string;
+                    }
+                
+                    function Decodificar($string)
+                    {
+                        $decodec = '';
+                        $string  = base64_decode(base64_decode($string));
+                        $string  = base64_decode($string);
+                        $string  = explode("#", $string);
+                
+                        foreach ($string as $str) {
+                            $decodec = $decodec . base64_decode($str);
+                        }
+                        return $decodec;
+                    }
+                    $clave_nueva ="Diplomado";
+                    $clave = password_hash($clave_nueva, PASSWORD_DEFAULT);
+                    $response = $estudiante->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
+                    if ($response['resultado']==1) {
+                        $r1 = $estudiante->buscarestudiante($_POST['cedula']);
+                        $r2 = $usuario_rol->buscar_rol('Estudiante');
+                        $response1 = $usuario_rol->incluirEstudiantes($r1[0]['id'],$r2[0]['id']);
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+                        return 0;
+                    } else if ($response['resultado']==2) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        return 0;
+                    } 
+                    else if ($response['resultado']==3) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        
+                    } else{
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'error',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }  
+                    return 0;
+                    exit;
+                }
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => 'No tiene permisos para registrar.'
+                ]);
+                return 0;
+                exit;
+            } 
+        } else if ($accion == 'eliminar') {
+            if ($response[0]["eliminar"] == "true"){
+                $r2 = $usuario_rol->buscar_rol('Estudiante');
+                $response_rol = $usuario_rol->eliminarE($_POST['id'],$r2[0]['id']);
+                if ($response_rol['resultado']==1) {
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
                         'title' => $modulo,
-                        'message' => $responseincluirEstudiates['mensaje']
+                        'message' => $response_rol['mensaje']
                     ]);
-                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
-                }else if ($responseincluirEstudiates['resultado']==2) {
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
+                    return 0;
+                } else if ($response_rol['resultado']==2) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => $modulo,
-                        'message' => $responseincluirEstudiates['mensaje']
+                        'message' => $response_rol['mensaje']
                     ]);
-                }else if ($responseincluirEstudiates['resultado']==3) {
+                    return 0;
+                }else if ($response_rol['resultado']==3) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => $modulo,
-                        'message' => $responseincluirEstudiates['mensaje']
+                        'message' => $response_rol['mensaje']
                     ]);
+                    return 0;
                 }else{
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'error',
                         'title' => $modulo,
-                        'message' => $responseincluirEstudiates['mensaje']
+                        'message' => $response_rol['mensaje']
                     ]);
-                }  
+                }
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => 'No tiene permisos para eliminar el registro.'
+                ]);
                 return 0;
                 exit;
-            }else{
-
-                function Codificar($string)
-                {
-                    $codec = '';
-                    for ($i = 0; $i < strlen($string); $i++) {
-                        $codec = $codec . base64_encode($string[$i]) . "#";
-                    }
-                    $string = base64_encode(base64_encode($codec));
-                    $string = base64_encode($string);
-                    return $string;
-                }
-            
-                function Decodificar($string)
-                {
-                    $decodec = '';
-                    $string  = base64_decode(base64_decode($string));
-                    $string  = base64_decode($string);
-                    $string  = explode("#", $string);
-            
-                    foreach ($string as $str) {
-                        $decodec = $decodec . base64_decode($str);
-                    }
-                    return $decodec;
-                }
-                $clave_nueva ="Diplomado";
-                $clave = password_hash($clave_nueva, PASSWORD_DEFAULT);
-                $response = $estudiante->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
+            }             
+        } else if ($accion == 'modificar') {
+            if ($response[0]["modificar"] == "true"){
+                $response = $estudiante->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
                 if ($response['resultado']==1) {
-                    $r1 = $estudiante->buscarestudiante($_POST['cedula']);
-                    $r2 = $usuario_rol->buscar_rol('Estudiante');
-                    $response1 = $usuario_rol->incluirEstudiantes($r1[0]['id'],$r2[0]['id']);
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
                         'title' => $modulo,
                         'message' => $response['mensaje']
                     ]);
-                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
                     return 0;
-                } else if ($response['resultado']==2) {
+                }else if ($response['resultado']==2) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
@@ -120,105 +218,40 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'message' => $response['mensaje']
                     ]);
                     return 0;
-                } 
-                else if ($response['resultado']==3) {
+                }else if ($response['resultado']==3) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => $modulo,
                         'message' => $response['mensaje']
                     ]);
-                    
-                } else{
+                    return 0;
+                }else if ($response['resultado']==4) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modulo,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }else{
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'error',
                         'title' => $modulo,
-                        'message' => $response['mensaje']
+                        'message' => $response_rol['mensaje']
                     ]);
-                }  
+                }
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => 'No tiene permisos para modificar el registro.'
+                ]);
                 return 0;
                 exit;
-            }
-        } else if ($accion == 'eliminar') {
-            $r2 = $usuario_rol->buscar_rol('Estudiante');
-            $response_rol = $usuario_rol->eliminarE($_POST['id'],$r2[0]['id']);
-            if ($response_rol['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
-                return 0;
-            } else if ($response_rol['resultado']==2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-                return 0;
-            }else if ($response_rol['resultado']==3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-                return 0;
-            }else{
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'error',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-            }
-        } else if ($accion == 'modificar') {
-            $response = $estudiante->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
-            if ($response['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
-                return 0;
-            }else if ($response['resultado']==2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }else if ($response['resultado']==3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }else if ($response['resultado']==4) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }else{
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'error',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-            }
+            } 
         } else if ($accion == 'editar') {
             $datos = $estudiante->cargar($_POST['id']);
             foreach ($datos as $valor) {

@@ -31,107 +31,140 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $respuesta = $modulo->incluir($_POST['nombre']);
-            if ($respuesta['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
-            } else if ($respuesta['resultado']==2){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-            }else if ($respuesta['resultado']==3){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
+            if ($response[0]["registrar"] == "true"){
+                $respuesta = $modulo->incluir($_POST['nombre']);
+                if ($respuesta['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+                } else if ($respuesta['resultado']==2){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }else if ($respuesta['resultado']==3){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }else{
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }
+                return 0;
+                exit;
             }else{
                 echo json_encode([
-                    'estatus' => '2',
+                    'estatus' => '0',
                     'icon' => 'error',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
+                    'title' => $modul,
+                    'message' => 'No tiene permisos para registrar.'
                 ]);
-            }
-            return 0;
-            exit;
+                return 0;
+                exit;
+            } 
         } else if ($accion == 'eliminar') {
-            $respuesta = $modulo->eliminar($_POST['id']);
-            if ($respuesta['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
-            } else if ($respuesta['resultado'] == 2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-            } else if ($respuesta['resultado'] == 3){
+            if ($response[0]["eliminar"] == "true"){
+                $respuesta = $modulo->eliminar($_POST['id']);
+                if ($respuesta['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
+                } else if ($respuesta['resultado'] == 2) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                } else if ($respuesta['resultado'] == 3){
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }else{
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }
+                return 0;
+                exit;
+            }else{
                 echo json_encode([
                     'estatus' => '0',
                     'icon' => 'error',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
+                    'title' => $modul,
+                    'message' => 'No tiene permisos para eliminar el registro.'
                 ]);
-            }else{
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'error',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-            }
-            return 0;
-            exit;
+                return 0;
+                exit;
+            } 
         } else if ($accion == 'modificar') {
-            $respuesta = $modulo->modificar($_POST['id'],$_POST['nombre']);
-            if ($respuesta['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
-            } else if ($respuesta['resultado'] == 2) {
-                echo json_encode([
-                    'estatus' => '0',
-                    'icon' => 'info',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
-            }else if ($respuesta['resultado'] == 3) {
-                echo json_encode([
-                    'estatus' => '0',
-                    'icon' => 'info',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
-                ]);
+            if ($response[0]["modificar"] == "true"){
+                $respuesta = $modulo->modificar($_POST['id'],$_POST['nombre']);
+                if ($respuesta['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
+                } else if ($respuesta['resultado'] == 2) {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }else if ($respuesta['resultado'] == 3) {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }else{
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => $modul,
+                        'message' => $respuesta['mensaje']
+                    ]);
+                }
+                return 0;
+                exit;
             }else{
                 echo json_encode([
-                    'estatus' => '2',
+                    'estatus' => '0',
                     'icon' => 'error',
-                    'title' => $modul.":",
-                    'message' => $respuesta['mensaje']
+                    'title' => $modul,
+                    'message' => 'No tiene permisos para modificar el registro.'
                 ]);
-            }
-            return 0;
-            exit;
+                return 0;
+                exit;
+            } 
         } else if ($accion == 'editar') {
             $datos = $modulo->cargar($_POST['id']);
             foreach ($datos as $valor) {
