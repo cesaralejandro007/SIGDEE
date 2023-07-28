@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-07-2023 a las 13:38:00
+-- Tiempo de generación: 23-07-2023 a las 13:51:26
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -604,7 +604,16 @@ INSERT INTO `bitacora` (`id`, `id_usuario_roles`, `id_entorno`, `fecha`, `accion
 (1657, 266, 12, '2023-07-23 05:56:58', 'EliminaciÃ³n de rol'),
 (1658, 266, 12, '2023-07-23 01:31:57', 'EliminaciÃ³n de rol'),
 (1659, 0, 12, '2023-07-23 01:32:05', 'EliminaciÃ³n'),
-(1660, 0, 12, '2023-07-23 01:32:35', 'Modificacion');
+(1660, 0, 12, '2023-07-23 01:32:35', 'Modificacion'),
+(1661, 0, 12, '2023-07-23 01:49:20', 'Registro de rol'),
+(1662, 285, 12, '2023-07-23 01:50:37', 'Registro de rol'),
+(1663, 285, 12, '2023-07-23 01:50:38', 'Registro de rol'),
+(1664, 285, 12, '2023-07-23 01:50:42', 'Registro de rol'),
+(1665, 285, 12, '2023-07-23 01:50:43', 'Registro de rol'),
+(1666, 285, 12, '2023-07-23 01:50:43', 'Registro de rol'),
+(1667, 285, 12, '2023-07-23 01:50:43', 'Registro de rol'),
+(1668, 285, 12, '2023-07-23 01:50:46', 'Registro de rol'),
+(1669, 285, 12, '2023-07-23 01:50:46', 'Registro de rol');
 
 -- --------------------------------------------------------
 
@@ -1046,7 +1055,16 @@ INSERT INTO `usuarios_roles` (`id`, `id_usuario`, `id_rol`) VALUES
 (279, 175, 2),
 (280, 175, 5),
 (283, 1, 7),
-(284, 176, 7);
+(284, 176, 7),
+(285, 1, 1),
+(286, 175, 1),
+(287, 175, 7),
+(288, 174, 1),
+(289, 174, 2),
+(290, 174, 5),
+(291, 174, 7),
+(292, 176, 2),
+(293, 176, 5);
 
 -- --------------------------------------------------------
 
@@ -1072,6 +1090,9 @@ CREATE TABLE `vista_usuario` (
 --
 -- Estructura para la vista `vista_usuario`
 --
+DROP TABLE IF EXISTS `vista_usuario`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuario`  AS SELECT `usuario`.`id` AS `id`, `usuario`.`cedula` AS `cedula`, `usuario`.`primer_nombre` AS `primer_nombre`, `usuario`.`segundo_nombre` AS `segundo_nombre`, `usuario`.`primer_apellido` AS `primer_apellido`, `usuario`.`segundo_apellido` AS `segundo_apellido`, `usuario`.`genero` AS `genero`, `usuario`.`correo` AS `correo`, `usuario`.`direccion` AS `direccion`, `usuario`.`telefono` AS `telefono` FROM `usuario``usuario`  ;
 
 --
 -- Índices para tablas volcadas
@@ -1296,7 +1317,7 @@ ALTER TABLE `aula_estudiante`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1661;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1670;
 
 --
 -- AUTO_INCREMENT de la tabla `censo`
@@ -1410,7 +1431,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `usuarios_roles`
 --
 ALTER TABLE `usuarios_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
 
 --
 -- Restricciones para tablas volcadas
@@ -1532,6 +1553,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-DROP TABLE IF EXISTS `vista_usuario`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuario`  AS SELECT `usuario`.`id` AS `id`, `usuario`.`cedula` AS `cedula`, `usuario`.`primer_nombre` AS `primer_nombre`, `usuario`.`segundo_nombre` AS `segundo_nombre`, `usuario`.`primer_apellido` AS `primer_apellido`, `usuario`.`segundo_apellido` AS `segundo_apellido`, `usuario`.`genero` AS `genero`, `usuario`.`correo` AS `correo`, `usuario`.`direccion` AS `direccion`, `usuario`.`telefono` AS `telefono` FROM `usuario``usuario`  ;

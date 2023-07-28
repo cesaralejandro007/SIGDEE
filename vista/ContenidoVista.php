@@ -172,7 +172,9 @@ foreach ($r1 as $valor) {?>
                             </div>
                             <!-- /.card-body -->
                         </div>
-                        <?php }}?>
+                        <?php }else{
+                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                            }}?>
                         <!-- /.card -->
                     </div>
                     <!-- /.col -->

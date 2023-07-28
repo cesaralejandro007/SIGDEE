@@ -27,7 +27,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $bitacora = new Bitacora();
     $config = new Mensaje();
     $modul = 'Emprendimiento';
-
+    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Emprendimiento");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
     $entorno = $bitacora->buscar_id_entorno('Emprendimiento');
@@ -36,124 +36,157 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $response = $emprendimiento->incluir($_POST['nombre'],$_POST['id_area']);
-            if ($response['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
-            } else if ($response['resultado']==2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            } else if ($response['resultado']==3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            }else {
+            if ($response[0]["registrar"] == "true"){
+                $response = $emprendimiento->incluir($_POST['nombre'],$_POST['id_area']);
+                if ($response['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+                } else if ($response['resultado']==2) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                } else if ($response['resultado']==3) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }else {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }
+                return 0;
+                exit;
+            }else{
                 echo json_encode([
                     'estatus' => '0',
                     'icon' => 'error',
                     'title' => $modul,
-                    'message' => $response['mensaje']
+                    'message' => 'No tiene permisos para registrar.'
                 ]);
-            }
-            return 0;
-            exit;
+                return 0;
+                exit;
+            } 
         } else if ($accion == 'eliminar') {
-            $response = $emprendimiento->eliminar($_POST['id']);
-            if ($response['resultado']==1) {
+            if ($response[0]["eliminar"] == "true"){
+                $response = $emprendimiento->eliminar($_POST['id']);
+                if ($response['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
+                } else if ($response == 2) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }else if ($response == 3) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }else if ($response == 4) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }  else {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }
+                return 0;
+                exit;
+            }else{
                 echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
+                    'estatus' => '0',
+                    'icon' => 'error',
                     'title' => $modul,
-                    'message' => $response['mensaje']
+                    'message' => 'No tiene permisos para eliminar el registro.'
                 ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
-            } else if ($response == 2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            }else if ($response == 3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            }else if ($response == 4) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            }  else {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-            }
-            return 0;
-            exit;
+                return 0;
+                exit;
+            } 
         } else if ($accion == 'modificar') {
-            $response = $emprendimiento->modificar($_POST['id'],$_POST['nombre'],$_POST['id_area']);
-            if ($response['resultado']==1) {
+            if ($response[0]["modificar"] == "true"){
+                $response = $emprendimiento->modificar($_POST['id'],$_POST['nombre'],$_POST['id_area']);
+                if ($response['resultado']==1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
+                    return 0;
+                } else if ($response['resultado']==2){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }else if ($response['resultado']==3){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }else if ($response['resultado']==4){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }else {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }
+            }else{
                 echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
+                    'estatus' => '0',
+                    'icon' => 'error',
                     'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
-                return 0;
-            } else if ($response['resultado']==2){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
+                    'message' => 'No tiene permisos para modificar el registro.'
                 ]);
                 return 0;
-            }else if ($response['resultado']==3){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }else if ($response['resultado']==4){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }else {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modul,
-                    'message' => $response['mensaje']
-                ]);
-                return 0;
-            }
+                exit;
+            } 
         } else if ($accion == 'editar') {
             $datos = $emprendimiento->cargar($_POST['id']);
             foreach ($datos as $valor) {
@@ -213,12 +246,15 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
     }
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Emprendimiento");
     $r1 = $emprendimiento->listar();
     $r2 = $area->listar();
     $r3 = $modulo->listar();
     $datos = [];
-    require_once "vista/" . $pagina . "Vista.php";
+    if (isset($response[0]["nombreentorno"])) {
+        require_once "vista/" . $pagina . "Vista.php";
+    }else{
+        require_once "vista/error_Permisos.php";
+    }
 } else {
     echo "Pagina en construccion";
 }

@@ -101,7 +101,9 @@ if (isset($response[0]["eliminar"])) {
                                 </div>
                                 <!-- /.card-body -->
                             </div>
-                            <?php }}?>
+                            <?php }else{
+                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                            }}?>
                             <!-- /.card -->
                         </div>
                         <!-- /.col -->

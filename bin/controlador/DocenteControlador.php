@@ -23,7 +23,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $bitacora = new Bitacora();
     $config = new Mensaje();
     $modulo = 'Docente';
-
+    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Docentes");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
     $entorno = $bitacora->buscar_id_entorno('Docentes');
@@ -32,6 +32,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
             if ($accion == 'registrar') {
+                if ($response[0]["registrar"] == "true"){
                 $r2 = $usuario_rol->buscar_rol('Docente');
                 $r1 = $docente->buscardocente($_POST['cedula']);
                 if (empty($r1)==false && empty($r2)==false) {
@@ -128,83 +129,115 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     return 0;
                     exit;
                 }
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => 'No tiene permisos para registrar.'
+                ]);
+                return 0;
+                exit;
+            } 
            }else if ($accion == 'eliminar') {
-            $r2 = $usuario_rol->buscar_rol('Docente');
-            $response_rol = $usuario_rol->eliminarD($_POST['id'],$r2[0]['id']);
-            if ($response_rol['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
-            } else if($response_rol['resultado']==2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-            }else if($response_rol['resultado']==3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response_rol['mensaje']
-                ]);
-            }else{
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'error',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-            }  
-            return 0;
-            exit;
-        } else if ($accion == 'modificar') {
-            $response = $docente->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
-            if ($response['resultado']==1) {
-                echo json_encode([
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
-            } else if ($response['resultado']==2) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-            }else if ($response['resultado']==3) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-            }else if ($response['resultado']==4) {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-            }else{
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'error',
-                    'title' => $modulo,
-                    'message' => $response['mensaje']
-                ]);
-            }  
-            return 0;
-            exit;
-        } else if ($accion == 'editar') {
+                if ($response[0]["eliminar"] == "true"){
+                    $r2 = $usuario_rol->buscar_rol('Docente');
+                    $response_rol = $usuario_rol->eliminarD($_POST['id'],$r2[0]['id']);
+                    if ($response_rol['resultado']==1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $response_rol['mensaje']
+                        ]);
+                        $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
+                    } else if($response_rol['resultado']==2) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response_rol['mensaje']
+                        ]);
+                    }else if($response_rol['resultado']==3) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response_rol['mensaje']
+                        ]);
+                    }else{
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'error',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }  
+                    return 0;
+                    exit;
+                }else{
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => $modulo,
+                        'message' => 'No tiene permisos para eliminar el registro.'
+                    ]);
+                    return 0;
+                    exit;
+                } 
+            } else if ($accion == 'modificar') {
+                if ($response[0]["modificar"] == "true"){
+                    $response = $docente->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
+                    if ($response['resultado']==1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
+                    } else if ($response['resultado']==2) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }else if ($response['resultado']==3) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }else if ($response['resultado']==4) {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }else{
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'error',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                    }  
+                    return 0;
+                    exit;
+                }else{
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => $modulo,
+                        'message' => 'No tiene permisos para modificar el registro.'
+                    ]);
+                    return 0;
+                    exit;
+                } 
+            } else if ($accion == 'editar') {
             $datos = $docente->cargar($_POST['id']);
             foreach ($datos as $valor) {
                 echo json_encode([
@@ -250,10 +283,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
     }
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Docentes");
     $r1 = $docente->listar();
     $datos = [];
-    require_once "vista/" . $pagina . "Vista.php";
+    if (isset($response[0]["nombreentorno"])) {
+        require_once "vista/" . $pagina . "Vista.php";
+    }else{
+        require_once "vista/error_Permisos.php";
+    }
 } else {
     echo "Pagina en construccion";
 }

@@ -59,13 +59,6 @@ class DocenteModelo extends connectDB
 
     public function modificar($id,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
-        $this->id = $id;
-        $this->cedula = $cedula;
-        $this->nombre = $nombre;
-        $this->apellido = $apellido;
-        $this->telefono = $telefono;
-        $this->correo = $correo;
-        $this->direccion = $direccion;
 
         $validar_modificar = $this->validar_modificar($cedula,$id);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);

@@ -52,7 +52,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $usuario = new Usuario();
     $modulo = 'Aula';
     $modulo_unidad = 'Unidad';
-
+    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Aula");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
     $entorno = $bitacora->buscar_id_entorno('Aula');
@@ -690,16 +690,18 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         else
         require_once "vista/error_404Vista.php";
     } else {
-        $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Aula");
-
+ 
         $r1 = $aula->mostrar_aulas();
         $areas = $area->listar();
         $modulos = $modulo_e->listar();
         $docentes = $docente->listar();
         $estudiantes = $estudiante->listar();
         $datos = [];
-        require_once "vista/" . $pagina . "Vista.php";
-
+        if (isset($response[0]["nombreentorno"])) {
+            require_once "vista/" . $pagina . "Vista.php";
+        }else{
+            require_once "vista/error_Permisos.php";
+        }
     }
 } else {
     echo "Pagina en construccion";

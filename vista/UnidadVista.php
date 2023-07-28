@@ -93,9 +93,8 @@ if (isset($response2[0]["registrar"])) {
                                     </ul>
                                 </div><!-- /.card-header -->
                                     <?php }else{
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        No tiene permisos para este modulo.</div>';
-                                    }}?>
+                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                            }}?>
                                 <div class="card-body">
                                     <div class="tab-content">
                                         <!--Mostrar Unidad-->
@@ -130,7 +129,9 @@ if (isset($response3[0]["consultar"])) {
                                                 <hr style="color: #D7DBDD;">
                                                 <?php }}?>
                                             </div>
-                                            <?php }}
+                                            <?php }else{
+                                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar contenido.</div>';
+                                            }}
                                             if (isset($response2[0]["consultar"])) {
     if ($response2[0]["consultar"] == 'true') {?>
                                             <div class="card-body p-0">
@@ -195,9 +196,13 @@ if (isset($response3[0]["consultar"])) {
                                                 <hr style="color: #D7DBDD;">
                                                 <?php }?>
                                             </div>
-                                            <?php }}?>
+                                            <?php }else{
+                                                echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar Evaluaciones.</div>';
+                                            }}?>
                                         </div>
-                                        <?php }}?>
+                                        <?php }}else{
+                                            echo '<div class="alert alert-danger" role="alert">No tiene permisos para consultar este modulo.</div>';
+                                        }?>
                                         <!--Mostrar Contenidos-->
                                         <div class="tab-pane" id="contenidos">
                                             <h6 class="display-6" style="font-size:22px;">Contenidos</h6>
@@ -225,6 +230,8 @@ if (isset($response3[0]["consultar"])) {
                                                             <div class="position-absolute top-0 end-0">
                                                                 <ul class="nav nav-pills ml-auto">
                                                                     <li class="nav-item dropdown">
+                                                                    <?php
+                                                                    if ($response2[0]["modificar"] != 'false' || $response2[0]["eliminar"] != 'false') {?>
                                                                         <a class="nav-link" data-toggle="dropdown"
                                                                             style="cursor: pointer">
                                                                             <i class="fas fa-ellipsis-h"></i></i><span
@@ -240,7 +247,8 @@ if (isset($response3[0]["consultar"])) {
                                                                                     onclick="eliminar_evaluacion(<?=$evaluacion['unidad_evaluacion'];?>);">Eliminar</a>
                                                                             </div>
                                                                         </div>
-                                                                    </li>
+                                                                    </li>       
+                                                                    <?php }?>
                                                                 </ul>
                                                             </div>
                                                         </div>
