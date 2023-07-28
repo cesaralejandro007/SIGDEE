@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
-
+<link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <?php include_once 'componentes/panel_nav.php';?>
@@ -202,29 +203,6 @@
                     <span id="sgenero"></span>
                   </div>
                 </div>
-                <div class="form-group row selectores" id="selectores">           
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Área de Emprendimiento</label>
-                      <select class="form-control select2bs4" id="area" name="area"
-                      style="width: 100%;">
-                        <option disabled selected value="0">Seleccione</option>
-                      </select>
-                      <span id="sarea"></span>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Emprendimiento</label>
-                      <select class="form-control select2bs4" id="tipo" name="tipo"
-                      style="width: 100%;">
-                        <option disabled selected value="0">Seleccione</option>
-                      </select>
-                      <span id="semprendimiento"></span>
-                    </div>
-                  </div>
-                </div>
-
                 <div class="form-group row">
                   <div class="col-md-6">
                     <label for="message-text" class="col-form-label" for="telefono">Telefono:</label>
@@ -235,6 +213,38 @@
                     <label for="message-text" class="col-form-label" for="correo">Correo:</label>
                     <input type="text" name="correo" id="correo" class="form-control">
                     <span id="scorreo"></span>
+                  </div>
+                </div>
+                <div class="form-group row selectores" id="selectores">           
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Pais</label>
+                      <select class="form-control select2bs4" id="pais" name="pais"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="spais"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Estado</label>
+                      <select class="form-control select2bs4" id="estado" name="estado"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="sestado"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Ciudad</label>
+                      <select class="form-control select2bs4" id="ciudad" name="ciudad"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="sciudad"></span>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -266,9 +276,19 @@
     <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
-
+  <script src="plugins/select2/js/select2.full.min.js"></script>
   <script src="content/js/estudiante.js"></script>
+  <script>
+        $(function() {
+        //Initialize Select2 Elements
+          $('.select2').select2()
 
+        //Initialize Select2 Elements
+          $('.select2bs4').select2({
+            theme: 'bootstrap4'
+          })
+        });
+      </script>
   <!-- Page specific script -->
 
 </script>

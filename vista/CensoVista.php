@@ -79,9 +79,6 @@ if (isset($response[0]["eliminar"])) {
                                                             onclick="eliminar(<?=$valor['id'];?>);"><i
                                                                 class="fas fa-trash"></i></button>
                                                         <?php }}?>
-                                                        <button class="btn btn-sm" type="button"
-                                                            onclick="cargar_emprendimientos(<?=$valor['id'];?>);"><i
-                                                                class="fas fa-file"></i> Emprendimientos</button>
                                                     </div>
                                                 </td>
                                                 <td><?php echo date('d-m-Y h:i:s', strtotime($valor['fecha_apertura'])); ?>
