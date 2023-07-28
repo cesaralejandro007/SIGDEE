@@ -30,6 +30,23 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             ];
             }
             echo json_encode($info_completa);
+        }else if($_POST['accion'] == 'limpiar_bitacora'){
+            $limpiar_bitacora = $bitacora->limpieza_bitacora($_POST['fecha_inicio'],$_POST['fecha_cierre']);
+            if($limpiar_bitacora){
+                echo json_encode([
+                    'estatus' => '1',
+                    'icon' => 'success',
+                    'title' => 'bitacora',
+                    'message' => 'Eliminación exitosa'
+                ]);
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => 'bitacora',
+                    'message' => 'Registro no eliminado'
+                ]);
+            }
         }
         return 0;
     }
