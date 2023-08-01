@@ -281,3 +281,107 @@ $("#consulta-bitacora").modal("show");
       document.getElementById("val_fecha").innerHTML = "Complete los campos."
   }
 }
+
+
+document.getElementById("Limpiar-bitacora").onclick = function(){
+  if(document.getElementById("fechad").value !="" && document.getElementById("fechah").value!=""){
+    fecha1 = document.getElementById("fechad").value;
+    fecha2 = document.getElementById("fechah").value;
+    fechat1 = convertDateFormat(fecha1);
+    fechat2 = convertDateFormat(fecha2);
+    const valor1 = new Date(fechat1);
+    const valor2 = new Date(fechat2);
+    if(valor1.getTime() <= valor2.getTime()){
+  Swal.fire({
+    title: "¿Está seguro de limpiar la bitacora?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCloseButton: true,
+    showCancelButton: true,
+    confirmButtonColor: "#0C72C4",
+    cancelButtonColor: "#9D2323",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setTimeout(function () {
+        var datos = new FormData();
+        datos.append("accion", "limpiar_bitacora");
+        datos.append("fecha_inicio", fechat1);
+        datos.append("fecha_cierre",fechat2);
+        enviaAjax(datos);
+      }, 10);
+    }
+  });
+}else{
+  document.getElementById("fechad").style.borderColor = "red";
+  document.getElementById("fechah").style.borderColor = "red";
+  document.getElementById("fechad").focus();
+  document.getElementById("fechah").focus();
+  document.getElementById("val_fecha").innerHTML = "La primera fecha no puede ser mayor que la segunda."
+}
+}else{
+document.getElementById("fechad").style.borderColor = "red";
+document.getElementById("fechah").style.borderColor = "red";
+document.getElementById("fechad").focus();
+document.getElementById("fechah").focus();
+document.getElementById("val_fecha").innerHTML = "Complete los campos."
+}
+}
+
+function enviaAjax(datos) {
+  var toastMixin = Swal.mixin({
+
+    showConfirmButton: false,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
+    timerProgressBar: true,
+  });
+  $.ajax({
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      if (res.estatus == 1) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      } else if (res.estatus == 2) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      }else if (res.estatus == 3){
+        toastMixin.fire({
+
+          text: res.message,
+          title: res.title,
+          icon: res.icon,
+        });
+      }
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: res.error,
+      });
+    },
+  });
+}

@@ -509,6 +509,7 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     success: (response) => {
+      
       var res = JSON.parse(response);
       //alert(res.title);
       if (res.estatus == 1) {
