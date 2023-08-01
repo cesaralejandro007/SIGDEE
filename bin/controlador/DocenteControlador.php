@@ -1,4 +1,7 @@
 <?php
+use modelo\PaisModelo as Pais;
+use modelo\EstadoModelo as Estado;
+use modelo\CiudadModelo as Ciudad;
 use modelo\DocenteModelo as Docente;
 use modelo\configNotificacionModelo as Mensaje;
 use modelo\PermisosModelo as Permiso;
@@ -21,8 +24,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $permiso_usuario = new Permiso();
     $usuario_rol = new UsuariosRoles();
     $bitacora = new Bitacora();
-    $config = new Mensaje();
     $modulo = 'Docente';
+    $array_paises = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."countries.json"))), true);
+    $array_estados = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."states.json"))), true);
+    $array_ciudades = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."cities.json"))), true);  
+
+    function buscar_elemento($array, $id, $clase){
+        $pais = new Pais();
+        $estado = new Estado();
+        $ciudad = new Ciudad();
+        foreach ($array as $key) {
+            if($key['id'] == $id){
+                switch($clase){
+                    case 'pais':
+                        $pais->incluir($key['id'], $key['name']);
+                    break;
+                    case 'estado':
+                        $estado->incluir($key['id'], $key['id_country'], $key['name']);
+                    break;
+                    case 'ciudad':
+                        $ciudad->incluir($key['id'], $key['id_state'], $key['name']);
+                    break;
+                }
+            }
+        }
+    }
+
     $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Docentes");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
@@ -88,7 +115,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
                 $clave_nueva ="Diplomado";
                 $clave = password_hash($clave_nueva, PASSWORD_DEFAULT);
-                    $response = $docente->incluir($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
+                buscar_elemento($array_paises, $_POST['pais'], 'pais');
+                buscar_elemento($array_estados, $_POST['estado'], 'estado');
+                buscar_elemento($array_ciudades, $_POST['ciudad'], 'ciudad');
+                    
+                    $response = $docente->incluir($_POST['cedula'],$_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'],$clave);
                     if ($response['resultado']==1) {
                         $r2 = $usuario_rol->buscar_rol('Docente');
                         $r1 = $docente->buscardocente($_POST['cedula']);
@@ -187,7 +218,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 } 
             } else if ($accion == 'modificar') {
                 if ($response[0]["modificar"] == "true"){
-                    $response = $docente->modificar($_POST['id'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
+                    buscar_elemento($array_paises, $_POST['pais'], 'pais');
+                    buscar_elemento($array_estados, $_POST['estado'], 'estado');
+                    buscar_elemento($array_ciudades, $_POST['ciudad'], 'ciudad');
+                    $response = $docente->modificar($_POST['id'],$_POST['ciudad'],$_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
                     if ($response['resultado']==1) {
                         echo json_encode([
                             'estatus' => '1',
@@ -237,6 +271,47 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     return 0;
                     exit;
                 } 
+            }else if($accion == 'listadopaises'){
+                $r = array();
+                $x = '<option disabled selected>Seleccione</option>';
+                
+                foreach ($array_paises as $key) {
+                    $x = $x . '<option value="' . $key['id'] . '">' . $key['name'] . '</option>';
+                }
+                $r['resultado'] = 'listadopaises';
+                $r['mensaje'] = $x;
+    
+                echo json_encode($r);
+                return 0;
+            } else if($accion == 'listadoestados'){
+                $r = array();
+                $x = '<option disabled selected>Seleccione</option>';
+                
+                foreach ($array_estados as $estado) {
+                    if($estado['id_country'] == $_POST['pais']){
+                        $x = $x . '<option value="' . $estado['id'] . '">' . $estado['name'] . '</option>';
+                    }
+                }
+                $r['resultado'] = 'listadoestados';
+                $r['mensaje'] = $x;
+    
+                echo json_encode($r);
+                return 0;
+            } else if($accion == 'listadociudades'){
+                $r = array();
+                $x = '<option disabled selected>Seleccione</option>';
+                
+                foreach ($array_ciudades as $ciudad) {
+                    if($ciudad['id_state'] == $_POST['estado']){
+                        $x = $x . '<option value="' . $ciudad['id'] . '">' . $ciudad['name'] . '</option>';
+                    }
+                }
+                $r['resultado'] = 'listadociudades';
+                $r['mensaje'] = $x;
+    
+                echo json_encode($r);
+                return 0;
+            
             } else if ($accion == 'editar') {
             $datos = $docente->cargar($_POST['id']);
             foreach ($datos as $valor) {
@@ -282,6 +357,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             return 0;
         }
+        
     }
     $r1 = $docente->listar();
     $datos = [];
