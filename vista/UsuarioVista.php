@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
-
+<link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php include_once 'componentes/panel_nav.php';?>
@@ -121,86 +122,117 @@
         <!-- /.modal Registrar -->
 
         <div class="modal fade show" id="gestion-usuario">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="titulo"></h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" id="fi" method="post">
-                            <input type="hidden" name="accion" id="accion" />
-                            <input type="hidden" name="id" id="id" />
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="cedula">Cedula:</label>
-                                    <input type="text" name="cedula" id="cedula" class="form-control">
-                                    <span id="scedula"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="nombre">Primer nombre:</label>
-                                    <input type="text" name="nombre" id="primer_nombre" class="form-control">
-                                    <span id="spnombre"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="segundo_nombre">Segundo nombre:</label>
-                                    <input type="text" name="segundo_nombre" id="segundo_nombre" class="form-control">
-                                    <span id="ssnombre"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="apellido">Primer apellido:</label>
-                                    <input type="text" name="apellido" id="primer_apellido" class="form-control">
-                                    <span id="spapellido"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="message-text" class="col-form-label" for="apellido">Segundo apellido:</label>
-                                    <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control">
-                                    <span id="ssapellido"></span>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="col-form-label" for="genero">Genero:</label>
-                                        <select type="select" class="form-control form-select" id="genero" name="genero">
-                                            <option value="0">--Seleccione--</option>
-                                            <option value="Masculino">Masculino</option>
-                                            <option value="Femenino">Femenino</option>
-                                        </select>
-                                    <span id="sgenero"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label for="message-text" class="col-form-label" for="telefono">Telefono:</label>
-                                    <input type="text" name="telefono" id="telefono" class="form-control">
-                                    <span id="stelefono"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="message-text" class="col-form-label" for="correo">Correo:</label>
-                                    <input type="text" name="correo" id="correo" class="form-control">
-                                    <span id="scorreo"></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-
-                                <div class="col-md-12">
-                                    <label for="message-text" class="col-form-label" for="direccion">Direccion:</label>
-                                    <textarea type="text" cols="15" rows="4" name="direccion" id="direccion"
-                                        class="form-control"></textarea>
-                                    <span id="sdireccion"></span>
-                                </div>
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                                <input class="btn btn-default" type="reset" value="Limpiar Campos" />
-                                <button type="button" id="enviar" class="btn btn-primary">Registrar</button>
-                            </div>
-                    </div>
-                    </form>
-                </div>
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="titulo"></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
+            <div class="modal-body">
+              <form action="" id="fi" method="post">
+                <input type="hidden" name="accion" id="accion" />
+                <input type="hidden" name="id" id="id" />
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="message-text" class="col-form-label" for="cedula">Cedula:</label>
+                    <input type="text" name="cedula" id="cedula" class="form-control">
+                    <span id="scedula"></span>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="message-text" class="col-form-label" for="nombre">Primer nombre:</label>
+                    <input type="text" name="nombre" id="primer_nombre" class="form-control">
+                    <span id="spnombre"></span>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="message-text" class="col-form-label" for="segundo_nombre">Segundo nombre:</label>
+                    <input type="text" name="segundo_nombre" id="segundo_nombre" class="form-control">
+                    <span id="ssnombre"></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="message-text" class="col-form-label" for="apellido">Primer apellido:</label>
+                    <input type="text" name="apellido" id="primer_apellido" class="form-control">
+                    <span id="spapellido"></span>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="message-text" class="col-form-label" for="apellido">Segundo apellido:</label>
+                    <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control">
+                    <span id="ssapellido"></span>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-form-label" for="genero">Genero:</label>
+                    <select type="select" class="form-control form-select" id="genero" name="genero">
+                      <option value="0">--Seleccione--</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                    </select>
+                    <span id="sgenero"></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label for="message-text" class="col-form-label" for="telefono">Telefono:</label>
+                    <input type="text" name="telefono" id="telefono" class="form-control">
+                    <span id="stelefono"></span>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="message-text" class="col-form-label" for="correo">Correo:</label>
+                    <input type="text" name="correo" id="correo" class="form-control">
+                    <span id="scorreo"></span>
+                  </div>
+                </div>
+                <div class="form-group row selectores" id="selectores">           
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Pais</label>
+                      <select class="form-control select2bs4" id="pais" name="pais"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="spais"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Estado</label>
+                      <select class="form-control select2bs4" id="estado" name="estado"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="sestado"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Ciudad</label>
+                      <select class="form-control select2bs4" id="ciudad" name="ciudad"
+                      style="width: 100%;">
+                        <option disabled selected value="0">Seleccione</option>
+                      </select>
+                      <span id="sciudad"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label for="message-text" class="col-form-label" for="direccion">Direccion:</label>
+                    <textarea type="text" cols="15" rows="4" name="direccion" id="direccion"
+                    class="form-control"></textarea>
+                    <span id="sdireccion"></span>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <input class="btn btn-default" type="reset" value="Limpiar Campos" />
+                  <button type="button" id="enviar" class="btn btn-primary">Registrar</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="modal" id="crear-rol">
@@ -286,8 +318,19 @@
     <!-- Bootstrap 4 -->
 
     <!-- DataTables  & Plugins -->
+    <script src="plugins/select2/js/select2.full.min.js"></script>
     <script src="content/js/usuario.js"></script>
+    <script>
+        $(function() {
+        //Initialize Select2 Elements
+          $('.select2').select2()
 
+        //Initialize Select2 Elements
+          $('.select2bs4').select2({
+            theme: 'bootstrap4'
+          })
+        });
+      </script>
     <!-- Page specific script -->
 
     </script>

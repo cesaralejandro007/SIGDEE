@@ -5,6 +5,7 @@ var keyup_genero = /^[A-ZÁÉÍÓÚ][a-zñáéíóú]{7,8}$/;
 var keyup_telefono = /^[0-9]{11}$/;
 var keyup_correo =/^[A-Za-z0-9_\u00d1\u00f1\u00E0-\u00FC]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/;
 var keyup_direccion = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,100}$/;
+var keyup_select = /^[0-9]{1,10}$/;
 
 $(document).ready(function() {    
   var table = $('#funcionpaginacion').DataTable({ 
@@ -276,6 +277,9 @@ function carga() {
       datos.append("segundo_apellido", $("#segundo_apellido").val());
       datos.append("genero", $("#genero").val());
       datos.append("correo", $("#correo").val());
+      datos.append("pais", $("#pais").val());
+      datos.append("estado", $("#estado").val());
+      datos.append("ciudad", $("#ciudad").val());
       datos.append("telefono", $("#telefono").val());
       datos.append("direccion", $("#direccion").val());
       datos.append("id_rol", $("#rol").val());
@@ -331,6 +335,37 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
   }
 }
 
+/****** Mostrar contenido de los selects ******/
+function muestrapaises() {
+  var datos = new FormData();
+  //a ese datos le añadimos la informacion a enviar
+  datos.append("accion", "listadopaises"); //le digo que me muestre un listado de aulas
+  //ahora se envia el formdata por ajax
+  enviaAjax(datos);
+}
+function muestraEstados() {
+  //cuando cambie el pais se hace lo mismo
+  //pero en este caso se le anexa el formdata
+  //el id del pais para filtrar los estados
+  var datos = new FormData();
+  //a ese datos le añadimos la informacion a enviar
+  datos.append("accion", "listadoestados");
+  datos.append("pais", $("#pais").val());
+  //ahora se envia el formdata por ajax
+  enviaAjax(datos);
+}
+function muestraCiudades() {
+  //cuando cambie el pais se hace lo mismo
+  //pero en este caso se le anexa el formdata
+  //el id del pais para filtrar los estados
+  var datos = new FormData();
+  //a ese datos le añadimos la informacion a enviar
+  datos.append("accion", "listadociudades");
+  datos.append("estado", $("#estado").val());
+  //ahora se envia el formdata por ajax
+  enviaAjax(datos);
+}
+
 function limpiar() {
   $("#cedula").val("");
   $("#primer_nombre").val("");
@@ -371,6 +406,24 @@ function valida_registrar() {
     document.getElementById("cedula"),
     document.getElementById("scedula"),
     "* El formato debe ser 99999999."
+  );
+  pais = validarkeyup(
+    keyup_select,
+    document.getElementById("pais"),
+    document.getElementById("spais"),
+    "* Información requerida."
+  );
+  estado = validarkeyup(
+    keyup_select,
+    document.getElementById("estado"),
+    document.getElementById("sestado"),
+    "* Información requerida."
+  );
+  ciudad = validarkeyup(
+    keyup_select,
+    document.getElementById("ciudad"),
+    document.getElementById("sciudad"),
+    "* Información requerida."
   );
   pnombre = validarkeyup(
     keyup_nombre,
@@ -429,6 +482,9 @@ function valida_registrar() {
     snombre == 0 ||
     papellido == 0 ||
     sapellido == 0 ||
+    pais == 0 ||
+    estado == 0 ||
+    ciudad == 0 ||
     document.getElementById("genero").value == 0 ||
     correo == 0 ||
     telefono == 0 ||
@@ -439,6 +495,32 @@ function valida_registrar() {
   }
   return error;
 }
+
+$(document).ready(function () {
+  $("#buscarb").click(function (e) {});
+  
+  document.getElementById("pais").onkeyup = function () {
+    r = validarkeyup(
+      keyup_pais,
+      this,
+      document.getElementById("spais"),
+      "* Seleccione un pais de estado."
+    );
+  };
+  muestrapaises();
+
+  $("#pais").on("change", function () {
+    $("#estado").html('<option value="0" disabled selected>Seleccione</option>');
+    $("#ciudad").html('<option value="0" disabled selected>Seleccione</option>');
+    muestraEstados();
+  });
+
+  $("#estado").on("change", function () {
+    $("#ciudad").html('<option value="0" disabled selected>Seleccione</option>');
+    muestraCiudades();
+  });
+
+});
 
 function cargar_datos(valor) {
   var datos = new FormData();
@@ -512,6 +594,17 @@ function enviaAjax(datos) {
       
       var res = JSON.parse(response);
       //alert(res.title);
+      if (res.resultado == "listadopaises") {
+        $("#pais").html(res.mensaje);
+      } 
+      else
+      if (res.resultado == "listadoestados") {
+        $("#estado").html(res.mensaje);
+      } 
+      else
+      if (res.resultado == "listadociudades") {
+        $("#ciudad").html(res.mensaje);
+      } else
       if (res.estatus == 1) {
         toastMixin.fire({
 

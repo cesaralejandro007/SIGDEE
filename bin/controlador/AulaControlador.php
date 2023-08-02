@@ -674,7 +674,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     } else
     if (isset($_GET['visualizar'])) {
         $listar_unidad = $unidad->listar_unidad_aula($_GET['aula']);
-        if($listar_unidad != null){
+       // if($listar_unidad != null){
             $datos = $aula->encontrar($_GET['aula']);
             $estudiantes = $aula_estudiante->listar_por_aula($_GET['aula']);
             $docentes = $aula_docente->listar_por_aula($_GET['aula']);
@@ -685,10 +685,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $publicaciones = $publicacion->listarpublicacion($datos[0]['id']);
             }
             $unidadpermisos = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Unidad");
-            require_once "vista/MostrarAulaVista.php";
-        }
-        else
-        require_once "vista/error_404Vista.php";
+        //}
+        require_once "vista/MostrarAulaVista.php";
+
+        //else   require_once "vista/error_404Vista.php";
     } else {
  
         $r1 = $aula->mostrar_aulas();

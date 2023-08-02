@@ -16,7 +16,7 @@ class UsuarioModelo extends connectDB
     private $id_rol;
     private $status;
 
-    public function incluir($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave)
+    public function incluir($cedula,$id_ciudad,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave)
     {
         $validar_registro = $this->validar_registro($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
@@ -28,8 +28,8 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         } else {
             try {
-                $this->conex->query("INSERT INTO usuario(cedula, primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,genero,correo, direccion, telefono,clave)
-					VALUES('$cedula', '$primer_nombre','$segundo_nombre', '$primer_apellido','$segundo_apellido','$genero', '$correo', '$direccion','$telefono','$clave')");
+                $this->conex->query("INSERT INTO usuario(cedula, id_ciudad, primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,genero,correo, direccion, telefono,clave)
+					VALUES('$cedula', '$id_ciudad', '$primer_nombre','$segundo_nombre', '$primer_apellido','$segundo_apellido','$genero', '$correo', '$direccion','$telefono','$clave')");
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Registro Exitoso.";
             } catch (Exception $e) {
@@ -98,7 +98,7 @@ class UsuarioModelo extends connectDB
         return $respuesta;
     }
 
-    public function modificar($id,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function modificar($id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
         $validar_modificar = $this->validar_modificar($cedula, $id);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
@@ -115,7 +115,7 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         }  else {
             try {
-                $this->conex->query("UPDATE usuario  SET cedula = '$cedula', primer_nombre = '$primer_nombre', segundo_nombre = '$segundo_nombre', genero = '$genero',correo = '$correo',  direccion = '$direccion', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido',telefono = '$telefono' WHERE id = '$id'");
+                $this->conex->query("UPDATE usuario  SET cedula = '$cedula', id_ciudad = '$id_ciudad', primer_nombre = '$primer_nombre', segundo_nombre = '$segundo_nombre', genero = '$genero',correo = '$correo',  direccion = '$direccion', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido',telefono = '$telefono' WHERE id = '$id'");
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Modificación exitosa.";
             } catch (Exception $e) {
