@@ -157,9 +157,10 @@ class AulaDocenteModelo extends connectDB
         }
     }
 
-    public function listard($cedula)
+    //Cargar las areas de emprendimiento que imparte el docente
+    public function docente_areas($cedula)
     {
-        $resultado = $this->conex->prepare("SELECT a.id as id ,a.nombre as nombre FROM usuario u, aula_docente ad, aula a WHERE u.id = ad.id_docente and ad.id_aula = a.id and u.cedula = '$cedula'");
+        $resultado = $this->conex->prepare("SELECT ae.id as id ,ae.nombre as nombre FROM usuario u INNER JOIN aula_docente ad ON u.id=ad.id_docente INNER JOIN aula a ON a.id=ad.id_aula INNER JOIN emprendimiento_modulo em ON a.id_emprendimiento_modulo=em.id INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento ae ON e.id_area=ae.id WHERE u.cedula='$cedula' GROUP BY ae.id");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
@@ -169,6 +170,35 @@ class AulaDocenteModelo extends connectDB
         }
         return $respuestaArreglo;
     }
+
+    //Cargar los emprendimientos que imparte el docente segun el area de emprendimiento
+    public function docente_emprendimientos($cedula, $area)
+    {
+        $resultado = $this->conex->prepare("SELECT e.id as id ,e.nombre as nombre FROM usuario u INNER JOIN aula_docente ad ON u.id=ad.id_docente INNER JOIN aula a ON a.id=ad.id_aula INNER JOIN emprendimiento_modulo em ON a.id_emprendimiento_modulo=em.id INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento ae ON e.id_area=ae.id WHERE u.cedula='$cedula' AND ae.id='$area' GROUP BY e.id;");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
+    //Cargar los cursos que imparte el docente segun el emprendimiento
+    public function listar_modulos($cedula, $area, $emprendimiento)
+    {
+        $resultado = $this->conex->prepare("SELECT a.id as id ,m.nombre as nombre FROM usuario u INNER JOIN aula_docente ad ON u.id=ad.id_docente INNER JOIN aula a ON a.id=ad.id_aula INNER JOIN emprendimiento_modulo em ON a.id_emprendimiento_modulo=em.id INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento ae ON e.id_area=ae.id INNER JOIN modulo m ON em.id_modulo=m.id WHERE u.cedula='$cedula' AND ae.id='$area' AND e.id='$emprendimiento'");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
     public function listar_por_aula($id_aula)
     {
         $this->id_aula = $id_aula;

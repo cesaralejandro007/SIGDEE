@@ -12,8 +12,8 @@ $aulaestudiante = new AulaEstudiante;
 $permiso = new Permiso;
 $area_emprendimiento = new AreaEmprendimiento;
 $emprendimiento = new Emprendimiento;
-$listar_auladocente = $auladocente->listard($_SESSION['usuario']['cedula']);
-$listar_aulaestudiante = $aulaestudiante->listare($_SESSION['usuario']['cedula']);
+$docente_areas = $auladocente->docente_areas($_SESSION['usuario']['cedula']);
+$listar_aulaestudiante = $aulaestudiante->estudiante_areas($_SESSION['usuario']['cedula']);
 $listar_docente_estudiante = $aulaestudiante->listardocente($_SESSION['usuario']['id']);
 $docente_estudiante_aula = json_encode( $listar_docente_estudiante);
 $listar_aula = $aula->listar();
@@ -98,36 +98,74 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                     </ul>
                 </li>
                 <?php  }
-               /* foreach ($listar_aula as $aula) 
-              {
-                ?>
+            } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $docente_areas) {
+              foreach ($docente_areas as $area) 
+              { ?>
                 <li class="nav-item">
-                  <a href="?pagina=Aula&visualizar=true&aula=<?=$aula['id']?>" class="nav-link">
-                    <i class="nav-icon"></i>
-                    <p><?php echo $aula['aula']; ?></p>
-                  </a>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p><?php echo $area['nombre']; ?> <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <?php 
+                            $emprendimientos = $auladocente->docente_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                            foreach($emprendimientos as $key_emprendimiento){ ?>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-ellipsis-h"></i>
+                                        <p><?php echo $key_emprendimiento['nombre']; ?> <i class="fas fa-angle-left right"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <?php
+                                        $listar_aulas = $auladocente->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                                        foreach($listar_aulas as $key_aulas){ ?>
+                                            <li class="nav-item">
+                                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                                <i class="far fa-circle nav-icon" style="color: #343a40 !important;"></i>
+                                                <p><?php echo $key_aulas['nombre']; ?></p>
+                                              </a>
+                                            </li>
+                                        <?php } ?>        
+                                    </ul>
+                                </li>
+                        <?php } ?>        
+                    </ul>
                 </li>
-              <?php 
-              } */
-            } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $listar_auladocente) {
-              foreach ($listar_auladocente as $aula) {?>
-                <li class="nav-item">
-                  <a href="?pagina=Aula&visualizar=true&aula=<?=$aula['id']?>" class="nav-link">
-                    <i class="nav-icon"></i>
-                    <p><?php echo $aula['nombre']; ?></p>
-                  </a>
-                </li>
-              <?php }
+                <?php  }
             } else if ($_SESSION['usuario']['tipo_usuario'] == 'Estudiante' && $listar_aulaestudiante) {
-              foreach ($listar_aulaestudiante as $aula) {?>
+              foreach ($listar_aulaestudiante as $area) 
+              { ?>
                 <li class="nav-item">
-                  <a href="?pagina=Aula&visualizar=true&aula=<?=$aula['id']?>" class="nav-link">
-                    <i class="nav-icon"></i>
-                    <p><?php echo $aula['nombre']; ?></p>
-                  </a>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p><?php echo $area['nombre']; ?> <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <?php 
+                            $emprendimientos = $aulaestudiante->estudiante_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                            foreach($emprendimientos as $key_emprendimiento){ ?>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-ellipsis-h"></i>
+                                        <p><?php echo $key_emprendimiento['nombre']; ?> <i class="fas fa-angle-left right"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <?php
+                                        $listar_aulas = $aulaestudiante->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                                        foreach($listar_aulas as $key_aulas){ ?>
+                                            <li class="nav-item">
+                                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                                <i class="far fa-circle nav-icon" style="color: #343a40 !important;"></i>
+                                                <p><?php echo $key_aulas['nombre']; ?></p>
+                                              </a>
+                                            </li>
+                                        <?php } ?>        
+                                    </ul>
+                                </li>
+                        <?php } ?>        
+                    </ul>
                 </li>
-              <?php }
-
+                <?php  }
             } else {?>
               <li></li>
               <?php

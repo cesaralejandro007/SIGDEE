@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-08-2023 a las 18:45:17
+-- Tiempo de generación: 04-08-2023 a las 00:13:28
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -592,11 +592,11 @@ CREATE TABLE `usuarios_roles` (
 --
 
 INSERT INTO `usuarios_roles` (`id`, `id_usuario`, `id_rol`) VALUES
-(285, 1, 1),
-(296, 1, 2),
-(306, 1, 7),
-(0, 2, 5),
-(0, 3, 7);
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 7),
+(4, 2, 5),
+(5, 3, 7);
 
 --
 -- Índices para tablas volcadas
@@ -775,6 +775,12 @@ ALTER TABLE `usuario`
   ADD KEY `id_ciudad` (`id_ciudad`);
 
 --
+-- Indices de la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -921,6 +927,12 @@ ALTER TABLE `unidad_evaluaciones`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
