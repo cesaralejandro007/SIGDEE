@@ -23,9 +23,84 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <div class="content-header">
+        <h1 class="m-0">Página Principal</h1>
         <div class="row">
-          <h1 class="m-0">Página Principal</h1>
-          <div class="col-md-8" style="margin-top:30px;">
+          <div class="col-md-12" style="margin-top:30px;">
+            <!-- Line chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Diplomados
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="card card-widget widget-user">
+                      <!-- Add the bg color to the header using any of the bg-* classes -->
+                      <div class="widget-user-header bg-info" style="background:#0D47AD !important;">
+                        <h3 class="widget-user-username">Filosofia de Gestión</h3>
+                        <h5 class="widget-user-desc">Cesar Vides</h5>
+                      </div>
+                      <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src="content/usuarios/28055655.png" alt="User Avatar">
+                      </div>
+                      <div class="card-footer">
+                        <div class="row">
+                          <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                              <h5 class="description-header">12</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Estudiantes</span>
+                            </div>
+                            <!-- /.description-block -->
+                          </div>
+                          <!-- /.col -->
+                          <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                              <h5 class="description-header">3</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Contenidos</span>
+                            </div>
+                            <!-- /.description-block -->
+                          </div>
+                          <!-- /.col -->
+                          <div class="col-sm-4">
+                            <div class="description-block">
+                              <h5 class="description-header">2</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Evaluaciones</span>
+                            </div>
+                            <!-- /.description-block -->
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                      </div>
+                    </div>
+                    <!-- /.widget-user -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-info" style="background:#0D47AD !important;">
+                  <div class="inner">
+                    <h2>Batender</h2>
+                    <p>15 Estudiantes</p>
+
+                  </div>
+                  <a href="#" class="small-box-footer">
+                    Ir al diplomado <i class="fas fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="margin-top:30px;">
             <!-- Line chart -->
             <div class="card card-primary card-outline">
               <div class="card-header">
@@ -46,20 +121,6 @@
                   $resulEventos = mysqli_query($con, $SqlEventos);
                 ?>
                 <div id="calendar"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4" style="margin-top:30px;">
-            <!-- Line chart -->
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">
-                  Aulas
-                </h3>
-              </div>
-              <div class="card-body">
-                <div id="line-chart" style="height: 300px;"></div>
               </div>
             </div>
           </div>

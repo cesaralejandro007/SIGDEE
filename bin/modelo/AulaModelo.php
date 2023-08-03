@@ -431,6 +431,18 @@ class AulaModelo extends connectDB
         return $r;
     }
 
+    public function listarAulasMenu($id_area_emprendimiento, $id_emprendimiento)
+    {
+        $resultado = $this->conex->prepare("SELECT a.id as id, a.nombre as nombre FROM area_emprendimiento ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo em ON em.id_emprendimiento=e.id INNER JOIN aula a ON a.id_emprendimiento_modulo=em.id WHERE ae.id='$id_area_emprendimiento' AND e.id='$id_emprendimiento'");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
     public function actualizarstatus($id,$status)
     {
         try {

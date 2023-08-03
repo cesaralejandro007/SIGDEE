@@ -128,6 +128,18 @@ class EmprendimientoModelo extends connectDB
         }
         return $respuestaArreglo;
     }
+    public function listarEmprendimientos($id)
+    {
+        $resultado = $this->conex->prepare("SELECT t.id as id, t.nombre as nombre, a.id as id_area, a.nombre as area FROM emprendimiento t INNER JOIN area_emprendimiento a ON a.id= t.id_area WHERE a.id = '$id' ");
+        $respuestaArreglo = [];
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
     public function cargar($id)
     {
         $resultado = $this->conex->prepare("SELECT t.id as id, t.nombre as nombre, a.id as id_area, a.nombre as area FROM emprendimiento t INNER JOIN area_emprendimiento a ON a.id= t.id_area WHERE
