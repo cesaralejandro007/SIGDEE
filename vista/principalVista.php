@@ -25,82 +25,8 @@
       <div class="content-header">
         <h1 class="m-0">Página Principal</h1>
         <div class="row">
-          <div class="col-md-12" style="margin-top:30px;">
-            <!-- Line chart -->
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h3 class="card-title">
-                  Diplomados
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <!-- Widget: user widget style 1 -->
-                    <div class="card card-widget widget-user">
-                      <!-- Add the bg color to the header using any of the bg-* classes -->
-                      <div class="widget-user-header bg-info" style="background:#0D47AD !important;">
-                        <h3 class="widget-user-username">Filosofia de Gestión</h3>
-                        <h5 class="widget-user-desc">Cesar Vides</h5>
-                      </div>
-                      <div class="widget-user-image">
-                        <img class="img-circle elevation-2" src="content/usuarios/28055655.png" alt="User Avatar">
-                      </div>
-                      <div class="card-footer">
-                        <div class="row">
-                          <div class="col-sm-4 border-right">
-                            <div class="description-block">
-                              <h5 class="description-header">12</h5>
-                              <span class="description-text" style="font-size: 10px !important;">Estudiantes</span>
-                            </div>
-                            <!-- /.description-block -->
-                          </div>
-                          <!-- /.col -->
-                          <div class="col-sm-4 border-right">
-                            <div class="description-block">
-                              <h5 class="description-header">3</h5>
-                              <span class="description-text" style="font-size: 10px !important;">Contenidos</span>
-                            </div>
-                            <!-- /.description-block -->
-                          </div>
-                          <!-- /.col -->
-                          <div class="col-sm-4">
-                            <div class="description-block">
-                              <h5 class="description-header">2</h5>
-                              <span class="description-text" style="font-size: 10px !important;">Evaluaciones</span>
-                            </div>
-                            <!-- /.description-block -->
-                          </div>
-                          <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                      </div>
-                    </div>
-                    <!-- /.widget-user -->
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-info" style="background:#0D47AD !important;">
-                  <div class="inner">
-                    <h2>Batender</h2>
-                    <p>15 Estudiantes</p>
-
-                  </div>
-                  <a href="#" class="small-box-footer">
-                    Ir al diplomado <i class="fas fa-arrow-circle-right"></i>
-                  </a>
-                </div>
-              </div>
-
-
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12" style="margin-top:30px;">
+          
+          <div class="col-md-8" style="margin-top:30px;">
             <!-- Line chart -->
             <div class="card card-primary card-outline">
               <div class="card-header">
@@ -122,6 +48,136 @@
                 ?>
                 <div id="calendar"></div>
               </div>
+            </div>
+          </div>
+          <div class="col-md-4" style="margin-top:30px;">
+            <!-- Line chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Cursos
+                </h3>
+              </div>
+              <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
+            { 
+              foreach ($area_emprendimiento->listar() as $area) 
+              { ?>
+                <div class="row" style="margin: 3%;">
+                  <?php 
+                      $emprendimientos = $emprendimiento->listarEmprendimientos($area['id']);
+                      foreach($emprendimientos as $key_emprendimiento){ 
+                        $listar_aulas = $aula->listarAulasMenu($area['id'], $key_emprendimiento['id']);
+                        foreach($listar_aulas as $key_aulas){ ?>
+                          <div class="">
+                            <!-- small card -->
+                            <div class="small-box bg-info" style="background:#0D47AD !important;">
+                              <div class="inner">
+                                <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
+
+                              </div>
+                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
+                              </a>
+                            </div>
+                          </div>
+                        <?php } 
+                      } ?> 
+                </div>   
+              <?php  }
+            } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $docente_areas) {
+              foreach ($docente_areas as $area) 
+              { ?>
+                <div class="row" style="margin: 3%;">
+                  <?php
+                      $emprendimientos = $auladocente->docente_emprendimientos($_SESSION['usuario']['cedula'], $area['id']); 
+                      foreach($emprendimientos as $key_emprendimiento){ 
+                        $listar_aulas = $auladocente->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                        foreach($listar_aulas as $key_aulas){ ?>
+                          <div class="">
+                            <!-- small card -->
+                            <div class="small-box bg-info" style="background:#0D47AD !important;">
+                              <div class="inner">
+                                <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
+
+                              </div>
+                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
+                              </a>
+                            </div>
+                          </div>
+                        <?php } 
+                      } ?> 
+                </div>
+                <?php  }
+            } else if ($_SESSION['usuario']['tipo_usuario'] == 'Estudiante' && $listar_aulaestudiante) {
+              foreach ($listar_aulaestudiante as $area) 
+              { ?>
+                <div class="row" style="margin: 3%;">
+                  <?php 
+                      $emprendimientos = $aulaestudiante->estudiante_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                      foreach($emprendimientos as $key_emprendimiento){ 
+                        $listar_aulas = $aulaestudiante->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                        foreach($listar_aulas as $key_aulas){ ?>
+                          <div class="">
+                            <!-- small card -->
+                            <div class="small-box bg-info" style="background:#0D47AD !important;">
+                              <div class="inner">
+                                <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
+
+                              </div>
+                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
+                              </a>
+                            </div>
+                          </div>
+                        <?php }  
+                      } ?> 
+                </div>
+                <?php  }
+            } ?>
+
+            <!-- 
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="card card-widget widget-user">
+                      <div class="widget-user-header bg-info" style="background:#0D47AD !important;">
+                        <h3 class="widget-user-username">Filosofia de Gestión</h3>
+                        <h5 class="widget-user-desc">Cesar Vides</h5>
+                      </div>
+                      <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src="content/usuarios/28055655.png" alt="User Avatar">
+                      </div>
+                      <div class="card-footer">
+                        <div class="row">
+                          <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                              <h5 class="description-header">12</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Estudiantes</span>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                              <h5 class="description-header">3</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Contenidos</span>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div class="description-block">
+                              <h5 class="description-header">2</h5>
+                              <span class="description-text" style="font-size: 10px !important;">Evaluaciones</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            -->
+
+
+
             </div>
           </div>
         </div>

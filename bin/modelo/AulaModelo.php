@@ -433,7 +433,7 @@ class AulaModelo extends connectDB
 
     public function listarAulasMenu($id_area_emprendimiento, $id_emprendimiento)
     {
-        $resultado = $this->conex->prepare("SELECT a.id as id, a.nombre as nombre FROM area_emprendimiento ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo em ON em.id_emprendimiento=e.id INNER JOIN aula a ON a.id_emprendimiento_modulo=em.id WHERE ae.id='$id_area_emprendimiento' AND e.id='$id_emprendimiento'");
+        $resultado = $this->conex->prepare("SELECT a.id as id, m.nombre as nombre FROM area_emprendimiento ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo em ON em.id_emprendimiento=e.id INNER JOIN aula a ON a.id_emprendimiento_modulo=em.id INNER JOIN modulo m ON em.id_modulo=m.id WHERE ae.id='$id_area_emprendimiento' AND e.id='$id_emprendimiento'");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
