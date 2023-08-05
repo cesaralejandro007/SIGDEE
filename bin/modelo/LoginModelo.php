@@ -75,7 +75,7 @@ class LoginModelo extends connectDB
 
     public function datos_UserU()
     {
-        $resultado = $this->conex->prepare("SELECT u.id as id, u.cedula as cedula, CONCAT(u.primer_nombre, ' ', u.segundo_nombre) as nombre, CONCAT(u.primer_apellido, ' ', u.segundo_apellido) as apellido ,u.genero as genero, u.correo as correo, u.direccion as direccion, u.telefono as telefono, u.clave as clave,r.id as idrol ,r.nombre as nombreusuario FROM usuario u, usuarios_roles ur, rol r WHERE u.id = ur.id_usuario AND ur.id_rol = r.id AND r.nombre = '$this->tipousuario' AND u.cedula ='$this->user'");
+        $resultado = $this->conex->prepare("SELECT u.id as id, u.cedula as cedula, CONCAT(u.primer_nombre, ' ', u.segundo_nombre) as nombre, CONCAT(u.primer_apellido, ' ', u.segundo_apellido) as apellido ,u.genero as genero, u.correo as correo, u.direccion as direccion, u.telefono as telefono, u.clave as clave,r.id as idrol ,r.nombre as nombreusuario, u.ultimo_acceso as ultimo_acceso FROM usuario u, usuarios_roles ur, rol r WHERE u.id = ur.id_usuario AND ur.id_rol = r.id AND r.nombre = '$this->tipousuario' AND u.cedula ='$this->user'");
         try {
             $resultado->execute();
             $respuestaArreglo = $resultado->fetchAll();
@@ -113,6 +113,18 @@ class LoginModelo extends connectDB
             return $e->getMessage();
         }
         return $respuestaArreglo;
+    }
+
+
+    public function actualizar_fecha_acceso($cedula)
+    {   
+        $resultado = $this->conex->query("UPDATE usuario SET ultimo_acceso = NOW()  WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     public function cambiar_password($cedula,$clave_encriptada)

@@ -54,10 +54,13 @@ body::-webkit-scrollbar-track {
             </div>
         </li>
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <spam class="">
-                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
+            <a class="nav-link dropdown-toggle p-0" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <div class="d-flex justify-content-end" style="font-size: 12px">
+                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($_SESSION['usuario']['ultimo_acceso']))?>
+            </div>
+                <spam class="" style="font-size: 12px">
+                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido']  ?>
                 </spam>
             </a>
             <!-- Dropdown - User Information -->

@@ -98,10 +98,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             }
                             $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
 
-                            $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario']);
+                            $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario'], 'ultimo_acceso' => $datos['ultimo_acceso']);
                             $_SESSION['rol'] = $id_rol;
                         }
                         $mensaje->confirmar($modulo, 'Inicio exitoso');
+                        $login->actualizar_fecha_acceso($_POST['user']);
                         return 0;
                     }else{
                         if($num_intentos <= 3){             
