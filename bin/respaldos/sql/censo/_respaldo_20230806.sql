@@ -1,0 +1,1 @@
+CREATE TABLE censo (`id` int(11)`id_usuario` int(11)`fecha_apertura` datetime`fecha_cierre` datetime`descripcion` varchar(50));

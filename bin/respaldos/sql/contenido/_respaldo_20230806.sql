@@ -1,0 +1,1 @@
+CREATE TABLE contenido (`id` int(11)`nombre` varchar(60)`descripcion` varchar(2550)`archivo_adjunto` varchar(120));

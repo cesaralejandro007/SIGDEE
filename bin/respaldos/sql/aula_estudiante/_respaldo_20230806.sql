@@ -1,0 +1,1 @@
+CREATE TABLE aula_estudiante (`id` int(11)`id_aula` int(11)`id_estudiante` int(11));

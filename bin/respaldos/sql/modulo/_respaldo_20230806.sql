@@ -1,0 +1,1 @@
+CREATE TABLE modulo (`id` int(11)`nombre` varchar(30));

@@ -1,0 +1,1 @@
+CREATE TABLE chat_virtual (`id` int(11)`cedula_usuario` varchar(10)`mensajes` varchar(200)`facha` timestamp);

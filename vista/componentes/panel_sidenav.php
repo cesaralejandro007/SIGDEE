@@ -384,6 +384,12 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                   <p>Bitacora</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?pagina=Respaldobd" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Respaldo BD</p>
+                </a>
+              </li>
             </ul>
           </li>
         <?php }?>

@@ -1,0 +1,1 @@
+CREATE TABLE aula (`id` int(11)`nombre` varchar(25)`id_emprendimiento_modulo` int(11)`estatus` varchar(5));

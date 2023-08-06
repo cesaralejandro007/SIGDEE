@@ -1,0 +1,1 @@
+CREATE TABLE usuarios_roles (`id` int(11)`id_usuario` int(11)`id_rol` int(11));

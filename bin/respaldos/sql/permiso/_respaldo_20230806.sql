@@ -1,0 +1,1 @@
+CREATE TABLE permiso (`id` int(11)`id_rol` int(11)`id_entorno` int(11)`registrar` varchar(5)`modificar` varchar(5)`eliminar` varchar(5)`consultar` varchar(5));

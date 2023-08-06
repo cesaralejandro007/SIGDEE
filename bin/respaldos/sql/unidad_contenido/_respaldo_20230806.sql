@@ -1,0 +1,1 @@
+CREATE TABLE unidad_contenido (`id` int(11)`id_unidad` int(11)`id_contenido` int(11));

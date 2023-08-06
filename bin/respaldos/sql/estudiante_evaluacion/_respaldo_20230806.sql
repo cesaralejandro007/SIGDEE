@@ -1,0 +1,1 @@
+CREATE TABLE estudiante_evaluacion (`id` int(11)`id_usuario` int(11)`id_unidad_evaluacion` int(11)`descripcion` varchar(150)`archivo_adjunto` varchar(150)`fecha_entrega` datetime`calificacion` decimal(5,2)`retroalimentacion` varchar(150));

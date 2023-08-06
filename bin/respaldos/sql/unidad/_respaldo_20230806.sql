@@ -1,0 +1,1 @@
+CREATE TABLE unidad (`id` int(11)`nombre` varchar(50)`descripcion` varchar(120)`id_aula` int(11));

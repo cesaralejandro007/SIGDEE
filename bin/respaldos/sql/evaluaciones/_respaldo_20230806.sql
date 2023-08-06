@@ -1,0 +1,1 @@
+CREATE TABLE evaluaciones (`id` int(11)`nombre` varchar(30)`descripcion` varchar(250)`archivo_adjunto` varchar(100));

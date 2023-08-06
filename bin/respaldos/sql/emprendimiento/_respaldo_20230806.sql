@@ -1,0 +1,1 @@
+CREATE TABLE emprendimiento (`id` int(11)`nombre` varchar(30)`id_area` int(11)`estatus` varchar(5));

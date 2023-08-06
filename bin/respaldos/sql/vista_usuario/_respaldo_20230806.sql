@@ -1,0 +1,1 @@
+CREATE TABLE vista_usuario (`id` int(11)`cedula` varchar(10)`primer_nombre` varchar(50)`segundo_nombre` varchar(50)`primer_apellido` varchar(50)`segundo_apellido` varchar(50)`genero` varchar(20)`correo` varchar(100)`direccion` varchar(100)`telefono` varchar(15));

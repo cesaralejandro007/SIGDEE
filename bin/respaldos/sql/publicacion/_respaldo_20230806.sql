@@ -1,0 +1,1 @@
+CREATE TABLE publicacion (`id` int(11)`titulo` varchar(50)`mensaje` varchar(300)`id_aula` int(11)`fecha` timestamp`cedula_usuario` varchar(20));
