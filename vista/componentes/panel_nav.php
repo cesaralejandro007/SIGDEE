@@ -54,15 +54,25 @@ body::-webkit-scrollbar-track {
             </div>
         </li>
         <li class="nav-item dropdown no-arrow">
+        <?php if($_SESSION['usuario']['ultimo_acceso']!=""){?>
             <a class="nav-link dropdown-toggle p-0" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <div class="d-flex justify-content-end" style="font-size: 12px">
-                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($_SESSION['usuario']['ultimo_acceso']))?>
+                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($_SESSION['usuario']['ultimo_acceso'])); ?>
             </div>
                 <spam class="" style="font-size: 12px">
                     <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido']  ?>
                 </spam>
             </a>
+            <?php } else{?>
+            <a class="nav-link dropdown-toggle " id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+
+                <spam class="">
+                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido']  ?>
+                </spam>
+            </a>
+            <?php } ?>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in p-0" aria-labelledby="userDropdown">
                 <div class="card-header m-0 p-0 d-flex justify-content-center">

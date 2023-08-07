@@ -19,6 +19,7 @@ $(function() {
     processData: false,
     cache: false
   }).done(function(datos) {
+    alert(datos);
     var res = JSON.parse(datos);
     if (res.estatus == 1) {
       toastMixin.fire({
