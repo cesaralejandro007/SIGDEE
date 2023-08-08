@@ -7,7 +7,7 @@ class RespaldobdModelo extends connectDB
 
   public function verificar_password($cedula)
   {
-      $resultado = $this->conex->prepare("SELECT clave FROM usuario WHERE cedula = '$cedula'");
+      $resultado = $this->conex->prepare("SELECT usuario.clave as clave,rol.nombre as rol FROM usuario,usuarios_roles,rol WHERE cedula = '$cedula' AND rol.nombre = 'Super Usuario' AND usuarios_roles.id_usuario = usuario.id AND rol.id = usuarios_roles.id_rol ");
       try {
           $resultado->execute();
           $respuestaArreglo = $resultado->fetchAll();

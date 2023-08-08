@@ -19,8 +19,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if ($accion == 'verificar_password') {
         $response = $respaldobd->verificar_password($_POST['cedula']);
         //VERIFICAR CLAVE (password_hash)
-        if(password_verify($_POST['clave_actual'], $response[0]['clave'])){
+        if(password_verify($_POST['clave_actual'], $response[0]['clave']) && $response[0]['rol']=="Super Usuario"){
             echo 1;
+        }else if($response[0]['rol'] !="Super Usuario"){
+            echo 2;
         }else{
             echo 0;
         }

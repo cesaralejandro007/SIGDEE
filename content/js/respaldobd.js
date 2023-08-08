@@ -7,7 +7,7 @@ document.getElementById("verificar_password"). onclick = function(){
         '<span id="validarcontrasena1"></span>' +
         '<span id="v1" style="font-size:14px"></span><div class="input-group mt-1"><input id="input1" maxlength="15" class="form-control mb-2" type="password" placeholder="Ingrese la contraseña actual"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>',
       confirmButtonColor: '#007BFF',
-      confirmButtonText: "Siguiente",
+      confirmButtonText: "Continuar",
       focusConfirm: true,
       preConfirm: () => {
           if(document.getElementById('input1').value != ""){
@@ -26,12 +26,18 @@ document.getElementById("verificar_password"). onclick = function(){
                   if(result==1){
                       respaldarBD();
                       return true;
-                  }else if(result == 0){
-                      document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">La contraseña no coincide.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                  }else if(result == 2){
+                      document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Usted no posee permisos para realizar el respaldo de la BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
                       setTimeout(function () {
                           $("#cerraralert").click();
                         }, 3000);
                       return false;
+                  }else if(result == 0){
+                    document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">La contraseña no coincide.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                    setTimeout(function () {
+                        $("#cerraralert").click();
+                      }, 3000);
+                    return false;
                   }else{
                       document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Error BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
                       setTimeout(function () {
