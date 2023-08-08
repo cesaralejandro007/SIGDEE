@@ -14,6 +14,7 @@
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
                     <div class="container-fluid d-flex justify-content-between flex-wrap">
+                    <input type="hidden" name="cedula_usuario" id="cedula_usuario" value="<?php echo $_SESSION['usuario']['cedula'] ?>" />
                         <div>
                             <h5>Respaldo de la Base de datos</h5>
                         </div>
@@ -30,7 +31,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-center">
                                 <div class="row d-flex justify-content-center">
-                                                <button class="btn btn-outline-primary mx-1" id="respaldar" type="button">Respaldar bases de datos</button>
+                                                <button class="btn btn-outline-primary mx-1" id="verificar_password" type="button">Respaldar bases de datos</button>
                                         </div>
                                     </div>
                                 </div>

@@ -4,10 +4,22 @@ use config\connect\connectDB as connectDB;
 use \PDO;
 class RespaldobdModelo extends connectDB
 {
+
+  public function verificar_password($cedula)
+  {
+      $resultado = $this->conex->prepare("SELECT clave FROM usuario WHERE cedula = '$cedula'");
+      try {
+          $resultado->execute();
+          $respuestaArreglo = $resultado->fetchAll();
+      } catch (Exception $e) {
+          return $e->getMessage();
+      }
+      return $respuestaArreglo;
+  }
+
   public function respaldarBD() {
   
     try {
-
     // Desactivar foreign keys
     $this->conex->exec('SET foreign_key_checks = 0');
     // Obtener las tablas
@@ -41,8 +53,7 @@ class RespaldobdModelo extends connectDB
     // Activar foreign keys
     $this->conex->exec('SET foreign_key_checks = 1');
     
-     } catch (PDOException $e) {
-    
+    } catch (PDOException $e) {
       echo "Error generating backup: " . $e->getMessage();
       return false;
     
