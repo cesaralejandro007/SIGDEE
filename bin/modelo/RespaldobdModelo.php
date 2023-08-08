@@ -1,56 +1,54 @@
 <?php
 namespace modelo;
 use config\connect\connectDB as connectDB;
+use \PDO;
 class RespaldobdModelo extends connectDB
 {
+  public function respaldarBD() {
+  
+    try {
 
-    public function respaldarBD() {
+    // Desactivar foreign keys
+    $this->conex->exec('SET foreign_key_checks = 0');
+    // Obtener las tablas
+    $tables = $this->conex->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
 
-        $rutaRespaldos = __DIR__ . "/../respaldos";
-      
-        if(!is_dir($rutaRespaldos)){
-           mkdir($rutaRespaldos);
-        }
-      
-        $dirSQL = __DIR__ . "/../respaldos/sql";
-      
-        if(!is_dir($dirSQL)){
-          mkdir($dirSQL, 0777);
-        }
-      
-        if(!is_writable($dirSQL)){
-          echo "No se puede escribir en $dirSQL";
-          exit;
-        }
-      
-        $tablas = $this->conex->query("SHOW TABLES");
-      
-        foreach ($tablas as list($tabla)) {
-      
-        try {
-            $archivo = "$dirSQL/$tabla\_respaldo_" . date('Ymd') . ".sql";
+    // Abrir archivo de respaldo
+      $retornar = '';
+    // Recorrer tablas
+    foreach ($tables as $table) {
 
-                // Generar CREATE TABLE  
-            $campos = $this->conex->query("DESCRIBE $tabla");  
-            $createTable = "CREATE TABLE $tabla (";
-        
-            while($campo = $campos->fetch()) {
-                $createTable .= "`{$campo['Field']}` {$campo['Type']}";
-            }
-        
-            $createTable .= ");"; 
-        
-            // Escribir archivo
-            file_put_contents($archivo, $createTable);
+      // Obtener estructura de la tabla
+      $stmt = $this->conex->query("SHOW CREATE TABLE $table");
+      $createTableSQL = $stmt->fetch()[1];
+      $retornar .= $createTableSQL .";\n\n";
+      // Volcar estructura en archivo
+      // Obtener registros
+      $rows = $this->conex->query("SELECT * FROM $table");
 
-            return true;
-      
-        } catch (Exception $e) {
-            echo "Error en nombre de tabla: " . $e->getMessage();
-            continue;
-        }
-      
-        }
+      // Recorrer e insertar registros
+      while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
         
+        $columns = implode(", ", array_keys($row));
+        $values = implode(", ", array_values($row));
+      
+        $insertSQL = "INSERT INTO $table ($columns) VALUES ($values);\n";
+        $retornar .= $insertSQL;
       }
+      // Salto de línea entre tablas
+      $retornar .= "\n\n";
+    }
+    // Activar foreign keys
+    $this->conex->exec('SET foreign_key_checks = 1');
+    
+     } catch (PDOException $e) {
+    
+      echo "Error generating backup: " . $e->getMessage();
+      return false;
+    
+    }
+
+    return $retornar;
+  }
+
 }

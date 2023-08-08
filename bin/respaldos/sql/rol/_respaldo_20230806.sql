@@ -1,1 +1,0 @@
-CREATE TABLE rol (`id` int(11)`nombre` varchar(25));

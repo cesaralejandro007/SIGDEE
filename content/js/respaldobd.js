@@ -1,14 +1,12 @@
 document.getElementById("respaldar").onclick = function(){
-
-    
 $(function() {
     var toastMixin = Swal.mixin({
-        showConfirmButton: false,
-        width: 450,
-        padding: '3.5em',
-        timer: 2000,
-        timerProgressBar: true,
-      });
+      showConfirmButton: false,
+      width: 450,
+      padding: '3.5em',
+      timer: 3000,
+      timerProgressBar: true,
+    });
     var formData = new FormData();
     formData.append("accion", "respaldarbd");
   $.ajax({
@@ -19,22 +17,16 @@ $(function() {
     processData: false,
     cache: false
   }).done(function(datos) {
-    alert(datos);
-    var res = JSON.parse(datos);
-    if (res.estatus == 1) {
+      var blob = new Blob([datos]);
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "respaldo.sql";
+      link.click();
       toastMixin.fire({
-        title: res.title,
-        text: res.message,
-        icon: res.icon,
+        title: "Respaldo BD",
+        text: "La Base de datos fue respaldado con exito",
+        icon: "success",
       });
-    } else {
-      toastMixin.fire({
-        text: res.message,
-        title: res.title,
-        icon: res.icon,
-      });
-    }
 });
-
 });
 }

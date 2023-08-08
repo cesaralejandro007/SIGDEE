@@ -1,1 +1,0 @@
-CREATE TABLE entorno_sistema (`id` int(11)`nombre` varchar(30));

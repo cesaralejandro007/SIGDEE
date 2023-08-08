@@ -1,1 +1,0 @@
-CREATE TABLE aspirante_emprendimiento (`id` int(11)`id_usuario` int(11)`id_emprendimiento` int(11));

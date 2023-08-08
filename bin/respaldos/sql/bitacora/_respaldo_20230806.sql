@@ -1,1 +1,0 @@
-CREATE TABLE bitacora (`id` int(11)`id_usuario_roles` int(12)`id_entorno` int(11)`fecha` datetime`accion` varchar(50));
