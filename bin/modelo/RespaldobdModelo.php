@@ -42,9 +42,9 @@ class RespaldobdModelo extends connectDB
       while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
         
         $columns = implode(", ", array_keys($row));
-        $values = implode(", ", array_values($row));
+        $values = implode("', '", array_values($row));
       
-        $insertSQL = "INSERT INTO $table ($columns) VALUES ($values);\n";
+        $insertSQL = "INSERT INTO $table ($columns) VALUES ('$values');\n";
         $retornar .= $insertSQL;
       }
       // Salto de línea entre tablas
