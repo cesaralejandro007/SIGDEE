@@ -1,1 +1,0 @@
-CREATE TABLE vista_area_emprendimiento (`id` int(11)`nombre` varchar(30));

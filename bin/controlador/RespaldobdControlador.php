@@ -15,33 +15,25 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 }
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
-
-
-        $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
-        $entorno = $bitacora->buscar_id_entorno('Permisos');
-        $fecha = date('Y-m-d h:i:s', time());
-
-        $accion = $_POST['accion'];
-    if ($accion == 'respaldarbd') {
-       $response = $respaldobd->respaldarbd();
-        if ($response==1) {
-            $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Respaldo de BD");
-            echo json_encode([
-                'estatus' => '1',
-                'icon' => 'success',
-                'title' => 'Respaldo BD',
-                'message' => 'La Base de datos fue respaldado con exito'
-            ]);
+    $accion = $_POST['accion'];
+    if ($accion == 'verificar_password') {
+        $response = $respaldobd->verificar_password($_POST['cedula']);
+        //VERIFICAR CLAVE (password_hash)
+        if(password_verify($_POST['clave_actual'], $response[0]['clave']) && $response[0]['rol']=="Super Usuario"){
+            echo 1;
+        }else if($response[0]['rol'] !="Super Usuario"){
+            echo 2;
         }else{
-            echo json_encode([
-                'estatus' => '2',
-                'icon' => 'info',
-                'title' => 'Respaldo BD',
-                'message' => 'Error BD'
-            ]);
+            echo 0;
         }
         return 0;
+    }else if ($accion == 'respaldarbd') {
+        $response = $respaldobd->respaldarbd();
+        if ($response){
+           echo $response;
         }
+        return 0;
+    }
     } 
     require_once "vista/" . $pagina . "Vista.php";
 } else {

@@ -1,1 +1,0 @@
-CREATE TABLE emprendimiento_modulo (`id` int(11)`id_emprendimiento` int(11)`id_modulo` int(11));

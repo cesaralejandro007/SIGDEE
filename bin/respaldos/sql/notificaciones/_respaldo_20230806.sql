@@ -1,1 +1,0 @@
-CREATE TABLE notificaciones (`id` int(11)`mensaje` varchar(100)`id_unidad_evaluaciones` int(11)`id_usuarios_roles` int(11)`fecha` datetime);

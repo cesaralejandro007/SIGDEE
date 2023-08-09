@@ -1,1 +1,0 @@
-CREATE TABLE comentario (`id` int(11)`mensaje` varchar(30)`id_publicacion` int(11)`fecha` timestamp`cedula_usuario` varchar(20));

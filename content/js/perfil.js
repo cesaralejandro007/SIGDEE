@@ -10,7 +10,7 @@ var keyup_seguridad = /^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.@#%$^&*!?:]{3,25}$/;
               '<span id="validarcontrasena1"></span>' +
               '<label for="message-text" style="color: rgb(21, 64, 109);" class="col-form-label">Informacion de contraseña:</label><br>'+
               '<span id="v1" style="font-size:14px"></span><div class="input-group mt-1"><input id="input1" maxlength="15" class="form-control mb-2" type="password" placeholder="Ingrese la contraseña actual"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>',
-            confirmButtonColor: '#15406D',
+            confirmButtonColor: '#007BFF',
             confirmButtonText: "Siguiente",
             focusConfirm: true,
             preConfirm: () => {
