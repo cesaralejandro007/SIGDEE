@@ -373,12 +373,6 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=EntornoSistema" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Entornos del Sistema</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="?pagina=Bitacora" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Bitacora</p>
@@ -388,6 +382,12 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                 <a href="?pagina=Respaldobd" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Respaldo BD</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="?pagina=EntornoSistema" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Entornos del Sistema</p>
                 </a>
               </li>
             </ul>

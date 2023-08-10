@@ -33,6 +33,15 @@ class RespaldobdModelo extends connectDB
       // Obtener estructura de la tabla
       $stmt = $this->conex->query("SHOW CREATE TABLE $table");
       $createTableSQL = $stmt->fetch()[1];
+      $createTableSQL = preg_replace('/^\s*PRIMARY KEY .*?$/mi', '', $createTableSQL);
+      $createTableSQL = preg_replace('/^\s*KEY .*?$/mi', '', $createTableSQL);
+      $createTableSQL = preg_replace('/^\s*(FOREIGN KEY|CONSTRAINT|REFERENCES).*$/mi','',$createTableSQL);
+      $createTableSQL = preg_replace('/ENGINE\s+AUTO_INCREMENT=\d+/', 'ENGINE', $createTableSQL);
+      $createTableSQL = preg_replace('/,\s*\)/', ')', $createTableSQL);
+      $createTableSQL = preg_replace('/\)\s*ENGINE/', "\n)\nENGINE", $createTableSQL);
+      $createTableSQL = preg_replace('/`id` int\(11\) NOT NULL AUTO_INCREMENT,/', '`id` int(11) NOT NULL,', $createTableSQL);
+      // Eliminar líneas en blanco consecutivas
+      $createTableSQL = preg_replace('/\n\s*\n/s', "\n", $createTableSQL);
       $retornar .= $createTableSQL .";\n\n";
       // Volcar estructura en archivo
       // Obtener registros
@@ -41,10 +50,10 @@ class RespaldobdModelo extends connectDB
       // Recorrer e insertar registros
       while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
         
-        $columns = implode(", ", array_keys($row));
+        $columns = implode("`, `", array_keys($row));
         $values = implode("', '", array_values($row));
       
-        $insertSQL = "INSERT INTO $table ($columns) VALUES ('$values');\n";
+        $insertSQL = "INSERT INTO $table (`$columns`) VALUES ('$values');\n";
         $retornar .= $insertSQL;
       }
       // Salto de línea entre tablas
