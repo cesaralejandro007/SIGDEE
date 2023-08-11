@@ -62,41 +62,86 @@ class UsuarioModelo extends connectDB
 
     public function gestionarrol($id_usuario,$id_rol,$status)
     {
-        $validar = $this->validarrol($id_rol, $id_usuario);
-        if ($validar == false and $status == "true") {
-            try {
-                $this->conex->query("INSERT INTO usuarios_roles(
-                    id_usuario,
-                    id_rol
-					)
-					VALUES(
-                    '$id_usuario',
-					'$id_rol'
-				)");
-                $respuesta["resultado"]=1;
-                $respuesta["mensaje"]="Roles Registrados.";
-            } catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
+        $existerol = $this->validarrol($id_rol);
+        $existeusuario = $this->validarusuario($id_usuario);
+        $existe_registro_rol = $this->validar_registro_rol($id_rol, $id_usuario);
+        if ($existerol == false) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe el rol";
+        }else if($existeusuario == false){
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "No existe el usuario";
+        }else{
+            if ($existe_registro_rol == false and $status == "true") {
+                try {
+                    $this->conex->query("INSERT INTO usuarios_roles(
+                        id_usuario,
+                        id_rol
+                        )
+                        VALUES(
+                        '$id_usuario',
+                        '$id_rol'
+                    )");
+                    $respuesta["resultado"]=1;
+                    $respuesta["mensaje"]="Roles Registrados.";
+                } catch (Exception $e) {
+                    $respuesta['resultado'] = 0;
+                    $respuesta['mensaje'] = $e->getMessage();
+                }
+            } else if ($existe_registro_rol == true and $status == "false") {
+                try {
+                    $this->conex->query("DELETE from usuarios_roles
+                        WHERE
+                        id_usuario = '$id_usuario' and id_rol = '$id_rol'
+                        ");
+                    $respuesta["resultado"]=2;
+                    $respuesta["mensaje"]="Roles Eliminados.";
+                } catch (Exception $e) {
+                    $respuesta['resultado'] = 0;
+                    $respuesta['mensaje'] = $e->getMessage();
+                }
+            }else if ($existe_registro_rol == false) {
+                    $respuesta["resultado"]=5;
+                    $respuesta["mensaje"]="El registro rol no existe.";
+            } else {
+                    $respuesta["resultado"]=1;
+                    $respuesta["mensaje"]="Registro Exitoso.";
             }
-        } else if ($validar == true and $status == "false") {
-            try {
-                $this->conex->query("DELETE from usuarios_roles
-					WHERE
-					id_usuario = '$id_usuario' and id_rol = '$id_rol'
-					");
-                $respuesta["resultado"]=2;
-                $respuesta["mensaje"]="Roles Eliminados.";
-            } catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
-            }
-        } else {
-                $respuesta["resultado"]=1;
-                $respuesta["mensaje"]="Registro Exitoso.";
         }
         return $respuesta;
     }
+
+    public function validarrol($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM rol WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function validarusuario($id_usuario)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id_usuario'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    
 
     public function modificar($id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
@@ -406,7 +451,7 @@ class UsuarioModelo extends connectDB
         }
     }
 
-    public function validarrol($id_rol, $id_usuario)
+    public function validar_registro_rol($id_rol, $id_usuario)
     {
         $resultado = $this->conex->prepare("SELECT * FROM usuarios_roles WHERE usuarios_roles.id_rol = '$id_rol' and usuarios_roles.id_usuario = '$id_usuario'");
         try {

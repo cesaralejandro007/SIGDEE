@@ -305,6 +305,27 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'message' => $response['mensaje']
                 ]);
                 $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación de rol");
+            }else if($response['resultado']== 3) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+            }else if($response['resultado']== 4) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
+            }else if($response['resultado']== 5) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => $response['mensaje']
+                ]);
             }else {
                 echo json_encode([
                     'estatus' => '2',

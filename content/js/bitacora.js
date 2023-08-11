@@ -94,7 +94,6 @@ function convertDateFormat(string) {
   var info2 = info[2].split(' ');
   array1 = info2[0] + '-' + info[1] + '-' + info[0] +' '+ info2[1];
   return array1;
-
 }
          
 document.getElementById("button-addon").onclick = function(){
@@ -122,6 +121,14 @@ $(function() {
   formData.append("accion", "consultarfechabitacora");
   formData.append("fecha_inicio", fechat1);
   formData.append("fecha_fin", fechat2);
+  var toastMixin = Swal.mixin({
+    showConfirmButton: false,
+    width: 450,
+    padding: '3.5em',
+    timer: 2000,
+    timerProgressBar: true,
+    allowOutsideClick: false
+  });
 $.ajax({
   url: "",
   type: "POST",
@@ -131,8 +138,17 @@ $.ajax({
   cache: false
 }).done(function(datos) {
   
-  
   var data = JSON.parse(datos);
+  if (typeof datos.estatus === 'undefined') {
+    if (datos.estatus == 2) {
+      toastMixin.fire({
+
+        title: datos.title,
+        text: datos.message,
+        icon: datos.icon,
+      });
+    }
+  }
 var table = $("#example2").DataTable({
   language: {
     "lengthMenu": "Mostrar _MENU_ registros",

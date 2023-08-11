@@ -23,15 +23,22 @@ class BitacoraModelo extends connectDB
 
     public function listar_bitacora_rango($fechai,$fechaf)
     {
-        $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno WHERE b.fecha BETWEEN '$fechai' and '$fechaf' ;");
-        $respuestaArreglo = [];
-        try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
-            return $e->getMessage();
+        $validar_expresion = $this->validar_expresiones($fechai,$fechaf);
+        if ($validar_expresion['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresion['mensaje'];
+            return $respuesta;
+        }else{
+            $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno WHERE b.fecha BETWEEN '$fechai' and '$fechaf' ;");
+            $respuestaArreglo = [];
+            try {
+                $resultado->execute();
+                $respuestaArreglo = $resultado->fetchAll();
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+            return $respuestaArreglo;
         }
-        return $respuestaArreglo;
     }
 
     
@@ -90,6 +97,21 @@ class BitacoraModelo extends connectDB
             return $e->getMessage();
         }
         return $respuestaArreglo;
+    }
+
+    public function validar_expresiones($fecha_inicio,$fecha_fin){
+        $er_fecha ="/^\d{4}-\d{2}-\d{2} \d{1,2}:\d{1,2}$/";
+        if(!preg_match_all($er_fecha,$fecha_inicio)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El formato fecha campo 1 es invalido";
+        }else if(!preg_match_all($er_fecha,$fecha_fin)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El formato fecha campo 2 es invalido";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
 
 }
