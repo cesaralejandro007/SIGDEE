@@ -7,18 +7,40 @@ class RespaldobdModelo extends connectDB
 
   public function verificar_password($cedula)
   {
-      $resultado = $this->conex->prepare("SELECT usuario.clave as clave,rol.nombre as rol FROM usuario,usuarios_roles,rol WHERE cedula = '$cedula' AND rol.nombre = 'Super Usuario' AND usuarios_roles.id_usuario = usuario.id AND rol.id = usuarios_roles.id_rol ");
+      $validar_usuario_existe = $this->existe_usuario($cedula);
+      if ($validar_usuario_existe == false) {
+        $respuesta['resultado'] = 3;
+        $respuesta['mensaje'] = "El usuario no existe";
+        return $respuesta;
+      }else{
+        $resultado = $this->conex->prepare("SELECT usuario.clave as clave,rol.nombre as rol FROM usuario,usuarios_roles,rol WHERE cedula = '$cedula' AND rol.nombre = 'Super Usuario' AND usuarios_roles.id_usuario = usuario.id AND rol.id = usuarios_roles.id_rol ");
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+      } 
+  }
+
+  public function existe_usuario($cedula)
+  {
       try {
+          $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula='$cedula'");
           $resultado->execute();
-          $respuestaArreglo = $resultado->fetchAll();
+          $fila = $resultado->rowCount();
+          if ($fila > 0) {
+              return true;
+          } else {
+              return false;
+          }
       } catch (Exception $e) {
-          return $e->getMessage();
+          return false;
       }
-      return $respuestaArreglo;
   }
 
   public function respaldarBD() {
-  
     try {
     // Desactivar foreign keys
     $this->conex->exec('SET foreign_key_checks = 0');

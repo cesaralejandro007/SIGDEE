@@ -43,7 +43,23 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
         }else if($_POST['accion'] == 'limpiar_bitacora'){
             $limpiar_bitacora = $bitacora->limpieza_bitacora($_POST['fecha_inicio'],$_POST['fecha_cierre']);
-            if($limpiar_bitacora){
+            if(isset($limpiar_bitacora['resultado'])){
+                if($limpiar_bitacora['resultado']== 2) {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => "Bitacora",
+                        'message' => $limpiar_bitacora['mensaje']
+                    ]);
+                }else if($limpiar_bitacora['resultado']== 3) {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'icon' => 'error',
+                        'title' => "Bitacora",
+                        'message' => $limpiar_bitacora['mensaje']
+                    ]);
+                }
+            }else if($limpiar_bitacora){
                 echo json_encode([
                     'estatus' => '1',
                     'icon' => 'success',

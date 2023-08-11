@@ -23,16 +23,17 @@ document.getElementById("verificar_password"). onclick = function(){
               processData: false,
               cache: false,
               }).done(function (result) {
-                  if(result==1){
+                var res = JSON.parse(result);
+                  if(res.estatus==1){
                       respaldarBD();
                       return true;
-                  }else if(result == 2){
+                  }else if(res.estatus==2){
                       document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Usted no posee permisos para realizar el respaldo de la BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
                       setTimeout(function () {
                           $("#cerraralert").click();
                         }, 3000);
                       return false;
-                  }else if(result == 0){
+                  }else if(res.estatus == 0){
                     document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">La contraseña no coincide.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
                     setTimeout(function () {
                         $("#cerraralert").click();

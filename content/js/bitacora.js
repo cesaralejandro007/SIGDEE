@@ -387,7 +387,12 @@ function enviaAjax(datos) {
         }, 2000);
       }else if (res.estatus == 3){
         toastMixin.fire({
-
+          text: res.message,
+          title: res.title,
+          icon: res.icon,
+        });
+      }else{
+        toastMixin.fire({
           text: res.message,
           title: res.title,
           icon: res.icon,

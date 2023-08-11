@@ -80,21 +80,6 @@ class PermisosModelo extends connectDB
         return $respuesta;
     }
 
-    public function existe($id_rol,$id_entorno)
-    {
-        try {
-            $resultado = $this->conex->prepare("SELECT * FROM permiso WHERE id_rol='$id_rol' AND id_entorno='$id_entorno'");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
-            if ($fila > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-    }
     public function validar_rol($id)
     {
         try {

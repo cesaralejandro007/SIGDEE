@@ -44,12 +44,40 @@ class BitacoraModelo extends connectDB
     
     public function limpieza_bitacora($fechai,$fechaf)
     {
-        $resultado = $this->conex->prepare("DELETE FROM bitacora WHERE fecha BETWEEN '$fechai' and '$fechaf'");
+        $validar_expresion = $this->validar_expresiones($fechai,$fechaf);
+        $existen_registros_bitacora = $this->existe_registros($fechai,$fechaf);
+        if ($validar_expresion['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresion['mensaje'];
+            return $respuesta;
+        }else if ($existen_registros_bitacora ==false){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existen registros en la bitacora";
+            return $respuesta;
+        }else{
+            $resultado = $this->conex->prepare("DELETE FROM bitacora WHERE fecha BETWEEN '$fechai' and '$fechaf'");
+            try {
+                $resultado->execute();
+                return true;
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+        }
+    }
+
+    public function existe_registros($fechai,$fechaf)
+    {
         try {
+            $resultado = $this->conex->prepare("SELECT * FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno WHERE b.fecha BETWEEN '$fechai' and '$fechaf' ;");
             $resultado->execute();
-            return true;
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception $e) {
-            return $e->getMessage();
+            return false;
         }
     }
 
