@@ -20,16 +20,27 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         if ($accion == 'consultarfechabitacora') {
             $info_completa=[];
             $consul_bitacora = $bitacora->listar_bitacora_rango($_POST['fecha_inicio'],$_POST['fecha_fin']);
-            foreach ($consul_bitacora as $r) {
-                $info_completa[]=[  
-                "fecha"    =>    $r['fecha'],
-                "usuario"    =>    $r['usuario'],
-                "rol"    =>    $r['rol'],
-                "entorno"    =>    $r['entorno'],
-                "accion"  =>$r['accion'],
-            ];
+            if(isset($consul_bitacora['resultado'])){
+                if($consul_bitacora['resultado']== 2) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => "Bitacora",
+                        'message' => $consul_bitacora['mensaje']
+                    ]);
+                }
+            }else{
+                foreach ($consul_bitacora as $r) {
+                    $info_completa[]=[  
+                    "fecha"    =>    $r['fecha'],
+                    "usuario"    =>    $r['usuario'],
+                    "rol"    =>    $r['rol'],
+                    "entorno"    =>    $r['entorno'],
+                    "accion"  =>$r['accion'],
+                ];
+                }
+                echo json_encode($info_completa);
             }
-            echo json_encode($info_completa);
         }else if($_POST['accion'] == 'limpiar_bitacora'){
             $limpiar_bitacora = $bitacora->limpieza_bitacora($_POST['fecha_inicio'],$_POST['fecha_cierre']);
             if($limpiar_bitacora){

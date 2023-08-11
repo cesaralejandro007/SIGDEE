@@ -172,6 +172,27 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'message' => $response['mensaje']
                 ]);
                 $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Permisos Actualizados");
+            }else if($response['resultado']== 4) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => 'Permisos: ',
+                    'message' => $response['mensaje']
+                ]);
+            }else if($response['resultado']== 5) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => 'Permisos: ',
+                    'message' => $response['mensaje']
+                ]);
+            }else if($response['resultado']== 6) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => 'Permisos: ',
+                    'message' => $response['mensaje']
+                ]);
             }else {
                 echo json_encode([
                     'estatus' => '2',
@@ -188,7 +209,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
     }
-
     $r1 = $rol->listar();
     $modulopermiso = $permiso->modulos_relacionados();
     $rol_id = '';
