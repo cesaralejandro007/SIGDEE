@@ -283,7 +283,7 @@ function carga() {
       datos.append("telefono", $("#telefono").val());
       datos.append("direccion", $("#direccion").val());
       datos.append("id_rol", $("#rol").val());
-      datos.append("clave", "Diplomado2023");
+      datos.append("clave", "Diplomado");
       enviaAjax(datos);
     }
   };

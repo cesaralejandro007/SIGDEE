@@ -224,11 +224,12 @@ document.getElementById("modificarContrasenia").onclick = function() {
                         processData: false,
                         cache: false,
                     }).done(function(datos) {
-                        if (datos == 1) {
+                      var res = JSON.parse(datos);
+                        if (res.estatus == 1) {
                             toastMixin.fire({
-                              title: "Éxito",
-                              text: "Su contraseña ha sido cambiada exitosamente",
-                              icon: "success",
+                              title: res.title,
+                              text: res.message,
+                              icon: res.icon
                             });
                             $('#gestion-recuperar').modal('hide');
                             setTimeout(function () {
@@ -236,9 +237,9 @@ document.getElementById("modificarContrasenia").onclick = function() {
                             }, 3000);
                         }else{
                           toastMixin.fire({
-                            title: "Error",
-                            text: "error BD",
-                            icon: "error",
+                            title: res.title,
+                            text: res.message,
+                            icon: res.icon
                           });
                         }
                     })

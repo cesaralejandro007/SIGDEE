@@ -80,8 +80,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
                 return $decodec;
             }
-            $clave_nueva ="Diplomado";
-            $clave = password_hash($clave_nueva, PASSWORD_DEFAULT);
+            $clave = password_hash($_POST['clave'], PASSWORD_DEFAULT);
             buscar_elemento($array_paises, $_POST['pais'], 'pais');
             buscar_elemento($array_estados, $_POST['estado'], 'estado');
             buscar_elemento($array_ciudades, $_POST['ciudad'], 'ciudad');

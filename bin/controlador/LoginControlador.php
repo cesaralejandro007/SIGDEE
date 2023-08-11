@@ -139,7 +139,21 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
              //ENCRIPTAR CLAVE (password_hash)
             $clave_encriptada_nueva = password_hash($_POST['clave_actualizada'], PASSWORD_DEFAULT);
             $resul = $login->cambiar_password($_POST['cedula'],$clave_encriptada_nueva);
-            echo $resul;
+            if($resul ==1 ){
+                echo json_encode([
+                    'estatus' => $resul,
+                    'icon' => 'success',
+                    'title' => 'Exito',
+                    'message' => "Su contraseña ha sido cambiada exitosamente"
+                ]);
+            }else{
+                echo json_encode([
+                    'estatus' => 2,
+                    'icon' => 'error',
+                    'title' => 'Error',
+                    'message' => "BD"
+                ]);
+            }
             return 0;
         }
     } else {
