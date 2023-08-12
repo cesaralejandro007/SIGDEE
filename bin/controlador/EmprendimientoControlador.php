@@ -53,7 +53,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'title' => $modul,
                         'message' => $response['mensaje']
                     ]);
-                } else if ($response['resultado']==3) {
+                }else if ($response['resultado']==3) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                }else if ($response['resultado']==4) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
@@ -168,6 +175,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'message' => $response['mensaje']
                     ]);
                     return 0;
+                }else if ($response['resultado']==5){
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modul,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
                 }else {
                     echo json_encode([
                         'estatus' => '2',
@@ -215,6 +230,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'message' => $response['mensaje']
                 ]);
                 return 0;
+            }else if ($response['resultado']==3) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modul,
+                    'message' => $response['mensaje']
+                ]);
+                return 0;
+            }
+            else if ($response['resultado']==4) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modul,
+                    'message' => $response['mensaje']
+                ]);
+                return 0;
+            }
+            else if ($response['resultado']==5) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modul,
+                    'message' => $response['mensaje']
+                ]);
+                return 0;
             }
             exit;
         } else if ($accion == "cargarme") {
@@ -234,6 +275,20 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'estatus' => '2',
                     'icon' => 'success',
+                    'title' => $modul,
+                    'message' => $des_act['mensaje']
+                ]);
+            }else if ($des_act['resultado']==3) {
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
+                    'title' => $modul,
+                    'message' => $des_act['mensaje']
+                ]);
+            }else{
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'error',
                     'title' => $modul,
                     'message' => $des_act['mensaje']
                 ]);
