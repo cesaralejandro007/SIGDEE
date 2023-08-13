@@ -415,5 +415,49 @@ class EmprendimientoModelo extends connectDB
         }
         return $r;
     }
+    public function reporteEstudiantesPorEmprendimiento()
+    {
+        $total = 0;
+        $emprendimientos = [];
+        $estudiantes = 0;
+        $reprobados = 0;
+
+        //Consulta para obtener el total de emprendimientos de un area
+        $resultado = $this->conex->prepare("SELECT COUNT(e.id) as cant_emprendimiento FROM emprendimiento e;");
+        $resultado->execute();
+        if($resultado){
+            foreach($resultado as $r){
+                $total = $r['cant_emprendimiento'];
+            }
+        }
+
+        //Consulta para obtener el total de emprendimientos de un area
+        $query_emprendimientos = $this->conex->prepare("SELECT e.id as emprendimiento, e.nombre as nombre FROM area_emprendimiento a INNER JOIN emprendimiento e ON a.id=e.id_area");
+        $query_emprendimientos->execute();
+        if($query_emprendimientos){
+            foreach($query_emprendimientos as $r){
+                //Consulta para obtener la cantidad de estudiantes por cada emprendimiento
+                $query_estudiantes = $this->conex->prepare("SELECT u.id as cant_estudiante FROM emprendimiento e INNER JOIN emprendimiento_modulo em ON e.id= em.id_emprendimiento INNER JOIN modulo m ON em.id_modulo= m.id INNER JOIN aula a ON a.id_emprendimiento_modulo= em.id INNER JOIN aula_estudiante ae ON a.id= ae.id_aula INNER JOIN usuario u ON ae.id_estudiante= u.id WHERE e.id=".$r['emprendimiento']." GROUP BY u.id;");
+                $query_estudiantes->execute();
+                $cantidad = 0;
+                if($query_estudiantes){
+                    foreach($query_estudiantes as $count){
+                    $estudiantes++; 
+                        $cantidad++;
+                    }
+                }
+                $emprendimientos[] = ([
+                    "name"=> $r['nombre'],
+                    "y" => $cantidad
+                ]); 
+            }
+        }
+
+        $r['estudiantes'] = $estudiantes;
+        $r['total'] = $total;
+        $r['emprendimientos'] = $emprendimientos;
+
+        return $r;
+    }
 
 }
