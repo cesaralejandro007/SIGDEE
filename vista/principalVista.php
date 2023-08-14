@@ -12,8 +12,10 @@
     background-blend-mode: darken;
   }
   body {overflow-x:hidden!important;}
-</style>
+ 
 
+
+</style>
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
@@ -146,17 +148,19 @@
                       <div class="card card-primary card-outline">
                         <div class="card-header">
                           <h5>Reporte gráfico</h5>
-                          <p>Estudiantes por diplomados</p>
                         </div>
                         <div class="card-body">
-                          <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                          <figure class="highcharts-figure">
+                            <div id="container"></div>
+                            <p class="highcharts-description">
+                            </p>
+                          </figure> 
                         </div>
                         <!-- /.card-body -->
                       </div>
                       <!-- /.card -->
                     </div>
                   <?php } ?>
-                  <canvas id="donutChart" value="null" style="display:none;"></canvas>
                 </div>
               </div>
             </div>
@@ -208,10 +212,14 @@
       </div>
     </div>
   </body>
-
+      <script src="content/js/highcharts.js"></script>
+      <script src="content/js/exporting.js"></script>
+      <script src="content/js/export-data.js"></script>
+      <script src="content/js/accessibility.js"></script>
       <script type="text/javascript" src="assets/js/moment.min.js"></script>  
       <script type="text/javascript" src="assets/js/fullcalendar.min.js"></script>
       <script src='assets/locales/es.js'></script>
+      <script src='content/js/principal.js'></script>
 
 
       <script>
@@ -245,8 +253,7 @@
               <?php } ?>
               ],
 
-
-//Modificar Evento del Calendario 
+          //Modificar Evento del Calendario 
             eventClick:function(event){
               var idEvento = event._id;
               $('input[name=idEvento').val(idEvento);
@@ -256,49 +263,7 @@
               "?pagina=MostrarEvaluacion&id_unidad_evaluacion=" + event._id;
               $("#modalUpdateEvento").modal();
             },
-
-
           });
-    //-------------
-    //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-
-          if (document.getElementById("donutChart").value != "null") {
-            var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-            var donutData        = {
-              labels: [
-                'Batender',
-                'Cocina',
-                'Asesorias'
-                ],
-              datasets: [
-              {
-                data: [700,500,400],
-                backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-              }
-              ]
-            }
-            var donutOptions     = {
-              maintainAspectRatio : false,
-              responsive : true,
-            }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-            new Chart(donutChartCanvas, {
-              type: 'doughnut',
-              data: donutData,
-              options: donutOptions
-            })
-          }
-
-
-
-
-
-
-
         });
-
       </script>
       </html>

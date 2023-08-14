@@ -10,9 +10,14 @@ class EmprendimientoModelo extends connectDB
 
     public function incluir($nombre,$id_area)
     {
+        $validar_area_emprendimiento = $this->existe_area_emprendimiento($id_area);
         $validar_registro = $this->validar_registro($nombre);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-        if ($validar_registro) {
+
+        if ($validar_area_emprendimiento == false){
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "No existe area de emprendimiento";
+        }else if ($validar_registro) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
         }else if ($expresiones_regulares['resultado']) {
@@ -32,15 +37,35 @@ class EmprendimientoModelo extends connectDB
         return $respuesta;
     }
 
+    public function existe_area_emprendimiento($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM area_emprendimiento WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public function modificar($id,$nombre,$id_area)
     {
-        $validar_modificar = $this->validar_modificar($nombre, $id);
+
+        $existe_registro_emprendimiento = $this->validar_registro_emprendimiento($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
 
         if ($this->existe($id)==false) {
-            $respuesta['resultado'] = 4;
+            $respuesta['resultado'] = 5;
             $respuesta['mensaje'] = "El Emprendimiento de no Existe";
-        }else if ($validar_modificar) {
+        }else if ($this->existe_area_emprendimiento($id_area)==false) {
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "No existe el area de emprendimieto";
+        }else if ($existe_registro_emprendimiento) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
         }else if ($expresiones_regulares['resultado']) {
@@ -60,20 +85,46 @@ class EmprendimientoModelo extends connectDB
 
     public function actualizarstatus($id,$status)
     {
-        try {
-            $this->conex->query("UPDATE emprendimiento SET estatus = '$status' WHERE id = '$id'");
-            if($status=="true"){
-                $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Activado";
-            }else{
-                $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "Desactivado";
+        $existe_emprendimieto = $this->validar_emprendimiento($id);
+        if($existe_emprendimieto==false){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe el emprendimieto";
+        }else{
+            try {
+                if($status=="true" || $status=="false"){
+                    $this->conex->query("UPDATE emprendimiento SET estatus = '$status' WHERE id = '$id'");
+                    if($status=="true"){
+                        $respuesta['resultado'] = 1;
+                        $respuesta['mensaje'] = "Activado";
+                    }else{
+                        $respuesta['resultado'] = 2;
+                        $respuesta['mensaje'] = "Desactivado";
+                    }
+                }else{
+                    $respuesta['resultado'] = 4;
+                    $respuesta['mensaje'] = "status incorrecto";
+                }
+            } catch (Exception $e) {
+                return $e->getMessage();
             }
-
-        } catch (Exception $e) {
-            return $e->getMessage();
         }
         return $respuesta;
+    }
+
+    public function validar_emprendimiento($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM emprendimiento WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function cemprendimiento()
@@ -193,7 +244,7 @@ class EmprendimientoModelo extends connectDB
         }
     }
 
-    public function validar_modificar($nombre, $id)
+    public function validar_registro_emprendimiento($nombre, $id)
     {
         try {
             $resultado = $this->conex->prepare("SELECT * FROM emprendimiento WHERE nombre='$nombre' AND id<>'$id'");
@@ -362,6 +413,50 @@ class EmprendimientoModelo extends connectDB
             $r['mensaje'] = $e->getMessage();
 
         }
+        return $r;
+    }
+    public function reporteEstudiantesPorEmprendimiento()
+    {
+        $total = 0;
+        $emprendimientos = [];
+        $estudiantes = 0;
+        $reprobados = 0;
+
+        //Consulta para obtener el total de emprendimientos de un area
+        $resultado = $this->conex->prepare("SELECT COUNT(e.id) as cant_emprendimiento FROM emprendimiento e;");
+        $resultado->execute();
+        if($resultado){
+            foreach($resultado as $r){
+                $total = $r['cant_emprendimiento'];
+            }
+        }
+
+        //Consulta para obtener el total de emprendimientos de un area
+        $query_emprendimientos = $this->conex->prepare("SELECT e.id as emprendimiento, e.nombre as nombre FROM area_emprendimiento a INNER JOIN emprendimiento e ON a.id=e.id_area");
+        $query_emprendimientos->execute();
+        if($query_emprendimientos){
+            foreach($query_emprendimientos as $r){
+                //Consulta para obtener la cantidad de estudiantes por cada emprendimiento
+                $query_estudiantes = $this->conex->prepare("SELECT u.id as cant_estudiante FROM emprendimiento e INNER JOIN emprendimiento_modulo em ON e.id= em.id_emprendimiento INNER JOIN modulo m ON em.id_modulo= m.id INNER JOIN aula a ON a.id_emprendimiento_modulo= em.id INNER JOIN aula_estudiante ae ON a.id= ae.id_aula INNER JOIN usuario u ON ae.id_estudiante= u.id WHERE e.id=".$r['emprendimiento']." GROUP BY u.id;");
+                $query_estudiantes->execute();
+                $cantidad = 0;
+                if($query_estudiantes){
+                    foreach($query_estudiantes as $count){
+                    $estudiantes++; 
+                        $cantidad++;
+                    }
+                }
+                $emprendimientos[] = ([
+                    "name"=> $r['nombre'],
+                    "y" => $cantidad
+                ]); 
+            }
+        }
+
+        $r['estudiantes'] = $estudiantes;
+        $r['total'] = $total;
+        $r['emprendimientos'] = $emprendimientos;
+
         return $r;
     }
 

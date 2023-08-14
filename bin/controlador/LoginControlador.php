@@ -56,7 +56,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
             if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""){
-                echo 0;
+                echo json_encode([
+                    'estatus' => '3',
+                    'message' => "Complete los datos solicitados."
+                ]);   
             }
             else if($responseU == 0){   
                 if($login->comprobar_usuario($usuario)){  
@@ -72,7 +75,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     $mensaje->error($modulo,$error_message);     
                     return 0; 
                 }else{
-                    echo 1;   
+                    echo json_encode([
+                        'estatus' => '2',
+                        'message' => "El usuario no existe."
+                    ]);   
                 }       
             }
             else if($responseU == 2){

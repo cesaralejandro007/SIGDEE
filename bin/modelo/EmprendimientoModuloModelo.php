@@ -11,8 +11,16 @@ class EmprendimientoModuloModelo extends connectDB
 
     public function incluir($id_modulo,$id_emprendimiento,$status)
     {
-        $v = $this->validar($id_modulo, $id_emprendimiento);
-        if ($v == "false" and $status == "true") {
+        $existe_emprendimieto_modulo = $this->validar_emprendimiento_modulo($id_modulo, $id_emprendimiento);
+        $existe_modulo = $this->validar_modulo($id_modulo);
+        $existe_emprendimieto = $this->validar_emprendimiento($id_emprendimiento);
+        if($existe_modulo==false){
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "No existe el modulo";
+        }else if($existe_emprendimieto==false){
+            $respuesta['resultado'] = 5;
+            $respuesta['mensaje'] = "No existe el emprendimieto";
+        }else if($existe_emprendimieto_modulo == false and $status == "true") {
             try {
                 $this->conex->query("INSERT INTO emprendimiento_modulo(
                     id_modulo,
@@ -27,7 +35,7 @@ class EmprendimientoModuloModelo extends connectDB
             } catch (Exception $e) {
                 return $e->getMessage();
             }
-        } else if ($v == "true" and $status == "false") {
+        }else if ($existe_emprendimieto_modulo == true and $status == "false") {
             $emprendimiento_aula = $this->validar_emprendimiento_aula($id_modulo, $id_emprendimiento);
             if($emprendimiento_aula){
                 $resultado = $this->conex->prepare("DELETE from emprendimiento_modulo
@@ -51,11 +59,46 @@ class EmprendimientoModuloModelo extends connectDB
                 $respuesta['resultado'] = 2;
                 $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculo con Aula.";
             }
-        } else {
+        }else if ($existe_emprendimieto_modulo == false and $status == "false") {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe el registro emprendimieto modulo";
+        }else {
             $respuesta['resultado'] = 1;
             $respuesta['mensaje'] = "Registro exitoso";
         }
         return $respuesta;
+    }
+
+    public function validar_modulo($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM modulo WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function validar_emprendimiento($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM emprendimiento WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function modificar()
@@ -234,16 +277,16 @@ class EmprendimientoModuloModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function validar($id_modulo, $id_emprendimiento)
+    public function validar_emprendimiento_modulo($id_modulo, $id_emprendimiento)
     {
         $resultado = $this->conex->prepare("SELECT * FROM emprendimiento_modulo WHERE id_emprendimiento = '$id_emprendimiento' and id_modulo ='$id_modulo'");
         try {
             $resultado->execute();
             $respuesta1 = $resultado->rowCount();
             if ($respuesta1 > 0) {
-                return "true";
+                return true;
             } else {
-                return "false";
+                return false;
             }
         } catch (Exception $e) {
             return false;

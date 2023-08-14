@@ -100,14 +100,14 @@ function enviaAjax(datos) {
     success: function (response) {
       var res = JSON.parse(response);
       //alert(res.title);
-      if(res == 0){
-        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">Complete los datos solicitados.<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
+      if(res.estatus == 3){
+        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">'+ res.message +'<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
         setTimeout(function () {
           $("#cerraralert").click();
         }, 6000);
       }
-      else if(res == 1){
-        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">El usuario no existe.<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
+      else if(res.estatus == 2){
+        document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">'+ res.message +'<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
         setTimeout(function () {
           $("#cerraralert").click();
         }, 6000);
