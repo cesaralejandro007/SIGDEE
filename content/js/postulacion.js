@@ -245,7 +245,18 @@ function next(){
       e.preventDefault();
     }
   }
-
+  function validarselect(etiqueta, etiquetamensaje, mensaje) {
+    if(etiqueta.value == 0){
+      etiquetamensaje.innerText = mensaje;
+      etiquetamensaje.style.color = "red";
+      etiqueta.classList.add("is-invalid");
+    }else{
+      etiquetamensaje.innerText = "";
+      etiqueta.classList.remove("is-invalid");
+      etiqueta.classList.add("is-valid");
+    }
+  }
+  
   function validarkeyup(er,etiqueta,etiquetamensaje,mensaje){
     a = er.test(etiqueta.value);
     if(!a){

@@ -1,7 +1,18 @@
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
-<body class="hold-transition sidebar-mini layout-fixed">
+<style>
+  .masthead {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 4.5rem);
+  background: linear-gradient(to bottom, rgba(158, 153, 151, 0.2) 0%, rgba(168, 161, 158, 0.2) 100%), url("content/imagenes/uptaeb.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+}
+</style>
+<body class="hold-transition sidebar-mini layout-fixed "  style="background-color: #508bfc;">
     <div class="wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -10,9 +21,9 @@
 
             </div>
         </nav>
-        <section class="vh-100" style="background-color: #508bfc;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
+        <section class="masthead">
+            <div class="container">
+                <div class="row">
                   <div class="col-md-12">
                     <div class="card card-default">
                       <div class="card-header">
@@ -124,6 +135,11 @@
                 </div>
             </div>
         </section>
+        <footer class="py-5 bg-dark">
+            <div class="container px-4">
+                <p class="m-0 text-center text-white">Derechos reservados 2022</p>
+            </div>
+        </footer>
     </div>
     <script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
     <script src="plugins/jquery/jquery.js" crossorigin="anonymous"></script>

@@ -44,7 +44,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             return 0;
         }
-        if ($accion == 'registrar') {
+        else if ($accion == 'registrar') {
             if ($_POST['id'] != '') {
                 $id_aspirante = $_POST['id'];
             }
@@ -55,6 +55,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 {
                     $datos = $usuario->buscar_cedula($_POST['cedula']);
                     $id_aspirante = $datos[0]['id'];
+                    echo "alert('".$_POST['cedula']."')";
                 }
                 else
                 {
