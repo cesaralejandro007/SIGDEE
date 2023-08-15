@@ -348,6 +348,12 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                   <p>Reporte de Estudiantes Por Emprendimiento</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?pagina=ReporteDireccion" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Reporte de Estudiantes Por Ubicación</p>
+                </a>
+              </li>
             </ul>
           </li>
 
