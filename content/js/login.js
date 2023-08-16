@@ -60,6 +60,7 @@ $("#entrar").click(function (e) {
   datos.append("tipo", $("#tipodeusuario").val());
   datos.append("user", $("#floatingInput").val());
   datos.append("password", $("#floatingPassword").val());
+  datos.append("captcha", $("#captcha_code").val());
   enviaAjax(datos);
 });
 

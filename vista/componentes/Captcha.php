@@ -1,4 +1,4 @@
-<div class="col-12">
+<div class="col-12 p-0">
     <img style="border: 1px solid gray;width: 100%;height:30%; margin-top:5px;" id="captcha"
         src="<?php echo "vista/componentes/securimage/securimage_show.php"; ?>" alt="CAPTCHA Image" />
 
@@ -16,7 +16,7 @@
     </div>
 
     <div class="d-flex" id="captcha_image_audio_controls" class="row">
-        <a tabindex="-1" class="captcha_play_button" style="margin-top: 5px;margin-right: 5px;margin-left: 10px; "
+        <a tabindex="-1" class="captcha_play_button" style="margin-top: 5px; margin-right: 5px;margin-left: 5px; "
             href="<?php echo "vista/componentes/securimage/"; ?>securimage_play.php?id=1234 ?>"
             onclick="return false">
             <img class="captcha_play_image" height="32" width="32"
@@ -36,7 +36,7 @@
                 alt="Refresh Image" onclick="this.blur()" style="border: 0px; margin-top: 5px;" />
         </a>
         <input type="text" name="captcha" id="captcha_code" class="form-control " placeholder="Codigo de Seguridad"
-            style="width: 70%;margin-top: 5px;">
+            style="margin-top: 5px;">
         
 
     </div>
