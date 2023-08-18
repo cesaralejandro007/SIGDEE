@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <?php include_once 'componentes/head.php';?>
 <style>
@@ -24,23 +25,22 @@
         </nav>
         <section class="masthead vh-100">
           <div class="container h-100">
-            <div class="row d-flex justify-content-center align-items-center
-            h-100">
+            <div class="d-flex justify-content-center align-items-center h-100">
             <div class="card col-10 col-md-7 col-lg-5 col-xl-4">
                 <div class="card-header text-center">
                           <h2 class="m-0 font-weight-bold" style="font-family:Arial, Helvetica, sans-serif">SIGDEE</h2>
                       </div>
-                <div class="card-body px-4 ">
+                <div class="card-body px-4 py-2">
                   <center><div id="validarusuario"></div></center>
                   <div class="d-flex justify-content-center">
                     <img
                       src="assets/font/login-icon.svg"
                       alt="login-icon"
-                      style="height: 6rem"
+                      style="height: 5rem"
                       />
                   </div>
                   <div class="text-center fs-5">Iniciar Sesión</div>
-                  <div class="input-group mt-4">
+                  <div class="input-group mt-2">
                     <div class="input-group-text bg-light">
                       <i class="fas fa-user-tag"></i>
                     </div>
@@ -78,16 +78,18 @@
                               onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
                           </div>
                         </div>
-                        <button class="btn btn-primary text-white w-100 mt-4
-                          fw-semibold shadow-sm" id="entrar" type="submit">Entrar</button>
-                        <div class="d-flex justify-content-center"><button
-                            class="btn btn-bs text-primary"
-                            id="recuperarcontrasena">Recuperar contraseña</button></div>
-                        </div>
+                                  <div class="">
+                                    <?php include  "componentes/Captcha.php"; ?>
+                                    <button class="btn btn-primary text-white w-100 mt-1
+                                      fw-semibold shadow-sm" id="entrar" type="submit">Entrar</button>
+                                    <div class="d-flex justify-content-center"><button
+                                        class="btn btn-bs text-primary"
+                                        id="recuperarcontrasena">Recuperar contraseña</button></div>
+                                    </div>
+                                  </div>
                     </div>
                   </div>
-                </div>
-
+                </div>      
 
 <div id="gestion-recuperar" class="modal fade" tabindex="-1">
 	<div class="modal-dialog">
@@ -171,7 +173,6 @@
 		</div>
 	</div>
 </div>
-
 
               </section>
             </div>
