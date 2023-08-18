@@ -4,9 +4,22 @@ $(document).ready(function () {
     //Funciones para mmostrar la informacion en los selects
   
     muestraAreas();
+    muestraPaises();
   
+    $("#pais").on("change", function () {
+      muestraAreas();
+      muestraEstados();
+    });
+
+    $("#estado").on("change", function () {
+      $("#ciudad").html('<option value="0" disabled selected>Seleccione</option>');
+      muestraCiudades();
+      muestraAreas();
+    });
+
     $("#area").on("change", function () {
       muestraEmpredimientos();
+      //grafica_estudiantes_areas();
     });
   
     $("#emprendimiento").on("change", function () {
@@ -16,10 +29,11 @@ $(document).ready(function () {
   
     $("#aula").on("change", function () {
       $("#unidad").html('<option value="0" disabled selected>Seleccione</option>');
-      muestraUnidades();
-      grafica_aprobados_reprobados_aula();
+      //muestraUnidades();
+      //grafica_aprobados_reprobados_aula();
     });
     
+    /*
     $("#unidad").on("change", function () {
       $("#evaluacion").html('<option value="0" disabled selected>Seleccione</option>');
       muestraEvaluaciones();
@@ -28,10 +42,11 @@ $(document).ready(function () {
     $("#evaluacion").on("change", function () {
       grafica_aprobados_reprobados();
     });
+    */
     
   });
   
-  
+  /*
   function grafica_aprobados_reprobados() {
     var datos = new FormData();
     datos.append("accion", "aprobados_reprobados");
@@ -47,11 +62,26 @@ $(document).ready(function () {
     datos.append("aula", $("#aula").val());
     enviaAjax(datos);
   }
-  
-  
+  */
+ /* function grafica_estudiantes_areas() {
+    var datos = new FormData();
+    datos.append("accion", "estudiantes_areas");
+    datos.append("area", $("#area").val());
+    datos.append("pais", $("#pais").val());
+    datos.append("estado", $("#estado").val());
+    datos.append("ciudad", $("#ciudad").val());
+    enviaAjax(datos);
+  } */
+
   function muestraAreas() {
     var datos = new FormData();
-    datos.append("accion", "listadoareas"); //le digo que me muestre un listado de aulas
+    datos.append("accion", "listadoareas"); //le digo que me muestre un listado de aulas    
+    Ajax(datos);
+  }
+
+  function muestraPaises() {
+    var datos = new FormData();
+    datos.append("accion", "listadopaises"); //le digo que me muestre un listado de aulas
     Ajax(datos);
   }
   
@@ -61,7 +91,14 @@ $(document).ready(function () {
     datos.append("area", $("#area").val());
     Ajax(datos);
   }
-  
+
+  function muestraEstados() {
+    var datos = new FormData();
+    datos.append("accion", "listadoestados");
+    datos.append("pais", $("#pais").val());
+    Ajax(datos);
+  }
+
   function muestraAulas() {
     var datos = new FormData();
     datos.append("accion", "listadoaulas");
@@ -69,21 +106,14 @@ $(document).ready(function () {
     datos.append("emprendimiento", $("#emprendimiento").val());
     Ajax(datos);
   }
-  
-  function muestraUnidades() {
+
+  function muestraCiudades() {
     var datos = new FormData();
-    datos.append("accion", "listadounidades");
-    datos.append("aula", $("#aula").val());
+    datos.append("accion", "listadociudades");
+    datos.append("estado", $("#estado").val());
     Ajax(datos);
   }
-  
-  function muestraEvaluaciones() {
-    var datos = new FormData();
-    datos.append("accion", "listadoevaluaciones");
-    datos.append("unidad", $("#unidad").val());
-    Ajax(datos);
-  }
-  
+    
   function enviaAjax(datos) {
     var toastMixin = Swal.mixin({
       toast: true,
@@ -101,6 +131,15 @@ $(document).ready(function () {
       cache: false,
       success: function (response) {
         var lee = JSON.parse(response);
+        if (lee.grafica == "estudiantes_areas") 
+        {
+          if(lee.estudiantes_status){
+            grafica_torta(lee.estudiantes);
+          }
+          else 
+          alert('No existe ninguna ubicación registrada');
+        }  
+        else
         if (lee.grafica == "aprobados_reprobados") 
         {
           if(lee.estudiantes){
@@ -187,31 +226,41 @@ $(document).ready(function () {
             else
             $("#aula").html(lee.mensaje);
           } else 
-          if (lee.resultado == "listadounidades") {
+          if (lee.resultado == "listadopaises") {
             if(lee.mensaje==vacio){
-              aula = $("#aula").val();
+              aula = $("#pais").val();
               Swal.fire({
                 icon: 'info',
                 title: 'Disculpe',
-                text: 'No existen unidades en el aula',
-                footer: '<a href="?pagina=Aula&visualizar=true&aula='+aula+'">Deberia registrar alguna unidad en esta aula</a>'
+                text: 'No existen paises registrados'
               })
             }
             else
-            $("#unidad").html(lee.mensaje);
+            $("#pais").html(lee.mensaje);
           } else 
-          if (lee.resultado == "listadoevaluaciones") {
+          if (lee.resultado == "listadoestados") {
             if(lee.mensaje==vacio){
-              unidad = $("#unidad").val();
+              unidad = $("#estado").val();
               Swal.fire({
                 icon: 'info',
                 title: 'Disculpe',
-                text: 'No existen evaluaciones en la unidad',
-                footer: '<a href="?pagina=Unidad&id_unidad='+unidad+'">Deberia registrar una evaluación en la unidad</a>'
+                text: 'No existen Estados para el pais seleccionado'
               })
             }
             else
-            $("#evaluacion").html(lee.mensaje);
+            $("#estado").html(lee.mensaje); 
+          }else 
+          if (lee.resultado == "listadociudades") {
+            if(lee.mensaje==vacio){
+              unidad = $("#ciudad").val();
+              Swal.fire({
+                icon: 'info',
+                title: 'Disculpe',
+                text: 'No existen Ciudades para el Estado seleccionado'
+              })
+            }
+            else
+            $("#ciudad").html(lee.mensaje); 
           }
         } catch (e) {
           alert("Error en JSON " + e.name + " !!!");
@@ -238,48 +287,5 @@ $(document).ready(function () {
     });
   }
   
-  function grafica_torta(aprobados, reprobados){
-    Highcharts.chart('container', {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-      },
-      title: {
-        text: 'Reporte Estadistico de Estudiantes aprobados y reprobados'
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-      },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-          }
-        }
-      },
-      series: [{
-        name: 'Estudiantes',
-        colorByPoint: true,
-        data: [{
-          name: 'Aprobados',
-          y: aprobados,
-          sliced: true,
-          selected: true
-        }, {
-          name: 'Reprobados',
-          y: reprobados
-        }]
-      }]
-    });
-  }
+
   

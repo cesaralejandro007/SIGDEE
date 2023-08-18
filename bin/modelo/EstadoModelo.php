@@ -48,4 +48,29 @@ class EstadoModelo extends connectDB
             return false;
         }
     }
+
+    public function listadoestados($pais)
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT estados.id, estados.nombre FROM estados
+            where id_pais =:pais");
+	        $resultado->BindParam(":pais", $pais);
+            $resultado->execute();
+            $x = '<option disabled selected>Seleccione</option>';
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x = $x . '<option value="' . $f[0] . '">' . $f[1] . '</option>';
+                }
+            }
+
+            $r['resultado'] = 'listadoestados';
+            $r['mensaje'] = $x;
+
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
 }

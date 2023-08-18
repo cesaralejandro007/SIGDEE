@@ -48,4 +48,28 @@ class CiudadModelo extends connectDB
             return false;
         }
     }
+    public function listadociudades($estado)
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT ciudades.id, ciudades.nombre FROM ciudades
+            where id_estado =:estado");
+	        $resultado->BindParam(":estado", $estado);
+            $resultado->execute();
+            $x = '<option disabled selected>Seleccione</option>';
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x = $x . '<option value="' . $f[0] . '">' . $f[1] . '</option>';
+                }
+            }
+
+            $r['resultado'] = 'listadociudades';
+            $r['mensaje'] = $x;
+
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
 }

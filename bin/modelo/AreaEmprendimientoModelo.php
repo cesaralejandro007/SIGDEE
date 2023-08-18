@@ -221,24 +221,16 @@ class AreaEmprendimientoModelo extends connectDB
     {
         $r = array();
         try {
-
-            $resultado = $this->conex->prepare("select area_emprendimiento.id, area_emprendimiento.nombre from
-area_emprendimiento");
-
+            $resultado = $this->conex->prepare("SELECT area_emprendimiento.id, area_emprendimiento.nombre FROM area_emprendimiento");
             $resultado->execute();
-
             $x = '<option disabled selected>Seleccione</option>';
             if ($resultado) {
-
                 foreach ($resultado as $f) {
                     $x = $x . '<option value="' . $f[0] . '">' . $f[1] . '</option>';
                 }
-
             }
-
             $r['resultado'] = 'listadoareas';
             $r['mensaje'] = $x;
-
         } catch (Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
@@ -246,4 +238,82 @@ area_emprendimiento");
         }
         return $r;
     }
+    public function reporteUbicacionArea($pais, $estado, $ciudad, $id_area){
+        $total_estudiantes = 0;
+        $aprobados = 0;
+        $ejemplo = [];
+        $cantidad_estudiantes = 0;
+        if($ciudad != null){
+        $query_ciudades = $this->conex->prepare("SELECT id, nombre FROM ciudades;");
+        $query_ciudades->execute();
+            if($query_ciudades)
+            {
+                foreach($query_ciudades as $ciudades)
+                {
+                    $query_estudiantes_ciudades = $this->conex->prepare("SELECT u.id as id_estudiante FROM usuario u INNER JOIN aula_estudiante ae ON u.id=ae.id_estudiante INNER JOIN aula a ON a.id= ae.id_aula INNER JOIN emprendimiento_modulo em ON a.id_emprendimiento_modulo=em.id INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento aem ON aem.id=e.id_area INNER JOIN ciudades c ON c.id=u.id_ciudad WHERE aem.id='$id_area' AND c.id='$ciudad' GROUP BY u.id;");
+                    $query_ciudades->execute();
+                    $cantidad = $query_ciudades->num_rows;
+                }
+            }
+        }
+
+
+
+
+        //Consulta de todos lo estudiantes que cursan el area de emprendimiento seleccionado
+        $query_estudiantes = $this->conex->prepare("SELECT ae.id_estudiante as id_estudiante FROM usuario u INNER JOIN aula_estudiante ae ON u.id=ae.id_estudiante INNER JOIN aula a ON a.id= ae.id_aula INNER JOIN emprendimiento_modulo em ON a.id_emprendimiento_modulo=em.id INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento aem ON aem.id=e.id_area WHERE aem.id='$id_area' GROUP BY u.id;");
+        $query_estudiantes->execute();
+        if($query_estudiantes){
+            foreach($query_estudiantes as $estudiante){
+                $nota_final = 0;
+                //Consulta para obtener el total de unidades que posee el aula
+                $query_unidades = $this->conex->prepare("SELECT u.id as id, u.nombre as nombre FROM aula a INNER JOIN unidad u ON a.id= u.id_aula WHERE a.id='$id_aula';");
+                $query_unidades->execute();
+                if($query_unidades){
+                    $total_unidades = 0;
+                    $calificacion_unidad= 0;
+                    foreach($query_unidades as $unidad){
+                        $final_evaluacion = 0;
+                        //Consulta de las evaluaciones que posee la unidad
+                        $query_evaluaciones = $this->conex->prepare("SELECT ue.id as id, ue.id_unidad, ue.id_evaluacion FROM unidad u INNER JOIN unidad_evaluaciones ue ON u.id=ue.id_unidad WHERE u.id='".$unidad['id']."'");
+                        $query_evaluaciones->execute();
+                        if ($query_evaluaciones) {
+                            $calificacion_evaluacion = 0;
+                            $total_evaluacion = 0;
+                            foreach($query_evaluaciones as $evaluacion){
+                                //Consulta para obtener la calificacion de la evaluacion de un estudiante en especifico
+                                $query_calificacion = $this->conex->prepare("SELECT ee.calificacion as calificacion FROM estudiante_evaluacion ee INNER JOIN unidad_evaluaciones ue ON ee.id_unidad_evaluacion=ue.id WHERE ue.id='".$evaluacion['id']."' AND ee.id_usuario='".$estudiante['id_estudiante']."';");
+                                $query_calificacion->execute();
+                                if ($query_calificacion) {
+                                    foreach($query_calificacion as $calificacion){
+                                        $nota = $calificacion['calificacion'] != NULL ? $calificacion['calificacion'] : 0;
+                                        $calificacion_evaluacion= $nota+$calificacion_evaluacion;
+                                    }
+                                }
+                                $total_evaluacion++;
+                            }
+                            $final_evaluacion =  $calificacion_evaluacion / $total_evaluacion;
+                        }
+                        $calificacion_unidad = $final_evaluacion + $calificacion_unidad;
+                        $total_unidades++;
+                    }
+                    $nota_final = $calificacion_unidad/$total_unidades;
+
+                    
+                }
+                $aprobados = $nota_final >9.49 ? +1 : +0;
+                $total_estudiantes++;
+            }
+            $reprobados = $total_estudiantes-$aprobados;
+            //$r['aprobados']= $ejemplo;
+            if($total_estudiantes!=0){
+            $r['aprobados']= ($aprobados/$total_estudiantes)* 100;
+            $r['reprobados']= ($reprobados/$total_estudiantes)* 100;
+        }else{
+            $r['resultado'] = 1;
+            $r['mensaje'] = "No existen registros";
+        }
+        }
+        return $r;
+    } 
 }
