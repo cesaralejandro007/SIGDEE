@@ -26,6 +26,137 @@
 			}
 		}
 
+
+		public static function Seguridad($string, $accion = null)
+		{
+			// Advanced Encryption Standard cipher-block chaining
+			$metodo        = "AES-256-CBC"; //El método de cifrado //clave simétrica de 256 bits
+			$llave = openssl_digest("key", 'whirlpool', true); //genera un hash usando el método dado y devuelve codificada (512 bits)
+			$iv    = substr(hash("whirlpool", $llave), 0, 16); // ciframos el vector de inicialización y acortamos con substr a 16
+	
+			if ($accion == 'codificar') {
+				$salida = openssl_encrypt($string, $metodo, $llave, 0, $iv); // ciframos la direccion obtenida con el metodo openssl_encrypt
+				$salida = base64_encode($salida); // ciframos la salida en bs64
+			} else if ($accion == 'decodificar') {
+				$string = base64_decode($string);
+				$salida = openssl_decrypt($string, $metodo, $llave, 0, $iv);
+			}
+			return $salida;
+			unset($metodo,$llave,$iv,$accion,$sting,$salida);
+		}
+		
+		public static function _M01_() {
+			echo self::Seguridad('principal', 'codificar');
+		}
+
+		public static function _M02_() {
+			echo self::Seguridad('Chat', 'codificar');
+		}
+
+		public static function _M03_() {
+			echo self::Seguridad('Aula', 'codificar');
+		}
+
+		public static function _M04_() {
+			echo self::Seguridad('Aspirante', 'codificar');
+		}
+
+		public static function _M05_() {
+			echo self::Seguridad('Censo', 'codificar');
+		}
+
+		public static function _M06_() {
+			echo self::Seguridad('Contenido', 'codificar');
+		}
+
+		public static function _M07_() {
+			echo self::Seguridad('Evaluacion', 'codificar');
+		}
+
+		public static function _M08_() {
+			echo self::Seguridad('Estudiante', 'codificar');
+		}
+
+		public static function _M09_() {
+			echo self::Seguridad('Docente', 'codificar');
+		}
+
+		public static function _M10_() {
+			echo self::Seguridad('AreaEmprendimiento', 'codificar');
+		}
+
+		public static function _M11_() {
+			echo self::Seguridad('Emprendimiento', 'codificar');
+		}
+
+		public static function _M12_() {
+			echo self::Seguridad('Modulo', 'codificar');
+		}
+
+		public static function _M13_() {
+			echo self::Seguridad('ReportesEstadisticos', 'codificar');
+		}
+
+		public static function _M14_() {
+			echo self::Seguridad('ReporteEstudiantesPorEmprendimiento', 'codificar');
+		}
+
+		public static function _M15_() {
+			echo self::Seguridad('Usuario', 'codificar');
+		}
+
+		public static function _M16_() {
+			echo self::Seguridad('Rol', 'codificar');
+		}
+
+		public static function _M17_() {
+			echo self::Seguridad('Bitacora', 'codificar');
+		}
+
+		public static function _M18_() {
+			echo self::Seguridad('Respaldobd', 'codificar');
+		}
+		
+		public static function _M19_() {
+			echo self::Seguridad('EntornoSistema', 'codificar');
+		}
+
+		public static function _INICIO_() {
+			return self::Seguridad('Diplomado', 'codificar');
+		}
+
+		public static function _MAULAS_($id_aula) {
+			$aulas = "Aula&visualizar=true&aula=".$id_aula;
+			echo self::Seguridad($aulas, 'codificar');
+		}
+		public static function _MUNIDAD_($id_unidad) {
+			$unidad = "Unidad&id_unidad=".$id_unidad;
+			echo self::Seguridad($unidad, 'codificar');
+		}
+		public static function _MUNIDADEVA_($id_unidadEVA) {
+			$unidad = "MostrarEvaluacion&id_unidad_evaluacion=".$id_unidadEVA;
+			echo self::Seguridad($unidad, 'codificar');
+		}
+		
+		public static function _ML_() {
+			echo self::Seguridad('Login', 'codificar');
+		}
+		public static function _MD_() {
+			echo self::Seguridad('Diplomado', 'codificar');
+		}
+
+		public static function _MP_() {
+			echo self::Seguridad('Postulacion', 'codificar');
+		}
+
+		public static function _MPERF_() {
+			echo self::Seguridad('Perfil', 'codificar');
+		}
+
+		public static function _MERROR_() {
+			echo self::Seguridad('Error404', 'codificar');
+		}
+		
 		public function _URL_(){
 			return _URL_;
 		}

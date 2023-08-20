@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
   <?php include_once 'componentes/head.php';?>
@@ -18,7 +21,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
           id="mainNav">
           <div class="container px-4">
-            <a class="nav-link text-light" href="?pagina=Diplomado">Pagina
+            <a class="nav-link text-light" href="?pagina=<?php configSistema::_MD_();?>">Pagina
               Principal</a>
 
           </div>

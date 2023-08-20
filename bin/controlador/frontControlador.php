@@ -12,22 +12,26 @@
 
 		public function __construct($request){
 			if (isset($request["pagina"])) {
-				$this->pagina = $request["pagina"];
+				$url = configSistema::Seguridad($request["pagina"], 'decodificar');
+				echo $url;
+				$this->pagina = $url;
 				$sistem = new configSistema();
 				$this->directory = $sistem->_Dir_Control_();
 				$this->controlador = $sistem->_Control_();
 				$this->validarpagina();
 			}else{
-				die("<script>window.location='?pagina=Diplomado'</script>");
+				$redirectUrl = '?pagina=' . configSistema::_INICIO_();
+				echo '<script>window.location="' . $redirectUrl . '"</script>';
 			}
 		}
 
 		private function validarpagina(){
-			$pattern = preg_match_all("/^[a-zA-Z0-9-@\/.=:_#$]{1,700}$/", $this->pagina);
+			$pattern = preg_match_all("/^[a-zA-Z0-9-@+\/&.=:_#$]{1,700}$/", $this->pagina);
 			if ($pattern == 1) {
 				$this->_loadPage($this->pagina);
 			}else{
-				die('La url ingresada es inválida');
+				echo $this->pagina;
+				require_once "vista/error_URL.php";
 			}
 		}
 
@@ -35,11 +39,13 @@
 			if(file_exists($this->directory.$pagina.$this->controlador)){
 				require_once($this->directory.$pagina.$this->controlador);
 			}else{
-				$pagina = "Diplomado";
-				if(file_exists($this->directory.$pagina.$this->controlador)){
-					die("<script>window.location='?pagina=Diplomado'</script>");
+				$str = $pagina;
+				$partes = explode('&', $str);
+				$parte = explode('"', $partes[0])[0]; 
+				if(file_exists($this->directory.$parte.$this->controlador)){
+					require_once($this->directory.$parte.$this->controlador);
 			}else{
-				die("<script>window.location='?pagina=Error404'</script>");
+				require_once "vista/error_URL.php";
 			}
 		}
 	}

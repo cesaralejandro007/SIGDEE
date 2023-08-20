@@ -18,10 +18,21 @@ session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
 }
+
+$str = $pagina;
+// Dividir el string 
+$partes = explode('&', $str);
+// Obtener Unidad
+$pagina = $partes[0];
+// Obtener valor
+$valor = explode('=', $partes[1]);
+$id_unidad = $valor[1];
+
 if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
     echo "Falta definir la clase " . $pagina;
     exit;
 }
+
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
@@ -340,8 +351,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 break;
         }
     }
-    if (isset($_GET['id_unidad'])) {
-        $id_unidad = $_GET['id_unidad'];
+    if (isset($id_unidad)) {
         $mostrar_unidad = $unidad->cargar($id_unidad);
         if($mostrar_unidad != null){
             $listar_contenidos = $unidad_contenido->listar($id_unidad);

@@ -114,15 +114,27 @@ function enviaAjax(datos) {
         }, 6000);
       }
       else if (res.estatus == 1) {
-        toastMixin.fire({
-          title: res.title,
-          text: res.message,
-          icon: res.icon
+        var formData = new FormData();
+        formData.append("accion", "codificarURL");
+        $.ajax({
+          url: "",
+          type: "POST",
+          contentType: false,
+          data: formData,
+          processData: false,
+          cache: false,
+          success: function (response) {
+            toastMixin.fire({
+              title: res.title,
+              text: res.message,
+              icon: res.icon
+            });
+            limpiar();
+            setTimeout(function () {
+              window.location.replace("?pagina="+response);
+            }, 2000);
+        }
         });
-        limpiar();
-        setTimeout(function () {
-          window.location.replace("?pagina=principal");
-        }, 2000);
       } else {
         document.getElementById("validarusuario").innerHTML = '<div class="alert alert-dismissible fade show p-2" style="background:#9D2323; color:white" " role="alert">'+res.message+'<button type="button" id="cerraralert" class="btn-close p-2" style="font-size:10px;" data-dismiss="alert" aria-label="Close"></button></div>';
         setTimeout(function () {
@@ -234,7 +246,7 @@ document.getElementById("modificarContrasenia").onclick = function() {
                             });
                             $('#gestion-recuperar').modal('hide');
                             setTimeout(function () {
-                              window.location.replace("?pagina=Login");
+                              window.location.reload();
                             }, 3000);
                         }else{
                           toastMixin.fire({

@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
@@ -186,7 +189,7 @@ if (isset($response3[0]["consultar"])) {
                                                     </blockquote>
                                                     <div class="card-footer">
                                                         <a
-                                                            href="?pagina=MostrarEvaluacion&id_unidad_evaluacion=<?=$evaluacion['unidad_evaluacion'];?>">
+                                                            href="?pagina=<?php configSistema::_MUNIDADEVA_($evaluacion['unidad_evaluacion']);?>">
 
                                                             <button type="button" id="entregar" href="#"
                                                                 class="btn btn-primary float-right">Ver</button>
@@ -266,7 +269,7 @@ if (isset($response3[0]["consultar"])) {
                                                     </blockquote>
                                                     <div class="card-footer">
                                                         <a
-                                                            href="?pagina=MostrarEvaluacion&id_unidad_evaluacion=<?=$evaluacion['unidad_evaluacion'];?>">
+                                                            href="?pagina=<?php configSistema::_MUNIDADEVA_($evaluacion['unidad_evaluacion']);?>">
 
                                                             <button type="button" id="entregar" href="#"
                                                                 class="btn btn-primary float-right">Ver</button>

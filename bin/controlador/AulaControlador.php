@@ -25,9 +25,20 @@ session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
 }
+$str = $pagina;
+
+// Dividir el string original
+$partes = explode('&', $str);
+
+// Obtener Aula
+$aula_tmp = explode('"', $partes[0]);
+$pagina = $aula_tmp[0];
+// Obtener el valor número
+$valor_tmp = explode('=', $partes[2]);
+$valor = $valor_tmp[1];
 
 if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
-    echo "Falta definir la clase " . $pagina;
+    echo "Falta definir la clase " . $parte;
     exit;
 }
 
@@ -672,12 +683,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 break;
         }
     } else
-    if (isset($_GET['visualizar'])) {
-        $listar_unidad = $unidad->listar_unidad_aula($_GET['aula']);
+    if (isset(explode('"', $partes[1])[0])) {
+        $listar_unidad = $unidad->listar_unidad_aula($valor);
        // if($listar_unidad != null){
-            $datos = $aula->encontrar($_GET['aula']);
-            $estudiantes = $aula_estudiante->listar_por_aula($_GET['aula']);
-            $docentes = $aula_docente->listar_por_aula($_GET['aula']);
+            $datos = $aula->encontrar($valor);
+            $estudiantes = $aula_estudiante->listar_por_aula($valor);
+            $docentes = $aula_docente->listar_por_aula($valor);
     
             if ($publicacion->listarpublicacion($datos[0]['id']) == 'false') {
                 $x = 'falso';

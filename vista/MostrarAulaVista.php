@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
@@ -71,7 +74,7 @@
                                                 if ($unidadpermisos[0]["consultar"] == 'true') {?>
                                                 <?php foreach ($listar_unidad as $unidad) {?>
                                                     <div class="callout callout-info d-flex d-flex justify-content-between">
-                                                        <a class="text-dark" style="width: 100%; height: 100%; text-decoration: none;" href="?pagina=Unidad&id_unidad=<?=$unidad['id'];?>">
+                                                        <a class="text-dark" style="width: 100%; height: 100%; text-decoration: none;" href="?pagina=<?php configSistema::_MUNIDAD_($unidad['id']);?>">
                                                             <div>
                                                                 <h5><?php echo $unidad['unidad']; ?></h5>
 

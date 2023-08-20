@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
@@ -17,7 +20,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <div class="container px-4">
-                <a class="nav-link text-light" href="?pagina=Diplomado">Pagina Principal</a>
+                <a class="nav-link text-light" href="?pagina=<?php configSistema::_MD_();?>">Pagina Principal</a>
 
             </div>
         </nav>

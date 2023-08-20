@@ -16,6 +16,19 @@ if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
 }
 
+$str = $pagina;
+
+// Dividir el string
+$partes = explode('&', $str); 
+
+// Obtener MostrarEvaluacion 
+$pagina = $partes[0];
+
+// Obtener valor
+$valores = explode('=', $partes[1]);
+$id_evaluaciones = $valores[1];
+
+
 
 if (!is_file($config->_Dir_Model_().'UnidadEvaluacion'.$config->_MODEL_())) {
     echo "Falta definir la clase " . $pagina;
@@ -45,7 +58,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         $accion = $_POST['accion'];
         switch($accion){
             case 'entregar':
-                $ruta = "content/entregas/".$_GET['id_unidad_evaluacion'];
+                $ruta = "content/entregas/".$id_evaluaciones;
                 //$nombre_archivo = $_FILES['archivo']['name'];
                 $nombre_archivo = $_POST['id_estudiante'];
                 if (!file_exists($ruta)) {
@@ -65,7 +78,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }
                     else
                     //En caso de que el usuario no este cursando esa aula
-                    if($aula_estudiante->verificar($_POST['id_estudiante'], $_GET['id_unidad_evaluacion'])== false){
+                    if($aula_estudiante->verificar($_POST['id_estudiante'], $id_evaluaciones)== false){
                          echo json_encode([
                             'estatus' => '2',
                             'icon' => 'info',
@@ -76,11 +89,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }
                     //Si ese usuario pertenece al aula
                     else{
-                        $response = $estudiante_evaluacion->incluir($_POST['id_estudiante'], $_GET['id_unidad_evaluacion'], date('Y-m-d h:i:s', time()), $_POST['descripcion'], $nombre_archivo);
+                        $response = $estudiante_evaluacion->incluir($_POST['id_estudiante'], $id_evaluaciones, date('Y-m-d h:i:s', time()), $_POST['descripcion'], $nombre_archivo);
                         if ($response) {
                             /*Creando la notificacion de una evaluacion entregada*/
                             $notificacion->set_id_usuarios_roles($usuario_rol);
-                            $notificacion->set_id_unidad_evaluaciones($_GET['id_unidad_evaluacion']);
+                            $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
                             $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
                             $notificacion->set_mensaje('Evaluación entregada');
                             $notificacion->guardar_notificacion();
@@ -140,10 +153,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $estudiante_evaluacion->set_descripcion($_POST['descripcion']);
                 $estudiante_evaluacion->set_fecha_entrega(date('Y-m-d h:i:s', time())); 
                 $estudiante_evaluacion->set_id_estudiante($_SESSION['usuario']['id']);
-                $estudiante_evaluacion->set_id_unidad_evaluacion($_GET['id_unidad_evaluacion']);
+                $estudiante_evaluacion->set_id_unidad_evaluacion($id_evaluaciones);
                 $response = $estudiante_evaluacion->modificar();
                 if ($response) {
-                    $ruta = "content/entregas/".$_GET['id_unidad_evaluacion'];
+                    $ruta = "content/entregas/".$id_evaluaciones;
                     //$nombre_archivo = $_FILES['archivo']['name'];
                     $nombre_archivo = $_SESSION['usuario']['id'];
                     if (!file_exists($ruta)) {
@@ -156,7 +169,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }
 
                     $notificacion->set_id_usuarios_roles($usuario_rol);
-                    $notificacion->set_id_unidad_evaluaciones($_GET['id_unidad_evaluacion']);
+                    $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
                     $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
                     $notificacion->set_mensaje('Entrega de evaluación modificada');
                     $notificacion->guardar_notificacion();
@@ -223,8 +236,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     * Verifico que se ha pasado por url el id de la evaluacion seleccionada 
     * en una unidad de aula
     */
-    if (isset($_GET['id_unidad_evaluacion'])) {
-        $id_unidad_evaluacion = $_GET['id_unidad_evaluacion']; 
+    if (isset($id_evaluaciones)) {
+        $id_unidad_evaluacion = $id_evaluaciones;
         $mostrar_unidad = $unidad_evaluacion->cargar($id_unidad_evaluacion); 
         if($mostrar_unidad == null){
             require_once "vista/error_404Vista.php";

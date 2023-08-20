@@ -1,7 +1,9 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <html lang="en">
 <?php include_once('componentes/head.php'); ?>
 <head>
-
     <link href="content/css/stylesprincipal.css" rel="stylesheet" />
 </head>
 
@@ -18,7 +20,7 @@
                     <li class="nav-item"><a class="nav-link" href="#about">Reseña Historica</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Conócenos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contactos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?pagina=Login">Iniciar Sesion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?pagina=<?php configSistema::_ML_();?>">Iniciar Sesion</a></li>
                 </ul>
             </div>
         </div>
@@ -135,7 +137,7 @@
              </div>
          </div>
          <div class="modal-footer justify-content-between">
-            <a href="?pagina=Postulacion"><button type="button" id="enviar" class="btn btn-primary">Censarse</button></a>
+            <a href="?pagina=<?php configSistema::_MP_();?>"><button type="button" id="enviar" class="btn btn-primary">Censarse</button></a>
         </div>
 </div>
 </div>

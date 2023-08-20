@@ -5,6 +5,7 @@ use modelo\PermisosModelo as Permiso;
 use modelo\AulaModelo as Aula;
 use modelo\AreaEmprendimientoModelo as AreaEmprendimiento;
 use modelo\EmprendimientoModelo as Emprendimiento;
+use config\componentes\configSistema as configSistema;
 
 $aula = new Aula;
 $auladocente = new AulaDocente;
@@ -52,7 +53,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item menu-open">
-          <a href="?pagina=principal" class="nav-link active" style="background:#0C72C4">
+          <a href="?pagina=<?php configSistema::_M01_();?>" class="nav-link active" style="background:#0C72C4">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Inicio</p>
           </a>
@@ -86,7 +87,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                                         $listar_aulas = $aula->listarAulasMenu($area['id'], $key_emprendimiento['id']);
                                         foreach($listar_aulas as $key_aulas){ ?>
                                             <li class="nav-item">
-                                            <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                            <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                                     <i class="far fa-circle nav-icon" style="color: #343a40 !important;"></i>
                                                     <p><?php echo $key_aulas['nombre']; ?></p>
                                                 </a>
@@ -190,7 +191,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Aula" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M03_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Aulas</p>
                 </a>
@@ -204,7 +205,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Aspirante" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M04_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Aspirantes</p>
                 </a>
@@ -218,7 +219,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Censo" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M05_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Censos</p>
                 </a>
@@ -232,7 +233,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Contenido" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M06_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Contenidos</p>
                 </a>
@@ -246,7 +247,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Evaluacion" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M07_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Evaluaciones</p>
                 </a>
@@ -260,7 +261,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Estudiante" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M08_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Estudiante</p>
                 </a>
@@ -274,7 +275,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Docente" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M09_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Docente</p>
                 </a>
@@ -288,7 +289,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=AreaEmprendimiento" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M10_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Area de Emprendimiento</p>
                 </a>
@@ -302,7 +303,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Emprendimiento" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M11_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Emprendimiento</p>
                 </a>
@@ -316,7 +317,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             }
             if ($confirm) {?>
               <li class="nav-item">
-                <a href="?pagina=Modulo" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M12_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Modulo</p>
                 </a>
@@ -337,13 +338,13 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?pagina=ReportesEstadisticos" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M13_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reportes Estadisticos</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=ReporteEstudiantesPorEmprendimiento" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M14_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reporte de Estudiantes Por Emprendimiento</p>
                 </a>
@@ -361,31 +362,31 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="?pagina=Usuario" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M15_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=Rol" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M16_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Permisos</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=Bitacora" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M17_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Bitacora</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=Respaldobd" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M18_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Respaldo BD</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=EntornoSistema" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M19_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Entornos del Sistema</p>
                 </a>
@@ -402,7 +403,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
         }
         if ($confirm) {?>
           <li class="nav-item">
-            <a href="?pagina=Chat" class="nav-link">
+            <a href="?pagina=<?php configSistema::_M02_();?>" class="nav-link">
               <i class="nav-icon fas fa-comments"></i>
               <p>Chat Virtual</p>
             </a>
