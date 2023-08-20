@@ -13,7 +13,6 @@
 		public function __construct($request){
 			if (isset($request["pagina"])) {
 				$url = configSistema::Seguridad($request["pagina"], 'decodificar');
-				echo $url;
 				$this->pagina = $url;
 				$sistem = new configSistema();
 				$this->directory = $sistem->_Dir_Control_();

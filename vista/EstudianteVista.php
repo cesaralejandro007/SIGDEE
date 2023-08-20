@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
@@ -18,8 +21,8 @@
               <h5>Estudiantes</h5>
             </div>
             <div class="d-flex flex-wrap">
-              <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
-              <a href="?pagina=Estudiante" class="px-1" style="font-size:18px;">Estudiante</a>
+            <a href="?pagina=<?php configSistema::_M01_();?>" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+            <a href="?pagina=<?php configSistema::_M08_();?>" class="px-1" style="font-size:18px;">Estudiante</a>
             </div>
           </div><!-- /.container-fluid -->
         </div>

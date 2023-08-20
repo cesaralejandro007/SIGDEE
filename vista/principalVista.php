@@ -1,3 +1,6 @@
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
@@ -27,9 +30,9 @@
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <div class="content-header">
-        <h1 class="m-0">Página Principal</h1>
+        <h1 class="m-0">¡Bienvenido/a de nuevo,<?php echo $_SESSION['usuario']['nombre'] ?>!  👋</h1>
         <div class="row">
-
+   
           <div class="col-md-8" style="margin-top:30px;">
             <!-- Line chart -->
             <div class="card card-primary card-outline">
@@ -81,7 +84,7 @@
                                   <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
 
                                 </div>
-                                <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                   <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                               </div>
@@ -106,7 +109,7 @@
                                     <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
 
                                   </div>
-                                  <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                  <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                     <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
                                   </a>
                                 </div>
@@ -131,7 +134,7 @@
                                       <h5><?php echo $key_emprendimiento['nombre']; ?></h5>
 
                                     </div>
-                                    <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                    <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                       <?php echo $key_aulas['nombre']; ?> <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                   </div>

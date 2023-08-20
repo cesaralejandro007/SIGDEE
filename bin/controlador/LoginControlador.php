@@ -168,7 +168,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             return 0;
         }else if ($accion == 'codificarURL') {
-            echo configSistema::_M01_();;
+            echo configSistema::_M01_();
             return 0;
        }
     } else {

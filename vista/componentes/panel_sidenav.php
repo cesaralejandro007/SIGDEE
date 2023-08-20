@@ -31,11 +31,9 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-2">
-      <div class="info d-flex p-1">
-        <p class="text-light fw-bold pr-1 "><?php echo $_SESSION['usuario']['tipo_usuario'] . ": " ?></p>
-        <a href="?pagina=Perfil"
-        class=""><?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?></a>
+    <div class="user-panel mt-2 p-0 d-flex justify-content-center">
+      <div class="info">
+        <p class="text-light fw-bold pr-1 "><?php echo $_SESSION['usuario']['tipo_usuario']?></p>
       </div>
     </div>
     <!-- SidebarSearch Form -->
@@ -121,7 +119,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                                         $listar_aulas = $auladocente->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
                                         foreach($listar_aulas as $key_aulas){ ?>
                                             <li class="nav-item">
-                                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                              <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                                 <i class="far fa-circle nav-icon" style="color: #343a40 !important;"></i>
                                                 <p><?php echo $key_aulas['nombre']; ?></p>
                                               </a>
@@ -155,7 +153,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                                         $listar_aulas = $aulaestudiante->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
                                         foreach($listar_aulas as $key_aulas){ ?>
                                             <li class="nav-item">
-                                              <a href="?pagina=Aula&visualizar=true&aula=<?=$key_aulas['id']?>" class="nav-link">
+                                              <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
                                                 <i class="far fa-circle nav-icon" style="color: #343a40 !important;"></i>
                                                 <p><?php echo $key_aulas['nombre']; ?></p>
                                               </a>
@@ -350,7 +348,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                 </a>
               </li>
               <li class="nav-item">
-                <a href="?pagina=ReporteDireccion" class="nav-link">
+                <a href="?pagina=<?php configSistema::_M21_();?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reporte de Estudiantes Por Ubicación</p>
                 </a>

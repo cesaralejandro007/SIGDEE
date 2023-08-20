@@ -34,7 +34,7 @@ body::-webkit-scrollbar-track {
         
         <!-- Navbar Search -->
         <li class="nav-item dropdown no-arrow">
-        <a href="?pagina=Ayuda" class="nav-link">
+        <a href="?pagina=<?php configSistema::_M22_();?>" class="nav-link">
         <i class="fas fa-question-circle text-white" style="font-size:18; margin-top:3px"></i>
         </a>
         </li>
@@ -52,7 +52,7 @@ body::-webkit-scrollbar-track {
                     Notificaciones:
                 </h6>
                 <div id="notificaciones1"></div>  
-                <a class="dropdown-item text-center small text-gray-500" href="?pagina=Notificaciones">Todas las
+                <a class="dropdown-item text-center small text-gray-500" href="?pagina=<?php configSistema::_M20_();?>">Todas las
                     notificaciones</a>
             </div>
         </li>

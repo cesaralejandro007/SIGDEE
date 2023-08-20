@@ -24,7 +24,7 @@ use config\componentes\configSistema as configSistema;
                             <h5>Aulas</h5>
                         </div>
                         <div class="d-flex flex-wrap">
-                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=<?php configSistema::_M01_();?>" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
                         <a href="#" class="px-1" style="font-size:18px;">Aula</a>
                         </div>
                     </div><!-- /.container-fluid -->
@@ -73,7 +73,7 @@ use config\componentes\configSistema as configSistema;
                                                 <?php if (isset($unidadpermisos[0]["consultar"])) {
                                                 if ($unidadpermisos[0]["consultar"] == 'true') {?>
                                                 <?php foreach ($listar_unidad as $unidad) {?>
-                                                    <div class="callout callout-info d-flex d-flex justify-content-between">
+                                                                                                    <div class="callout callout-info d-flex d-flex justify-content-between">
                                                         <a class="text-dark" style="width: 100%; height: 100%; text-decoration: none;" href="?pagina=<?php configSistema::_MUNIDAD_($unidad['id']);?>">
                                                             <div>
                                                                 <h5><?php echo $unidad['unidad']; ?></h5>

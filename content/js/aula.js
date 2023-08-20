@@ -420,49 +420,97 @@ function enviaAjax(datos) {
         if (lee.resultado == "listadoaulas") {
           $("#listaaulas").html(lee.mensaje);
         } else if (lee.resultado == "listadoareas") {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen areas de emprendimiento',
-              footer: '<a href="?pagina=AreaEmprendimiento">Deberia registrar alguna area de emprendimiento</a>'
-            })
-          }
-          else
-          $("#area").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_AE");
+          $.ajax({
+            url: "",
+            type: "POST",
+            contentType: false,
+            data: formData,
+            processData: false,
+            cache: false,
+            success: function (response) {
+              if(lee.mensaje==vacio){
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Disculpe',
+                  text: 'No existen areas de emprendimiento',
+                  footer: '<a href="?pagina='+response+'">Deberia registrar alguna area de emprendimiento</a>'
+                })
+              }
+              else
+              $("#area").html(lee.mensaje);
+            }
+          });
         } else if (lee.resultado == "listadoemprendimientos" && area!=null) {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen emprendimientos para esta área',
-              footer: '<a href="?pagina=Emprendimiento">Deberia registrar algún emprendimiento para esta area</a>'
-            })
-          }
-          else
-          $("#tipo").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_E");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen emprendimientos para esta área',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar algún emprendimiento para esta area</a>'
+                  })
+                }
+                else
+                $("#tipo").html(lee.mensaje);
+              }
+            });
         } else if (lee.resultado == "listadomodulos" && emprendimiento!=null) {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen modulos para este emprendimiento',
-              footer: '<a href="?pagina=Modulo">Deberia asignarle modulos al emprendimiento</a>'
-            })
-          }
-          else
-          $("#modulo").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_M");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen modulos para este emprendimiento',
+                    footer: '<a href="?pagina='+response+'">Deberia asignarle modulos al emprendimiento</a>'
+                  })
+                }
+                else
+                $("#modulo").html(lee.mensaje);
+              }
+            });
         } else if (lee.resultado == "listadodocentes") {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen docentes',
-              footer: '<a href="?pagina=Docente">Deberia registrar docentes</a>'
-            })
-          }
-          else
-          $("#docente1").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_D");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen docentes',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar docentes</a>'
+                  })
+                }
+                else
+                $("#docente1").html(lee.mensaje);
+              }
+            });
         } else if (lee.resultado == "listadodocentes_aula") {
           console.log(lee.mensaje);
           $("#docente1").html(lee.mensaje);

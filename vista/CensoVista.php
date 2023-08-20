@@ -1,3 +1,7 @@
+
+<?php
+use config\componentes\configSistema as configSistema;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
@@ -20,8 +24,8 @@
                             <h5>Censo de Emprendimientos</h5>
                         </div>
                         <div class="d-flex flex-wrap">
-                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
-                        <a href="?pagina=Censo" class="px-1" style="font-size:18px;">Censo</a>
+                        <a href="?pagina=<?php configSistema::_M01_();?>" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=<?php configSistema::_M05_();?>" class="px-1" style="font-size:18px;">Censo</a>
                         </div>
                     </div><!-- /.container-fluid -->
                 </div>

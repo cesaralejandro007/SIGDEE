@@ -121,6 +121,17 @@
 			echo self::Seguridad('EntornoSistema', 'codificar');
 		}
 
+		public static function _M20_() {
+			echo self::Seguridad('Notificaciones', 'codificar');
+		}
+		public static function _M21_() {
+			echo self::Seguridad('ReporteDireccion', 'codificar');
+		}
+
+		public static function _M22_() {
+			echo self::Seguridad('Ayuda', 'codificar');
+		}
+
 		public static function _INICIO_() {
 			return self::Seguridad('Diplomado', 'codificar');
 		}

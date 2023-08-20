@@ -27,8 +27,8 @@ use config\componentes\configSistema as configSistema;
                             <h4>Unidad</h4>
                         </div>
                         <div class="d-flex flex-wrap">
-                        <a href="?pagina=principal" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
-                        <a href="?pagina=Aula&visualizar=true&aula=<?=$mostrar_unidad[0]['id_aula']?>" class="text-secondary px-1" style="font-size:18px;">Aula</a>
+                        <a href="?pagina=<?php configSistema::_M01_();?>" class="text-secondary px-1" style="font-size:18px;">Inicio</a>
+                        <a href="?pagina=<?php configSistema::_MAULAS_($mostrar_unidad[0]['id_aula']);?>" class="text-secondary px-1" style="font-size:18px;">Aula</a>
                         <a href="#" class="px-1" style="font-size:18px;">Unidad</a>
                         </div>
                     </div><!-- /.container-fluid -->
