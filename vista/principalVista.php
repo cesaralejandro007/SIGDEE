@@ -12,9 +12,11 @@
     background-blend-mode: darken;
   }
   body {overflow-x:hidden!important;}
- 
 
-
+ .cursos{
+	height: 300px;
+	overflow-y: scroll;
+ }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -61,6 +63,7 @@
                     Cursos
                   </h3>
                 </div>
+                <div class="cursos">
                 <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
                 { 
                   foreach ($area_emprendimiento->listar() as $area) 
@@ -139,6 +142,8 @@
                         <?php  }
                       } ?>
                     </div>
+                </div>
+
 
                   </div>
                   <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
