@@ -203,10 +203,11 @@ function mostrar(datos){
 		processData: false,
 		cache: false,
 		success:function(response){
+			alert(response);
 			var res = JSON.parse(response);
 			$("#id").val(res.id);
 			$("#descripcion").val(res.descripcion);
-			document.getElementById("archivo_antes").href = '../content/entregas/'+res.unidad_eval+'/'+res.id_estudent;
+			document.getElementById("archivo_antes").href = ''+res.url_base+'/content/entregas/'+res.unidad_eval+'/'+res.id_estudent;
 			$("#enviar").text('Modificar');
 			$("#gestion-entrega").modal("show");
 			$("#accion").val('modificar_entrega');

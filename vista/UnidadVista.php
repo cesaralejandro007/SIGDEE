@@ -264,7 +264,7 @@ if (isset($response3[0]["consultar"])) {
                                                         <p>Fecha de cierre:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['cierre']));?>
                                                         </p>
-                                                        <a href="">Documento Ajunto <i
+                                                        <a href="">Documento Ajunto<i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                     <div class="card-footer">

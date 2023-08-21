@@ -28,6 +28,18 @@ $pagina = $partes[0];
 $valores = explode('=', $partes[1]);
 $id_evaluaciones = $valores[1];
 
+//obtener ruta del directorio
+$url = $_SERVER['REQUEST_URI'];
+$partes = parse_url($url);
+if(isset($partes['host'])) {
+  $host = $partes['host']; 
+} else {
+  $host = '';
+}
+$ruta = $partes['path'];
+$ruta = pathinfo($ruta, PATHINFO_DIRNAME); 
+$url_base = $host . $ruta . "/SIGDEE";
+
 
 
 if (!is_file($config->_Dir_Model_().'UnidadEvaluacion'.$config->_MODEL_())) {
@@ -190,7 +202,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'descripcion' => $valor['descripcion'],
                         'archivo_adjunto' => $valor['archivo_adjunto'],
                         'unidad_eval' => $valor['unidad_eval'],
-                        'id_estudent' => $_SESSION['usuario']['id']
+                        'id_estudent' => $_SESSION['usuario']['id'],
+                        'url_base' => $url_base
                     ]);
                 }
                 return 0;
@@ -249,9 +262,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
             $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
             $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
-            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="../content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']['id'].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
+            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'.$url_base.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']['id'].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
             $nombre_archivo = $mostrar_unidad[0]['archivo'];
-            $examen = '<a target="_blank" href="../content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
+            $examen = '<a target="_blank" href="'.$url_base.'/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
     
             $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
             $entregas = $estudiante_evaluacion->mostrarEntregas($nombre_archivo = $mostrar_unidad[0]['id']);
