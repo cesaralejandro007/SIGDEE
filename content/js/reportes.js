@@ -152,66 +152,128 @@ function Ajax(datos) {
         var lee = JSON.parse(respuesta);
         //console.log(lee.resultado);
         if (lee.resultado == "listadoareas") {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen areas de emprendimiento',
-              footer: '<a href="?pagina=AreaEmprendimiento">Deberia registrar algún area de emprendimiento</a>'
-            })
-          }
-          else
-          $("#area").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_AE");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen areas de emprendimiento',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar algún area de emprendimiento</a>'
+                  })
+                }
+                else
+                $("#area").html(lee.mensaje);
+              }
+            });
         } else 
         if (lee.resultado == "listadoemprendimientos") {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen emprendimientos para esta area',
-              footer: '<a href="?pagina=Emprendimiento">Deberia registrar algún emprendimiento</a>'
-            })
-          }
-          else
-          $("#emprendimiento").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_E");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen emprendimientos para esta area',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar algún emprendimiento</a>'
+                  })
+                }
+                else
+                $("#emprendimiento").html(lee.mensaje);
+              }
+            });
         }  else 
         if (lee.resultado == "listadoaulas") {
-          if(lee.mensaje==vacio){
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen aulas en el emprendimiento',
-              footer: '<a href="?pagina=Aula">Deberia registrar algún aula</a>'
-            })
-          }
-          else
-          $("#aula").html(lee.mensaje);
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_A");
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                  if(lee.mensaje==vacio){
+                    Swal.fire({
+                      icon: 'info',
+                      title: 'Disculpe',
+                      text: 'No existen aulas en el emprendimiento',
+                      footer: '<a href="?pagina='+response+'">Deberia registrar algún aula</a>'
+                    })
+                  }
+                  else
+                  $("#aula").html(lee.mensaje);
+                }
+              });
         } else 
         if (lee.resultado == "listadounidades") {
-          if(lee.mensaje==vacio){
-            aula = $("#aula").val();
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen unidades en el aula',
-              footer: '<a href="?pagina=Aula&visualizar=true&aula='+aula+'">Deberia registrar alguna unidad en esta aula</a>'
-            })
-          }
-          else
-          $("#unidad").html(lee.mensaje);
+          aula = $("#aula").val();
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_AU");
+          formData.append("aula", aula);
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen unidades en el aula',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar alguna unidad en esta aula</a>'
+                  })
+                }
+                else
+                $("#unidad").html(lee.mensaje);
+              }
+            });
         } else 
         if (lee.resultado == "listadoevaluaciones") {
-          if(lee.mensaje==vacio){
-            unidad = $("#unidad").val();
-            Swal.fire({
-              icon: 'info',
-              title: 'Disculpe',
-              text: 'No existen evaluaciones en la unidad',
-              footer: '<a href="?pagina=Unidad&id_unidad='+unidad+'">Deberia registrar una evaluación en la unidad</a>'
-            })
-          }
-          else
-          $("#evaluacion").html(lee.mensaje);
+          unidad = $("#unidad").val();
+          var formData = new FormData();
+          formData.append("accion", "codificarURL_AUE");
+          formData.append("unidadeva", unidad);
+            $.ajax({
+              url: "",
+              type: "POST",
+              contentType: false,
+              data: formData,
+              processData: false,
+              cache: false,
+              success: function (response) {
+                if(lee.mensaje==vacio){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Disculpe',
+                    text: 'No existen evaluaciones en la unidad',
+                    footer: '<a href="?pagina='+response+'">Deberia registrar una evaluación en la unidad</a>'
+                  })
+                }
+                else
+                $("#evaluacion").html(lee.mensaje);
+              }
+            });
         }
       } catch (e) {
         alert("Error en JSON " + e.name + " !!!");

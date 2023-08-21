@@ -81,7 +81,23 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode($respuesta);
                 return 0;
             break;
+            case 'codificarURL_AE':
+                echo configSistema::_M10_();
+            break;
+            case 'codificarURL_E':
+                echo configSistema::_M11_();
+            break;
+            case 'codificarURL_A':
+                echo configSistema::_M03_();
+            break;
+            case 'codificarURL_AU':
+                echo configSistema::_MAULAS_($_POST['aula']);
+            break;
+            case 'codificarURL_AUE':
+                echo configSistema::_MUNIDAD_($_POST['unidadeva']);
+            break;
         }
+        return 0;
     }
     require_once "vista/" . $pagina . "Vista.php";
 } else {
