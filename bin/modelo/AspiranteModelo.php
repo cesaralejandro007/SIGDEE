@@ -6,6 +6,7 @@ class AspiranteModelo extends connectDB
     private $id;
     private $id_usuario;
     private $cedula;
+    private $id_ciudad;
     private $nombre;
     private $apellido;
     private $correo;
@@ -15,11 +16,12 @@ class AspiranteModelo extends connectDB
     private $id_rol;
     private $status;
 
-    public function registrar_aspirante($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
             try {
                 $this->conex->query("INSERT INTO usuario(
         					cedula,
+                            id_ciudad,
         					primer_nombre,
                             segundo_nombre,
         					primer_apellido,
@@ -46,7 +48,7 @@ class AspiranteModelo extends connectDB
             }
     }
 
-    public function modificar($id,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function modificar($id,$cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
     {
         $expresiones_regulares = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         $validar_modificar = $this->validar_modificar($cedula, $id);
@@ -61,7 +63,7 @@ class AspiranteModelo extends connectDB
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         } else {
             try {
-                $this->conex->query("UPDATE usuario SET cedula= '$cedula', primer_nombre = '$primer_nombre',segundo_nombre = '$segundo_nombre', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido', genero = '$genero', telefono = '$telefono', correo = '$correo' , direccion = '$direccion' WHERE id = '$id'");
+                $this->conex->query("UPDATE usuario SET cedula= '$cedula', id_ciudad= '$id_ciudad', primer_nombre = '$primer_nombre',segundo_nombre = '$segundo_nombre', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido', genero = '$genero', telefono = '$telefono', correo = '$correo' , direccion = '$direccion' WHERE id = '$id'");
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {

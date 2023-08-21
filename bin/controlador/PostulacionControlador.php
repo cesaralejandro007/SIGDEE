@@ -1,4 +1,7 @@
 <?php
+use modelo\PaisModelo as Pais;
+use modelo\EstadoModelo as Estado;
+use modelo\CiudadModelo as Ciudad;
 use modelo\UsuarioModelo as Usuario;
 use modelo\AspiranteModelo as Aspirante;
 use modelo\configNotificacionModelo as Mensaje;
@@ -21,8 +24,32 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $aspirante_emprendimiento = new AspiranteEmprendimiento();
     $postulacion = new Postulacion();
     $config = new Mensaje();
-    $modulo = 'Iniciar Sesion:';
+    $modulo = 'Postulación:';
 
+    $array_paises = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."countries.json"))), true);
+    $array_estados = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."states.json"))), true);
+    $array_ciudades = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."cities.json"))), true);  
+
+    function buscar_elemento($array, $id, $clase){
+        $pais = new Pais();
+        $estado = new Estado();
+        $ciudad = new Ciudad();
+        foreach ($array as $key) {
+            if($key['id'] == $id){
+                switch($clase){
+                    case 'pais':
+                        $pais->incluir($key['id'], $key['name']);
+                    break;
+                    case 'estado':
+                        $estado->incluir($key['id'], $key['id_country'], $key['name']);
+                    break;
+                    case 'ciudad':
+                        $ciudad->incluir($key['id'], $key['id_state'], $key['name']);
+                    break;
+                }
+            }
+        }
+    }
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'buscar-usuario') {
@@ -32,6 +59,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'id' => $valor['id'],
                     'cedula' => $valor['cedula'],
+                    'ciudad' => $valor['ciudad'],
                     'primer_nombre' => $valor['primer_nombre'],
                     'segundo_nombre' => $valor['segundo_nombre'],
                     'primer_apellido' => $valor['primer_apellido'],
@@ -50,7 +78,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             else
             {
-                $response = $aspirante->registrar_aspirante($_POST['cedula'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
+                $response = $aspirante->registrar_aspirante($_POST['cedula'], $_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono']);
                 if($response)
                 {
                     $datos = $usuario->buscar_cedula($_POST['cedula']);

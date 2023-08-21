@@ -21,9 +21,8 @@ use config\componentes\configSistema as configSistema;
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
           id="mainNav">
           <div class="container px-4">
-            <a class="nav-link text-light" href="?pagina=<?php configSistema::_MD_();?>">Pagina
+            <a class="nav-link text-light" href="?pagina=<?php configSistema::_MD_();?>">Página
               Principal</a>
-
           </div>
         </nav>
         <section class="masthead vh-100">

@@ -17,10 +17,10 @@ use config\componentes\configSistema as configSistema;
             class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">Reseña Historica</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">Reseña Histórica</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Conócenos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contactos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="?pagina=<?php configSistema::_ML_();?>">Iniciar Sesion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?pagina=<?php configSistema::_ML_();?>">Iniciar Sesión</a></li>
                 </ul>
             </div>
         </div>
@@ -46,7 +46,7 @@ use config\componentes\configSistema as configSistema;
 <!-- About section-->
 <section id="about">
     <div class="container">
-        <h4>Breve reseña historica:</h4>
+        <h4>Breve reseña histórica:</h4>
         <p class="lead" style="  font-size: 15px; text-align:justify;"> La Universidad Politécnica
             Territorial de Lara “Andrés
             Eloy
@@ -102,7 +102,7 @@ use config\componentes\configSistema as configSistema;
     </div>
 </section>
 <!-- Contact section-->
-<section id="about">
+<section id="contact">
     <div class="container">
         <h2>Contactanos</h2>
         <div class="embed-responsive embed-responsive-16by9">

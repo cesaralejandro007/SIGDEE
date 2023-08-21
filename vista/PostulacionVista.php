@@ -4,6 +4,8 @@ use config\componentes\configSistema as configSistema;
 <html lang="en">
 <?php include_once 'componentes/head.php';?>
 <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
+<link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <style>
   .masthead {
   padding-top: 10rem;
@@ -89,7 +91,7 @@ use config\componentes\configSistema as configSistema;
                               </div>
                               <div class="row pb-2" >
                               <div class="col-md-4">
-                                    <label for="genero">Genero:</label>
+                                    <label for="genero">Género:</label>
                                     <select type="select" class="form-control" id="genero" name="genero">
                                         <option value="0">--Seleccione--</option>
                                         <option value="Masculino">Masculino</option>
@@ -103,14 +105,47 @@ use config\componentes\configSistema as configSistema;
                                     <span id="scorreo"></span>
                                   </div>
                                   <div class="col-md-4">
-                                    <label>Telefono:</label>
+                                    <label>Teléfono:</label>
                                     <input type="text" name="telefono" id="telefono" class="form-control">
                                     <span id="stelefono"></span>
                                   </div>
                               </div>
+                              <div class="form-group row selectores" id="selectores">           
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label>Pais</label>
+                                    <select class="form-control select2bs4" id="pais" name="pais"
+                                    style="width: 100%;">
+                                        <option disabled selected value="0">Seleccione</option>
+                                    </select>
+                                    <span id="spais"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label>Estado</label>
+                                    <select class="form-control select2bs4" id="estado" name="estado"
+                                    style="width: 100%;">
+                                        <option disabled selected value="0">Seleccione</option>
+                                    </select>
+                                    <span id="sestado"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                    <label>Ciudad</label>
+                                    <select class="form-control select2bs4" id="ciudad" name="ciudad"
+                                    style="width: 100%;">
+                                        <option disabled selected value="0">Seleccione</option>
+                                    </select>
+                                    <span id="sciudad"></span>
+                                    </div>
+                                </div>
+                              </div>   
+
                               <div class="row pb-4">
                                 <div class="col-12">
-                                    <label for="message-text" class="col-form-label" for="direccion">Direccion:</label>
+                                    <label for="message-text" class="col-form-label" for="direccion">Dirección:</label>
                                     <textarea type="text" cols="15" rows="4" name="direccion" id="direccion"
                                         class="form-control"></textarea>
                                     <span id="sdireccion"></span>
@@ -149,9 +184,21 @@ use config\componentes\configSistema as configSistema;
     <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="plugins/select2/js/select2.full.min.js"></script>
     
     <script src="plugins/bs-stepper/js/bs-stepper.min.js"></script>
     <script src="content/js/postulacion.js"></script>
-</body>
+      <script>
+        $(function() {
+        //Initialize Select2 Elements
+          $('.select2').select2()
+
+        //Initialize Select2 Elements
+          $('.select2bs4').select2({
+            theme: 'bootstrap4'
+          })
+        });
+    </script>
+  </body>
 
 </html>
