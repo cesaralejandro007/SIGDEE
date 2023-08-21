@@ -108,7 +108,7 @@ use config\componentes\configSistema as configSistema;
                                                 <td><?php echo $valor['nombre_estudiante']; ?></td>
                                                 <td><?php echo $valor['descripcion_evaluacion'];?></td>
                                                 <td><?php echo date('d-m-Y h:i:s', strtotime($valor['fecha']));?></td>                       
-                                                <td><?php echo '<a target="_blank" href="../content/entregas/'.$mostrar_unidad[0]['id'].'/'.$valor['archivo'].'"> Visualizar <i class="fas fa-eye"></i></a>'; ?></td>                       
+                                                <td><?php echo '<a target="_blank" href="'.$url_base.'/content/entregas/'.$mostrar_unidad[0]['id'].'/'.$valor['archivo'].'"> Visualizar <i class="fas fa-eye"></i></a>'; ?></td>                       
                                                 <td><?php echo $nota;?></td>                       
                                               </tr>
                                             <?php } ?>
