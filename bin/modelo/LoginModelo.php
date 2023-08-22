@@ -85,6 +85,40 @@ class LoginModelo extends connectDB
         return $respuestaArreglo;
     }
 
+    public function guardar_clave_private($privatekey,$cedula)
+    {
+        $resultado = $this->conex->query("UPDATE usuario SET privatekey = '$privatekey' WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function guardar_clave_publica($publickey,$cedula)
+    {
+        $resultado = $this->conex->query("UPDATE usuario SET publickey = '$publickey' WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function obtener_clave_privada($id)
+    {
+        $resultado = $this->conex->prepare("SELECT privatekey  FROM usuario WHERE id= $id");
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
     public function comprobar_usuario($cedula)
     {
         $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula=$cedula");

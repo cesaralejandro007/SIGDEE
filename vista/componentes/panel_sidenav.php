@@ -13,13 +13,13 @@ $aulaestudiante = new AulaEstudiante;
 $permiso = new Permiso;
 $area_emprendimiento = new AreaEmprendimiento;
 $emprendimiento = new Emprendimiento;
-$docente_areas = $auladocente->docente_areas($_SESSION['usuario']['cedula']);
-$listar_aulaestudiante = $aulaestudiante->estudiante_areas($_SESSION['usuario']['cedula']);
-$listar_docente_estudiante = $aulaestudiante->listardocente($_SESSION['usuario']['id']);
-$docente_estudiante_aula = json_encode( $listar_docente_estudiante);
+$docente_areas = $auladocente->docente_areas($decrypted["cedula"]);
+$listar_aulaestudiante = $aulaestudiante->estudiante_areas($decrypted["cedula"]);
+$listar_docente_estudiante = $aulaestudiante->listardocente($decrypted["id"]);
+$docente_estudiante_aula = json_encode($listar_docente_estudiante);
 $listar_aula = $aula->listar();
 
-$response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"]);
+$response1 = $permiso->mostrarentronos($decrypted["id"],$decrypted["tipo_usuario"]);
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -33,7 +33,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-2 p-0 d-flex justify-content-center">
       <div class="info">
-        <p class="text-light fw-bold pr-1 "><?php echo $_SESSION['usuario']['tipo_usuario']?></p>
+        <p class="text-light fw-bold pr-1 "><?php echo $decrypted["tipo_usuario"]?></p>
       </div>
     </div>
     <!-- SidebarSearch Form -->
@@ -62,7 +62,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
             <p>Diplomados/Cursos <i class="right fas fa-angle-left"></i></p>
           </a>
           <ul class="nav nav-treeview">
-            <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
+            <?php if ($decrypted["tipo_usuario"] == 'Super Usuario' || $decrypted["tipo_usuario"] == 'Administrador') 
             { 
               foreach ($area_emprendimiento->listar() as $area) 
               { ?>
@@ -97,7 +97,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                     </ul>
                 </li>
                 <?php  }
-            } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $docente_areas) {
+            } else  if ($decrypted["tipo_usuario"] == 'Docente' && $docente_areas) {
               foreach ($docente_areas as $area) 
               { ?>
                 <li class="nav-item">
@@ -131,7 +131,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
                     </ul>
                 </li>
                 <?php  }
-            } else if ($_SESSION['usuario']['tipo_usuario'] == 'Estudiante' && $listar_aulaestudiante) {
+            } else if ($decrypted["tipo_usuario"] == 'Estudiante' && $listar_aulaestudiante) {
               foreach ($listar_aulaestudiante as $area) 
               { ?>
                 <li class="nav-item">
@@ -324,7 +324,7 @@ $response1 = $permiso->mostrarentronos($_SESSION["usuario"]["id"],$_SESSION["usu
           </ul>
         </li>
 
-        <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario') {?>
+        <?php if ($decrypted["tipo_usuario"] == 'Super Usuario') {?>
 
           <li class="nav-item">
             <a href="#" class="nav-link">

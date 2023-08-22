@@ -57,14 +57,14 @@ body::-webkit-scrollbar-track {
             </div>
         </li>
         <li class="nav-item dropdown no-arrow">
-        <?php if($_SESSION['usuario']['ultimo_acceso']!=""){?>
+        <?php if($decrypted["ultimo_acceso"]!=""){?>
             <a class="nav-link dropdown-toggle p-0" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <div class="d-flex justify-content-end" style="font-size: 12px">
-                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($_SESSION['usuario']['ultimo_acceso'])); ?>
+                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($decrypted["ultimo_acceso"])); ?>
             </div>
                 <spam class="" style="font-size: 12px">
-                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido']  ?>
+                    <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"]  ?>
                 </spam>
             </a>
             <?php } else{?>
@@ -72,7 +72,7 @@ body::-webkit-scrollbar-track {
             aria-haspopup="true" aria-expanded="false">
 
                 <spam class="">
-                    <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido']  ?>
+                    <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"]  ?>
                 </spam>
             </a>
             <?php } ?>
@@ -88,7 +88,7 @@ body::-webkit-scrollbar-track {
                         while (($archivo = $dirint->read()) !== false && $bandera == false)
                         {
 
-                            if($archivo == $_SESSION['usuario']['cedula'].".png"){
+                            if($archivo == $decrypted["cedula"].".png"){
                                 $imagen1 = $archivo;
                                 $bandera = true;
                             }
@@ -103,7 +103,7 @@ body::-webkit-scrollbar-track {
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
                     <p class="m-0">
-                        <?php echo $_SESSION['usuario']['nombre'] . " " . $_SESSION['usuario']['apellido'] ?>
+                        <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"] ?>
                     </p>
                 </div>
                 <hr class="m-1">

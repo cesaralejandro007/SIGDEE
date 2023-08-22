@@ -30,7 +30,7 @@ use config\componentes\configSistema as configSistema;
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <div class="content-header">
-        <h1 class="m-0">¡Bienvenido/a de nuevo,<?php echo $_SESSION['usuario']['nombre'] ?>!  👋</h1>
+        <h1 class="m-0">¡Bienvenido/a de nuevo,<?php echo $decrypted["nombre"] ?>!  👋</h1>
         <div class="row">
    
           <div class="col-md-8" style="margin-top:30px;">
@@ -50,7 +50,7 @@ use config\componentes\configSistema as configSistema;
                 $con = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
                 $db = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
 
-                $SqlEventos   = ("SELECT ue.id as id, a.nombre as aula, un.nombre as unidad, e.nombre as nombre, e.descripcion as descripcion, ue.fecha_inicio, ue.fecha_cierre from usuario u inner join aula_estudiante ae on u.id= ae.id_estudiante inner join aula a on ae.id_aula= a.id inner join unidad un on un.id_aula= a.id inner join unidad_evaluaciones ue on ue.id_unidad = un.id inner join evaluaciones as e on e.id= ue.id_evaluacion where u.id = ".$_SESSION['usuario']['id']."");
+                $SqlEventos   = ("SELECT ue.id as id, a.nombre as aula, un.nombre as unidad, e.nombre as nombre, e.descripcion as descripcion, ue.fecha_inicio, ue.fecha_cierre from usuario u inner join aula_estudiante ae on u.id= ae.id_estudiante inner join aula a on ae.id_aula= a.id inner join unidad un on un.id_aula= a.id inner join unidad_evaluaciones ue on ue.id_unidad = un.id inner join evaluaciones as e on e.id= ue.id_evaluacion where u.id = ".$decrypted["id"]."");
                 $resulEventos = mysqli_query($con, $SqlEventos);
                 ?>
                 <div id="calendar"></div>
@@ -67,7 +67,7 @@ use config\componentes\configSistema as configSistema;
                   </h3>
                 </div>
                 <div class="cursos">
-                <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
+                <?php if ($decrypted["tipo_usuario"] == 'Super Usuario' || $decrypted["tipo_usuario"] == 'Administrador') 
                 { 
                   foreach ($area_emprendimiento->listar() as $area) 
                     { ?>
@@ -93,14 +93,14 @@ use config\componentes\configSistema as configSistema;
                         } ?> 
                       </div>   
                     <?php  }
-                  } else  if ($_SESSION['usuario']['tipo_usuario'] == 'Docente' && $docente_areas) {
+                  } else  if ($decrypted["tipo_usuario"] == 'Docente' && $docente_areas) {
                     foreach ($docente_areas as $area) 
                       { ?>
                         <div class="row" style="margin: 3%;">
                           <?php
-                          $emprendimientos = $auladocente->docente_emprendimientos($_SESSION['usuario']['cedula'], $area['id']); 
+                          $emprendimientos = $auladocente->docente_emprendimientos($decrypted["cedula"], $area['id']); 
                           foreach($emprendimientos as $key_emprendimiento){ 
-                            $listar_aulas = $auladocente->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                            $listar_aulas = $auladocente->listar_modulos($decrypted["cedula"], $area['id'], $key_emprendimiento['id']);
                             foreach($listar_aulas as $key_aulas){ ?>
                               <div class="">
                                 <!-- small card -->
@@ -118,14 +118,14 @@ use config\componentes\configSistema as configSistema;
                           } ?> 
                         </div>
                       <?php  }
-                    } else if ($_SESSION['usuario']['tipo_usuario'] == 'Estudiante' && $listar_aulaestudiante) {
+                    } else if ($decrypted["tipo_usuario"] == 'Estudiante' && $listar_aulaestudiante) {
                       foreach ($listar_aulaestudiante as $area) 
                         { ?>
                           <div class="row" style="margin: 3%;">
                             <?php 
-                            $emprendimientos = $aulaestudiante->estudiante_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                            $emprendimientos = $aulaestudiante->estudiante_emprendimientos($decrypted["cedula"], $area['id']);
                             foreach($emprendimientos as $key_emprendimiento){ 
-                              $listar_aulas = $aulaestudiante->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                              $listar_aulas = $aulaestudiante->listar_modulos($decrypted["cedula"], $area['id'], $key_emprendimiento['id']);
                               foreach($listar_aulas as $key_aulas){ ?>
                                 <div class="">
                                   <!-- small card -->
@@ -149,7 +149,7 @@ use config\componentes\configSistema as configSistema;
 
 
                   </div>
-                  <?php if ($_SESSION['usuario']['tipo_usuario'] == 'Super Usuario' || $_SESSION['usuario']['tipo_usuario'] == 'Administrador') 
+                  <?php if ($decrypted["tipo_usuario"] == 'Super Usuario' || $decrypted["tipo_usuario"] == 'Administrador') 
                   { ?>
                     <div class="col-md-12">
                       <!-- DONUT CHART -->

@@ -110,8 +110,37 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             }
                             $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
 
+
+                            $config = [
+                            "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
+                            "private_key_bits" => 2048,
+                            "default_md" => "sha256",  
+                            ];
+                            $_SESSION['id_usuario'] = $datos['id'];
+
+                            $res = openssl_pkey_new($config);
+                            openssl_pkey_export($res, $privKey,NULL,$config); 
+                            $string_private = base64_encode($privKey);
+                            $login->guardar_clave_private($string_private,$datos['cedula']);
+
+                            $details = openssl_pkey_get_details($res);
+                            $pubKey = $details['key'];
+                            $string_public = base64_encode($pubKey);
+                            $login->guardar_clave_publica($string_public,$datos['cedula']);
+                            $login->actualizar_fecha_acceso($_POST['user']);
                             $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario'], 'ultimo_acceso' => $datos['ultimo_acceso']);
+                            $encrypted = [];
+                            foreach ($_SESSION['usuario'] as $k => $v) {
+                                openssl_public_encrypt($v, $encrypted_data, $pubKey);
+                                $encrypted[$k] = $encrypted_data; 
+                            }
+                            $_SESSION['usuario'] = $encrypted; 
+
+                            // Guardamos la sesión cifrada
+
+                            // Descifrado
                             $_SESSION['rol'] = $id_rol;
+                            
                         }
                         $mensaje->confirmar($modulo, 'Inicio exitoso');
                         $login->actualizar_fecha_acceso($_POST['user']);
