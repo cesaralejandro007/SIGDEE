@@ -36,7 +36,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $bitacora = new Bitacora();
     $modulo = 'Evaluacion';
 
-    $response = $permiso_usuario->mostrarpermisos($decrypted["tipo_usuario"], $decrypted["id"],"Evaluaciones");
+    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Evaluaciones");
     //Establecer el id_usuario_rol para bitacora
     $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Evaluaciones');

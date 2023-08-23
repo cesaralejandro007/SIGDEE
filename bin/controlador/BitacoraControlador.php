@@ -1,9 +1,11 @@
-<?php
+<?php  
 use modelo\PermisosModelo as Permiso;
 use modelo\BitacoraModelo as Bitacora;
 use config\componentes\configSistema as configSistema;
+use modelo\LoginModelo as login;
 
 $config = new configSistema();
+$login = new login();
 session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
@@ -13,6 +15,18 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
     exit;
 }
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
+
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+
+
     $permiso_usuario = new Permiso();
     $bitacora = new Bitacora();
     if (isset($_POST['accion'])) {
