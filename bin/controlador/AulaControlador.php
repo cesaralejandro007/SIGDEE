@@ -18,8 +18,10 @@ use modelo\PermisosModelo as Permisos;
 use modelo\BitacoraModelo as Bitacora;
 use modelo\ComentariosModelo as Comentarios;
 use config\componentes\configSistema as configSistema;
+use modelo\LoginModelo as login;
 
 $config = new configSistema();
+$login = new login();
 
 session_start();
 if (!isset($_SESSION['usuario'])) {
@@ -47,6 +49,17 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 }
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
+
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+
     $aula = new Aula();
     $aspirante = new Aspirante();
     $area = new AreaEmprendimiento();
@@ -67,9 +80,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $usuario = new Usuario();
     $modulo = 'Aula';
     $modulo_unidad = 'Unidad';
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Aula");
+    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Aula");
     //Establecer el id_usuario_rol para bitacora
-    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Aula');
     $fecha = date('Y-m-d h:i:s', time());
 
@@ -79,7 +92,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             case 'unidad':
 
                 //Establecer el id_usuario_rol para bitacora
-                $id_usuario_rolU = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+                $id_usuario_rolU = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
                 $entornoU = $bitacora->buscar_id_entorno('Unidad');
                 $fechaU = date('Y-m-d h:i:s', time());
 
@@ -639,7 +652,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
             case 'listadoaulas':
                 //llamo al metodo de la clase auladocente que lista las aulas
-                $respuesta = $aula->listadoaulas();
+                $respuesta = $aula->listadoaulas($decrypted["id"], $decrypted["tipo_usuario"]);
                 usleep(5);
                 echo json_encode($respuesta);
                 break;
@@ -713,7 +726,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             } else {
                 $publicaciones = $publicacion->listarpublicacion($datos[0]['id']);
             }
-            $unidadpermisos = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Unidad");
+            $unidadpermisos = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Unidad");
         //}
         require_once "vista/MostrarAulaVista.php";
 

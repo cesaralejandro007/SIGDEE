@@ -8,9 +8,10 @@ use modelo\NotificacionesModelo as notificacion;
 use modelo\AulaEstudianteModelo as AulaEstudiante;
 use modelo\EstudianteModelo as Estudiante;
 use config\componentes\configSistema as configSistema;
-
+use modelo\LoginModelo as login;
 $config = new configSistema();
 $bitacora = new Bitacora();
+$login = new login();
 session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
@@ -47,11 +48,23 @@ if (!is_file($config->_Dir_Model_().'UnidadEvaluacion'.$config->_MODEL_())) {
     exit;
 }
 
-$usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
-$entorno = $bitacora->buscar_id_entorno('Unidad');
-$fecha = date('Y-m-d h:i:s', time());
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
+    
+
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+    
+    $usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
+    $entorno = $bitacora->buscar_id_entorno('Unidad');
+    $fecha = date('Y-m-d h:i:s', time());
     
     $unidad_evaluacion = new UnidadEvaluacion();
     $estudiante_evaluacion = new EstudianteEvaluacion();
@@ -164,13 +177,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $estudiante_evaluacion->set_id($_POST['id']);
                 $estudiante_evaluacion->set_descripcion($_POST['descripcion']);
                 $estudiante_evaluacion->set_fecha_entrega(date('Y-m-d h:i:s', time())); 
-                $estudiante_evaluacion->set_id_estudiante($_SESSION['usuario']['id']);
+                $estudiante_evaluacion->set_id_estudiante($decrypted["id"]);
                 $estudiante_evaluacion->set_id_unidad_evaluacion($id_evaluaciones);
                 $response = $estudiante_evaluacion->modificar();
                 if ($response) {
                     $ruta = "content/entregas/".$id_evaluaciones;
                     //$nombre_archivo = $_FILES['archivo']['name'];
-                    $nombre_archivo = $_SESSION['usuario']['id'];
+                    $nombre_archivo = $decrypted["id"];
                     if (!file_exists($ruta)) {
                         mkdir($ruta, 0777, true);
                     }
@@ -195,14 +208,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 exit;
             break;
             case 'editar':
-                $datos = $estudiante_evaluacion->editar($_SESSION['usuario']['id'], $_POST['id']);
+                $datos = $estudiante_evaluacion->editar($decrypted["id"], $_POST['id']);
                 foreach ($datos as $valor) {
                     echo json_encode([
                         'id' => $valor['id'],
                         'descripcion' => $valor['descripcion'],
                         'archivo_adjunto' => $valor['archivo_adjunto'],
                         'unidad_eval' => $valor['unidad_eval'],
-                        'id_estudent' => $_SESSION['usuario']['id'],
+                        'id_estudent' => $decrypted["id"],
                         'url_base' => $url_base
                     ]);
                 }
@@ -257,23 +270,23 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             exit;
         }
         else{
-            $mostrar_estudiante_evaluacion = $estudiante_evaluacion->cargar($_SESSION['usuario']['id'], $id_unidad_evaluacion);
+            $mostrar_estudiante_evaluacion = $estudiante_evaluacion->cargar($decrypted["id"], $id_unidad_evaluacion);
             $nombre_evaluacion_entregada = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion'] : '<p style="color:red;">No ha entregado</p>';
             $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
             $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
             $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
-            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'.$url_base.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']['id'].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
+            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'.$url_base.'/content/entregas/'.$id_unidad_evaluacion.'/'.$decrypted["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
             $nombre_archivo = $mostrar_unidad[0]['archivo'];
             $examen = '<a target="_blank" href="'.$url_base.'/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
     
             $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
             $entregas = $estudiante_evaluacion->mostrarEntregas($nombre_archivo = $mostrar_unidad[0]['id']);
             $status = 0;
-            if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 2){
+            if($aula_estudiante->verificar_estudiante($decrypted["id"], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 2){
                 $status = 2;
             }
             else
-            if($aula_estudiante->verificar_estudiante($_SESSION['usuario']['id'], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 1){
+            if($aula_estudiante->verificar_estudiante($decrypted["id"], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 1){
                 $status = 1;
             }
         }

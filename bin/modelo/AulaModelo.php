@@ -239,9 +239,9 @@ class AulaModelo extends connectDB
         }
     }
 
-    public function listadoaulas()
+    public function listadoaulas($id,$rol)
     {
-        $response = $this->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Aula");
+        $response = $this->mostrarpermisos($id,$rol,"Aula");
         $r = array();
         try {
 

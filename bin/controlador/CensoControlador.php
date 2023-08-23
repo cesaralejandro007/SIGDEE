@@ -3,13 +3,13 @@ use modelo\CensoModelo as censo;
 use modelo\PermisosModelo as Permiso;
 use modelo\configNotificacionModelo as Mensaje;
 use modelo\BitacoraModelo as Bitacora;
-
+use modelo\LoginModelo as login;
 use config\componentes\configSistema as configSistema;
 use component\initComponents as initComponents;
 use component\header as header;
 
 $config = new configSistema();
-
+$login = new login();
 session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=login');
@@ -21,21 +21,32 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 }
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
+
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+
     $permiso_usuario = new Permiso();
     $censo = new censo();
     $config = new Mensaje();
     $bitacora = new Bitacora();
     $modulo = 'Censo';
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Censo");
+    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Censo");
     //Establecer el id_usuario_rol para bitacora
-    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Censo');
     $fecha = date('Y-m-d h:i:s', time());
 
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $respuesta = $censo->incluir($_SESSION['usuario']['id'], $_POST['fecha_apertura'],$_POST['fecha_cierre'], $_POST['descripcion']);
+            $respuesta = $censo->incluir($decrypted["id"], $_POST['fecha_apertura'],$_POST['fecha_cierre'], $_POST['descripcion']);
             if ($respuesta['resultado']==1) {
                 echo json_encode([
                     'estatus' => '1',

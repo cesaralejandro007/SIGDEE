@@ -11,9 +11,11 @@ use modelo\configNotificacionModelo as Mensaje;
 use modelo\PermisosModelo as Permiso;
 use modelo\BitacoraModelo as Bitacora;
 use config\componentes\configSistema as configSistema;
+use modelo\LoginModelo as login;
+
 
 $config = new configSistema();
-
+$login = new login();
 session_start();
 if (!isset($_SESSION['usuario'])) {
     header('location:?pagina=Login');
@@ -36,6 +38,16 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+
     $unidad = new Unidad();
     $unidad_contenido = new UnidadContenido();
     $unidad_evaluacion = new UnidadEvaluacion();
@@ -48,7 +60,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $modulo = 'Unidad';
 
     //Establecer el id_usuario_rol para bitacora
-    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Unidad');
     $fecha = date('Y-m-d h:i:s', time());
 
@@ -211,7 +223,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 return 0;
                 break;
             case 'guardar_contenidos':
-                $id_usuario_rolC = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+                $id_usuario_rolC = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
                 $entornoC = $bitacora->buscar_id_entorno('Agregar Contenido');
                 $fechaC = date('Y-m-d h:i:s', time());
 
@@ -239,7 +251,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 
             case 'guardar_evaluacion':
 
-                $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+                $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Agregar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
 
@@ -286,7 +298,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 break;
             case 'modificarevaluacion':
 
-                $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+                $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Modificar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
                 $unidad_evaluacion->set_id($_POST['id']);
@@ -366,9 +378,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         }
         
     }
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Unidad");
-    $response3 = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Agregar Contenido");
-    $response2 = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Agregar Evaluacion");
+    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Unidad");
+    $response3 = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Agregar Contenido");
+    $response2 = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Agregar Evaluacion");
     $m_e = $evaluaciones->mostrar_evaluaciones();
     require_once "vista/" . $pagina . "Vista.php";
 } else {

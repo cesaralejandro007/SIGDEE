@@ -7,8 +7,9 @@ use modelo\configNotificacionModelo as Mensaje;
 use modelo\PermisosModelo as Permiso;
 use modelo\BitacoraModelo as Bitacora;
 use modelo\UsuariosRolesModelo as UsuariosRoles;
+use modelo\LoginModelo as login;
 use config\componentes\configSistema as configSistema;
-
+$login = new login();
 $config = new configSistema();
 session_start();
 if (!isset($_SESSION['usuario'])) {
@@ -20,6 +21,18 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 }
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
+
+    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
+    
+    $t_private_key = base64_decode($private_key[0]["privatekey"]);
+
+    $decrypted = [];
+    foreach ($_SESSION['usuario'] as $k => $v) {
+        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
+        $decrypted[$k] = $decrypted_data;
+    }
+
+
     $docente = new Docente();
     $permiso_usuario = new Permiso();
     $usuario_rol = new UsuariosRoles();
@@ -50,9 +63,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         }
     }
 
-    $response = $permiso_usuario->mostrarpermisos($_SESSION["usuario"]["id"],$_SESSION["usuario"]["tipo_usuario"],"Docentes");
+    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Docentes");
     //Establecer el id_usuario_rol para bitacora
-    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION["usuario"]["tipo_usuario"], $_SESSION["usuario"]["id"]);
+    $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Docentes');
     $fecha = date('Y-m-d h:i:s', time());
 
