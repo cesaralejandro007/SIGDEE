@@ -73,6 +73,48 @@ $(document).ready(function () {
     enviaAjax(datos);
   } */
 
+  function next(){
+    var datos = new FormData();
+    datos.append('accion', 'buscar_direcciones');
+    datos.append("pais", $("#pais").val());
+    datos.append("estado", $("#estado").val());
+    datos.append("ciudad", $("#ciudad").val());
+    cargar(datos);
+  }
+
+  function cargar(datos){
+    $.ajax({
+      async: true,
+      url: '',
+      type: 'POST',
+      contentType: false,
+      data: datos,
+      processData: false,
+      cache: false,
+      success:function(response){
+        alert(response);
+ 
+        $('#information-part').addClass('active');
+        $('#logins-part').removeClass('active');
+        $('#logins-part-trigger').removeClass('active');
+        $('#information-part-trigger').addClass('active');
+  
+      },
+      error:function(err){
+        Toast.fire({
+          icon: error.icon
+        });
+  
+      }
+    }); 
+  }
+  
+    function previous(){
+      $('#information-part').removeClass('active');
+      $('#logins-part').addClass('active');
+      $('#logins-part-trigger').addClass('active');
+      $('#information-part-trigger').removeClass('active');
+    } 
   function muestraAreas() {
     var datos = new FormData();
     datos.append("accion", "listadoareas"); //le digo que me muestre un listado de aulas    

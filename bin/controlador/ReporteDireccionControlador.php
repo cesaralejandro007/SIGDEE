@@ -78,6 +78,20 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 ]);
                 return 0;
             break;
+            case 'buscar_direcciones':
+                $pais = $_POST['pais'] != null ? $_POST['pais'] : '';
+                $estado = $_POST['estado'] != null ? $_POST['estado'] : '';
+                $ciudad = $_POST['ciudad'] != null ? $_POST['ciudad'] : '';
+                //$resultados =  $area->reporteUbicacionArea($pais, $estado, $ciudad);
+                //$estudiantes_status = $resultados['aprobados'] > 0 || $resultados['aprobados']> 0 ? true : false;
+                echo json_encode([
+                    'grafica' => 'estudiantes_ubicacion',
+                    'ubicaciones' => array('Lara', 'Falcón', 'Merida'),
+                    'cantidad' => array(3, 4, 6),
+                    'estudiantes_status' => true
+                ]);
+                return 0;
+            break;
             case 'listadoareas':
                 $respuesta = $area->listadoareas();
                 usleep(5);
