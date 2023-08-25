@@ -9,6 +9,7 @@ use modelo\CiudadModelo as Ciudad;
 use modelo\configNotificacionModelo as Mensaje;
 use config\componentes\configSistema as configSistema;
 use modelo\LoginModelo as login;
+use modelo\EstudianteModelo as Estudiante;
 
 $config = new configSistema();
 $login = new login();
@@ -24,6 +25,7 @@ $modulo = new Modulo();
 $pais = new Pais();
 $estado = new Estado();
 $ciudad = new Ciudad();
+$estudiante = new Estudiante();
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
     $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
@@ -79,16 +81,17 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 return 0;
             break;
             case 'buscar_direcciones':
-                $pais = $_POST['pais'] != null ? $_POST['pais'] : '';
-                $estado = $_POST['estado'] != null ? $_POST['estado'] : '';
-                $ciudad = $_POST['ciudad'] != null ? $_POST['ciudad'] : '';
-                //$resultados =  $area->reporteUbicacionArea($pais, $estado, $ciudad);
+                $pais = $_POST['pais'] != null ? $_POST['pais'] : null;
+                $estado = $_POST['estado'] != null ? $_POST['estado'] : null;
+                $resultados =  $estudiante->ReporteDireccion($estado, $pais);
                 //$estudiantes_status = $resultados['aprobados'] > 0 || $resultados['aprobados']> 0 ? true : false;
+                usleep(5);
                 echo json_encode([
-                    'grafica' => 'estudiantes_ubicacion',
-                    'ubicaciones' => array('Lara', 'Falcón', 'Merida'),
-                    'cantidad' => array(3, 4, 6),
-                    'estudiantes_status' => true
+                    'status' => $resultados['status'],
+                    'descripcion' => $resultados['descripcion'],
+                    'datos' => $resultados['datos'],
+                    'cantidad' => $resultados['cantidad'],
+                    'reporte' => 'buscar_direcciones'
                 ]);
                 return 0;
             break;

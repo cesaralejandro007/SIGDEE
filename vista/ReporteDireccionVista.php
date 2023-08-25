@@ -111,7 +111,7 @@
                                                     <input type="hidden" name="accion" id="accion">
                                                     <div id="logins-part" class="content active" role="tabpanel" aria-labelledby="logins-part-trigger" style="padding: 3%;">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label>País</label>
                                                                     <select class="form-control select2bs4" id="pais" name="pais"
@@ -121,7 +121,7 @@
                                                                     <span id="spais"></span>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label>Estado</label>
                                                                     <select class="form-control select2bs4" id="estado" name="estado"
@@ -129,16 +129,6 @@
                                                                         <option disabled selected value="0">Seleccione</option>
                                                                     </select>
                                                                     <span id="sestado"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label>Ciudad</label>
-                                                                    <select class="form-control select2bs4" id="ciudad" name="ciudad"
-                                                                style="width: 100%;">
-                                                                        <option disabled selected value="0">Seleccione</option>
-                                                                    </select>
-                                                                    <span id="sciudad"></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -183,6 +173,14 @@
                                                     </div>
                                                 </form>
                                             </div>
+                                        </div>
+                                        <hr>
+                                        <div>
+                                            <figure class="highcharts-figure">
+                                                <div id="container"></div>
+                                                <p class="highcharts-description">
+                                                </p>
+                                            </figure> 
                                         </div>
                                     </div>
                                 </div>

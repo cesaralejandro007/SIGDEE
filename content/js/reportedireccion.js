@@ -12,8 +12,6 @@ $(document).ready(function () {
     });
 
     $("#estado").on("change", function () {
-      $("#ciudad").html('<option value="0" disabled selected>Seleccione</option>');
-      muestraCiudades();
       muestraAreas();
     });
 
@@ -69,7 +67,6 @@ $(document).ready(function () {
     datos.append("area", $("#area").val());
     datos.append("pais", $("#pais").val());
     datos.append("estado", $("#estado").val());
-    datos.append("ciudad", $("#ciudad").val());
     enviaAjax(datos);
   } */
 
@@ -78,7 +75,6 @@ $(document).ready(function () {
     datos.append('accion', 'buscar_direcciones');
     datos.append("pais", $("#pais").val());
     datos.append("estado", $("#estado").val());
-    datos.append("ciudad", $("#ciudad").val());
     cargar(datos);
   }
 
@@ -92,8 +88,15 @@ $(document).ready(function () {
       processData: false,
       cache: false,
       success:function(response){
-        alert(response);
- 
+        var lee = JSON.parse(response);
+        if (lee.reporte == "buscar_direcciones") 
+        {
+          if(lee.status == 200){
+            grafica_torta(lee.datos);
+          }
+          else 
+          alert(lee.status);
+        }  
         $('#information-part').addClass('active');
         $('#logins-part').removeClass('active');
         $('#logins-part-trigger').removeClass('active');
@@ -149,12 +152,6 @@ $(document).ready(function () {
     Ajax(datos);
   }
 
-  function muestraCiudades() {
-    var datos = new FormData();
-    datos.append("accion", "listadociudades");
-    datos.append("estado", $("#estado").val());
-    Ajax(datos);
-  }
     
   function enviaAjax(datos) {
     var toastMixin = Swal.mixin({
@@ -291,18 +288,6 @@ $(document).ready(function () {
             }
             else
             $("#estado").html(lee.mensaje); 
-          }else 
-          if (lee.resultado == "listadociudades") {
-            if(lee.mensaje==vacio){
-              unidad = $("#ciudad").val();
-              Swal.fire({
-                icon: 'info',
-                title: 'Disculpe',
-                text: 'No existen Ciudades para el Estado seleccionado'
-              })
-            }
-            else
-            $("#ciudad").html(lee.mensaje); 
           }
         } catch (e) {
           alert("Error en JSON " + e.name + " !!!");
@@ -328,6 +313,41 @@ $(document).ready(function () {
       },
     });
   }
-  
+
+  function grafica_torta(datos){
+    Highcharts.chart('container', {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      },
+      title: {
+        text: 'Reporte Estadistico de Estudiantes por Emprendimientos'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+          },
+      },
+      series: [{
+        name: 'Estudiantes',
+        colorByPoint: true,
+        data: datos
+      }]
+    });
+  }
 
   

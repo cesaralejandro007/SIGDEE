@@ -235,4 +235,79 @@ class EstudianteModelo extends connectDB
         }
         return $respuesta;
     }
+
+    public function ReporteDireccion($id_estado, $id_pais){
+        $respuesta = array();
+        $respuesta['descripcion'] = '';
+        $respuesta['datos'] = '';
+        $total = 0;
+        try{
+            if($id_estado != 'null'){
+                $resultado = $this->conex->prepare("SELECT c.id as id, c.nombre as nombre FROM estados e INNER JOIN ciudades c ON e.id= c.id_estado WHERE e.id=$id_estado;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $ciudades){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad WHERE c.id=".$ciudades['id']." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $ciudades['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                }                
+                $respuesta['descripcion'] = 'Ciudades';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }else
+            if($id_pais != 'null'){
+                $resultado = $this->conex->prepare("SELECT e.id as id, e.nombre as nombre FROM paises p INNER JOIN estados e ON p.id= e.id_pais WHERE p.id=$id_pais;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $estado){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id WHERE e.id=".$estado['id']." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $estado['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Estados';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }
+            else{
+                $resultado = $this->conex->prepare("SELECT p.id as id, p.nombre as nombre FROM paises p;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $pais){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN paises p ON p.id=e.id_pais WHERE p.id=".$pais['id']." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $pais['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Paises';
+                $respuesta['cantidad'] = $total;
+                $respuesta['datos'] = $datos;
+
+            }
+            $respuesta['status'] = 200;
+        }catch(Exception $e){
+            $respuesta['status'] = 500;
+            $respuesta['descripcion'] = $e->getMessage();
+        }
+        return $respuesta;
+    }
 }
