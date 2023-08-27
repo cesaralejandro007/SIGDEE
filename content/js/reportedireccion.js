@@ -17,62 +17,52 @@ $(document).ready(function () {
 
     $("#area").on("change", function () {
       muestraEmpredimientos();
+      direcciones_area();
       //grafica_estudiantes_areas();
     });
   
     $("#emprendimiento").on("change", function () {
       $("#aula").html('<option value="0" disabled selected>Seleccione</option>');
       muestraAulas();
+      direcciones_emprendimiento();
     });
   
     $("#aula").on("change", function () {
-      $("#unidad").html('<option value="0" disabled selected>Seleccione</option>');
-      //muestraUnidades();
-      //grafica_aprobados_reprobados_aula();
-    });
-    
-    /*
-    $("#unidad").on("change", function () {
-      $("#evaluacion").html('<option value="0" disabled selected>Seleccione</option>');
-      muestraEvaluaciones();
-    });
-  
-    $("#evaluacion").on("change", function () {
-      grafica_aprobados_reprobados();
-    });
-    */
-    
+      direcciones_curso();
+    })
   });
   
-  /*
-  function grafica_aprobados_reprobados() {
-    var datos = new FormData();
-    datos.append("accion", "aprobados_reprobados");
-    datos.append("unidad", $("#unidad").val());
-    datos.append("evaluacion", $("#evaluacion").val());
-    datos.append("aula", $("#aula").val());
-    enviaAjax(datos);
-  }
   
-  function grafica_aprobados_reprobados_aula() {
-    var datos = new FormData();
-    datos.append("accion", "aprobados_reprobados_aula");
-    datos.append("aula", $("#aula").val());
-    enviaAjax(datos);
-  }
-  */
- /* function grafica_estudiantes_areas() {
-    var datos = new FormData();
-    datos.append("accion", "estudiantes_areas");
-    datos.append("area", $("#area").val());
-    datos.append("pais", $("#pais").val());
-    datos.append("estado", $("#estado").val());
-    enviaAjax(datos);
-  } */
-
   function next(){
     var datos = new FormData();
     datos.append('accion', 'buscar_direcciones');
+    datos.append("pais", $("#pais").val());
+    datos.append("estado", $("#estado").val());
+    cargar(datos);
+  }
+  
+  function direcciones_area(){
+    var datos = new FormData();
+    datos.append('accion', 'direcciones_area');
+    datos.append("area", $("#area").val());
+    datos.append("pais", $("#pais").val());
+    datos.append("estado", $("#estado").val());
+    cargar(datos);
+  }
+  
+  function direcciones_emprendimiento(){
+    var datos = new FormData();
+    datos.append('accion', 'direcciones_emprendimiento');
+    datos.append("emprendimiento", $("#emprendimiento").val());
+    datos.append("pais", $("#pais").val());
+    datos.append("estado", $("#estado").val());
+    cargar(datos);
+  }
+
+  function direcciones_curso(){
+    var datos = new FormData();
+    datos.append('accion', 'direcciones_curso');
+    datos.append("curso", $("#aula").val());
     datos.append("pais", $("#pais").val());
     datos.append("estado", $("#estado").val());
     cargar(datos);
@@ -94,13 +84,38 @@ $(document).ready(function () {
           if(lee.status == 200){
             grafica_torta(lee.datos);
           }
-          else 
-          alert(lee.status);
+          else{
+            alert(lee.status);
+          } 
+          $('#information-part').addClass('active');
+          $('#logins-part').removeClass('active');
+          $('#logins-part-trigger').removeClass('active');
+          $('#information-part-trigger').addClass('active');
         }  
-        $('#information-part').addClass('active');
-        $('#logins-part').removeClass('active');
-        $('#logins-part-trigger').removeClass('active');
-        $('#information-part-trigger').addClass('active');
+        if(lee.reporte == "direcciones_area"){
+          if(lee.status == 200){
+            grafica_torta(lee.datos);
+          }
+          else{
+            alert(lee.status);
+          } 
+        }else
+        if(lee.reporte == "direcciones_emprendimiento"){
+          if(lee.status == 200){
+            grafica_torta(lee.datos);
+          }
+          else{
+            alert(lee.status);
+          } 
+        }else
+        if(lee.reporte == "direcciones_curso"){
+          if(lee.status == 200){
+            grafica_torta(lee.datos);
+          }
+          else{
+            alert(lee.status);
+          } 
+        }
   
       },
       error:function(err){
@@ -112,12 +127,13 @@ $(document).ready(function () {
     }); 
   }
   
-    function previous(){
-      $('#information-part').removeClass('active');
-      $('#logins-part').addClass('active');
-      $('#logins-part-trigger').addClass('active');
-      $('#information-part-trigger').removeClass('active');
-    } 
+  function previous(){
+    $('#information-part').removeClass('active');
+    $('#logins-part').addClass('active');
+    $('#logins-part-trigger').addClass('active');
+    $('#information-part-trigger').removeClass('active');
+  } 
+  
   function muestraAreas() {
     var datos = new FormData();
     datos.append("accion", "listadoareas"); //le digo que me muestre un listado de aulas    

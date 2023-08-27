@@ -95,6 +95,50 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 ]);
                 return 0;
             break;
+            case 'direcciones_area':
+                $pais = $_POST['pais'] != null ? $_POST['pais'] : null;
+                $estado = $_POST['estado'] != null ? $_POST['estado'] : null;
+                $resultados =  $estudiante->DireccionArea($_POST['area'],$estado, $pais);
+                //$estudiantes_status = $resultados['aprobados'] > 0 || $resultados['aprobados']> 0 ? true : false;
+                usleep(5);
+                echo json_encode([
+                    'status' => $resultados['status'],
+                    'descripcion' => $resultados['descripcion'],
+                    'datos' => $resultados['datos'],
+                    'cantidad' => $resultados['cantidad'],
+                    'reporte' => 'direcciones_area'
+                ]);
+                return 0;
+            break;
+            case 'direcciones_emprendimiento':
+                $pais = $_POST['pais'] != null ? $_POST['pais'] : null;
+                $estado = $_POST['estado'] != null ? $_POST['estado'] : null;
+                $resultados =  $estudiante->DireccionEmprendimiento($_POST['emprendimiento'],$estado, $pais);
+                //$estudiantes_status = $resultados['aprobados'] > 0 || $resultados['aprobados']> 0 ? true : false;
+                usleep(5);
+                echo json_encode([
+                    'status' => $resultados['status'],
+                    'descripcion' => $resultados['descripcion'],
+                    'datos' => $resultados['datos'],
+                    'cantidad' => $resultados['cantidad'],
+                    'reporte' => 'direcciones_area'
+                ]);
+                return 0;
+            break;
+            case 'direcciones_curso':
+                $pais = $_POST['pais'] != null ? $_POST['pais'] : null;
+                $estado = $_POST['estado'] != null ? $_POST['estado'] : null;
+                $resultados =  $estudiante->DireccionCursos($_POST['curso'],$estado, $pais);
+                usleep(5);
+                echo json_encode([
+                    'status' => $resultados['status'],
+                    'descripcion' => $resultados['descripcion'],
+                    'datos' => $resultados['datos'],
+                    'cantidad' => $resultados['cantidad'],
+                    'reporte' => 'direcciones_curso'
+                ]);
+                return 0;
+            break;
             case 'listadoareas':
                 $respuesta = $area->listadoareas();
                 usleep(5);

@@ -310,4 +310,238 @@ class EstudianteModelo extends connectDB
         }
         return $respuesta;
     }
+
+    public function DireccionArea($id_area, $id_estado, $id_pais){
+        $respuesta = array();
+        $respuesta['descripcion'] = '';
+        $respuesta['datos'] = '';
+        $total = 0;
+        try{
+            if($id_estado != 'null'){
+                //Reporte de estudiantes de cada ciudad de un estado seleccionado y de un area de emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT c.id as id, c.nombre as nombre FROM estados e INNER JOIN ciudades c ON e.id= c.id_estado WHERE e.id=$id_estado;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $ciudades){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento INNER JOIN area_emprendimiento aem ON aem.id=e.id_area WHERE c.id=".$ciudades['id']." AND aem.id=".$id_area." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $ciudades['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                }                
+                $respuesta['descripcion'] = 'Ciudades';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }else
+            if($id_pais != 'null'){
+                //Reporte de estudiantes de cada estado de un pais seleccionado y de un area de emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT e.id as id, e.nombre as nombre FROM paises p INNER JOIN estados e ON p.id= e.id_pais WHERE p.id=$id_pais;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $estado){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento eo ON eo.id=em.id_emprendimiento INNER JOIN area_emprendimiento aem ON aem.id=eo.id_area WHERE e.id=".$estado['id']." AND aem.id=".$id_area." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $estado['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Estados';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }
+            else{
+                //Reporte de estudiantes de cada pais de un area de emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT p.id as id, p.nombre as nombre FROM paises p;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $pais){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN paises p ON p.id=e.id_pais INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento eo ON eo.id=em.id_emprendimiento INNER JOIN area_emprendimiento aem ON aem.id=eo.id_area  WHERE p.id=".$pais['id']." AND aem.id=".$id_area." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $pais['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Paises';
+                $respuesta['cantidad'] = $total;
+                $respuesta['datos'] = $datos;
+
+            }
+            $respuesta['status'] = 200;
+        }catch(Exception $e){
+            $respuesta['status'] = 500;
+            $respuesta['descripcion'] = $e->getMessage();
+        }
+        return $respuesta;
+    }
+
+    public function DireccionEmprendimiento($id_emprendimiento, $id_estado, $id_pais){
+        $respuesta = array();
+        $respuesta['descripcion'] = '';
+        $respuesta['datos'] = '';
+        $total = 0;
+        try{
+            if($id_estado != 'null'){
+                //Reporte de estudiantes de cada ciudad de un estado seleccionado y de un emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT c.id as id, c.nombre as nombre FROM estados e INNER JOIN ciudades c ON e.id= c.id_estado WHERE e.id=$id_estado;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $ciudades){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento e ON e.id=em.id_emprendimiento WHERE c.id=".$ciudades['id']." AND e.id=".$id_emprendimiento." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $ciudades['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                }                
+                $respuesta['descripcion'] = 'Ciudades';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }else
+            if($id_pais != 'null'){
+                //Reporte de estudiantes de cada estado de un pais seleccionado y de un area de emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT e.id as id, e.nombre as nombre FROM paises p INNER JOIN estados e ON p.id= e.id_pais WHERE p.id=$id_pais;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $estado){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento eo ON eo.id=em.id_emprendimiento WHERE e.id=".$estado['id']." AND eo.id=".$id_emprendimiento." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $estado['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Estados';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }
+            else{
+                //Reporte de estudiantes de cada pais de un area de emprendimiento en especifico
+                $resultado = $this->conex->prepare("SELECT p.id as id, p.nombre as nombre FROM paises p;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $pais){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN paises p ON p.id=e.id_pais INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN emprendimiento_modulo em ON em.id=a.id_emprendimiento_modulo INNER JOIN emprendimiento eo ON eo.id=em.id_emprendimiento  WHERE p.id=".$pais['id']." AND eo.id=".$id_emprendimiento." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $pais['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Paises';
+                $respuesta['cantidad'] = $total;
+                $respuesta['datos'] = $datos;
+
+            }
+            $respuesta['status'] = 200;
+        }catch(Exception $e){
+            $respuesta['status'] = 500;
+            $respuesta['descripcion'] = $e->getMessage();
+        }
+        return $respuesta;
+    }
+
+    public function DireccionCursos($id_curso, $id_estado, $id_pais){
+        $respuesta = array();
+        $respuesta['descripcion'] = '';
+        $respuesta['datos'] = '';
+        $total = 0;
+        try{
+            if($id_estado != 'null'){
+                //Reporte de estudiantes de cada ciudad de un estado seleccionado y de un curso en especifico
+                $resultado = $this->conex->prepare("SELECT c.id as id, c.nombre as nombre FROM estados e INNER JOIN ciudades c ON e.id= c.id_estado WHERE e.id=$id_estado;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $ciudades){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN aula a ON a.id=ae.id_aula WHERE c.id=".$ciudades['id']." AND a.id=".$id_curso." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $ciudades['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                }                
+                $respuesta['descripcion'] = 'Ciudades';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }else
+            if($id_pais != 'null'){
+                //Reporte de estudiantes de cada estado de un pais seleccionado y de un curso en especifico
+                $resultado = $this->conex->prepare("SELECT e.id as id, e.nombre as nombre FROM paises p INNER JOIN estados e ON p.id= e.id_pais WHERE p.id=$id_pais;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $estado){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN aula a ON a.id=ae.id_aula WHERE e.id=".$estado['id']." AND a.id=".$id_curso." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $estado['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Estados';
+                $respuesta['datos'] = $datos;
+                $respuesta['cantidad'] = $total;
+            }
+            else{
+                //Reporte de estudiantes de cada pais de un curso en especifico
+                $resultado = $this->conex->prepare("SELECT p.id as id, p.nombre as nombre FROM paises p;");
+                $resultado->execute();
+                if($resultado){
+                    foreach($resultado as $pais){
+                        $query = $this->conex->prepare("SELECT u.id, u.primer_nombre FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id INNER JOIN ciudades c ON c.id=u.id_ciudad INNER JOIN estados e ON c.id_estado= e.id INNER JOIN paises p ON p.id=e.id_pais INNER JOIN aula a ON a.id=ae.id_aula WHERE p.id=".$pais['id']." AND a.id=".$id_curso." GROUP BY u.id;");
+                        $query->execute();
+                        $arrDatos=$query->fetchAll();             
+                        $cantidad_estudiantes = count($arrDatos);
+                        $datos[] = ([
+                            "name"=> $pais['nombre'],
+                            "y" => $cantidad_estudiantes
+                        ]); 
+                        $total =+ $cantidad_estudiantes;
+                    }
+                } 
+                $respuesta['descripcion'] = 'Paises';
+                $respuesta['cantidad'] = $total;
+                $respuesta['datos'] = $datos;
+
+            }
+            $respuesta['status'] = 200;
+        }catch(Exception $e){
+            $respuesta['status'] = 500;
+            $respuesta['descripcion'] = $e->getMessage();
+        }
+        return $respuesta;
+    }
 }
