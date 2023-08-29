@@ -331,7 +331,7 @@ class EmprendimientoModelo extends connectDB
     }
 
     public function validar_expresiones($nombre){
-        $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/';
+        $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,-.\s]{3,30}$/';
         if(!preg_match_all($er_nombre,$nombre) || trim($nombre)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Nombre de contener solo letras de 3 a 30 caracteres, siendo la primera en mayúscula.";

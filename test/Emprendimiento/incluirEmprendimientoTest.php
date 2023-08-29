@@ -11,7 +11,7 @@ class incluirEmprendimientoTest extends TestCase{
 
 	//1-Cuando el usuario intenta incluir un Emprendimiento con el mismo nombre de otro registro
 	public function testNombreRepetido(){
-		$respuesta = $this->Emprendimiento->incluir('Marketing',1);
+		$respuesta = $this->Emprendimiento->incluir('Batender',1);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 
@@ -20,11 +20,16 @@ class incluirEmprendimientoTest extends TestCase{
 		$respuesta = $this->Emprendimiento->incluir('Panaderia***',1);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
-		//3-Cuando el usuario intenta incluir un Emprendimiento que existe y con nombre diferente a los otros registros
-		public function testModificarcionCorrecta(){
-			$respuesta = $this->Emprendimiento->incluir('Telematica',2);
-			$this->assertEquals(1, $respuesta['resultado']);
-		}
+	//3-Cuando el usaurio intenta incluir un emprendimiento con el mismo nombre en la bd
+	public function testExisteEmprendimiento(){
+		$respuesta = $this->Emprendimiento->incluir('Batender',1);
+		$this->assertEquals(3, $respuesta['resultado']);
+	}
+	//3-Cuando el usaurio intenta incluir un area de emprendimiento que no existe
+	public function testExisteAreaEmprendimiento(){
+		$respuesta = $this->Emprendimiento->incluir('Telematica',2);
+		$this->assertEquals(4, $respuesta['resultado']);
+	}
 	}
 
  ?>
