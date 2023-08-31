@@ -109,7 +109,7 @@ class PostulacionModelo extends connectDB
             if ($resul) {
                 foreach ($resul as $r) {
                     $res = $res . "<div class='d-flex'>";
-                    $res = $res . "<table class='table table-striped table-hover table-bordered'>";
+                    $res = $res . "<table id='emprendimiento' class='table table-striped table-hover table-bordered'>";
                     $res = $res . " <thead><tr><th scope='col'>" . $r['nombre'] . "</th></tr> </th></thead>";
                     $emprend = $this->conex->query("SELECT e.id, e.nombre FROM emprendimiento as e INNER JOIN area_emprendimiento as a ON e.id_area=a.id WHERE a.id='" . $r['id'] . "' AND e.estatus='true' ");
                     if ($emprend) {

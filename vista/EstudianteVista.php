@@ -264,12 +264,11 @@ use config\componentes\configSistema as configSistema;
                   <input class="btn btn-default" type="reset" value="Limpiar Campos" />
                   <button type="button" id="enviar" class="btn btn-primary">Registrar</button>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
     <?php include_once 'componentes/footer.php';?>
 

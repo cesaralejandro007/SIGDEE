@@ -155,6 +155,30 @@ use config\componentes\configSistema as configSistema;
                               <div>
                                 <h5>Emprendimientos:</h5>
                                 <?php echo $listar_emprendimientos; ?>
+
+
+                                
+                                <tbody id="">
+                                <?php foreach ($r3 as $key => $dato) {?>
+                                <tr>
+                                    <input type="hidden"
+                                        id="idmodulo<?php echo $dato['id']; ?>"
+                                        value="<?php echo $dato['id']; ?>">
+                                    <td class="d-flex">
+                                    <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
+                                        <input type="checkbox"id="check2<?php echo $dato['id']; ?>" id="botonasignar<?php echo $dato['id']; ?>" onclick="gestionar_em(<?=$dato['id'];?>);">
+                                        <span>
+                                        <i class="fas fa-check on"></i>
+                                        <i class="fas fa-times off"></i>
+                                        </span>
+                                    </label>
+                                    <h5 class="d-flex justify-content-center align-items-center"><?php echo $dato['nombre']; ?></h5>
+                                    </td>
+                                    <?php }?>
+                                </tr>
+                                </tbody>
+
+
                               </div>
                               <button class="btn btn-primary" onclick="previous()">Anterior</button>
                               <button type="button" id="registrar" class="btn btn-primary" style="color: white !important">Enviar</button>

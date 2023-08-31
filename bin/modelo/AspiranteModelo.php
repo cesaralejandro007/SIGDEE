@@ -16,7 +16,7 @@ class AspiranteModelo extends connectDB
     private $id_rol;
     private $status;
 
-    public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono, $clave)
     {
             try {
                 $this->conex->query("INSERT INTO usuario(
@@ -29,10 +29,12 @@ class AspiranteModelo extends connectDB
                             genero,
         					correo,
         					direccion,
-        					telefono
+        					telefono, 
+                            clave
         					)
         				VALUES(
         					'$cedula',
+        					'$id_ciudad',
         					'$primer_nombre',
                             '$segundo_nombre',
         					'$primer_apellido',
@@ -40,7 +42,8 @@ class AspiranteModelo extends connectDB
                             '$genero',
         					'$correo',
         					'$direccion',
-        					'$telefono'
+        					'$telefono',
+        					'$clave'
         				)");
                     return true;
             } catch (Exception $e) {

@@ -145,9 +145,23 @@ $("#registrar").click(function (e) {
   a = valida_registrar1(); 
   if(a!=''){e.preventDefault();}
   else{
-  $("#accion").val("registrar");  
-  $("#f").submit();
-}
+    var datos = new FormData();
+    datos.append('accion', 'registrar');
+    datos.append('id', $("#id").val());
+    datos.append('cedula', $("#cedula").val());
+    datos.append('ciudad', $("#ciudad").val());
+    datos.append('primer_nombre', $("#primer_nombre").val());
+    datos.append('segundo_nombre', $("#segundo_nombre").val());
+    datos.append('primer_apellido', $("#primer_apellido").val());
+    datos.append('segundo_apellido', $("#segundo_apellido").val());
+    datos.append('genero', $("#genero").val());
+    datos.append('correo', $("#correo").val());
+    datos.append('telefono', $("#telefono").val());
+    datos.append('direccion', $("#direccion").val());
+    datos.append('emprendimiento', $("#emprendimiento").val());
+    enviaAjax(datos);
+    
+  }
 });
 }
 
@@ -243,6 +257,7 @@ function valida_registrar1() {
 }
 
 $(document).ready(function () {
+  cargar_checkboxme();
   document.getElementById("pais").onkeyup = function () {
     r = validarkeyup(
       keyup_pais,
@@ -361,6 +376,12 @@ function muestraCiudades() {
   return error;
 }
 
+function cargar_checkboxme() {
+  /*document.getElementById("f3").reset();*/
+  var datos = new FormData();
+  datos.append("accion", "cargar_emprendimientos");
+  enviaAjax(datos);
+}
 
 
 function cargar(datos){
@@ -432,7 +453,21 @@ function enviaAjax(datos) {
       else
       if (res.resultado == "listadociudades") {
         $("#ciudad").html(res.mensaje);
-      } else
+      } 
+      if(res.resultado == 'cargar_emprendimientos'){
+        for (let propiedad in res.datos) {
+          if (res.datos != undefined) {
+            if (res.datos[propiedad]["idemprendimiento"] != undefined) {
+              $("#check2" + res.datos[propiedad]["idmodulo"]).prop("checked", true);
+            } else {
+              $("#check2" + res.datos[propiedad]["idmodulo"]).prop("checked", false);
+            }
+          } else {
+            $("#check1" + res.datos[propiedad]["idmodulo"]).prop("checked", false);
+          }
+        }
+      }
+      else
       if (res.estatus == 1) {
         toastMixin.fire({
 
@@ -445,7 +480,8 @@ function enviaAjax(datos) {
         setTimeout(function () {
           window.location.reload();
         }, 2500);
-      } else {
+      } else 
+      if(res.estatus == 0){
         toastMixin.fire({
 
           text: res.message,
