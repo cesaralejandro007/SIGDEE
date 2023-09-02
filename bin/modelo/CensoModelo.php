@@ -14,9 +14,13 @@ class CensoModelo extends connectDB
     {
 
         $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre);
+        $validar_id_personal = $this->validar_id_usuario($id_personal);
         if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
+        }else if(! $validar_id_personal){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "El usuario no existe";
         }else{
         try {
             $fi = explode(" ", $fecha_apertura);
@@ -47,6 +51,23 @@ class CensoModelo extends connectDB
         }
         return $respuesta;
     }
+
+    public function validar_id_usuario($id_usuario)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id_usuario'");
+            $resultado->execute();
+            $fila = $resultado->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    
 
     public function modificar($id, $fecha_apertura, $fecha_cierre, $descripcion)
     {
@@ -186,41 +207,41 @@ class CensoModelo extends connectDB
     public function validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre){
         $er_descripcion = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,200}$/';
         $er_fecha = '/^([0-9]{1,2})[\/.-]([0-9]{1,2})[\/.-]([0-9]{4})(\s)([0-9]{1,2})(((:)([0-9]{1,2}))|((:)([0-9]{1,2})(:)([0-9]{1,2})))$/';
-        
-        if(!empty($fecha_apertura) && !empty($fecha_cierre)){
-            date_default_timezone_set('America/Caracas');
-            $fi = explode(" ", $fecha_apertura);
-            $fechai = $fi[0];
-            $horai = $fi[1];
-            $ffi = explode("/", $fechai);
-            $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
-
-            $fc = explode(" ", $fecha_cierre);
-            $fechac = $fc[0];
-            $horac = $fc[1];
-            $ffc = explode("/", $fechac);
-            $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
-
-            $fecha_at = strtotime(date("d-m-Y h:i:s"))-100;
-            $fecha_ap = strtotime($fisql);
-            $fecha_ac = strtotime($fcsql);
-        }
-        if(!preg_match_all($er_descripcion,$descripcion) || trim($descripcion)==''){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Descripción de contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
-        }else if(!preg_match_all($er_fecha,$fecha_apertura) || trim($fecha_apertura)==''){
+        if(!preg_match_all($er_fecha,$fecha_apertura) || trim($fecha_apertura)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Fecha de Apertura debe ser dd/mm/yyyy hh:mm o dd-mm-yyyy hh:mm.";
-        }
-        else if(!preg_match_all($er_fecha,$fecha_cierre) || trim($fecha_cierre)==''){
+        }else if(!preg_match_all($er_fecha,$fecha_cierre) || trim($fecha_cierre)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Fecha de Cierre debe ser dd/mm/yyyy hh:mm o dd-mm-yyyy hh:mm.";
-        }else if(!($fecha_ap <= $fecha_ac && $fecha_ap >= $fecha_at)){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="Verifique la fecha de apertura";
         }else{
-            $respuesta["resultado"]=false;
-            $respuesta["mensaje"]="";
+            if(!empty($fecha_apertura) && !empty($fecha_cierre)){
+                date_default_timezone_set('America/Caracas');
+                $fi = explode(" ", $fecha_apertura);
+                $fechai = $fi[0];
+                $horai = $fi[1];
+                $ffi = explode("/", $fechai);
+                $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
+
+                $fc = explode(" ", $fecha_cierre);
+                $fechac = $fc[0];
+                $horac = $fc[1];
+                $ffc = explode("/", $fechac);
+                $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+
+                $fecha_at = strtotime(date("d-m-Y h:i:s"))-100;
+                $fecha_ap = strtotime($fisql);
+                $fecha_ac = strtotime($fcsql);
+            }
+            if(!preg_match_all($er_descripcion,$descripcion) || trim($descripcion)==''){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="El campo Descripción de contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
+            }else if(!($fecha_ap <= $fecha_ac && $fecha_ap >= $fecha_at)){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="Verifique la fecha de apertura";
+            }else{
+                $respuesta["resultado"]=false;
+                $respuesta["mensaje"]="";
+            }
         }
         return $respuesta;
     }

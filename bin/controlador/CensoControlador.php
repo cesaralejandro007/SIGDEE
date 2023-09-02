@@ -46,7 +46,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $respuesta = $censo->incluir($decrypted["id"], $_POST['fecha_apertura'],$_POST['fecha_cierre'], $_POST['descripcion']);
+            $respuesta = $censo->incluir($_POST["idusuario"], $_POST['fecha_apertura'],$_POST['fecha_cierre'], $_POST['descripcion']);
             if ($respuesta['resultado']==1) {
                 echo json_encode([
                     'estatus' => '1',
@@ -56,6 +56,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 ]);
                 $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
             }else if($respuesta['resultado']==2){
+                echo json_encode([
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => $respuesta['mensaje']
+                ]);
+            }else if($respuesta['resultado']==3){
                 echo json_encode([
                     'estatus' => '2',
                     'icon' => 'info',
