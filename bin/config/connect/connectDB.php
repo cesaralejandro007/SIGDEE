@@ -34,9 +34,11 @@
 					$conn = new PDO("mysql:host={$this->local};dbname={$this->nameDB}", $this->usuario , $this->password); 
 				return $conn;
 				}
+				
 			} catch (PDOException $e) {
 				//manejar error
 				$this->logError($e); 
+				return "¡Error!: " . $e->getMessage() . "<br/>";
 			}
 		}
 		
@@ -57,10 +59,9 @@
 				die();
 			}
 		}
-	}
+	  }
 
  ?>
-
 
 
 
