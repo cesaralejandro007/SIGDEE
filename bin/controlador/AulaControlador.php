@@ -25,7 +25,9 @@ $login = new login();
 
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header('location:?pagina=Login');
+	$redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+    echo '<script>window.location="' . $redirectUrl . '"</script>';
+    die();
 }
 
 if($pagina == "Aula"){

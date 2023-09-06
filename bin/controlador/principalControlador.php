@@ -10,7 +10,9 @@ use modelo\LoginModelo as login;
 $config = new configSistema();
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    die("<script>window.location='?url=principal'</script>");
+	$redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+    echo '<script>window.location="' . $redirectUrl . '"</script>';
+    die();
 }
 
     $login = new login();

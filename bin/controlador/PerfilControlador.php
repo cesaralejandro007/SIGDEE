@@ -9,7 +9,9 @@ $configuracion = new configSistema();
 
 session_start();
 if (!isset($_SESSION['usuario'])) {
-    header('location:?pagina=Login');
+	$redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+    echo '<script>window.location="' . $redirectUrl . '"</script>';
+    die();
 }
 
 if (!is_file($configuracion->_Dir_Model_().$pagina.$configuracion->_MODEL_())) {
