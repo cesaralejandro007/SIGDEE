@@ -20,7 +20,11 @@ class UsuarioModelo extends connectDB
     {
         $validar_registro = $this->validar_registro($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
-        if ($validar_registro==false) {
+        $validar_expresionID = $this->validar_expresion_id($id_ciudad);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($validar_registro==false) {
             $respuesta["resultado"]=3;
             $respuesta["mensaje"]="La cedula ya se encuentra registrada.";
         }else if ($validar_expresion['resultado']) {
@@ -147,7 +151,11 @@ class UsuarioModelo extends connectDB
     {
         $validar_modificar = $this->validar_modificar($cedula, $id);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
-        if ($this->existe_usuario_rol($cedula)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe_usuario_rol($cedula)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario no Existe";
             return $respuesta;
@@ -180,7 +188,11 @@ class UsuarioModelo extends connectDB
         $validacion_evalucion = $this->validar_estudiante_evaluacion($id);
         $validacion_aula_estudiante = $this->validar_estudiante_aula($id);
         $validacion_aula_docente = $this->validar_docente_aula($id);
-        if ($this->existe_usuario_rol($cedula)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 6;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe_usuario_rol($cedula)==false) {
             $respuesta['resultado'] = 6;
             $respuesta['mensaje'] = "El Usuario no Existe";
             return $respuesta;
@@ -214,13 +226,13 @@ class UsuarioModelo extends connectDB
                     $this->conex->query("DELETE from usuario WHERE cedula = '$cedula'");
                     $respuesta['resultado'] = 1;
                     $respuesta['mensaje'] = "Eliminacion exitosa";
-                    return $respuesta;
                 } catch (Exception $e) {
                     $respuesta['resultado'] = 0;
                     $respuesta['mensaje'] = $e->getMessage();
                 }
             } 
         } 
+        return $respuesta;
     }
 
     public function validar_relacion_rol($cedula)
@@ -513,6 +525,17 @@ class UsuarioModelo extends connectDB
         else
             return 'not-token';
         
+    }
+
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
 
     public function validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono){

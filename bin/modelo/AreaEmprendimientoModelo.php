@@ -35,7 +35,11 @@ class AreaEmprendimientoModelo extends connectDB
     {
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
         }else if($validar_modificar) {
@@ -62,9 +66,12 @@ class AreaEmprendimientoModelo extends connectDB
 
     public function eliminar($id)
     {
+        $validar_expresionID = $this->validar_expresion_id($id);
         $validar_tipo = $this->relacion_tipo($id);
-
-        if ($this->existe($id)==false) {
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
             return $respuesta;
@@ -85,8 +92,8 @@ class AreaEmprendimientoModelo extends connectDB
                     $respuesta['mensaje'] = $e->getMessage();
                 }
             } 
-            return $respuesta;
         }
+        return $respuesta;
     }
 
     public function listar()
@@ -206,6 +213,17 @@ class AreaEmprendimientoModelo extends connectDB
         }
     }
 
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
     public function validar_expresiones($nombre){
         $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/';
         if(!preg_match_all($er_nombre,$nombre) || trim($nombre)==''){
@@ -217,6 +235,7 @@ class AreaEmprendimientoModelo extends connectDB
         }
         return $respuesta;
     }
+
     public function listadoareas()
     {
         $r = array();

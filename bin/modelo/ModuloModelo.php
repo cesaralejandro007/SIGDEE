@@ -39,7 +39,11 @@ class ModuloModelo extends connectDB
     {
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Modulo no Existe";
         }
@@ -66,7 +70,11 @@ class ModuloModelo extends connectDB
     {
         $validar_tipo = $this->validarEmprendimientoModulo($id);
 
-        if ($this->existe($id)==false){
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false){
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Modulo no Existe";
             return $respuesta;
@@ -221,6 +229,18 @@ class ModuloModelo extends connectDB
             return false;
         }
     }
+
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
 
     public function validar_expresiones($nombre){
         $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/';

@@ -316,7 +316,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
             exit;
         } else if ($accion == "cargarcheckem") {
-            $cargarem = $emprendimiento->cemprendimiento();
+            $cargarem = $emprendimiento->cargar_emprendimiento();
             echo json_encode($cargarem);
             return 0;
         }

@@ -127,7 +127,7 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $
                 if ($accion == 'eliminar') {
                     if ($response[0]["eliminar"] == "true"){
                         $respuesta = $area->eliminar($_POST['id']);
-                        if ($respuesta['resultado']==1) {
+                        if($respuesta['resultado']==1){
                             echo json_encode([
                                 'estatus' => '1',
                                 'token' => $token,
@@ -137,7 +137,7 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $
                             ]);
                             $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
                         } else 
-                        if ($respuesta['resultado']==2) {
+                        if($respuesta['resultado']==2){
                             echo json_encode([
                                 'estatus' => '2',
                                 'icon' => 'info',
@@ -145,14 +145,21 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $
                                 'message' => $respuesta['mensaje']
                             ]);
                         } else 
-                        if ($respuesta['resultado']==3) {
+                        if($respuesta['resultado']==3){
                             echo json_encode([
                                 'estatus' => '2',
                                 'icon' => 'info',
                                 'title' => $modulo,
                                 'message' => $respuesta['mensaje']
                             ]);
-                        }  else{
+                        }else if($respuesta['resultado']==4){
+                            echo json_encode([
+                                'estatus' => '2',
+                                'icon' => 'info',
+                                'title' => $modulo,
+                                'message' => $respuesta['mensaje']
+                            ]);
+                        }else{
                             echo json_encode([
                                 'estatus' => '0',
                                 'icon' => 'error',

@@ -55,7 +55,11 @@ class AspiranteModelo extends connectDB
     {
         $expresiones_regulares = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         $validar_modificar = $this->validar_modificar($cedula, $id);
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario de no Existe";
         }else if ($validar_modificar) {
@@ -80,7 +84,11 @@ class AspiranteModelo extends connectDB
     public function eliminar($id)
     {
 
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "El Usuario de no Existe";
         }else{
@@ -88,12 +96,12 @@ class AspiranteModelo extends connectDB
                 $this->conex->query("DELETE FROM aspirante_emprendimiento WHERE id_usuario ='$id'");
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Eliminación exitosa";
-                return $respuesta;
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }         
+        return $respuesta;
     }
 
     public function listar()
@@ -155,6 +163,17 @@ class AspiranteModelo extends connectDB
         }
     }
 
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
     public function validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono){
         $er_cedula = '/^[0-9]{7,8}$/';
         $er_nombre = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/';
@@ -168,15 +187,9 @@ class AspiranteModelo extends connectDB
         }else if(!preg_match_all($er_nombre,$primer_nombre) || trim($primer_nombre)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Primer nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }else if(!preg_match_all($er_nombre,$segundo_nombre) || trim($segundo_nombre)==''){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Segundo nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
         }else if(!preg_match_all($er_nombre,$primer_apellido) || trim($primer_apellido)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Primer apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }else if(!preg_match_all($er_nombre,$segundo_apellido) || trim($segundo_apellido)==''){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Segundo apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
         }else if(!preg_match_all($er_genero,$genero) || trim($genero)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="Debe seleccionar un Genero.";
@@ -189,6 +202,17 @@ class AspiranteModelo extends connectDB
         }else if(!preg_match_all($er_direccion,$direccion) || trim($direccion)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo dirección debe contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
+        }else if($segundo_nombre!='' || $segundo_apellido!=''){
+            if(!preg_match_all($er_nombre,$segundo_nombre) || trim($segundo_nombre)==''){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="El campo Segundo nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+            }else if(!preg_match_all($er_nombre,$segundo_apellido) || trim($segundo_apellido)==''){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="El campo Segundo apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+            }else{
+                $respuesta["resultado"]=false;
+                $respuesta["mensaje"]="";
+            }
         }else{
             $respuesta["resultado"]=false;
             $respuesta["mensaje"]="";

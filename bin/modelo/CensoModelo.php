@@ -71,8 +71,12 @@ class CensoModelo extends connectDB
 
     public function modificar($id, $fecha_apertura, $fecha_cierre, $descripcion)
     {
-        $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre);
-        if ($this->existe($id)==false) {
+        $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre,$id);
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Censo no Existe";
             return $respuesta;
@@ -106,9 +110,13 @@ class CensoModelo extends connectDB
     public function eliminar($id)
     {
         $this->id = $id;
+        $validar_expresionID = $this->validar_expresion_id($id);
         if ($this->existe($id)==false) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "El Censo no Existe";
+        }else if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
         }else{
             try {
                 $this->conex->query("DELETE from censo
@@ -203,6 +211,17 @@ class CensoModelo extends connectDB
         return $respuestaArreglo;
     }
 
+
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
 
     public function validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre){
         $er_descripcion = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,200}$/';

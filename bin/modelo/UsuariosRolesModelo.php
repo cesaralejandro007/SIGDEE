@@ -88,7 +88,11 @@ class UsuariosRolesModelo extends connectDB
 
     public function eliminarD($id_usuario,$id_rol)
 	{
-        if ($this->existe($id_usuario)==false) {
+		$validar_expresionID = $this->validar_expresion_id($id_usuario);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id_usuario)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Usuario no Existe";
         }else if ($this->existeaulaEstudiantes($id_usuario)==true) {
@@ -111,7 +115,11 @@ class UsuariosRolesModelo extends connectDB
 
 	public function eliminarE($id_usuario,$id_rol)
 	{
-        if ($this->existe($id_usuario)==false) {
+		$validar_expresionID = $this->validar_expresion_id($id_usuario);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id_usuario)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Usuario no Existes";
         }else if ($this->existeaulaDocente($id_usuario)==true) {
@@ -130,6 +138,17 @@ class UsuariosRolesModelo extends connectDB
         }
 		return $respuesta;
 	}
+
+	public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
 
 	public function existeaulaDocente($id)
     {

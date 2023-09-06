@@ -35,7 +35,11 @@ class EvaluacionModelo extends connectDB
     public function modificar($id,$nombre,$descripcion){
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre,$descripcion);
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "La Evaluacion no Existe";
             return $respuesta;
@@ -87,7 +91,11 @@ class EvaluacionModelo extends connectDB
     public function eliminar($id)
     {
         $validar_evaluacion = $this->relacion_evaluacion($id);
-        if ($this->existe($id)==false) {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "La Evaluacion no Existe";
             return $respuesta;
@@ -108,8 +116,8 @@ class EvaluacionModelo extends connectDB
                     $respuesta['mensaje'] = $e->getMessage();
                 }
             }
-            return $respuesta;
         }
+        return $respuesta;
     }
 
     public function elmininarEvaluacion_unidad($id)
@@ -330,7 +338,17 @@ class EvaluacionModelo extends connectDB
         return $r;
     }
 
-    
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
     public function validar_expresiones($nombre,$descripcion){
         $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/';
         $er_descripcion = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,200}$/';
