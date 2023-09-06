@@ -127,19 +127,6 @@ class EmprendimientoModelo extends connectDB
         }
     }
 
-    public function cemprendimiento()
-    {
-        $resultado = $this->conex->prepare("SELECT * FROM emprendimiento");
-        $respuestaArreglo = [];
-        try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-        return $respuestaArreglo;
-    }
-
     public function eliminar($id)
     {
         if ($this->existe($id)==false) {
@@ -211,7 +198,7 @@ class EmprendimientoModelo extends connectDB
         try {
             $resul = $this->conex->query("SELECT * FROM emprendimiento");
             if ($resul) {
-                $res = "<option value='0'>--Seleccione--</option>";
+                $res = "";
                 foreach ($resul as $r) {
                     $res = $res . "<option value='" . $r['id'] . "'>";
                     $res = $res . $r['nombre'];

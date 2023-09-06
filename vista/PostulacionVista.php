@@ -6,6 +6,7 @@ use config\componentes\configSistema as configSistema;
 <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
 <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <style>
   .masthead {
   padding-top: 10rem;
@@ -154,29 +155,19 @@ use config\componentes\configSistema as configSistema;
                               <hr>
                               <div>
                                 <h5>Emprendimientos:</h5>
-                                <?php echo $listar_emprendimientos; ?>
 
 
                                 
-                                <tbody id="">
-                                <?php foreach ($r3 as $key => $dato) {?>
-                                <tr>
-                                    <input type="hidden"
-                                        id="idmodulo<?php echo $dato['id']; ?>"
-                                        value="<?php echo $dato['id']; ?>">
-                                    <td class="d-flex">
-                                    <label class="mycheckbox d-flex justify-content-center align-items-center mx-1">
-                                        <input type="checkbox"id="check2<?php echo $dato['id']; ?>" id="botonasignar<?php echo $dato['id']; ?>" onclick="gestionar_em(<?=$dato['id'];?>);">
-                                        <span>
-                                        <i class="fas fa-check on"></i>
-                                        <i class="fas fa-times off"></i>
-                                        </span>
-                                    </label>
-                                    <h5 class="d-flex justify-content-center align-items-center"><?php echo $dato['nombre']; ?></h5>
-                                    </td>
-                                    <?php }?>
-                                </tr>
-                                </tbody>
+
+                                <div class="form-group">
+                                  <select class="duallistbox" multiple="multiple" id="emprendimientos" name="emprendimientos">
+                                  </select>
+                                  <span id="semprendimientos"></span>
+                                </div>
+
+
+
+
 
 
                               </div>
@@ -206,6 +197,7 @@ use config\componentes\configSistema as configSistema;
     <script src="plugins/all/js/all.min.js" crossorigin="anonymous"></script> 
     <script src="plugins/jquery/jquery.js" crossorigin="anonymous"></script>
     <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
     <script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="plugins/select2/js/select2.full.min.js"></script>

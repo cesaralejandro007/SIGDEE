@@ -145,6 +145,7 @@ $("#registrar").click(function (e) {
   a = valida_registrar1(); 
   if(a!=''){e.preventDefault();}
   else{
+    var arrayemprendimientos_new = JSON.stringify($("#emprendimientos").val());
     var datos = new FormData();
     datos.append('accion', 'registrar');
     datos.append('id', $("#id").val());
@@ -158,8 +159,9 @@ $("#registrar").click(function (e) {
     datos.append('correo', $("#correo").val());
     datos.append('telefono', $("#telefono").val());
     datos.append('direccion', $("#direccion").val());
-    datos.append('emprendimiento', $("#emprendimiento").val());
-    enviaAjax(datos);
+    datos.append("emprendimientos", arrayemprendimientos_new);
+
+    recibe_ajax(datos);
     
   }
 });
@@ -257,6 +259,7 @@ function valida_registrar1() {
 }
 
 $(document).ready(function () {
+  muestraAspirantes();
   cargar_checkboxme();
   document.getElementById("pais").onkeyup = function () {
     r = validarkeyup(
@@ -277,6 +280,15 @@ $(document).ready(function () {
   $("#estado").on("change", function () {
     $("#ciudad").html('<option value="0" disabled selected>Seleccione</option>');
     muestraCiudades();
+  });
+
+  $("#emprendimientos").bootstrapDualListbox({
+    nonSelectedListLabel: "Aspirantes existentes",
+    selectedListLabel: "Aspirantes Seleccionados",
+    infoText: "Mostrando {0}",
+    infoTextFiltered:
+      '<span class="badge badge-warning">Buscar</span> {0} de {1}',
+    infoTextEmpty: "Lista Vacia",
   });
 
 });
@@ -366,6 +378,12 @@ function muestraCiudades() {
   enviaAjax(datos);
 }
 
+function muestraAspirantes() {
+  var datos = new FormData();
+  datos.append("accion", "listadoemprendimientos");
+  enviaAjax(datos);
+}
+
   function valida_registrar(){ 
     var error = false;
     cedula = validarkeyup(keyup_cedula,document.getElementById('cedula'),document.getElementById('scedula'),"* El formato debe ser V-99999999 o J-99999999.");
@@ -395,6 +413,7 @@ function cargar(datos){
     cache: false,
     success:function(response){
       if(response){
+        alert(response);
         var res = JSON.parse(response);
         $("#id").val(res.id);
         $("#cedula").val(res.cedula);
@@ -440,7 +459,9 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     success: function (response) {
+      alert(response);
       //si resulto exitosa la transmision
+      alert(response);
       var res = JSON.parse(response);
       //alert(res.title);
       if (res.resultado == "listadopaises") {
@@ -453,7 +474,11 @@ function enviaAjax(datos) {
       else
       if (res.resultado == "listadociudades") {
         $("#ciudad").html(res.mensaje);
-      } 
+      }
+      else if (res.resultado == "listadoemprendimientos") {
+        $("#emprendimientos").html(res.datos);
+        $("#emprendimientos").bootstrapDualListbox("refresh", true);
+      }  
       if(res.resultado == 'cargar_emprendimientos'){
         for (let propiedad in res.datos) {
           if (res.datos != undefined) {
@@ -482,6 +507,57 @@ function enviaAjax(datos) {
         }, 2500);
       } else 
       if(res.estatus == 0){
+        toastMixin.fire({
+
+          text: res.message,
+          title: res.title,
+          icon: res.icon,
+        });
+      }
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: res.error,
+      });
+    },
+  });
+}
+
+function recibe_ajax(datos) {
+  var toastMixin = Swal.mixin({
+    showConfirmButton: false,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
+    timerProgressBar: true,
+  });
+  $.ajax({
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      if (res.estatus == 1) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+        setTimeout(function () {
+          window.location.reload();
+        }, 2500);
+      }else if (res.estatus =="check") {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+      } else {
         toastMixin.fire({
 
           text: res.message,

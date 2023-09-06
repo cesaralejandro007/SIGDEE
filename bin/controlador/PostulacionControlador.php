@@ -11,6 +11,7 @@ use modelo\AspiranteEmprendimientoModelo as AspiranteEmprendimiento;
 use modelo\PostulacionModelo as Postulacion;
 use config\componentes\configSistema as configSistema;
 
+$mensaje = new Mensaje();
 $config = new configSistema();
 
 if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
@@ -26,7 +27,30 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $postulacion = new Postulacion();
     $emprendimiento = new Emprendimiento();
     $modulo = 'Postulación:';
+    function Codificar($string)
+    {
+        $codec = '';
+        for ($i = 0; $i < strlen($string); $i++) {
+            $codec = $codec . base64_encode($string[$i]) . "#";
+        }
+        $string = base64_encode(base64_encode($codec));
+        $string = base64_encode($string);
+        return $string;
+    }
 
+    function Decodificar($string)
+    {
+        $decodec = '';
+        $string  = base64_decode(base64_decode($string));
+        $string  = base64_decode($string);
+        $string  = explode("#", $string);
+
+        foreach ($string as $str) {
+            $decodec = $decodec . base64_decode($str);
+        }
+        return $decodec;
+    }
+    $clave = password_hash('Diplomado', PASSWORD_DEFAULT);
     $array_paises = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."countries.json"))), true);
     $array_estados = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."states.json"))), true);
     $array_ciudades = json_decode(utf8_encode(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', file_get_contents($config->_JSON_()."cities.json"))), true);  
@@ -55,7 +79,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         $accion = $_POST['accion'];
         if ($accion == 'buscar-usuario') {
             $datos = $usuario->buscar_cedula($_POST['cedula']);
-            usleep(5);
+            print_r($datos);
+            return 0;
             foreach ($datos as $valor) {
                 echo json_encode([
                     'id' => $valor['id'],
@@ -74,64 +99,134 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
         else if ($accion == 'registrar') {
-            print_r($_POST['emprendimiento']);
-            return 0;
+            $respuesta = [];
+            $id_emprendimiento = json_decode($_POST['emprendimientos']);
+            $id_aspirante = $_POST['id'];
+            $cantidad_emprendimientos = $id_emprendimiento !=null ? count(json_decode($_POST['emprendimientos'])) : 0;
+            //Funcion que verifica que exista la ciudad seleccionada
+            $id_ciudad = $ciudad->validar_registro($_POST['ciudad']);
+            //Buscar el emprendimiento_modulo de acuerdo al id_emprendimiento y el id_modulo
+
+            /****Validacion --->  En caso de que no exista la ciudad del estudiante ****/
+            if($id_ciudad == 0){
+                  $respuesta = [
+                    'estatus' => '0',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => 'No existe ciudad seleccionada'
+                ];
+                echo json_encode($respuesta);
+                return 0;  
+            }
+            /******Fin de la validacion ********/       
+
+            /****Validacion --->  En caso de que no hayan elegido algun estudiante en la lista ****/
+            if($id_emprendimiento== null || $cantidad_emprendimientos == 0 || $cantidad_emprendimientos  < 0){
+                $respuesta = [
+                    'estatus' => '3',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => 'Debe elegir un emprendimiento'
+                ];
+                echo json_encode($respuesta);
+                return 0; 
+            }
+            /******Fin de la validacion ********/   
+
+
+            /****Validacion --->  En caso de que se reciba un id de emprendimiento que no exista ****/
+            $encontrado = true;
+            foreach ($id_emprendimiento as $emprende) {
+                $emprende = $emprendimiento->existe($emprende);
+                if($emprende == 0){
+                    $encontrado = false;
+                }
+            }
+            if($encontrado== false){
+                $respuesta = [
+                    'estatus' => '4',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => 'El emprendimiento no existe'
+                ];
+                echo json_encode($respuesta);
+                return 0; 
+            }
+            /******Fin de la validacion ********/   
+
+            //Registrar el aula con su nombre, y id_emprendimiento_modulo
+            //Debo validar a ciudad
+            $respuesta = $aspirante->registrar_aspirante($_POST['cedula'], $_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'], $clave);
+            if ($respuesta) {
+                //$buscar_id = $aula->buscar_ultimo();
+                //$aula_docente->incluir($buscar_id[0]['id'], $_POST['docente']);
+                foreach ($id_emprendimiento as $dato) {
+                    $response = $aspirante_emprendimiento->incluir($id_aspirante, $dato);
+                }
+                $respuesta = [
+                    'estatus' => '1',
+                    'icon' => 'success',
+                    'title' => $modulo,
+                    'message' => $respuesta['mensaje']
+                ];
+                echo json_encode($respuesta);
+                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
+
+                return 0;
+            } else {
+                $respuesta = [
+                    'estatus' => '2',
+                    'icon' => 'info',
+                    'title' => $modulo,
+                    'message' => $respuesta['mensaje']
+                ];
+                echo json_encode($respuesta);
+                return 0;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
             if ($_POST['id'] != '') {
                 $id_aspirante = $_POST['id'];
             }
             else
             {
-                function Codificar($string)
-                {
-                    $codec = '';
-                    for ($i = 0; $i < strlen($string); $i++) {
-                        $codec = $codec . base64_encode($string[$i]) . "#";
-                    }
-                    $string = base64_encode(base64_encode($codec));
-                    $string = base64_encode($string);
-                    return $string;
-                }
-            
-                function Decodificar($string)
-                {
-                    $decodec = '';
-                    $string  = base64_decode(base64_decode($string));
-                    $string  = base64_decode($string);
-                    $string  = explode("#", $string);
-            
-                    foreach ($string as $str) {
-                        $decodec = $decodec . base64_decode($str);
-                    }
-                    return $decodec;
-                }
-                $clave = password_hash('Diplomado', PASSWORD_DEFAULT);
                 $response = $aspirante->registrar_aspirante($_POST['cedula'], $_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'], $clave);
                 if($response)
                 {
                     $datos = $usuario->buscar_cedula($_POST['cedula']);
                     $id_aspirante = $datos[0]['id'];
-                    echo "alert('".$_POST['cedula']."')";
                 }
                 else
                 {
-                    $config->informacion('Postulación', $response);
+                    $mensaje->error('Postulación', 'Error al registrar aspirante');
                     exit();
                 }
             }
-            if(!empty($_POST['emprendimiento'])){
-                foreach($_POST['emprendimiento'] as $id_emprendimiento){
+            if(!empty($_POST['emprendimientos'])){
+                $emprendimientos = json_decode($_POST['emprendimientos']);
+                foreach($emprendimientos as $id_emprendimiento){
                     $response = $aspirante_emprendimiento->incluir($id_aspirante, $id_emprendimiento);
                 } 
+                $mensaje->confirmar('Postulación', 'Registro exitoso');
+                return 0;
             }else{
-                echo "<script>
-                swal({
-                    title: '¡ERROR!',
-                    text: 'Esto es un mensaje de error',
-                    type: 'error',
-                });</script>";
-            }
+                $mensaje->error('Postulación', 'No ha elegido un emprendimiento');
+                exit();
+            }*/
             //$config->confirmar('Postulación', 'Registro exitoso');
-            //return 0;
+            //return 0; 
         }else if($accion == 'listadopaises'){
             $r = array();
             $x = '<option disabled selected>Seleccione</option>';
@@ -147,7 +242,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         } else if($accion == 'listadoestados'){
             $r = array();
             $x = '<option disabled selected>Seleccione</option>';
-            
             foreach ($array_estados as $estado) {
                 if($estado['id_country'] == $_POST['pais']){
                     $x = $x . '<option value="' . $estado['id'] . '">' . $estado['name'] . '</option>';
@@ -173,14 +267,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo json_encode($r);
             return 0;
         }
-        else if ($accion == "cargar_emprendimientos") {
-            $consulta = $emprendimiento->cemprendimiento();
+        else if($accion = 'listadoemprendimientos'){
+            $respuesta = $emprendimiento->mostrar();
             echo json_encode([
-                'datos' => $consulta,
-                'resultado' => 'cargar_emprendimientos'
+                'resultado' => 'listadoemprendimientos',
+                'datos' => $respuesta
             ]);
             return 0;
-        } 
+        }
         
     } /*
         else if ($accion == 'recuperar') {
