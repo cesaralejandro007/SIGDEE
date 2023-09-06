@@ -21,6 +21,8 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
     exit;
 }
 
+
+
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
     
@@ -32,6 +34,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     foreach ($_SESSION['usuario'] as $k => $v) {
         openssl_private_decrypt($v, $decrypted_data, $t_private_key);
         $decrypted[$k] = $decrypted_data;
+    }
+
+    if(count(array_filter($decrypted)) == 0) {
+        $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+        echo '<script>window.location="' . $redirectUrl . '"</script>';
+        die();
     }
 
     $usuario = new Usuario();

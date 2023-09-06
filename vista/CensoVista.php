@@ -129,6 +129,7 @@ if (isset($response[0]["eliminar"])) {
                         </div>
                         <div class="modal-body">
                             <form action="" method="post" id="f">
+                                <input type="hidden" name="idusuario" id="idusuario" value="<?php echo $decrypted["id"] ?>"/>
                                 <input type="hidden" name="accion" id="accion" />
                                 <input type="hidden" name="id" id="id" />
                                 <div class="form-group row">

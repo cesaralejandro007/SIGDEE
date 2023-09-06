@@ -242,15 +242,9 @@ class DocenteModelo extends connectDB
         }else if(!preg_match_all($er_nombre,$primer_nombre) || trim($primer_nombre)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Primer nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }else if(!preg_match_all($er_nombre,$segundo_nombre) || trim($segundo_nombre)==''){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Segundo nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
         }else if(!preg_match_all($er_nombre,$primer_apellido) || trim($primer_apellido)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo Primer apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
-        }else if(!preg_match_all($er_nombre,$segundo_apellido) || trim($segundo_apellido)==''){
-            $respuesta["resultado"]=true;
-            $respuesta["mensaje"]="El campo Segundo apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
         }else if(!preg_match_all($er_genero,$genero) || trim($genero)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="Debe seleccionar un Genero.";
@@ -263,6 +257,17 @@ class DocenteModelo extends connectDB
         }else if(!preg_match_all($er_direccion,$direccion) || trim($direccion)==''){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo dirección debe contener Solo letras de 2 a 200 caracteres, siendo la primera en mayúscula.";
+        }else if($segundo_nombre!='' || $segundo_apellido!=''){
+            if(!preg_match_all($er_nombre,$segundo_nombre) || trim($segundo_nombre)==''){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="El campo Segundo nombre debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+            }else if(!preg_match_all($er_nombre,$segundo_apellido) || trim($segundo_apellido)==''){
+                $respuesta["resultado"]=true;
+                $respuesta["mensaje"]="El campo Segundo apellido debe contener solo letras de 2 a 30 caracteres, siendo la primera en mayúscula.";
+            }else{
+                $respuesta["resultado"]=false;
+                $respuesta["mensaje"]="";
+            }
         }else{
             $respuesta["resultado"]=false;
             $respuesta["mensaje"]="";

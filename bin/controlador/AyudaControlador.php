@@ -31,6 +31,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         $decrypted[$k] = $decrypted_data;
     }
 
+    if(count(array_filter($decrypted)) == 0) {
+        $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+        echo '<script>window.location="' . $redirectUrl . '"</script>';
+        die();
+    }
 
     require_once "vista/" . $pagina . "Vista.php";
 } else {

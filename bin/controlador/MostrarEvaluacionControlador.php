@@ -61,6 +61,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         openssl_private_decrypt($v, $decrypted_data, $t_private_key);
         $decrypted[$k] = $decrypted_data;
     }
+
+    if(count(array_filter($decrypted)) == 0) {
+        $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+        echo '<script>window.location="' . $redirectUrl . '"</script>';
+        die();
+    }
     
     $usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"],$decrypted["id"]);
     $entorno = $bitacora->buscar_id_entorno('Unidad');

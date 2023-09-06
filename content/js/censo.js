@@ -116,6 +116,7 @@ function carga() {
       var datos = new FormData();
       datos.append("accion", $("#accion").val());
       datos.append("id", $("#id").val());
+      datos.append("idusuario", $("#idusuario").val());
       datos.append("fecha_apertura", $("#fecha_apertura").val());
       datos.append("fecha_cierre", $("#fecha_cierre").val());
       datos.append("descripcion", $("#descripcion").val());

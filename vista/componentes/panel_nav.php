@@ -56,6 +56,7 @@ body::-webkit-scrollbar-track {
                     notificaciones</a>
             </div>
         </li>
+        <center>
         <li class="nav-item dropdown no-arrow">
         <?php if($decrypted["ultimo_acceso"]!=""){?>
             <a class="nav-link dropdown-toggle p-0" id="userDropdown" role="button" data-toggle="dropdown"
@@ -67,6 +68,7 @@ body::-webkit-scrollbar-track {
                     <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"]  ?>
                 </spam>
             </a>
+          
             <?php } else{?>
             <a class="nav-link dropdown-toggle " id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -115,5 +117,6 @@ body::-webkit-scrollbar-track {
                 </div>
             </div>
         </li>
+        </center>
     </ul>
 </nav>

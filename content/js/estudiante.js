@@ -402,22 +402,10 @@ function valida_registrar() {
     document.getElementById("spnombre"),
     "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
   );
-  snombre = validarkeyup(
-    keyup_nombre,
-    document.getElementById("segundo_nombre"),
-    document.getElementById("ssnombre"),
-    "* Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
-  );
   papellido = validarkeyup(
     keyup_apellido,
     document.getElementById("primer_apellido"),
     document.getElementById("spapellido"),
-    "Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
-  );
-  sapellido = validarkeyup(
-    keyup_apellido,
-    document.getElementById("segundo_apellido"),
-    document.getElementById("ssapellido"),
     "Solo letras de 3 a 30 caracteres, siendo la primera en mayúscula."
   );
     if(document.getElementById("genero").value == 0){
@@ -450,9 +438,7 @@ function valida_registrar() {
   if (
     cedula == 0 ||
     pnombre == 0 ||
-    snombre == 0 ||
     papellido == 0 ||
-    sapellido == 0 ||
     document.getElementById("genero").value == 0 ||
     correo == 0 ||
     telefono == 0 ||

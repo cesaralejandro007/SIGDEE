@@ -27,6 +27,12 @@ if (is_file("vista/" . $pagina . "Vista.php")) {
         $decrypted[$k] = $decrypted_data;
     }
 
+    if(count(array_filter($decrypted)) == 0) {
+        $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+        echo '<script>window.location="' . $redirectUrl . '"</script>';
+        die();
+    }
+
 	if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
 		if ($accion == 'eliminar') {

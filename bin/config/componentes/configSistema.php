@@ -136,6 +136,10 @@
 			return self::Seguridad('Diplomado', 'codificar');
 		}
 
+		public static function _LOGIN_() {
+			return self::Seguridad('Login', 'codificar');
+		}
+
 		public static function _MAULAS_($id_aula) {
 			$aulas = "Aula&visualizar=true&aula=".$id_aula;
 			echo self::Seguridad($aulas, 'codificar');
