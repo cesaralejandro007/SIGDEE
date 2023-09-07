@@ -20,7 +20,7 @@ class UsuarioModelo extends connectDB
     {
         $validar_registro = $this->validar_registro($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
-        $validar_expresionID = $this->validar_expresion_id($id_ciudad);
+        $validar_expresionID = $this->validar_expresion_idciudad($id_ciudad);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
@@ -69,47 +69,53 @@ class UsuarioModelo extends connectDB
         $existerol = $this->validarrol($id_rol);
         $existeusuario = $this->validarusuario($id_usuario);
         $existe_registro_rol = $this->validar_registro_rol($id_rol, $id_usuario);
-        if ($existerol == false) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "No existe el rol";
-        }else if($existeusuario == false){
+        $validar_expresionIdUsuario = $this->validar_expresion_idusuario($id_rol,$id_usuario);
+        if ($validar_expresionIdUsuario['resultado']) {
             $respuesta['resultado'] = 4;
-            $respuesta['mensaje'] = "No existe el usuario";
+            $respuesta['mensaje'] = $validar_expresionIdUsuario['mensaje'];
         }else{
-            if ($existe_registro_rol == false and $status == "true") {
-                try {
-                    $this->conex->query("INSERT INTO usuarios_roles(
-                        id_usuario,
-                        id_rol
-                        )
-                        VALUES(
-                        '$id_usuario',
-                        '$id_rol'
-                    )");
-                    $respuesta["resultado"]=1;
-                    $respuesta["mensaje"]="Roles Registrados.";
-                } catch (Exception $e) {
-                    $respuesta['resultado'] = 0;
-                    $respuesta['mensaje'] = $e->getMessage();
+            if ($existerol == false) {
+                $respuesta['resultado'] = 3;
+                $respuesta['mensaje'] = "No existe el rol";
+            }else if($existeusuario == false){
+                $respuesta['resultado'] = 4;
+                $respuesta['mensaje'] = "No existe el usuario";
+            }else{
+                if ($existe_registro_rol == false and $status == "true") {
+                    try {
+                        $this->conex->query("INSERT INTO usuarios_roles(
+                            id_usuario,
+                            id_rol
+                            )
+                            VALUES(
+                            '$id_usuario',
+                            '$id_rol'
+                        )");
+                        $respuesta["resultado"]=1;
+                        $respuesta["mensaje"]="Roles Registrados.";
+                    } catch (Exception $e) {
+                        $respuesta['resultado'] = 0;
+                        $respuesta['mensaje'] = $e->getMessage();
+                    }
+                } else if ($existe_registro_rol == true and $status == "false") {
+                    try {
+                        $this->conex->query("DELETE from usuarios_roles
+                            WHERE
+                            id_usuario = '$id_usuario' and id_rol = '$id_rol'
+                            ");
+                        $respuesta["resultado"]=2;
+                        $respuesta["mensaje"]="Roles Eliminados.";
+                    } catch (Exception $e) {
+                        $respuesta['resultado'] = 0;
+                        $respuesta['mensaje'] = $e->getMessage();
+                    }
+                }else if ($existe_registro_rol == false) {
+                        $respuesta["resultado"]=5;
+                        $respuesta["mensaje"]="El registro rol no existe.";
+                } else {
+                        $respuesta["resultado"]=1;
+                        $respuesta["mensaje"]="Registro Exitoso.";
                 }
-            } else if ($existe_registro_rol == true and $status == "false") {
-                try {
-                    $this->conex->query("DELETE from usuarios_roles
-                        WHERE
-                        id_usuario = '$id_usuario' and id_rol = '$id_rol'
-                        ");
-                    $respuesta["resultado"]=2;
-                    $respuesta["mensaje"]="Roles Eliminados.";
-                } catch (Exception $e) {
-                    $respuesta['resultado'] = 0;
-                    $respuesta['mensaje'] = $e->getMessage();
-                }
-            }else if ($existe_registro_rol == false) {
-                    $respuesta["resultado"]=5;
-                    $respuesta["mensaje"]="El registro rol no existe.";
-            } else {
-                    $respuesta["resultado"]=1;
-                    $respuesta["mensaje"]="Registro Exitoso.";
             }
         }
         return $respuesta;
@@ -152,9 +158,13 @@ class UsuarioModelo extends connectDB
         $validar_modificar = $this->validar_modificar($cedula, $id);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         $validar_expresionID = $this->validar_expresion_id($id);
+        $validar_expresionIdCuidad = $this->validar_expresion_idciudad($id_ciudad);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($validar_expresionIdCuidad['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionIdCuidad['mensaje'];
         }else if ($this->existe_usuario_rol($cedula)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario no Existe";
@@ -538,6 +548,31 @@ class UsuarioModelo extends connectDB
         return $respuesta;
     }
 
+    public function validar_expresion_idciudad($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID_Cuidad solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
+
+    public function validar_expresion_idusuario($id_rol,$id_usuario){
+        if(!preg_match('/^[0-9]+$/', $id_rol)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID_rol solo debe contener números";
+        }else if(!preg_match('/^[0-9]+$/', $id_usuario)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID_entorno solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
     public function validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono){
         $er_cedula = '/^[0-9]{7,8}$/';
         $er_nombre = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/';

@@ -15,7 +15,12 @@ class CensoModelo extends connectDB
 
         $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre);
         $validar_id_personal = $this->validar_id_usuario($id_personal);
-        if ($validar_expresion['resultado']) {
+
+        $validar_expresionID = $this->validar_expresion_id($id_personal);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         }else if(! $validar_id_personal){

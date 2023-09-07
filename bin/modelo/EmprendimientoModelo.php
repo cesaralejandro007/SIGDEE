@@ -13,8 +13,11 @@ class EmprendimientoModelo extends connectDB
         $validar_area_emprendimiento = $this->existe_area_emprendimiento($id_area);
         $validar_registro = $this->validar_registro($nombre);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-
-        if ($validar_area_emprendimiento == false){
+        $validar_expresionIDarea = $this->validar_expresion_id($id_area);
+        if ($validar_expresionIDarea['resultado']) {
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = $validar_expresionIDarea['mensaje'];
+        }else if ($validar_area_emprendimiento == false){
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "No existe area de emprendimiento";
         }else if ($validar_registro) {
