@@ -59,9 +59,13 @@ class EmprendimientoModelo extends connectDB
         $existe_registro_emprendimiento = $this->validar_registro_emprendimiento($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
         $validar_expresionID = $this->validar_expresion_id($id);
+        $validar_expresionIDarea = $this->validar_expresion_id($id_area);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($validar_expresionIDarea['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionIDarea['mensaje'];
         }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 5;
             $respuesta['mensaje'] = "El Emprendimiento de no Existe";
@@ -89,27 +93,33 @@ class EmprendimientoModelo extends connectDB
     public function actualizarstatus($id,$status)
     {
         $existe_emprendimieto = $this->validar_emprendimiento($id);
-        if($existe_emprendimieto==false){
+        $validar_expresionID = $this->validar_expresion_id($id);
+        if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "No existe el emprendimieto";
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
         }else{
+            if($existe_emprendimieto==false){
+                $respuesta['resultado'] = 3;
+                $respuesta['mensaje'] = "No existe el emprendimieto";
+            }else{
 
-            try {
-                if($status=="true" || $status=="false"){
-                    $this->conex->query("UPDATE emprendimiento SET estatus = '$status' WHERE id = '$id'");
-                    if($status=="true"){
-                        $respuesta['resultado'] = 1;
-                        $respuesta['mensaje'] = "Activado";
+                try {
+                    if($status=="true" || $status=="false"){
+                        $this->conex->query("UPDATE emprendimiento SET estatus = '$status' WHERE id = '$id'");
+                        if($status=="true"){
+                            $respuesta['resultado'] = 1;
+                            $respuesta['mensaje'] = "Activado";
+                        }else{
+                            $respuesta['resultado'] = 2;
+                            $respuesta['mensaje'] = "Desactivado";
+                        }
                     }else{
-                        $respuesta['resultado'] = 2;
-                        $respuesta['mensaje'] = "Desactivado";
+                        $respuesta['resultado'] = 4;
+                        $respuesta['mensaje'] = "status incorrecto";
                     }
-                }else{
-                    $respuesta['resultado'] = 4;
-                    $respuesta['mensaje'] = "status incorrecto";
+                } catch (Exception $e) {
+                    return $e->getMessage();
                 }
-            } catch (Exception $e) {
-                return $e->getMessage();
             }
         }
         return $respuesta;

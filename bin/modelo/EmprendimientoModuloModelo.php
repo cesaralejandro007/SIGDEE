@@ -14,57 +14,63 @@ class EmprendimientoModuloModelo extends connectDB
         $existe_emprendimieto_modulo = $this->validar_emprendimiento_modulo($id_modulo, $id_emprendimiento);
         $existe_modulo = $this->validar_modulo($id_modulo);
         $existe_emprendimieto = $this->validar_emprendimiento($id_emprendimiento);
-        if($existe_modulo==false){
-            $respuesta['resultado'] = 4;
-            $respuesta['mensaje'] = "No existe el modulo";
-        }else if($existe_emprendimieto==false){
-            $respuesta['resultado'] = 5;
-            $respuesta['mensaje'] = "No existe el emprendimieto";
-        }else if($existe_emprendimieto_modulo == false and $status == "true") {
-            try {
-                $this->conex->query("INSERT INTO emprendimiento_modulo(
-                    id_modulo,
-                    id_emprendimiento
-					)
-					VALUES(
-                    '$id_modulo',
-					'$id_emprendimiento'
-				)");
-                $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Registro exitoso";
-            } catch (Exception $e) {
-                return $e->getMessage();
-            }
-        }else if ($existe_emprendimieto_modulo == true and $status == "false") {
-            $emprendimiento_aula = $this->validar_emprendimiento_aula($id_modulo, $id_emprendimiento);
-            if($emprendimiento_aula){
-                $resultado = $this->conex->prepare("DELETE from emprendimiento_modulo
-                    WHERE
-                    id_emprendimiento = '$id_emprendimiento' and id_modulo = '$id_modulo'
-                    ");
+        $validar_expresionID = $this->validar_expresion_id($id_modulo,$id_emprendimiento);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else{
+            if($existe_modulo==false){
+                $respuesta['resultado'] = 4;
+                $respuesta['mensaje'] = "No existe el modulo";
+            }else if($existe_emprendimieto==false){
+                $respuesta['resultado'] = 5;
+                $respuesta['mensaje'] = "No existe el emprendimieto";
+            }else if($existe_emprendimieto_modulo == false and $status == "true") {
                 try {
-                    $resultado->execute();
-                    $fila = $resultado->rowCount();
-                    if ($fila > 0) {
-                        $respuesta['resultado'] = 1;
-                        $respuesta['mensaje'] = "Eliminación exitosa";
-                    } else {
-                        $respuesta['resultado'] = 2;
-                        $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculos con Emprendimiento Modulo.";
-                    }
+                    $this->conex->query("INSERT INTO emprendimiento_modulo(
+                        id_modulo,
+                        id_emprendimiento
+                        )
+                        VALUES(
+                        '$id_modulo',
+                        '$id_emprendimiento'
+                    )");
+                    $respuesta['resultado'] = 1;
+                    $respuesta['mensaje'] = "Registro exitoso";
                 } catch (Exception $e) {
                     return $e->getMessage();
                 }
-            }else{
-                $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculo con Aula.";
+            }else if ($existe_emprendimieto_modulo == true and $status == "false") {
+                $emprendimiento_aula = $this->validar_emprendimiento_aula($id_modulo, $id_emprendimiento);
+                if($emprendimiento_aula){
+                    $resultado = $this->conex->prepare("DELETE from emprendimiento_modulo
+                        WHERE
+                        id_emprendimiento = '$id_emprendimiento' and id_modulo = '$id_modulo'
+                        ");
+                    try {
+                        $resultado->execute();
+                        $fila = $resultado->rowCount();
+                        if ($fila > 0) {
+                            $respuesta['resultado'] = 1;
+                            $respuesta['mensaje'] = "Eliminación exitosa";
+                        } else {
+                            $respuesta['resultado'] = 2;
+                            $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculos con Emprendimiento Modulo.";
+                        }
+                    } catch (Exception $e) {
+                        return $e->getMessage();
+                    }
+                }else{
+                    $respuesta['resultado'] = 2;
+                    $respuesta['mensaje'] = "El Modulo no puede ser borrardo, existen vinculo con Aula.";
+                }
+            }else if ($existe_emprendimieto_modulo == false and $status == "false") {
+                $respuesta['resultado'] = 3;
+                $respuesta['mensaje'] = "No existe el registro emprendimieto modulo";
+            }else {
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
             }
-        }else if ($existe_emprendimieto_modulo == false and $status == "false") {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "No existe el registro emprendimieto modulo";
-        }else {
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Registro exitoso";
         }
         return $respuesta;
     }
@@ -307,5 +313,19 @@ class EmprendimientoModuloModelo extends connectDB
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function validar_expresion_id($id_modulo,$id_emprendimiento){
+        if(!preg_match('/^[0-9]+$/', $id_modulo)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo id_modulo solo debe contener números";
+        }else if(!preg_match('/^[0-9]+$/', $id_emprendimiento)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo id_emprendimiento solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
 }
