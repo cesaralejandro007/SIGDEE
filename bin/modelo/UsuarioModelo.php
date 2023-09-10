@@ -32,8 +32,27 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         } else {
             try {
-                $this->conex->query("INSERT INTO usuario(cedula, id_ciudad, primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,genero,correo, direccion, telefono,clave)
-					VALUES('$cedula', '$id_ciudad', '$primer_nombre','$segundo_nombre', '$primer_apellido','$segundo_apellido','$genero', '$correo', '$direccion','$telefono','$clave')");
+                $sql = "INSERT INTO usuario(cedula, id_ciudad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, genero, correo, direccion, telefono, clave)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
+                $values = [
+                    $cedula,
+                    $id_ciudad,
+                    $primer_nombre,
+                    $segundo_nombre,
+                    $primer_apellido,
+                    $segundo_apellido,
+                    $genero,
+                    $correo, 
+                    $direccion,
+                    $telefono,
+                    $clave
+                ];
+
+                $stmt = $this->conex->prepare($sql); 
+
+                $stmt->execute($values);
+                
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Registro Exitoso.";
             } catch (Exception $e) {
@@ -52,10 +71,18 @@ class UsuarioModelo extends connectDB
             $respuesta["mensaje"]="La cedula ya se encuentra registrada.";
         } else {
             try {
-                $this->conex->query("INSERT INTO usuario(cedula, nombre,  apellido, correo)
-                    VALUES('$cedula', '$nombre', '$apellido', '$correo')");
-                    $respuesta["resultado"]=1;
-                    $respuesta["mensaje"]="Registro Exitoso.";
+
+                $sql = "INSERT INTO usuario(cedula, nombre,  apellido, correo)
+                VALUES(?, ?, ?, ?)";
+
+                $values = [$cedula,$nombre,$apellido,$correo];
+
+                $stmt = $this->conex->prepare($sql); 
+
+                $stmt->execute($values);
+
+                $respuesta["resultado"]=1;
+                $respuesta["mensaje"]="Registro Exitoso.";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -78,14 +105,16 @@ class UsuarioModelo extends connectDB
         }else{
             if ($existe_registro_rol == false and $status == "true") {
                 try {
-                    $this->conex->query("INSERT INTO usuarios_roles(
-                        id_usuario,
-                        id_rol
-                        )
-                        VALUES(
-                        '$id_usuario',
-                        '$id_rol'
-                    )");
+
+                    $sql = "INSERT INTO usuarios_roles(id_usuario, id_rol)
+                    VALUES(?, ?)";        
+
+                    $values = [$id_usuario,$id_rol];
+
+                    $stmt = $this->conex->prepare($sql); 
+
+                    $stmt->execute($values);
+
                     $respuesta["resultado"]=1;
                     $respuesta["mensaje"]="Roles Registrados.";
                 } catch (Exception $e) {
@@ -94,10 +123,15 @@ class UsuarioModelo extends connectDB
                 }
             } else if ($existe_registro_rol == true and $status == "false") {
                 try {
-                    $this->conex->query("DELETE from usuarios_roles
-                        WHERE
-                        id_usuario = '$id_usuario' and id_rol = '$id_rol'
-                        ");
+
+                    $sql = "DELETE FROM usuarios_roles WHERE id_usuario = ? AND id_rol = ?";        
+
+                    $values = [$id_usuario,$id_rol];
+
+                    $stmt = $this->conex->prepare($sql); 
+
+                    $stmt->execute($values);
+
                     $respuesta["resultado"]=2;
                     $respuesta["mensaje"]="Roles Eliminados.";
                 } catch (Exception $e) {
@@ -118,9 +152,16 @@ class UsuarioModelo extends connectDB
     public function validarrol($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM rol WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
+
+            $sql = "SELECT * FROM rol WHERE id = ?";  
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
             if ($fila > 0) {
                 return true;
             } else {
@@ -133,9 +174,17 @@ class UsuarioModelo extends connectDB
     public function validarusuario($id_usuario)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id_usuario'");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
+
+            $sql = "SELECT * FROM usuario WHERE id = ?";  
+
+            $values = [$id_usuario];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
+
             if ($fila > 0) {
                 return true;
             } else {
@@ -168,7 +217,27 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         }  else {
             try {
-                $this->conex->query("UPDATE usuario  SET cedula = '$cedula', id_ciudad = '$id_ciudad', primer_nombre = '$primer_nombre', segundo_nombre = '$segundo_nombre', genero = '$genero',correo = '$correo',  direccion = '$direccion', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido',telefono = '$telefono' WHERE id = '$id'");
+
+                $sql = "UPDATE usuario  SET cedula = ?, id_ciudad = ?, primer_nombre = ?, segundo_nombre = ?, genero = ?, correo = ?,  direccion = ?, primer_apellido = ?, segundo_apellido = ?,telefono = ? WHERE id = ?";  
+
+                $values = [
+                    $cedula,
+                    $id_ciudad,
+                    $primer_nombre,
+                    $segundo_nombre,
+                    $primer_apellido,
+                    $segundo_apellido,
+                    $genero,
+                    $correo, 
+                    $direccion,
+                    $telefono,
+                    $id
+                ];
+
+                $stmt = $this->conex->prepare($sql); 
+
+                $stmt->execute($values);
+
                 $respuesta["resultado"]=1;
                 $respuesta["mensaje"]="Modificación exitosa.";
             } catch (Exception $e) {
@@ -223,7 +292,15 @@ class UsuarioModelo extends connectDB
                 return $respuesta;
             }else{
                 try {
-                    $this->conex->query("DELETE from usuario WHERE cedula = '$cedula'");
+
+                    $sql = "DELETE from usuario WHERE cedula = ?"; 
+
+                    $values = [$cedula];
+
+                    $stmt = $this->conex->prepare($sql); 
+
+                    $stmt->execute($values);
+
                     $respuesta['resultado'] = 1;
                     $respuesta['mensaje'] = "Eliminacion exitosa";
                 } catch (Exception $e) {
@@ -238,9 +315,17 @@ class UsuarioModelo extends connectDB
     public function validar_relacion_rol($cedula)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario,usuarios_roles,rol WHERE usuario.id = usuarios_roles.id_usuario and rol.id = usuarios_roles.id_rol AND usuario.cedula ='". $cedula ."'");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
+
+            $sql = "SELECT * FROM usuario,usuarios_roles,rol WHERE usuario.id = usuarios_roles.id_usuario and rol.id = usuarios_roles.id_rol AND usuario.cedula = ?"; 
+
+            $values = [$cedula];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
+
             if ($fila > 0) {
                 return true;
             } else {
@@ -254,9 +339,17 @@ class UsuarioModelo extends connectDB
     public function validar_relacion_aspirante($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM aspirante_emprendimiento WHERE id_usuario ='".$id."'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+
+            $sql = "SELECT * FROM aspirante_emprendimiento WHERE id_usuario = ?"; 
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -269,9 +362,17 @@ class UsuarioModelo extends connectDB
     public function validar_relacion_censo($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM censo WHERE id_usuario ='".$id."'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+
+            $sql = "SELECT * FROM censo WHERE id_usuario = ?"; 
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -285,9 +386,17 @@ class UsuarioModelo extends connectDB
     public function validar_estudiante_evaluacion($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM estudiante_evaluacion WHERE id_usuario ='".$id."'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+
+            $sql = "SELECT * FROM estudiante_evaluacion WHERE id_usuario = ?"; 
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -301,9 +410,17 @@ class UsuarioModelo extends connectDB
     public function validar_estudiante_aula($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM aula_estudiante WHERE id_estudiante ='".$id."'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+
+            $sql = "SELECT * FROM aula_estudiante WHERE id_estudiante = ?"; 
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -317,9 +434,17 @@ class UsuarioModelo extends connectDB
     public function validar_docente_aula($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM aula_docente WHERE id_docente ='".$id."'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+
+            $sql = "SELECT * FROM aula_docente WHERE id_docente = ?"; 
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -345,11 +470,21 @@ class UsuarioModelo extends connectDB
 
     public function consultarid($cedula)
     {
-        $resultado = $this->conex->prepare("SELECT id,cedula,primer_nombre,primer_apellido FROM usuario WHERE cedula = $cedula");
-        $respuestaArreglo = [];
+
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
+             
+            $sql = "SELECT id,cedula,primer_nombre,primer_apellido FROM usuario WHERE cedula = ?"; 
+            
+            $respuestaArreglo = [];
+
+            $values = [$cedula];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
+
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -374,11 +509,18 @@ class UsuarioModelo extends connectDB
 
     public function cargar($id)
     {
-        $resultado = $this->conex->prepare("SELECT id, cedula, primer_nombre, segundo_nombre,primer_apellido, segundo_apellido, genero, correo, direccion, telefono, clave, imagen FROM usuario WHERE id = '$id'");
-        $respuestaArreglo = [];
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
+            $sql = "SELECT id, cedula, primer_nombre, segundo_nombre,primer_apellido, segundo_apellido, genero, correo, direccion, telefono, clave, imagen FROM usuario WHERE id = ?"; 
+            
+            $respuestaArreglo = [];
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -387,11 +529,19 @@ class UsuarioModelo extends connectDB
 
     public function buscar_cedula($cedula)
     {
-        $resultado = $this->conex->prepare("SELECT *FROM usuario WHERE cedula ='$cedula'; ");
-        $respuestaArreglo = [];
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
+            $sql = "SELECT *FROM usuario WHERE cedula = ? "; 
+            
+            $respuestaArreglo = [];
+
+            $values = [$cedula];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
+
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -417,9 +567,15 @@ class UsuarioModelo extends connectDB
     public function validar_registro($cedula)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula='$cedula'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM usuario WHERE cedula = ?"; 
+
+            $values = [$cedula];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
             if ($fila) {
                 return false;
             } else {
@@ -433,9 +589,15 @@ class UsuarioModelo extends connectDB
     public function existe_usuario_rol($cedula)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula='$cedula'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM usuario WHERE cedula = ?"; 
+
+            $values = [$cedula];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
             if ($fila) {
                 return true;
             } else {
@@ -450,9 +612,16 @@ class UsuarioModelo extends connectDB
     public function validar_modificar($cedula, $id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula='$cedula' AND id<>'$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM usuario WHERE cedula = ? AND id <> ?"; 
+
+            $values = [$cedula, $id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
+
             if ($fila) {
                 return true;
             } else {
@@ -465,11 +634,20 @@ class UsuarioModelo extends connectDB
 
     public function validar_registro_rol($id_rol, $id_usuario)
     {
-        $resultado = $this->conex->prepare("SELECT * FROM usuarios_roles WHERE usuarios_roles.id_rol = '$id_rol' and usuarios_roles.id_usuario = '$id_usuario'");
+
         try {
-            $resultado->execute();
-            $respuesta1 = $resultado->rowCount();
-            if ($respuesta1 > 0) {
+
+            $sql = "SELECT * FROM usuarios_roles WHERE usuarios_roles.id_rol = ? and usuarios_roles.id_usuario = ? "; 
+
+            $values = [$id_rol, $id_usuario];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
+
+            if ($fila > 0) {
                 return true;
             } else {
                 return false;
@@ -481,12 +659,20 @@ class UsuarioModelo extends connectDB
 
     public function crolesuser($id)
     {
-        $resultado = $this->conex->prepare("SELECT r.id as id_rol, u.cedula as cedula, r.nombre as nombre FROM usuario u ,usuarios_roles ur ,rol r WHERE u.id = ur.id_usuario and r.id = ur.id_rol and u.id ='$id'
-        ");
-        $respuestaArreglo = [];
+        $resultado = $this->conex->prepare("SELECT r.id as id_rol, u.cedula as cedula, r.nombre as nombre FROM usuario u ,usuarios_roles ur ,rol r WHERE u.id = ur.id_usuario and r.id = ur.id_rol and u.id = ?");
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
+            
+            $sql = "SELECT r.id as id_rol, u.cedula as cedula, r.nombre as nombre FROM usuario u ,usuarios_roles ur ,rol r WHERE u.id = ur.id_usuario and r.id = ur.id_rol and u.id = ?"; 
+            
+            $respuestaArreglo = [];
+            
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -495,11 +681,20 @@ class UsuarioModelo extends connectDB
 
     public function buscar_token($token)
     {
-        $resultado = $this->conex->prepare("SELECT *FROM usuario WHERE token ='$token'; ");
-        $respuestaArreglo = [];
+        $resultado = $this->conex->prepare("SELECT *FROM usuario WHERE token = ?");
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
+            
+            $sql = "SELECT *FROM usuario WHERE token = ?"; 
+            
+            $respuestaArreglo = [];
+
+            $values = [$token];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
         } catch (Exception $e) {
             return $e->getMessage();
         }
