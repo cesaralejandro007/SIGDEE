@@ -15,7 +15,7 @@ class EstudianteModelo extends connectDB
     {
         $validar_registro = $this->existeregistrar($cedula);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
-        $validar_expresionID = $this->validar_expresion_id($id_ciudad);
+        $validar_expresionID = $this->validar_expresion_idciudad($id_ciudad);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
@@ -68,9 +68,13 @@ class EstudianteModelo extends connectDB
         $validar_modificar = $this->validar_modificar($cedula, $id);
         $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
         $validar_expresionID = $this->validar_expresion_id($id);
+        $validar_expresionIdCuidad = $this->validar_expresion_idciudad($id_ciudad);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if ($validar_expresionIdCuidad['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionIdCuidad['mensaje'];
         }else if ($this->existe($id)==false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario no Existe";
@@ -208,6 +212,18 @@ class EstudianteModelo extends connectDB
         if(!preg_match('/^[0-9]+$/', $id)){
             $respuesta["resultado"]=true;
             $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
+    }
+
+    
+    public function validar_expresion_idciudad($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID_Cuidad solo debe contener números";
         }else{
             $respuesta["resultado"]=false;
             $respuesta["mensaje"]="";
