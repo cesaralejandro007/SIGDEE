@@ -12,14 +12,13 @@
 
 		public function __construct($request){
 			if (isset($request["pagina"])) {
-				$url = configSistema::Seguridad($request["pagina"], 'decodificar');
+				$url = parent::Seguridad($request["pagina"], 'decodificar');
 				$this->pagina = $url;
-				$sistem = new configSistema();
-				$this->directory = $sistem->_Dir_Control_();
-				$this->controlador = $sistem->_Control_();
+				$this->directory = parent::_Dir_Control_();
+				$this->controlador = parent::_Control_();
 				$this->validarpagina();
 			}else{
-				$redirectUrl = '?pagina=' . configSistema::_INICIO_();
+				$redirectUrl = '?pagina=' . parent::_INICIO_();
 				echo '<script>window.location="' . $redirectUrl . '"</script>';
 			}
 		}
@@ -43,11 +42,11 @@
 				$parte = explode('"', $partes[0])[0]; 
 				if(file_exists($this->directory.$parte.$this->controlador)){
 					require_once($this->directory.$parte.$this->controlador);
-			}else{
-				require_once "vista/error_URL.php";
+				}else{
+					require_once "vista/error_URL.php";
+				}
 			}
 		}
-	}
 
- }
+ 	}
 ?>
