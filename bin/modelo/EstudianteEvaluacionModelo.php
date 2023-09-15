@@ -57,8 +57,16 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function incluir($id_estudiante, $id_unidad_evaluacion, $fecha_entrega, $descripcion, $archivo_adjunto){
 		try {
-			$this->conex->query("INSERT INTO estudiante_evaluacion(id_usuario, id_unidad_evaluacion, fecha_entrega, descripcion, archivo_adjunto)
-				VALUES('$id_estudiante', '$id_unidad_evaluacion','$fecha_entrega', '$descripcion', '$archivo_adjunto')");
+
+			$sql = "INSERT INTO estudiante_evaluacion(id_usuario, id_unidad_evaluacion, fecha_entrega, descripcion, archivo_adjunto)
+			VALUES(?,?,?,?,?)";
+			
+			$values = [$id_estudiante, $id_unidad_evaluacion, $fecha_entrega, $descripcion, $archivo_adjunto];
+
+			$stmt = $this->conex->prepare($sql); 
+
+			$stmt->execute($values);
+
 			return true;
 		} catch(Exception $e) {
 			return $e->getMessage();
@@ -68,11 +76,15 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function limpiar(){
 
-		try {
-			$this->conex->query("DELETE from estudiante_evaluacion 
-				WHERE
-				id_usuario = '$this->id_estudiante'
-				");
+		try {			
+			$sql = "DELETE from estudiante_evaluacion WHERE id_usuario = ?"; 
+
+			$values = [$this->id_estudiante];
+
+			$stmt = $this->conex->prepare($sql); 
+
+			$stmt->execute($values);
+
 			return true;
 		} catch(Exception $e) {
 			return $e->getMessage();
@@ -80,11 +92,19 @@ class EstudianteEvaluacionModelo extends connectDB{
 	}
 	public function listar($id_estudiante)
 	{
-		$resultado = $this->conex->prepare("SELECT ue.id as unidad_evaluacion ,e.id as id, e.nombre as nombre, e.archivo_adjunto as archivo, ue.fecha_inicio as inicio, ue.fecha_cierre as cierre FROM unidad as u INNER JOIN unidad_evaluaciones as ue ON u.id=ue.id_usuario INNER JOIN evaluaciones as e ON e.id=ue.id_unidad_evaluacion WHERE u.id='$id_estudiante'");
-		$respuestaArreglo = [];
 		try {
-			$resultado->execute();
-			$respuestaArreglo = $resultado->fetchAll();
+			$sql = "SELECT ue.id as unidad_evaluacion ,e.id as id, e.nombre as nombre, e.archivo_adjunto as archivo, ue.fecha_inicio as inicio, ue.fecha_cierre as cierre FROM unidad as u INNER JOIN unidad_evaluaciones as ue ON u.id=ue.id_usuario INNER JOIN evaluaciones as e ON e.id=ue.id_unidad_evaluacion WHERE u.id= ? ";
+            
+            $respuestaArreglo = [];
+
+            $values = [$id_estudiante];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
+
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -93,11 +113,15 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function relacion_modulo($id_estudiante, $id_unidad_evaluacion){
 		try{
-			
-			$resultado = $this->conex->prepare("SELECT p.id as estudiante_evaluacion FROM estudiante_evaluacion p
-				INNER JOIN rol r ON p.id_estudiante= r.id INNER JOIN modulo_sistema m ON m.id=p.id_unidad_evaluacion WHERE r.id= '$id_estudiante' AND m.id= '$id_unidad_evaluacion'");
-			$resultado->execute();	
-			$fila = $resultado->fetchAll();
+			$sql = "SELECT p.id as estudiante_evaluacion FROM estudiante_evaluacion p INNER JOIN rol r ON p.id_estudiante= r.id INNER JOIN modulo_sistema m ON m.id=p.id_unidad_evaluacion WHERE r.id= ? AND m.id= ?"; 
+
+            $values = [$id_estudiante, $id_unidad_evaluacion];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->fetchAll();
 			if($fila){
 				return true;    
 			}
@@ -111,12 +135,19 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function cargar($id_estudiante, $id_unidad_evaluacion)
 	{
-		$resultado = $this->conex->prepare("SELECT ee.calificacion as calificacion, ee.id as id, ee.descripcion as descripcion, ee.archivo_adjunto as archivo, ee.fecha_entrega as fecha FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE e.id='$id_estudiante' AND 
-		 ue.id='$id_unidad_evaluacion'");
-		$respuestaArreglo = [];
 		try {
-			$resultado->execute();
-			$respuestaArreglo = $resultado->fetchAll();
+			$sql = "SELECT ee.calificacion as calificacion, ee.id as id, ee.descripcion as descripcion, ee.archivo_adjunto as archivo, ee.fecha_entrega as fecha FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE e.id= ? AND ue.id= ?"; 
+			
+			$respuestaArreglo = [];
+            
+			$values = [$id_estudiante, $id_unidad_evaluacion];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
+
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -125,12 +156,18 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function editar($id_estudiante, $id_unidad_evaluacion)
 	{
-		$resultado = $this->conex->prepare("SELECT ee.id as id, ee.descripcion as descripcion, ee.archivo_adjunto as archivo_adjunto, ee.fecha_entrega as fecha, ue.id as unidad_eval, e.id as id_estudent FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE e.id='$id_estudiante' AND 
-		 ee.id='$id_unidad_evaluacion'");
-		$respuestaArreglo = [];
 		try {
-			$resultado->execute();
-			$respuestaArreglo = $resultado->fetchAll();
+			$sql = "SELECT ee.id as id, ee.descripcion as descripcion, ee.archivo_adjunto as archivo_adjunto, ee.fecha_entrega as fecha, ue.id as unidad_eval, e.id as id_estudent FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE e.id= ? AND ee.id= ? "; 
+			
+			$respuestaArreglo = [];
+            
+			$values = [$id_estudiante, $id_unidad_evaluacion];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $respuestaArreglo = $stmt->fetchAll();
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -139,8 +176,21 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function modificar(){
 		try {
-			$this->conex->query("UPDATE estudiante_evaluacion SET id_usuario= '$this->id_estudiante', id_unidad_evaluacion = '$this->id_unidad_evaluacion', fecha_entrega = '$this->fecha_entrega'
-				, descripcion = '$this->descripcion' WHERE id = '$this->id'");
+
+			$sql = "UPDATE estudiante_evaluacion SET id_usuario= ?, id_unidad_evaluacion = ?, fecha_entrega = ?, descripcion = ? WHERE id = ?";  
+
+			$values = [
+				$this->id_estudiante,
+				$this->id_unidad_evaluacion,
+				$this->fecha_entrega,
+				$this->descripcion,
+				$this->id,
+			];
+
+			$stmt = $this->conex->prepare($sql); 
+
+			$stmt->execute($values);
+			
 			return true;
 		} catch(Exception $e) {
 			return $e->getMessage();
