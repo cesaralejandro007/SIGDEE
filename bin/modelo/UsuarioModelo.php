@@ -217,8 +217,7 @@ class UsuarioModelo extends connectDB
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         }  else {
             try {
-
-                $sql = "UPDATE usuario  SET cedula = ?, id_ciudad = ?, primer_nombre = ?, segundo_nombre = ?, genero = ?, correo = ?,  direccion = ?, primer_apellido = ?, segundo_apellido = ?,telefono = ? WHERE id = ?";  
+                $sql = "UPDATE usuario  SET cedula = ?, id_ciudad = ?, primer_nombre = ?, segundo_nombre = ?,primer_apellido = ?,segundo_apellido = ?, genero = ?, correo = ?,  direccion = ?,telefono = ? WHERE id = ?";  
 
                 $values = [
                     $cedula,
