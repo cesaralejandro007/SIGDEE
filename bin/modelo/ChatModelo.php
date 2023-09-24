@@ -6,10 +6,10 @@ class ChatModelo extends connectDB
     private $id;
     private $nombre;
 
-    public function incluir($cedula,$mensaje)
+    public function incluir($id,$mensaje)
     {
         try {
-            $this->conex->query("INSERT INTO chat_virtual(cedula_usuario,mensajes) VALUES('$cedula','$mensaje')");
+            $this->conex->query("INSERT INTO chat_virtual(id_usuario,mensaje) VALUES('$id','$mensaje')");
         } catch (Exception $e) {
             $respuesta['resultado'] = 0;
             $respuesta['mensaje'] = $e->getMessage();
@@ -34,7 +34,7 @@ class ChatModelo extends connectDB
 
     public function listar()
     {
-        $resultado = $this->conex->prepare("SELECT chat_virtual.id as id, chat_virtual.cedula_usuario as cedula,usuario.primer_nombre as nombre,usuario.primer_apellido as apellido, chat_virtual.mensajes as mensajes, chat_virtual.facha as fecha FROM chat_virtual,usuario WHERE  chat_virtual.cedula_usuario = usuario.cedula ORDER BY chat_virtual.facha ASC");
+        $resultado = $this->conex->prepare("SELECT chat_virtual.id as id,chat_virtual.id_usuario as id_usuario, usuario.cedula as cedula,usuario.primer_nombre as nombre,usuario.primer_apellido as apellido, chat_virtual.mensaje as mensajes, chat_virtual.fecha as fecha FROM chat_virtual,usuario WHERE  chat_virtual.id_usuario = usuario.id GROUP BY chat_virtual.id ORDER BY chat_virtual.fecha ASC");
         $respuestaArreglo = [];
         try {
             $resultado->execute();
@@ -45,9 +45,9 @@ class ChatModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function buscar($cedula,$mensaje)
+    public function buscar($id,$mensaje)
     {
-        $resultado = $this->conex->prepare("SELECT id FROM chat_virtual WHERE cedula_usuario='$cedula' AND mensajes='$mensaje' LIMIT 1");
+        $resultado = $this->conex->prepare("SELECT id FROM chat_virtual WHERE id_usuario ='$id' AND mensaje='$mensaje' LIMIT 1");
         $respuestaArreglo = [];
         try {
             $resultado->execute();

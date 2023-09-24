@@ -46,8 +46,8 @@ if (is_file("vista/" . $pagina . "Vista.php")) {
 		exit;
 	}
 	if(isset($_POST["name"])&&isset($_POST["message"])){
-			$respuesta = $chat->incluir($decrypted["cedula"],$_POST["message"]);
-			$idmensaje = $chat->buscar($decrypted["cedula"],$_POST["message"]);
+			$respuesta = $chat->incluir($decrypted["id"],$_POST["message"]);
+			$idmensaje = $chat->buscar($decrypted["id"],$_POST["message"]);
 			$dataTime = "<br><span>".date('d M Y H:i:s')."</span>";
 			$array[] = array('name' => $_POST["name"], 'message' => $_POST["message"], "dataTime" => $dataTime, "id" => $idmensaje[0]['id']);
 			echo json_encode($array);
