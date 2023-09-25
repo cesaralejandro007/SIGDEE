@@ -122,11 +122,20 @@ if (isset($response3[0]["consultar"])) {
                                                     <h6 class="display-6" style="font-size:20px;">Contenido:</h6>
                                                     
                                                 <div class="card card-light">
+                                                <?php
+                                                    if (isset($response3[0]["eliminar"])) {
+                                                    if ($response3[0]["eliminar"] == 'true') {?>
+                                                        <div class="position-relative">
+                                                            <div class="position-absolute top-0 end-0 my-1 mx-2">
+                                                                <button type="button" class="btn btn-ms" onclick="eliminar_contenido(<?=$contenido['id'];?>);"><i class="far fa-trash-alt"></i></button>
+                                                            </div>
+                                                        </div>
+                                                <?php }}?>
                                                     <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>
                                                         <a href="">Documento Ajunto <i
-                                                                class="fas fa-cloud-download-alt"></i></a>
+                                                        class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                 </div>
                                                 <hr style="color: #D7DBDD;">
@@ -212,6 +221,15 @@ if (isset($response3[0]["consultar"])) {
                                             <div class="card-body p-0">
                                                 <?php if ($listar_contenidos) {foreach ($listar_contenidos as $contenido) {?>
                                                 <div class="card card-light">
+                                                <?php
+                                                    if (isset($response3[0]["eliminar"])) {
+                                                    if ($response3[0]["eliminar"] == 'true') {?>
+                                                        <div class="position-relative">
+                                                            <div class="position-absolute top-0 end-0 my-1 mx-2">
+                                                                <button type="button" class="btn btn-ms" onclick="eliminar_contenido(<?=$contenido['id'];?>);"><i class="far fa-trash-alt"></i></button>
+                                                            </div>
+                                                        </div>
+                                                <?php }}?>
                                                     <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>

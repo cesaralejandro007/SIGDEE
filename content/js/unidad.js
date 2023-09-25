@@ -204,6 +204,29 @@ function eliminarUnidad(idnombre) {
   });
 }
 
+function eliminar_contenido(id) {
+  Swal.fire({
+    title: "¿Está seguro de eliminar el registro?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCloseButton: true,
+    showCancelButton: true,
+    confirmButtonColor: "#0C72C4",
+    cancelButtonColor: "#9D2323",
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      setTimeout(function () {
+        var datos = new FormData();
+        datos.append("accion", "eliminarContenido");
+        datos.append("id", id);
+        confirm_eliminar(datos);
+      }, 10);
+    }
+  });
+}
+
 function eliminar_evaluacion(id) {
   Swal.fire({
     title: "¿Está seguro de eliminar el registro?",
@@ -285,8 +308,6 @@ function enviaAjax(datos) {
     },
   });
 }
-
-
 
 function confirm_eliminar(datos) {
   var toastMixin = Swal.mixin({

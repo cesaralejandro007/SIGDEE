@@ -105,6 +105,22 @@ class ContenidoModelo extends connectDB
         }
         return $respuesta;
     }
+    public function eliminar_contenido_unidad($id)
+    {
+        try {
+                $this->conex->query("DELETE from unidad_contenido
+                WHERE
+                id_contenido  = '$id'
+                ");
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitoso";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
+            return $respuesta;
+    }
+    
     
     public function validar_modificar($nombre, $id)
     {

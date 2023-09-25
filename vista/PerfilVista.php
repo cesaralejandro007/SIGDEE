@@ -173,37 +173,19 @@ use config\componentes\configSistema as configSistema;
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Primer nombre:</p>
+                <p class="mb-0">Nombres:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['primer_nombre'] ?></p>
+                <p class="text-muted mb-0"><?php echo $valor['primer_nombre']. " " . $valor['segundo_nombre'] ?></p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Segundo nombre:</p>
+                <p class="mb-0">Apellidos:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['segundo_nombre'] ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Primer apellido</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['primer_apellido'] ?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Segundo apellido</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><?php echo $valor['segundo_apellido'] ?></p>
+                <p class="text-muted mb-0"><?php echo $valor['primer_apellido']. " " . $valor['segundo_apellido'] ?></p>
               </div>
             </div>
             <hr>

@@ -158,13 +158,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     return 0;
                 }
                 break;
-                case 'eliminarEvaluacion':
-                    $response= $evaluaciones->elmininarEvaluacion_unidad($_POST['id']);
+                case 'eliminarContenido':
+                    $response = $contenidos->eliminar_contenido_unidad($_POST['id']);
                     if ($response["resultado"] == 1) {
                         echo json_encode([
                             'estatus' => '1',
                             'icon' => 'success',
-                            'title' => $modulo,
+                            'title' => "Contenido unidad",
                             'message' => $response["mensaje"]
                         ]);
                         return 0;
@@ -172,7 +172,27 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         echo json_encode([
                             'estatus' => '2',
                             'icon' => 'info',
-                            'title' => $modulo,
+                            'title' => "Contenido unidad",
+                            'message' => $response["mensaje"]
+                        ]);
+                        return 0;
+                    }
+                    break;
+                case 'eliminarEvaluacion':
+                    $response= $evaluaciones->elmininarEvaluacion_unidad($_POST['id']);
+                    if ($response["resultado"] == 1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => "Evaluación unidad",
+                            'message' => $response["mensaje"]
+                        ]);
+                        return 0;
+                    } else {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => "Evaluación unidad",
                             'message' => $response["mensaje"]
                         ]);
                         return 0;
