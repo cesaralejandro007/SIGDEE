@@ -25,7 +25,7 @@ document.getElementById("verificar_password"). onclick = function(){
               }).done(function (result) {
                 var res = JSON.parse(result);
                   if(res.estatus==1){
-                      respaldarBD();
+                      verificarClave();
                       return true;
                   }else if(res.estatus==2){
                       document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Usted no posee permisos para realizar el respaldo de la BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
@@ -66,6 +66,60 @@ document.getElementById("verificar_password"). onclick = function(){
     } else {
       cambio.type = "password";
     }
+  }
+
+
+  function verificarClave(){
+    Swal.fire({
+      title: 'Ingrese su clave privada:',
+      html:                     
+        '<span id="validarclave1"></span>' +
+        '<span id="vc1" style="font-size:14px"></span><input id="inputclave" class="form-control mb-2" placeholder="Ingrese su clave privada">',
+      confirmButtonColor: '#007BFF',
+      confirmButtonText: "Continuar",
+      focusConfirm: true,
+      preConfirm: () => {
+          if(document.getElementById('inputclave').value != ""){
+            var formData = new FormData();
+            formData.append("accion", "verificar_clave_privada");
+            formData.append("clave_privada", document.getElementById("inputclave").value);
+            formData.append("clave_publica", document.getElementById("clave_publica").value);
+            $.ajax({
+              url: '',
+              type: 'POST',
+              contentType: false,
+              data:formData,
+              processData: false,
+              cache: false,
+              }).done(function (result) {
+                var res = JSON.parse(result);
+                  if(res.estatus==1){
+                    respaldarBD();
+                      return true;
+                  }else if(res.estatus == 0){
+                    document.getElementById("validarclave1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">La clave privada no coincide.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                    setTimeout(function () {
+                        $("#cerraralert").click();
+                      }, 3000);
+                    return false;
+                  }else{
+                      document.getElementById("validarclave1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Error del RSA.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                      setTimeout(function () {
+                          $("#cerraralert").click();
+                        }, 3000);
+                      return false;
+                  }
+              });
+              return false;
+        }else{
+          document.getElementById("validarclave1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Complete los campos solicitados.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+          setTimeout(function () {
+              $("#cerraralert").click();
+            }, 3000);
+          return false;
+        }
+      }
+    })
   }
 
 function respaldarBD(){

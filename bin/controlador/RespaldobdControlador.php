@@ -72,6 +72,33 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
             }
             return 0;
+        }else if($accion == 'verificar_clave_privada') {
+            $verificar = "respaldar_true";
+            openssl_public_encrypt($verificar, $textEncriptado, base64_decode($_POST['clave_publica']));
+
+            $llavePrivada = openssl_pkey_get_private(base64_decode($_POST['clave_privada']));
+
+            if ($llavePrivada === false) {
+                echo json_encode([
+                    'estatus' => '0',
+                    'message' => 'La clave privada no coincide.'
+                ]);
+            } else {
+                openssl_private_decrypt($textEncriptado, $textDesencriptado, base64_decode($_POST['clave_privada']));
+                if ($textDesencriptado === "respaldar_true") {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'message' => true
+                    ]);
+                } else {
+                    echo json_encode([
+                        'estatus' => '0',
+                        'message' => 'La clave privada no coincide.'
+                    ]);
+                }            
+
+            }
+            return 0;
         }else if ($accion == 'respaldarbd') {
             $response = $respaldobd->respaldarbd();
             if ($response){

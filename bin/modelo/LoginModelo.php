@@ -119,6 +119,18 @@ class LoginModelo extends connectDB
         return $respuestaArreglo;
     }
 
+    public function obtener_clave_publica($id)
+    {
+        $resultado = $this->conex->prepare("SELECT publickey  FROM usuario WHERE id= $id");
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
+
     public function comprobar_usuario($cedula)
     {
         $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula=$cedula");

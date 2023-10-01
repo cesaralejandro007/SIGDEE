@@ -1,5 +1,8 @@
 <?php
 use config\componentes\configSistema as configSistema;
+use modelo\LoginModelo as login;
+$login = new login();
+$public_key = $login->obtener_clave_publica($_SESSION['id_usuario']);
 ?>
 <style>
 .table-responsive::-webkit-scrollbar {
@@ -80,7 +83,7 @@ body::-webkit-scrollbar-track {
             <?php } ?>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in p-0" aria-labelledby="userDropdown">
-                <div class="card-header m-0 p-0 d-flex justify-content-center">
+                <div class="card-header m-1 p-1 d-flex justify-content-center">
                     <div  style="top: 0;left: 0;width: 250px; height: 120px;background:#063587"></div>
 
                     <?php 
@@ -109,6 +112,17 @@ body::-webkit-scrollbar-track {
                     </p>
                 </div>
                 <hr class="m-1">
+                <label class="px-2 m-0" for="">Clave publica:</label>
+                <div class="input-group px-2">
+                    <input type="text" class="form-control" id="clave_publica" placeholder="Clave publica" value="<?=$public_key[0]["publickey"];?>">
+                    <button class="btn btn-outline-secondary" type="button" id="boton_copiar1"><i class="far fa-copy"></i></button>
+                </div>
+                <label class="px-2 m-0" for="">Clave privada:</label>
+                <div class="input-group px-2">
+                    <input type="text" class="form-control" id="clave_privada" placeholder="Clave privada" value="<?php if ($decrypted["tipo_usuario"] == 'Super Usuario' || $decrypted["tipo_usuario"] == 'Administrador') {  echo $private_key[0]["privatekey"];  } ?>">
+                    <button class="btn btn-outline-secondary" type="button" id="boton_copiar"><i class="far fa-copy"></i></button>
+                </div>
+                <hr class="m-1">
                 <div class="m-0 d-flex justify-content-between">
                     <div>
                         <a class="btn btn-sm rounded-0" style="background:#0C72C4; color:white;font-size:13px; margin:2px;" href="?pagina=<?php configSistema::_MPERF_();?>"><i class="fas fa-user"></i> Perfil</a>
@@ -119,4 +133,55 @@ body::-webkit-scrollbar-track {
         </li>
         </center>
     </ul>
+    <script>
+
+            document.getElementById("boton_copiar").onclick = function() {
+                // Seleccionar el texto dentro del input
+                var inputElement = document.getElementById("clave_privada");
+                inputElement.select();
+                inputElement.setSelectionRange(0, 99999); // Para dispositivos móviles
+
+                // Copiar el texto al portapapeles
+                document.execCommand('copy');
+
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    position: "bottom-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+                // Deseleccionar el input
+                inputElement.blur();
+                toastMixin.fire({
+                    title: "Clave privada copiada al portapapeles",
+                    icon: "success",
+                });
+            };
+
+            document.getElementById("boton_copiar1").onclick = function() {
+                // Seleccionar el texto dentro del input
+                var inputElement = document.getElementById("clave_publica");
+                inputElement.select();
+                inputElement.setSelectionRange(0, 99999); // Para dispositivos móviles
+
+                // Copiar el texto al portapapeles
+                document.execCommand('copy');
+
+                // Deseleccionar el input
+                inputElement.blur();
+                var toastMixin = Swal.mixin({
+                    toast: true,
+                    position: "bottom-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+                toastMixin.fire({
+                    title: "Clave publica copiada al portapapeles",
+                    icon: "success",
+                });
+            };
+
+    </script>
 </nav>

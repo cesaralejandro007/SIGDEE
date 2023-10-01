@@ -109,14 +109,13 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                                 exit();
                             }
                             $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
-
+                            $_SESSION['id_usuario'] = $datos['id'];
 
                             $config = [
                             "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
                             "private_key_bits" => 2048,
-                            "default_md" => "sha256",  
+                            'private_key_type' => OPENSSL_KEYTYPE_RSA
                             ];
-                            $_SESSION['id_usuario'] = $datos['id'];
 
                             $res = openssl_pkey_new($config);
                             openssl_pkey_export($res, $privKey,NULL,$config); 

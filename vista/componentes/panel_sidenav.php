@@ -107,7 +107,7 @@ $response1 = $permiso->mostrarentronos($decrypted["id"],$decrypted["tipo_usuario
                     </a>
                     <ul class="nav nav-treeview">
                         <?php 
-                            $emprendimientos = $auladocente->docente_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                            $emprendimientos = $auladocente->docente_emprendimientos($decrypted["cedula"], $area['id']);
                             foreach($emprendimientos as $key_emprendimiento){ ?>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
@@ -116,7 +116,7 @@ $response1 = $permiso->mostrarentronos($decrypted["id"],$decrypted["tipo_usuario
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <?php
-                                        $listar_aulas = $auladocente->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                                        $listar_aulas = $auladocente->listar_modulos($decrypted["cedula"], $area['id'], $key_emprendimiento['id']);
                                         foreach($listar_aulas as $key_aulas){ ?>
                                             <li class="nav-item">
                                               <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
@@ -141,7 +141,7 @@ $response1 = $permiso->mostrarentronos($decrypted["id"],$decrypted["tipo_usuario
                     </a>
                     <ul class="nav nav-treeview">
                         <?php 
-                            $emprendimientos = $aulaestudiante->estudiante_emprendimientos($_SESSION['usuario']['cedula'], $area['id']);
+                            $emprendimientos = $aulaestudiante->estudiante_emprendimientos($decrypted["cedula"], $area['id']);
                             foreach($emprendimientos as $key_emprendimiento){ ?>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
@@ -150,7 +150,7 @@ $response1 = $permiso->mostrarentronos($decrypted["id"],$decrypted["tipo_usuario
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <?php
-                                        $listar_aulas = $aulaestudiante->listar_modulos($_SESSION['usuario']['cedula'], $area['id'], $key_emprendimiento['id']);
+                                        $listar_aulas = $aulaestudiante->listar_modulos($decrypted["cedula"], $area['id'], $key_emprendimiento['id']);
                                         foreach($listar_aulas as $key_aulas){ ?>
                                             <li class="nav-item">
                                               <a href="?pagina=<?php configSistema::_MAULAS_($key_aulas['id']);?>" class="nav-link">
