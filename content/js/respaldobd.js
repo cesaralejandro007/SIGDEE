@@ -74,7 +74,7 @@ document.getElementById("verificar_password"). onclick = function(){
       title: 'Ingrese su clave privada:',
       html:                     
         '<span id="validarclave1"></span>' +
-        '<span id="vc1" style="font-size:14px"></span><input id="inputclave" class="form-control mb-2" placeholder="Ingrese su clave privada">',
+        '<span id="vc1" style="font-size:14px"></span><div class="input-group"><input type="text" id="inputclave" placeholder="Ingrese su clave privada" class="form-control"><button class="btn btn-outline-secondary" onclick="copiar_clave_publica();" data-placement="top" title="Usar clave publica" type="button"><i class="fas fa-key"></i></button><button class="btn btn-outline-warning" data-placement="top" title="Usar clave privada" onclick="copiar_clave_privada();" type="button"><i class="fas fa-key"></i></button></div>',
       confirmButtonColor: '#007BFF',
       confirmButtonText: "Continuar",
       focusConfirm: true,
@@ -122,6 +122,16 @@ document.getElementById("verificar_password"). onclick = function(){
     })
   }
 
+  function copiar_clave_privada(){
+    let privadakey= document.getElementById("clave_privada").value;
+    document.getElementById("inputclave").value = privadakey;
+  }
+
+  function copiar_clave_publica(){
+    let publickey = document.getElementById("clave_publica").value;
+    document.getElementById("inputclave").value = publickey;
+  }
+  
 function respaldarBD(){
 $(function() {
     var toastMixin = Swal.mixin({
