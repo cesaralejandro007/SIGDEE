@@ -5,7 +5,7 @@ use modelo\PermisosModelo as Permiso;
 use modelo\RolModelo as Rol;
 use config\componentes\configSistema as configSistema;
 session_start();
-require_once 'vista/componentes/securimage/securimage.php';
+
 $config = new configSistema();
 $securimage = new Securimage();
 if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
@@ -60,8 +60,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'estatus' => '3',
                     'message' => "Complete los datos solicitados."
                 ]);   
-            }
-            else if($responseU == 0){   
+            }else if($responseU == 0){   
                 if($login->comprobar_usuario($usuario)){  
                     if($num_intentos <= 3){             
                         setcookie('intentos[' . $_POST['user'] . ']', $num_intentos + 1, time() + 30); 
@@ -198,8 +197,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         }else if ($accion == 'codificarURL') {
             echo configSistema::_M01_();
             return 0;
-       }
-    } else {
+        }else if($accion = "obtener_datos") {
+            $login->set_tipo($_POST['tipo']);
+            $login->set_user($_POST['user']);
+            $infoU = $login->datos_UserU();
+            echo json_encode($infoU);
+            return 0;
+        }
+    }else {
         session_destroy();
     }
     $r2 = $login->listartipo_usuario();
