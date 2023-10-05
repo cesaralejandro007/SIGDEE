@@ -12,6 +12,7 @@
 
 		public function __construct($request){
 			if (isset($request["pagina"])) {
+				
 				$url = parent::Seguridad($request["pagina"], 'decodificar');
 				$this->pagina = $url;
 				$this->directory = parent::_Dir_Control_();

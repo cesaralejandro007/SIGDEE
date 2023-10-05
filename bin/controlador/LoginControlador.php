@@ -55,7 +55,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $login->set_password($claveencriptada);
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
-            if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']=="" || $_POST['captcha'] == "" ){
+            if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""/*  || $_POST['captcha'] == "" */ ){
                 echo json_encode([
                     'estatus' => '3',
                     'message' => "Complete los datos solicitados."
@@ -91,12 +91,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
                         return 0; 
                     }
-                    else if($securimage->check($_POST['captcha']) == false){
+           /*          else if($securimage->check($_POST['captcha']) == false){
                         echo json_encode([
                             'estatus' => '2',
                             'message' => 'Captcha incorrecto.'
                         ]);   
-                    }
+                    } */
                     //VERIFICAR CLAVE (password_hash)
                     else if(password_verify($_POST['password'], $infoU[0]['clave'])){
 

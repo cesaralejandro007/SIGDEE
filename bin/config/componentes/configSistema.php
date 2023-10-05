@@ -25,21 +25,22 @@
 				return "Error configSistema";
 			}
 		}
-
-
+		
 		public static function Seguridad($string, $accion = null)
 		{
-			// Advanced Encryption Standard cipher-block chaining
-			$metodo        = "AES-256-CBC"; //El método de cifrado //clave simétrica de 256 bits
-			$llave = openssl_digest("key", 'whirlpool', true); //genera un hash usando el método dado y devuelve codificada (512 bits)
-			$iv    = substr(hash("whirlpool", $llave), 0, 16); // ciframos el vector de inicialización y acortamos con substr a 16
-	
+			// Clave de cifrado fija (asegúrate de que sea segura y manténla secreta)
+			$claveFija = "D1pl0mad0";
+			// Vector de inicialización fijo (asegúrate de que sea único para cada cifrado)
+			$iv = "1234567890123456";
+			// Método de cifrado y opciones
+			$metodo = "AES-256-CBC";
+		
 			if ($accion == 'codificar') {
-				$salida = openssl_encrypt($string, $metodo, $llave, 0, $iv); // ciframos la direccion obtenida con el metodo openssl_encrypt
-				$salida = base64_encode($salida); // ciframos la salida en bs64
-			} else if ($accion == 'decodificar') {
+				$salida = openssl_encrypt($string, $metodo, $claveFija, 0, $iv);
+				$salida = base64_encode($salida);
+			} elseif ($accion == 'decodificar') {
 				$string = base64_decode($string);
-				$salida = openssl_decrypt($string, $metodo, $llave, 0, $iv);
+				$salida = openssl_decrypt($string, $metodo, $claveFija, 0, $iv);
 			}
 			return $salida;
 			unset($metodo,$llave,$iv,$accion,$sting,$salida);

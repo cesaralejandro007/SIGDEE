@@ -38,10 +38,10 @@ use config\componentes\configSistema as configSistema;
                     <img
                       src="assets/font/login-icon.svg"
                       alt="login-icon"
-                      style="height: 5rem"
+                      style="height: 6rem"
                       />
                   </div>
-                  <div class="text-center fs-5">Iniciar Sesión</div>
+                  <div class="text-center fs-3">Iniciar Sesión</div>
                   <div class="input-group mt-2">
                     <div class="input-group-text bg-light">
                       <i class="fas fa-user-tag"></i>
@@ -55,7 +55,7 @@ use config\componentes\configSistema as configSistema;
                             <?php }?>
                         </select>
                         </div>
-                        <div class="input-group mt-1">
+                        <div class="input-group mt-2">
                           <div class="input-group-text bg-light">
                             <i class="fas fa-user"></i>
                           </div>
@@ -65,7 +65,7 @@ use config\componentes\configSistema as configSistema;
                             placeholder="Usuario"
                             />
                         </div>
-                        <div class="input-group mt-1">
+                        <div class="input-group mt-2">
                           <div class="input-group-text bg-light">
                             <i class="fas fa-key"></i>
                           </div>
@@ -80,16 +80,15 @@ use config\componentes\configSistema as configSistema;
                               onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:18px"></i>
                           </div>
                         </div>
-                                  <div class="">
-                                    <?php include  "componentes/Captcha.php"; ?>
-                                    <button class="btn btn-primary text-white w-100 mt-1
-                                      fw-semibold shadow-sm" id="entrar" type="submit">Entrar</button>
-                                    <div class="d-flex justify-content-center"><button
-                                        class="btn btn-bs text-primary"
-                                        id="recuperarcontrasena">Recuperar contraseña</button></div>
-                                    </div>
-                                  </div>
-                    </div>
+                      </div>
+                      <div class="card-footer mt-2">
+                          <button class="btn btn-primary text-white w-100
+                            fw-semibold shadow-sm" id="entrar" type="submit">Entrar</button>
+                          <div class="d-flex justify-content-center"><button
+                              class="btn btn-bs text-primary"
+                              id="recuperarcontrasena">Recuperar contraseña</button></div>
+                        </div>
+                      </div>
                   </div>
                 </div>      
 
