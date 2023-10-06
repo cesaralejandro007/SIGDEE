@@ -7,7 +7,7 @@ use config\componentes\configSistema as configSistema;
 session_start();
 
 $config = new configSistema();
-$securimage = new Securimage();
+
 if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
     echo "Falta definir la clase " . $pagina;
     exit;

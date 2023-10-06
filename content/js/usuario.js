@@ -216,7 +216,7 @@ function carga() {
   /*--------------VALIDACION PARA TELEFONO--------------------*/
   document.getElementById("telefono").maxLength = 11;
   document.getElementById("telefono").onkeypress = function (e) {
-    er = /^[JGVEP0-9-]*$/;
+    er = /^[0-9]*$/;
     validarkeypress(er, e);
   };
   document.getElementById("telefono").onkeyup = function () {
