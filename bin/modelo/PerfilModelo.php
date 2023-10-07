@@ -45,12 +45,21 @@ class PerfilModelo extends connectDB
 
     public function modificar($id,$telefono,$correo)
     {
-        try {
-            $this->conex->query("UPDATE usuario SET telefono = '$telefono', correo = '$correo' WHERE id = '$id'");
-            return 1;
-        } catch (Exception $e) {
-            return $e->getMessage();
+        $validar_expresion = $this->validar_expresiones($correo,$telefono);
+        if ($validar_expresion['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresion['mensaje'];
+        }else{
+            try {
+                $this->conex->query("UPDATE usuario SET telefono = '$telefono', correo = '$correo' WHERE id = '$id'");
+                $respuesta["resultado"]=1;
+                $respuesta["mensaje"]="Modificación exitosa.";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
         }
+        return $respuesta;
     }
 
     public function cargar($id)
@@ -66,5 +75,21 @@ class PerfilModelo extends connectDB
             return $e->getMessage();
         }
         return $respuestaArreglo;
+    }
+    public function validar_expresiones($correo,$telefono){
+        $er_correo = '/^[A-Za-z0-9]{3,40}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/';
+        $er_telefono= '/^[0-9]{10,11}$/';
+        
+        if(!preg_match_all($er_telefono,$telefono) || trim($telefono)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo telefono debe contener Solo numeros de 11 digitos";
+        }else if(!preg_match_all($er_correo,$correo) || trim($correo)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo Correo debe ser ejemplo@gmail.com";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
 }

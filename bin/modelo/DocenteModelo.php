@@ -268,7 +268,7 @@ class DocenteModelo extends connectDB
         $er_cedula = '/^[0-9]{7,8}$/';
         $er_nombre = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú\s]{2,30}$/';
         $er_genero = '/^[A-ZÁÉÍÓÚ][a-zñáéíóú]{7,8}$/';
-        $er_correo = '/^[A-Za-z0-9]{3,25}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/';
+        $er_correo = '/^[A-Za-z0-9]{3,40}[@]{1}[A-Za-z0-9]{3,8}[.]{1}[A-Za-z]{2,4}$/';
         $er_telefono= '/^[0-9]{10,11}$/';
         $er_direccion = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,200}$/';
         if(!preg_match_all($er_cedula,$cedula) || trim($cedula)==''){

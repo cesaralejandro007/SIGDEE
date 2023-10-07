@@ -87,12 +87,19 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
  */
 
             $response = $perfil->modificar($_POST['id'],$_POST['telefono'],$_POST['correo']);
-            if ($response == 1) {
+            if ($response["resultado"]==1) {
                 echo json_encode([
                     'estatus' => '1',
                     'icon' => 'success',
                     'title' => $modulo,
-                    'message' => 'Modificacion exitosa'
+                    'message' => $response["mensaje"]
+                ]);
+            }else{
+                echo json_encode([
+                    'estatus' => '0',
+                    'icon' => 'error',
+                    'title' => $modulo,
+                    'message' => $response["mensaje"]
                 ]);
             }
             return 0;
