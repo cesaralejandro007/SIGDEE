@@ -11,10 +11,9 @@ class AulaModelo extends connectDB
    
     public function incluir($nombre, $id_emprendimiento_modulo)
     {
-
         $validar_nombre = $this->validar_registro($nombre);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-
+    
         if ($validar_nombre) {
             $respuesta['resultado'] = 0;
             $respuesta['mensaje'] = "El nombre ya existe";
@@ -23,42 +22,47 @@ class AulaModelo extends connectDB
             $respuesta['resultado'] = 0;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         }   
-         else {
+        else {
             try {
-                $this->conex->query("INSERT INTO aula(nombre, id_emprendimiento_modulo, estatus)
-                    VALUES('$nombre', '$id_emprendimiento_modulo', 'true')");
+                // Preparar la consulta con marcadores de posición (?)
+                $stmt = $this->conex->prepare("INSERT INTO aula(nombre, id_emprendimiento_modulo, estatus) VALUES(?, ?, 'true')");
+                
+                // Ejecutar la consulta con un array de valores
+                $stmt->execute([$nombre, $id_emprendimiento_modulo]);
+                
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Registro exitoso";
-            } catch (Exception $e) {
+            } catch (PDOException $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }
         return $respuesta;
-    }
+    }    
     public function buscar($nombre)
     {
-        $resultado = $this->conex->prepare("SELECT count(nombre) as cantidad FROM aula WHERE nombre LIKE '%" . $nombre . "%'");
-        $respuestaArreglo = [];
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
+            $stmt = $this->conex->prepare("SELECT count(nombre) as cantidad FROM aula WHERE nombre LIKE ?");
+            $nombre = "%" . $nombre . "%";
+            $stmt->execute([$nombre]);
+            $respuestaArreglo = $stmt->fetchAll();
+            return $respuestaArreglo;
+        } catch (PDOException $e) {
             return $e->getMessage();
         }
-        return $respuestaArreglo;
-    }
+    }    
     public function encontrar($id)
     {
-        $resultado = $this->conex->prepare("SELECT * FROM aula WHERE id= '$id'");
-        $respuestaArreglo = [];
         try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
+            $stmt = $this->conex->prepare("SELECT * FROM aula WHERE id = ?");
+            $stmt->execute([$id]);
+
+            $respuestaArreglo = $stmt->fetchAll();
+    
+            return $respuestaArreglo;
+        } catch (PDOException $e) {
             return $e->getMessage();
         }
-        return $respuestaArreglo;
     }
 
     public function modificar($nombre, $id)
@@ -66,7 +70,7 @@ class AulaModelo extends connectDB
         $validar_aula = $this->existe($id);   
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
-
+    
         if (!$validar_aula) {
             $respuesta['resultado'] = 0;
             $respuesta['mensaje'] = "No existe el aula";
@@ -81,40 +85,53 @@ class AulaModelo extends connectDB
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         }   else {
             try {
-                $this->conex->query("UPDATE aula SET nombre = '$nombre' WHERE id = '$id'");
-               $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Modificacion existosa";
-            } catch (Exception $e) {
+                // Preparar la consulta con marcadores de posición (?)
+                $stmt = $this->conex->prepare("UPDATE aula SET nombre = ? WHERE id = ?");
+                
+                // Ejecutar la consulta con un array de valores
+                $stmt->execute([$nombre, $id]);
+                
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Modificacion exitosa";
+            } catch (PDOException $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }
         return $respuesta;
     }
+    
 
     public function eliminar($id)
     {
-        if($this->existe($id)) {
-                $resultado = $this->conex->prepare("DELETE from aula
-					WHERE
-					id = '$id'
-					");
+        $respuesta = [];
+    
+        if ($this->existe($id)) {
             try {
-                $resultado->execute();
-                $fila = $resultado->rowCount();
+                // Preparar la consulta con marcadores de posición (?)
+                $stmt = $this->conex->prepare("DELETE FROM aula WHERE id = ?");
+                
+                // Ejecutar la consulta con el valor de $id como parámetro
+                $stmt->execute([$id]);
+    
+                $fila = $stmt->rowCount();
                 if ($fila > 0) {
                     $respuesta['resultado'] = 1;
-                    $respuesta['mensaje'] = "Registro exitoso";
+                    $respuesta['mensaje'] = "Eliminación exitosa";
                 } else {
                     $respuesta['resultado'] = 2;
-                    $respuesta['mensaje'] = "El Aula no puede ser borrardo, existen vinculos con Emprendimiento Modulo.";
+                    $respuesta['mensaje'] = "El Aula no puede ser borrada, existen vínculos con Emprendimiento Modulo.";
                 }
-            } catch (Exception $e) {
-                return $e->getMessage();
+            } catch (PDOException $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
             }
-        } 
+        } else {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "El Aula no existe";
+        }
         return $respuesta;
-    }
+    }    
 
     public function listar_aulas()
     {

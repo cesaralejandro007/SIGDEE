@@ -16,61 +16,58 @@ class AspiranteModelo extends connectDB
     private $id_rol;
     private $status;
 
-    public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono, $clave)
+    public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave)
     {
-            try {
-                $this->conex->query("INSERT INTO usuario(
-        					cedula,
-                            id_ciudad,
-        					primer_nombre,
-                            segundo_nombre,
-        					primer_apellido,
-                            segundo_apellido,
-                            genero,
-        					correo,
-        					direccion,
-        					telefono, 
-                            clave
-        					)
-        				VALUES(
-        					'$cedula',
-        					'$id_ciudad',
-        					'$primer_nombre',
-                            '$segundo_nombre',
-        					'$primer_apellido',
-                            '$segundo_apellido',
-                            '$genero',
-        					'$correo',
-        					'$direccion',
-        					'$telefono',
-        					'$clave'
-        				)");
-                    return true;
-            } catch (Exception $e) {
-                return false;
-            }
+        try {
+            $query = "INSERT INTO usuario(
+                cedula,
+                id_ciudad,
+                primer_nombre,
+                segundo_nombre,
+                primer_apellido,
+                segundo_apellido,
+                genero,
+                correo,
+                direccion,
+                telefono,
+                clave
+            )
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            $stmt = $this->conex->prepare($query);
+            $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave]);
+    
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
+    
 
-    public function modificar($id,$cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function modificar($id, $cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono)
     {
-        $expresiones_regulares = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
+        $expresiones_regulares = $this->validar_expresiones($cedula, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono);
         $validar_modificar = $this->validar_modificar($cedula, $id);
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
-            $respuesta['mensaje'] = "El Usuario de no Existe";
-        }else if ($validar_modificar) {
+            $respuesta['mensaje'] = "El Usuario no Existe";
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "Nombre ya existe";
-        }else if($expresiones_regulares['resultado']){
+            $respuesta['mensaje'] = "La Cédula ya existe";
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         } else {
             try {
-                $this->conex->query("UPDATE usuario SET cedula= '$cedula', id_ciudad= '$id_ciudad', primer_nombre = '$primer_nombre',segundo_nombre = '$segundo_nombre', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido', genero = '$genero', telefono = '$telefono', correo = '$correo' , direccion = '$direccion' WHERE id = '$id'");
+                $query = "UPDATE usuario SET cedula = ?, id_ciudad = ?, primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, genero = ?, telefono = ?, correo = ?, direccion = ? WHERE id = ?";
+                $stmt = $this->conex->prepare($query);
+                $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $telefono, $correo, $direccion, $id]);
+                
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {
@@ -80,29 +77,32 @@ class AspiranteModelo extends connectDB
         }
         return $respuesta;
     }
-
+    
     public function eliminar($id)
     {
-
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El Usuario de no Existe";
-        }else{
+            $respuesta['mensaje'] = "El Usuario no Existe";
+        } else {
             try {
-                $this->conex->query("DELETE FROM aspirante_emprendimiento WHERE id_usuario ='$id'");
-                $respuesta["resultado"]=1;
-                $respuesta["mensaje"]="Eliminación exitosa";
+                $query = "DELETE FROM aspirante_emprendimiento WHERE id_usuario = ?";
+                $stmt = $this->conex->prepare($query);
+                $stmt->execute([$id]);
+                
+                $respuesta["resultado"] = 1;
+                $respuesta["mensaje"] = "Eliminación exitosa";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
-        }         
+        }
         return $respuesta;
-    }
+    }    
 
     public function listar()
     {

@@ -15,57 +15,59 @@ class ComentariosModelo extends connectDB
         $this->mensaje = $mensaje;
         $this->id_publicacion = $id_publicacion;
         $this->cedula_usuario = $cedula_usuario;
-            
+        
         try {
-            $this->conex->query("INSERT INTO comentario(
-				mensaje,
-                id_publicacion,
-                cedula_usuario
-				)
-				VALUES(
-					'$this->mensaje',
-                    '$this->id_publicacion',
-                    '$this->cedula_usuario'
-				)");
-                $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Registro exitoso";
+            $sql = "INSERT INTO comentario(mensaje, id_publicacion, cedula_usuario) VALUES (?, ?, ?)";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$this->mensaje, $this->id_publicacion, $this->cedula_usuario]);
+            
+            $respuesta['resultado'] = 1;
+            $respuesta['mensaje'] = "Registro exitoso";
         } catch (Exception $e) {
-            return $e->getMessage();
+            $respuesta['resultado'] = 0;
+            $respuesta['mensaje'] = $e->getMessage();
         }
+        
         return $respuesta;
-    }
+    }    
 
     public function modificar($id, $mensaje)
     {
         $this->mensaje = $mensaje;
         $this->id = $id;
-
+    
         try {
-            $this->conex->query("UPDATE comentario SET mensaje = '$mensaje' WHERE id = '$id'");
+            $sql = "UPDATE comentario SET mensaje = ? WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$mensaje, $id]);
+            
             $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Modificacion exitosa";
+            $respuesta['mensaje'] = "Modificación exitosa";
         } catch (Exception $e) {
-            return $e->getMessage();
+            $respuesta['resultado'] = 0;
+            $respuesta['mensaje'] = $e->getMessage();
         }
         return $respuesta;
-    }
+    }    
 
     public function eliminar($id)
     {
         $this->id = $id;
-        if ($this->existe($id)==false) {
+    
+        if ($this->existe($id) == false) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "El comentario no existe";
         } else {
             try {
-                $this->conex->query("DELETE from comentario
-					WHERE
-					id = '$this->id'
-					");
+                $sql = "DELETE FROM comentario WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id]);
+    
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Eliminación exitosa";
             } catch (Exception $e) {
-                return $e->getMessage();
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
             }
         }
         return $respuesta;

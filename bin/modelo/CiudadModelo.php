@@ -11,17 +11,24 @@ class CiudadModelo extends connectDB
     {
         $validar = $this->validar_registro($id);
         if (!$validar) {
-            $this->conex->query("INSERT INTO ciudades(id, id_estado, nombre) VALUES('$id', '$id_estado', '$nombre')");
+            try {
+                $sql = "INSERT INTO ciudades (id, id_estado, nombre) VALUES (?, ?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id, $id_estado, $nombre]);
+            } catch (Exception $e) {
+                return $e->getMessage(); // En caso de error, devuelve el mensaje de error
+            }
         }
         return 0;
     }
-
     public function validar_registro($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM ciudades WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM ciudades WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id]);
+            $fila = $stmt->fetchAll();
+    
             if ($fila) {
                 return true;
             } else {
@@ -30,14 +37,16 @@ class CiudadModelo extends connectDB
         } catch (Exception $e) {
             return false;
         }
-    }
+    }    
 
     public function existe($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM area_emprendimiento WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM area_emprendimiento WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id]);
+            $fila = $stmt->fetchAll();
+    
             if ($fila) {
                 return true;
             } else {
@@ -47,7 +56,7 @@ class CiudadModelo extends connectDB
         } catch (Exception $e) {
             return false;
         }
-    }
+    } 
     public function listadociudades($estado)
     {
         $r = array();

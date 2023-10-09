@@ -33,111 +33,109 @@ class UsuariosRolesModelo extends connectDB
 		return $this->id_rol;
 	}
 
-
-    public function incluirDocentes($id_usuario,$id_rol)
-	{
-		$validar_registro = $this->validar_registroD($id_usuario,$id_rol);
-		if ($this->existe($id_usuario)==false) {
+	public function incluirDocentes($id_usuario, $id_rol)
+    {
+        $validar_registro = $this->validar_registroD($id_usuario, $id_rol);
+        if (!$this->existe($id_usuario)) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Usuario no Existe";
             return $respuesta;
-        }
-		else if ($validar_registro) {
-			$respuesta['resultado'] = 2;
-			$respuesta['mensaje'] = "La persona ya encuentra registrado";
-		} else {
-			try {
-				$this->conex->query("INSERT INTO usuarios_roles(
-					id_usuario, id_rol)
-				VALUES('$id_usuario', '$id_rol')");
-				$respuesta['resultado'] = 1;
-				$respuesta['mensaje'] = "Registro exitoso";
-			} catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
-			}
-		}
-		return $respuesta;
-	}
-
-    public function incluirEstudiantes($id_usuario,$id_rol)
-	{
-		$validar_registro = $this->validar_registroE($id_usuario,$id_rol);
-        if ($this->existe($id_usuario)==false) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Usuario no Existe";
-            return $respuesta;
-        }
-		else if ($validar_registro) {
-			$respuesta['resultado'] = 2;
-			$respuesta['mensaje'] = "La persona ya encuentra registrado";
-		} else {
-			try {
-				$this->conex->query("INSERT INTO usuarios_roles(
-					id_usuario, id_rol)
-				VALUES('$id_usuario', '$id_rol')");
-				$respuesta['resultado'] = 1;
-				$respuesta['mensaje'] = "Registro exitoso";
-			} catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
-			}
-		}
-		return $respuesta;
-	}
-
-    public function eliminarD($id_usuario,$id_rol)
-	{
-		$validar_expresionID = $this->validar_expresion_id($id_usuario);
-        if ($validar_expresionID['resultado']) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id_usuario)==false) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Usuario no Existe";
-        }else if ($this->existeaulaEstudiantes($id_usuario)==true) {
+        } else if ($validar_registro) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El Estudiante no puede ser borrado, se encuentra asignado a un aula";
-        }else{
+            $respuesta['mensaje'] = "La persona ya se encuentra registrada";
+        } else {
             try {
-                $this->conex->query("DELETE from usuarios_roles
-                    WHERE id_usuario ='$id_usuario' and id_rol = '$id_rol' ");
+                $sql = "INSERT INTO usuarios_roles (id_usuario, id_rol) VALUES (?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id_usuario, $id_rol]);
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Eliminacion exitosas";
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }
-		return $respuesta;
-	}
+        return $respuesta;
+    }
 
-
-	public function eliminarE($id_usuario,$id_rol)
-	{
-		$validar_expresionID = $this->validar_expresion_id($id_usuario);
-        if ($validar_expresionID['resultado']) {
+    public function incluirEstudiantes($id_usuario, $id_rol)
+    {
+        $validar_registro = $this->validar_registroE($id_usuario, $id_rol);
+        if (!$this->existe($id_usuario)) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id_usuario)==false) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Usuario no Existes";
-        }else if ($this->existeaulaDocente($id_usuario)==true) {
+            $respuesta['mensaje'] = "El Usuario no Existe";
+            return $respuesta;
+        } else if ($validar_registro) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El Docente no puede ser borrado, se encuentra asignado a un aula";
-        }else{
+            $respuesta['mensaje'] = "La persona ya se encuentra registrada";
+        } else {
             try {
-                $this->conex->query("DELETE from usuarios_roles
-                    WHERE id_usuario ='$id_usuario' and id_rol = '$id_rol' ");
+                $sql = "INSERT INTO usuarios_roles (id_usuario, id_rol) VALUES (?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id_usuario, $id_rol]);
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Eliminacion exitosas";
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }
-		return $respuesta;
-	}
+        return $respuesta;
+    }
+
+    public function eliminarD($id_usuario, $id_rol)
+    {
+        $validar_expresionID = $this->validar_expresion_id($id_usuario);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        } else if (!$this->existe($id_usuario)) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "El Usuario no Existe";
+        } else if ($this->existeaulaEstudiantes($id_usuario)) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "El Estudiante no puede ser borrado, se encuentra asignado a un aula";
+        } else {
+            try {
+                $sql = "DELETE FROM usuarios_roles WHERE id_usuario = ? AND id_rol = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id_usuario, $id_rol]);
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitosa";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
+        }
+        return $respuesta;
+    }
+
+    public function eliminarE($id_usuario, $id_rol)
+    {
+        $validar_expresionID = $this->validar_expresion_id($id_usuario);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        } else if (!$this->existe($id_usuario)) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "El Usuario no Existe";
+        } else if ($this->existeaulaDocente($id_usuario)) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "El Docente no puede ser borrado, se encuentra asignado a un aula";
+        } else {
+            try {
+                $sql = "DELETE FROM usuarios_roles WHERE id_usuario = ? AND id_rol = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id_usuario, $id_rol]);
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitosa";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
+        }
+        return $respuesta;
+    }
 
 	public function validar_expresion_id($id){
         if(!preg_match('/^[0-9]+$/', $id)){

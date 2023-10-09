@@ -14,77 +14,60 @@ class PermisosModelo extends connectDB
     private $idusuario;
     private $modulos;
 
-    public function gestionarpermisos($id_rol,$id_entorno,$entorno,$registrar,$consultar,$eliminar,$modificar)
+    public function gestionarpermisos($id_rol, $id_entorno, $entorno, $registrar, $consultar, $eliminar, $modificar)
     {
         $existepermisos = $this->validarpermisos($id_rol, $id_entorno);
         $validarrol = $this->validar_rol($id_rol);
         $validarentrono = $this->validar_entorno($id_entorno);
-        $validar_expresionID = $this->validar_expresion_id($id_rol,$id_entorno);
+        $validar_expresionID = $this->validar_expresion_id($id_rol, $id_entorno);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else{
+        } else {
             if ($validarrol == false) {
                 $respuesta['resultado'] = 5;
                 $respuesta['mensaje'] = "No existe el rol";
-            }else if($validarentrono == false){
+            } elseif ($validarentrono == false) {
                 $respuesta['resultado'] = 6;
                 $respuesta['mensaje'] = "No existe el entorno del sistema";
-            }else{
-                if ($existepermisos == false and $entorno == "true") {
-                    try {
-                        $this->conex->query("INSERT INTO permiso(
+            } else {
+                try {
+                    if ($existepermisos == false and $entorno == "true") {
+                        $stmt = $this->conex->prepare("INSERT INTO permiso(
                             id_rol,
                             id_entorno,
                             registrar,
                             modificar,
                             eliminar,
                             consultar
-                            )
-                            VALUES(
-                            '$id_rol',
-                            '$id_entorno',
-                            '$registrar',
-                            '$modificar',
-                            '$eliminar',
-                            '$consultar'
-
-                        )");
-                                $respuesta['resultado'] = 1;
-                                $respuesta['mensaje'] = "Permisos Registrados";
-                    } catch (Exception $e) {
-                            $respuesta['resultado'] = 0;
-                            $respuesta['mensaje'] = $e->getMessage();
+                        ) VALUES (?, ?, ?, ?, ?, ?)");
+                        $stmt->execute([$id_rol, $id_entorno, $registrar, $modificar, $eliminar, $consultar]);
+                        $respuesta['resultado'] = 1;
+                        $respuesta['mensaje'] = "Permisos Registrados";
+                    } else if ($existepermisos == true and $entorno == "false") {
+                        $stmt = $this->conex->prepare("DELETE FROM permiso WHERE id_entorno = ? AND id_rol = ?");
+                        $stmt->execute([$id_entorno, $id_rol]);
+                        $respuesta['resultado'] = 2;
+                        $respuesta['mensaje'] = "Permisos Eliminados";
+                    } else if ($existepermisos == false) {
+                        $respuesta['resultado'] = 4;
+                        $respuesta['mensaje'] = "El registro permiso no existe";
+                    } else if ($existepermisos == true and $entorno == "true") {
+                        $stmt = $this->conex->prepare("UPDATE permiso SET registrar = ?, modificar = ?, eliminar = ?, consultar = ? WHERE id_rol = ? AND id_entorno = ?");
+                        $stmt->execute([$registrar, $modificar, $eliminar, $consultar, $id_rol, $id_entorno]);
+                        $respuesta['resultado'] = 3;
+                        $respuesta['mensaje'] = "Permisos Actualizados";
                     }
-                } else if ($existepermisos == true and $entorno == "false") {
-                    try {
-                        $this->conex->query("DELETE from permiso
-                            WHERE
-                            id_entorno = '$id_entorno' and id_rol = '$id_rol'
-                            ");
-                                $respuesta['resultado'] = 2;
-                                $respuesta['mensaje'] = "Permisos Eliminados";
-                    } catch (Exception $e) {
-                            $respuesta['resultado'] = 0;
-                            $respuesta['mensaje'] = $e->getMessage();
-                    }
-                }else if($existepermisos == false){
-                    $respuesta['resultado'] = 4;
-                    $respuesta['mensaje'] = "El registro permiso no existe";
-                } else if($existepermisos == true and $entorno == "true") {
-                    try {
-                        $this->conex->query("UPDATE permiso SET  registrar = '$registrar', modificar = '$modificar', eliminar = '$eliminar', consultar = '$consultar' WHERE id_rol = '$id_rol' and id_entorno = '$id_entorno'");
-                                $respuesta['resultado'] = 3;
-                                $respuesta['mensaje'] = "Permisos Actualizados";
-                    } catch (Exception $e) {
-                            $respuesta['resultado'] = 0;
-                            $respuesta['mensaje'] = $e->getMessage();
-                    }
+                } catch (Exception $e) {
+                    $respuesta['resultado'] = 0;
+                    $respuesta['mensaje'] = $e->getMessage();
                 }
             }
         }
         return $respuesta;
     }
+    
 
     public function validar_rol($id)
     {

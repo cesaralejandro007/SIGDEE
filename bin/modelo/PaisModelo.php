@@ -10,17 +10,25 @@ class PaisModelo extends connectDB
     {
         $validar_pais = $this->validar_registro($id);
         if (!$validar_pais) {
-            $this->conex->query("INSERT INTO paises(id, nombre) VALUES('$id', '$nombre')");
+            try {
+                $sql = "INSERT INTO paises (id, nombre) VALUES (?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id, $nombre]);
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
         }
         return 0;
     }
+    
 
     public function validar_registro($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM paises WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM paises WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id]);
+            $fila = $stmt->fetchAll();
             if ($fila) {
                 return true;
             } else {
@@ -30,6 +38,7 @@ class PaisModelo extends connectDB
             return false;
         }
     }
+    
 
     public function existe($id)
     {

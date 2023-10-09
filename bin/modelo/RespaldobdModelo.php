@@ -9,27 +9,30 @@ class RespaldobdModelo extends connectDB
   {
       $validar_usuario_existe = $this->existe_usuario($cedula);
       if ($validar_usuario_existe == false) {
-        $respuesta['resultado'] = 3;
-        $respuesta['mensaje'] = "El usuario no existe";
-        return $respuesta;
-      }else{
-        $resultado = $this->conex->prepare("SELECT usuario.clave as clave,rol.nombre as rol FROM usuario,usuarios_roles,rol WHERE cedula = '$cedula' AND rol.nombre = 'Super Usuario' AND usuarios_roles.id_usuario = usuario.id AND rol.id = usuarios_roles.id_rol ");
-        try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-        return $respuestaArreglo;
+          $respuesta['resultado'] = 3;
+          $respuesta['mensaje'] = "El usuario no existe";
+          return $respuesta;
+      } else {
+          try {
+              // Usar una consulta preparada con un array para los valores
+              $stmt = $this->conex->prepare("SELECT usuario.clave as clave,rol.nombre as rol FROM usuario,usuarios_roles,rol WHERE cedula = ? AND rol.nombre = 'Super Usuario' AND usuarios_roles.id_usuario = usuario.id AND rol.id = usuarios_roles.id_rol");
+              $stmt->execute([$cedula]);
+              $respuestaArreglo = $stmt->fetchAll();
+              return $respuestaArreglo;
+          } catch (Exception $e) {
+              return $e->getMessage();
+          }
       } 
   }
+  
 
   public function existe_usuario($cedula)
   {
       try {
-          $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE cedula='$cedula'");
-          $resultado->execute();
-          $fila = $resultado->rowCount();
+          // Usar una consulta preparada con un array para los valores
+          $stmt = $this->conex->prepare("SELECT * FROM usuario WHERE cedula = ?");
+          $stmt->execute([$cedula]);
+          $fila = $stmt->rowCount();
           if ($fila > 0) {
               return true;
           } else {
@@ -39,6 +42,7 @@ class RespaldobdModelo extends connectDB
           return false;
       }
   }
+  
 
   public function respaldarBD() {
     try {
