@@ -12,96 +12,98 @@ class CensoModelo extends connectDB
 
     public function incluir($id_personal, $fecha_apertura, $fecha_cierre, $descripcion)
     {
-
-        $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre);
+        $validar_expresion = $this->validar_expresiones($descripcion, $fecha_apertura, $fecha_cierre);
         $validar_id_personal = $this->validar_id_usuario($id_personal);
-
+    
         $validar_expresionID = $this->validar_expresion_id($id_personal);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($validar_expresion['resultado']) {
+        } else if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
-        }else if(! $validar_id_personal){
+        } else if (!$validar_id_personal) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El usuario no existe";
-        }else{
-        try {
-            $fi = explode(" ", $fecha_apertura);
-            $fechai = $fi[0];
-            $horai = $fi[1];
-            $ffi = explode("/", $fechai);
-            $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
+        } else {
+            try {
+                $fi = explode(" ", $fecha_apertura);
+                $fechai = $fi[0];
+                $horai = $fi[1];
+                $ffi = explode("/", $fechai);
+                $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
     
-            $fc = explode(" ", $fecha_cierre);
-            $fechac = $fc[0];
-            $horac = $fc[1];
-            $ffc = explode("/", $fechac);
-            $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
-
-            $this->conex->query("INSERT INTO censo(
-				id_usuario, fecha_apertura, fecha_cierre, descripcion
-				)
-			VALUES(
-				'$id_personal', '$fisql', '$fcsql', '$descripcion'
-
-			)");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Registro exitoso";
-        } catch (Exception $e) {
-            $respuesta['resultado'] = 0;
-            $respuesta['mensaje'] = $e->getMessage();
-        }  
+                $fc = explode(" ", $fecha_cierre);
+                $fechac = $fc[0];
+                $horac = $fc[1];
+                $ffc = explode("/", $fechac);
+                $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+    
+                $sql = "INSERT INTO censo(id_usuario, fecha_apertura, fecha_cierre, descripcion) VALUES (?, ?, ?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id_personal, $fisql, $fcsql, $descripcion]);
+    
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
         }
         return $respuesta;
-    }
+    }    
 
     public function validar_id_usuario($id_usuario)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id_usuario'");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
+            $sql = "SELECT * FROM usuario WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id_usuario]);
+            $fila = $stmt->rowCount();
             if ($fila > 0) {
                 return true;
             } else {
                 return false;
             }
         } catch (Exception $e) {
-            return false;
+            return false; // En caso de error, devuelve false.
         }
     }
     
 
     public function modificar($id, $fecha_apertura, $fecha_cierre, $descripcion)
     {
-        $validar_expresion = $this->validar_expresiones($descripcion,$fecha_apertura,$fecha_cierre,$id);
+        $validar_expresion = $this->validar_expresiones($descripcion, $fecha_apertura, $fecha_cierre, $id);
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if (!$this->existe($id)) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Censo no Existe";
             return $respuesta;
-        }else if ($validar_expresion['resultado']) {
+        } else if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
-        } else{
-            $fi = explode(" ", $fecha_apertura);
-            $fechai = $fi[0];
-            $horai = $fi[1];
-            $ffi = explode("/", $fechai);
-            $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
-    
-            $fc = explode(" ", $fecha_cierre);
-            $fechac = $fc[0];
-            $horac = $fc[1];
-            $ffc = explode("/", $fechac);
-            $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+        } else {
             try {
-                $this->conex->query("UPDATE censo SET fecha_apertura= '$fisql', fecha_cierre= '$fcsql', descripcion = '$descripcion' WHERE id = '$id'");
+                $fi = explode(" ", $fecha_apertura);
+                $fechai = $fi[0];
+                $horai = $fi[1];
+                $ffi = explode("/", $fechai);
+                $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
+    
+                $fc = explode(" ", $fecha_cierre);
+                $fechac = $fc[0];
+                $horac = $fc[1];
+                $ffc = explode("/", $fechac);
+                $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+    
+                $sql = "UPDATE censo SET fecha_apertura = ?, fecha_cierre = ?, descripcion = ? WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$fisql, $fcsql, $descripcion, $id]);
+    
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Modificacion exitoso";
             } catch (Exception $e) {
@@ -110,34 +112,34 @@ class CensoModelo extends connectDB
             }
         }
         return $respuesta;
-    }
+    }    
 
     public function eliminar($id)
     {
-        $this->id = $id;
-        $validar_expresionID = $this->validar_expresion_id($id);
-        if ($this->existe($id)==false) {
-            $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El Censo no Existe";
-        }else if ($validar_expresionID['resultado']) {
-            $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else{
-            try {
-                $this->conex->query("DELETE from censo
-						WHERE
-						id = '$id'
-						");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Eliminación exitosa";
-            } catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
+        try {
+            $validar_expresionID = $this->validar_expresion_id($id);
+            
+            if (!$this->existe($id)) {
+                $respuesta['resultado'] = 2;
+                $respuesta['mensaje'] = "El Censo no Existe";
+            } else if ($validar_expresionID['resultado']) {
+                $respuesta['resultado'] = 2;
+                $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+            } else {
+                $sql = "DELETE FROM censo WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id]);
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitosa";
             }
-        } 
+        } catch (Exception $e) {
+            $respuesta['resultado'] = 0;
+            $respuesta['mensaje'] = $e->getMessage();
+        }
+        
         return $respuesta;
     }
-
+    
     public function listar(){
         
         $resultado = $this->conex->prepare("SELECT id, fecha_apertura, fecha_cierre, descripcion FROM censo");

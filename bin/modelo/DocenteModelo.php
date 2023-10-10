@@ -11,50 +11,44 @@ class DocenteModelo extends connectDB
     private $correo;
     private $direccion;
 
-    public function incluir($cedula, $id_ciudad, $primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave)
+    public function incluir($cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave)
     {
         $validar_registro = $this->existeregistrar($cedula);
-        $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
+        $validar_expresion = $this->validar_expresiones($cedula, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono);
         $validar_expresionID = $this->validar_expresion_idciudad($id_ciudad);
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($validar_registro) {
+        } else if ($validar_registro) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "La cedula esta repetida";
-        }else if ($validar_expresion['resultado']) {
+            $respuesta['mensaje'] = "La cédula está repetida";
+        } else if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
         } else {
             try {
-                $this->conex->query("INSERT INTO usuario(
-        					cedula,
-        					id_ciudad,
-        					primer_nombre,
-                            segundo_nombre,
-        					primer_apellido,
-                            segundo_apellido,
-                            genero,
-        					telefono,
-        					correo,
-        					direccion,
-                            clave
-        					)
-        				VALUES(
-        					'$cedula',
-        					'$id_ciudad',
-        					'$primer_nombre',
-                            '$segundo_nombre',
-        					'$primer_apellido',
-                            '$segundo_apellido',
-                            '$genero',
-        					'$telefono',
-        					'$correo',
-        					'$direccion',
-                            '$clave'
-        				)");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Registro exitoso";
+                $sql = "INSERT INTO usuario(
+                    cedula,
+                    id_ciudad,
+                    primer_nombre,
+                    segundo_nombre,
+                    primer_apellido,
+                    segundo_apellido,
+                    genero,
+                    telefono,
+                    correo,
+                    direccion,
+                    clave
+                    )
+                VALUES(
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )";
+    
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $telefono, $correo, $direccion, $clave]);
+    
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -63,32 +57,36 @@ class DocenteModelo extends connectDB
         return $respuesta;
     }
 
-    public function modificar($id,$id_ciudad,$cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono)
+    public function modificar($id, $id_ciudad, $cedula, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono)
     {
         $validar_modificar = $this->validar_modificar($cedula, $id);
-        $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
+        $validar_expresion = $this->validar_expresiones($cedula, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono);
         $validar_expresionID = $this->validar_expresion_id($id);
-        $validar_expresionIdCuidad = $this->validar_expresion_idciudad($id_ciudad);
+        $validar_expresionIdCiudad = $this->validar_expresion_idciudad($id_ciudad);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($validar_expresionIdCuidad['resultado']) {
+        } else if ($validar_expresionIdCiudad['resultado']) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = $validar_expresionIdCuidad['mensaje'];
-        }else if ($this->existe($id)==false) {
+            $respuesta['mensaje'] = $validar_expresionIdCiudad['mensaje'];
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Usuario no Existe";
-        }else if ($validar_modificar) {
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = 'Registro no modificado, la Cedula ya existe';
-        }else if ($validar_expresion['resultado']) {
+        } else if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
-        }else {
+        } else {
             try {
-                $this->conex->query("UPDATE usuario SET cedula= '$cedula', id_ciudad= '$id_ciudad', primer_nombre = '$primer_nombre',segundo_nombre = '$segundo_nombre', primer_apellido = '$primer_apellido', segundo_apellido = '$segundo_apellido', genero = '$genero', telefono = '$telefono', correo = '$correo' , direccion = '$direccion' WHERE id = '$id'");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Modificación exitosa";
+                $sql = "UPDATE usuario SET cedula=?, id_ciudad=?, primer_nombre=?, segundo_nombre=?, primer_apellido=?, segundo_apellido=?, genero=?, telefono=?, correo=?, direccion=? WHERE id=?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $telefono, $correo, $direccion, $id]);
+                
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();

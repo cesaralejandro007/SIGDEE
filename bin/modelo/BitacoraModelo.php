@@ -9,55 +9,64 @@ class BitacoraModelo extends connectDB
     private $fecha;
     private $accion;
 
-    public function incluir($id_usuario_roles,$id_entorno,$fecha,$accion)
+    public function incluir($id_usuario_roles, $id_entorno, $fecha, $accion)
     {
         try {
-            $this->conex->query("INSERT INTO bitacora(id_usuario_roles, id_entorno, accion, fecha)
-            VALUES('$id_usuario_roles', '$id_entorno','$accion', '$fecha')");
+            $sql = "INSERT INTO bitacora (id_usuario_roles, id_entorno, accion, fecha) VALUES (?, ?, ?, ?)";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id_usuario_roles, $id_entorno, $accion, $fecha]);
             return true;
         } catch (Exception $e) {
             return $e->getMessage();
         }
-    }
+    }    
 
-
-    public function listar_bitacora_rango($fechai,$fechaf)
+    public function listar_bitacora_rango($fechai, $fechaf)
     {
-        $validar_expresion = $this->validar_expresiones($fechai,$fechaf);
+        $validar_expresion = $this->validar_expresiones($fechai, $fechaf);
         if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
             return $respuesta;
-        }else{
-            $resultado = $this->conex->prepare("SELECT b.id as id, date_format(b.fecha, '%d-%m-%Y %H:%m:%s') as fecha, concat(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) as usuario, r.nombre as rol, e.nombre as entorno, b.accion as accion FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno WHERE b.fecha BETWEEN '$fechai' and '$fechaf' ;");
-            $respuestaArreglo = [];
+        } else {
             try {
-                $resultado->execute();
-                $respuestaArreglo = $resultado->fetchAll();
+                $sql = "SELECT b.id AS id, DATE_FORMAT(b.fecha, '%d-%m-%Y %H:%i:%s') AS fecha, CONCAT(u.cedula, ' / ', u.primer_apellido, ' ', u.primer_nombre) AS usuario, r.nombre AS rol, e.nombre AS entorno, b.accion AS accion
+                        FROM bitacora b
+                        INNER JOIN usuarios_roles ur ON b.id_usuario_roles = ur.id
+                        INNER JOIN rol r ON ur.id_rol = r.id
+                        INNER JOIN usuario u ON u.id = ur.id_usuario
+                        INNER JOIN entorno_sistema e ON e.id = b.id_entorno
+                        WHERE b.fecha BETWEEN ? AND ?";
+                
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute(array($fechai, $fechaf)); // Pasamos los valores en un array
+                $resultadoArreglo = $stmt->fetchAll();
+                return $resultadoArreglo;
             } catch (Exception $e) {
                 return $e->getMessage();
             }
-            return $respuestaArreglo;
         }
     }
 
-    
-    public function limpieza_bitacora($fechai,$fechaf)
+    public function limpieza_bitacora($fechai, $fechaf)
     {
-        $validar_expresion = $this->validar_expresiones($fechai,$fechaf);
-        $existen_registros_bitacora = $this->existe_registros($fechai,$fechaf);
+        $validar_expresion = $this->validar_expresiones($fechai, $fechaf);
+        $existen_registros_bitacora = $this->existe_registros($fechai, $fechaf);
+    
         if ($validar_expresion['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresion['mensaje'];
             return $respuesta;
-        }else if ($existen_registros_bitacora ==false){
+        } else if (!$existen_registros_bitacora) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "No existen registros en la bitacora";
+            $respuesta['mensaje'] = "No existen registros en la bitácora";
             return $respuesta;
-        }else{
-            $resultado = $this->conex->prepare("DELETE FROM bitacora WHERE fecha BETWEEN '$fechai' and '$fechaf'");
+        } else {
             try {
-                $resultado->execute();
+                $sql = "DELETE FROM bitacora WHERE fecha BETWEEN ? AND ?";
+                
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute(array($fechai, $fechaf));
                 return true;
             } catch (Exception $e) {
                 return $e->getMessage();
@@ -65,17 +74,15 @@ class BitacoraModelo extends connectDB
         }
     }
 
-    public function existe_registros($fechai,$fechaf)
+    public function existe_registros($fechai, $fechaf)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM bitacora b INNER JOIN usuarios_roles ur ON b.id_usuario_roles= ur.id INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN entorno_sistema e ON e.id=b.id_entorno WHERE b.fecha BETWEEN '$fechai' and '$fechaf' ;");
-            $resultado->execute();
-            $fila = $resultado->rowCount();
-            if ($fila > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            $sql = "SELECT COUNT(*) FROM bitacora WHERE fecha BETWEEN ? AND ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute(array($fechai, $fechaf));
+            $count = $stmt->fetchColumn();
+    
+            return $count > 0;
         } catch (Exception $e) {
             return false;
         }

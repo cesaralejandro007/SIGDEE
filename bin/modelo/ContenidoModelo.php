@@ -8,27 +8,29 @@ class ContenidoModelo extends connectDB
     private $descripcion;
     private $archivo_adjunto;
 
-    
     public function incluir($nombre, $descripcion, $archivo_adjunto)
     {
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
         $this->archivo_adjunto = $archivo_adjunto;
-
+        
         $validar_registro = $this->validar_registro($nombre);
-        $expresiones_regulares = $this->validar_expresiones($nombre,$descripcion);
+        $expresiones_regulares = $this->validar_expresiones($nombre, $descripcion);
+        
         if ($validar_registro) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
-        }else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }else {
+        } else {
             try {
-                $this->conex->query("INSERT INTO contenido(nombre, descripcion, archivo_adjunto)
-                    VALUES('$this->nombre','$this->descripcion','$this->archivo_adjunto')");
-                 $respuesta['resultado'] = 1;
-                 $respuesta['mensaje'] = "Registro exitoso";
+                $sql = "INSERT INTO contenido(nombre, descripcion, archivo_adjunto) VALUES(?, ?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $archivo_adjunto]);
+                
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -43,33 +45,35 @@ class ContenidoModelo extends connectDB
         $this->descripcion = $descripcion;
         $this->id = $id;
         $validar_modificar = $this->validar_modificar($nombre, $id);
-        $expresiones_regulares = $this->validar_expresiones($nombre,$descripcion);
+        $expresiones_regulares = $this->validar_expresiones($nombre, $descripcion);
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Contenido no Existe";
-        }else if($validar_modificar) {
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
-        } 
-        else if($expresiones_regulares['resultado']){
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }
-        else {
+        } else {
             try {
-                $this->conex->query("UPDATE contenido SET nombre= '$this->nombre',descripcion = '$this->descripcion' WHERE id = '$this->id'");
+                $sql = "UPDATE contenido SET nombre = ?, descripcion = ? WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $id]);
+                
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Modificación exitoso";
+                $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
         }
-    return $respuesta;
+        return $respuesta;
     }
 
     public function eliminar($id)
@@ -77,24 +81,24 @@ class ContenidoModelo extends connectDB
         $validar_contenido = $this->Validar_contenido_unidad($id);
 
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Contenido no Existe";
             return $respuesta;
-        }else{
-            if($validar_contenido) {
+        } else {
+            if ($validar_contenido) {
                 $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "El Contenido no puede ser borrardo, existe un vinculo con Unidad Contenido.";
-            }
-            else{
+                $respuesta['mensaje'] = "El Contenido no puede ser borrado, existe un vínculo con Unidad Contenido.";
+            } else {
                 try {
-                    $this->conex->query("DELETE from contenido
-                    WHERE
-                    id = '$id'
-                    ");
+                    $sql = "DELETE FROM contenido WHERE id = ?";
+                    $stmt = $this->conex->prepare($sql);
+                    $stmt->execute([$id]);
+                    
                     $respuesta['resultado'] = 1;
                     $respuesta['mensaje'] = "Eliminación exitosa";
                 } catch (Exception $e) {

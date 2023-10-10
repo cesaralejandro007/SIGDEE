@@ -10,21 +10,18 @@ class ModuloModelo extends connectDB
     {
         $validar_registro = $this->validar_registro($nombre);
         $expresiones_regulares = $this->validar_expresiones($nombre);
+        
         if ($validar_registro) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El nombre esta repetido";
-        }else if ($expresiones_regulares['resultado']) {
+            $respuesta['mensaje'] = "El nombre está repetido";
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }else {
+        } else {
             try {
-                $this->conex->query("INSERT INTO modulo(
-					nombre
-					)
-					VALUES(
-					'$nombre'
-
-				)");
+                $sql = "INSERT INTO modulo(nombre) VALUES (?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre]);
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
@@ -34,30 +31,63 @@ class ModuloModelo extends connectDB
         }
         return $respuesta;
     }
+    
 
-    public function modificar($id,$nombre)
+    public function modificar($id, $nombre)
     {
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
         $validar_expresionID = $this->validar_expresion_id($id);
+    
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
-            $respuesta['mensaje'] = "El Modulo no Existe";
-        }
-        else if ($validar_modificar) {
+            $respuesta['mensaje'] = "El Módulo no Existe";
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El nombre esta repetido";
-        }else if ($expresiones_regulares['resultado']) {
+            $respuesta['mensaje'] = "El nombre está repetido";
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         } else {
             try {
-                $this->conex->query("UPDATE modulo SET nombre = '$nombre' WHERE id = '$id'");
+                $sql = "UPDATE modulo SET nombre = ? WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre, $id]);
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Modificacion exitoso";
+                $respuesta['mensaje'] = "Modificación exitosa";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
+        }
+        return $respuesta;
+    }
+    
+    public function eliminar($id)
+    {
+        $validar_tipo = $this->validarEmprendimientoModulo($id);
+        $validar_expresionID = $this->validar_expresion_id($id);
+
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        } else if ($this->existe($id) == false) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "El Módulo no Existe";
+            return $respuesta;
+        } else if ($validar_tipo) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "No puede ser borrado, existe un vínculo con Emprendimiento-modulo";
+        } else {
+            try {
+                $sql = "DELETE FROM modulo WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$id]);
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitosa";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -66,36 +96,6 @@ class ModuloModelo extends connectDB
         return $respuesta;
     }
 
-    public function eliminar($id)
-    {
-        $validar_tipo = $this->validarEmprendimientoModulo($id);
-
-        $validar_expresionID = $this->validar_expresion_id($id);
-        if ($validar_expresionID['resultado']) {
-            $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false){
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Modulo no Existe";
-            return $respuesta;
-        }else if ($validar_tipo) {
-                $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "No puede ser borrardo, existe un vinculo con Emprendimiento-modulo";
-        } else{
-            try {
-                $this->conex->query("DELETE from modulo
-                    WHERE
-                    id = '$id'
-                    ");
-                    $respuesta['resultado'] = 1;
-                    $respuesta['mensaje'] = "Eliminación exitoso";
-            } catch (Exception $e) {
-            $respuesta['resultado'] = 0;
-            $respuesta['mensaje'] = $e->getMessage();
-            }
-        }
-        return $respuesta;
-    }
 
     public function listar()
     {

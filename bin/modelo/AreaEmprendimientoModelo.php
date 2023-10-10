@@ -10,17 +10,18 @@ class AreaEmprendimientoModelo extends connectDB
     {
         $validar_nombre = $this->validar_registro($nombre);
         $expresiones_regulares = $this->validar_expresiones($nombre);
+        
         if ($validar_nombre) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
-        }
-        else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }       
-         else {
+        } else {
             try {
-                $this->conex->query("INSERT INTO area_emprendimiento(nombre) VALUES('$nombre')");
+                $stmt = $this->conex->prepare("INSERT INTO area_emprendimiento(nombre) VALUES(?)");
+                $stmt->execute([$nombre]);
+                
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
@@ -29,30 +30,31 @@ class AreaEmprendimientoModelo extends connectDB
             }
         }
         return $respuesta;
-    }
+    }    
 
     public function modificar($id, $nombre)
     {
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
         $validar_expresionID = $this->validar_expresion_id($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
-        }else if($validar_modificar) {
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
-        } 
-        else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        } 
-        else {
+        } else {
             try {
-                $this->conex->query("UPDATE area_emprendimiento SET nombre = '$nombre' WHERE id = '$id'");
+                $stmt = $this->conex->prepare("UPDATE area_emprendimiento SET nombre = ? WHERE id = ?");
+                $stmt->execute([$nombre, $id]);
+                
                 $respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Modificación exitosa";
             } catch (Exception $e) {
@@ -62,40 +64,40 @@ class AreaEmprendimientoModelo extends connectDB
         }
         return $respuesta;
     }
-
+    
 
     public function eliminar($id)
     {
         $validar_expresionID = $this->validar_expresion_id($id);
         $validar_tipo = $this->relacion_tipo($id);
+        
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El Area de Emprendimiento no Existe";
+            $respuesta['mensaje'] = "El Área de Emprendimiento no Existe";
             return $respuesta;
-        }else{
+        } else {
             if ($validar_tipo) {
                 $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "No puede ser borrardo, existe un vinculo en Emprendimiento";
-            } else{
+                $respuesta['mensaje'] = "No puede ser borrado, existe un vínculo en Emprendimiento";
+            } else {
                 try {
-                    $this->conex->query("DELETE from area_emprendimiento
-                        WHERE
-                        id = '$id'
-                        ");
+                    $stmt = $this->conex->prepare("DELETE FROM area_emprendimiento WHERE id = ?");
+                    $stmt->execute([$id]);
+                    
                     $respuesta['resultado'] = 1;
-                    $respuesta['mensaje'] = "Eliminacion exitosa";
+                    $respuesta['mensaje'] = "Eliminación exitosa";
                 } catch (Exception $e) {
                     $respuesta['resultado'] = 0;
                     $respuesta['mensaje'] = $e->getMessage();
                 }
-            } 
+            }
         }
         return $respuesta;
     }
-
+    
     public function listar()
     {
         $resultado = $this->conex->prepare("SELECT id, nombre FROM area_emprendimiento");

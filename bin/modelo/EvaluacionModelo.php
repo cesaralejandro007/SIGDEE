@@ -8,22 +8,25 @@ class EvaluacionModelo extends connectDB
     private $descripcion;
     private $archivo_adjunto;
 
-    public function incluir($nombre,$descripcion,$archivo_adjunto)
+    public function incluir($nombre, $descripcion, $archivo_adjunto)
     {
         $validar_registro = $this->validar_registro($nombre);
-        $expresiones_regulares = $this->validar_expresiones($nombre,$descripcion);
+        $expresiones_regulares = $this->validar_expresiones($nombre, $descripcion);
+    
         if ($validar_registro) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "Nombre ya existe";
-        }else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
         } else {
             try {
-                $this->conex->query("INSERT INTO evaluaciones(nombre, descripcion, archivo_adjunto)
-                    VALUES('$nombre','$descripcion', '$archivo_adjunto')");
-                 $respuesta['resultado'] = 1;
-                 $respuesta['mensaje'] = "Registro exitoso";
+                $sql = "INSERT INTO evaluaciones(nombre, descripcion, archivo_adjunto) VALUES (?, ?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $archivo_adjunto]);
+    
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -32,29 +35,34 @@ class EvaluacionModelo extends connectDB
         return $respuesta;
     }
 
-    public function modificar($id,$nombre,$descripcion){
+    public function modificar($id, $nombre, $descripcion)
+    {
         $validar_modificar = $this->validar_modificar($nombre, $id);
-        $expresiones_regulares = $this->validar_expresiones($nombre,$descripcion);
+        $expresiones_regulares = $this->validar_expresiones($nombre, $descripcion);
         $validar_expresionID = $this->validar_expresion_id($id);
+    
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "La Evaluacion no Existe";
+            $respuesta['mensaje'] = "La Evaluación no Existe";
             return $respuesta;
         } else if ($validar_modificar) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "Nombre ya existe";
-        }else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }else{
+        } else {
             try {
-                $this->conex->query("UPDATE evaluaciones SET nombre= '$nombre', descripcion= '$descripcion' WHERE id = '$id'");
+                $sql = "UPDATE evaluaciones SET nombre = ?, descripcion = ? WHERE id = ?";
+                $stmt = $this->conex->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $id]);
+    
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Modificación exitoso";
-            } catch(Exception $e) {
+                $respuesta['mensaje'] = "Modificación exitosa";
+            } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
             }
@@ -62,55 +70,61 @@ class EvaluacionModelo extends connectDB
         return $respuesta;
     }
     
-    public function cambiar_archivo($id,$archivo_adjunto){
+    
+    public function cambiar_archivo($id, $archivo_adjunto)
+    {
         try {
-            $this->conex->query("UPDATE evaluaciones SET archivo_adjunto= '$archivo_adjunto' WHERE id = '$id'");
+            $sql = "UPDATE evaluaciones SET archivo_adjunto = ? WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$archivo_adjunto, $id]);
             return true;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
-        
     }
+    
 
-    public function validar_modificar($nombre, $id){
-        try{
-            $resultado = $this->conex->prepare("SELECT * FROM evaluaciones WHERE nombre='$nombre' AND id<>'$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
-            if($fila){
+    public function validar_modificar($nombre, $id)
+    {
+        try {
+            $sql = "SELECT * FROM evaluaciones WHERE nombre = ? AND id <> ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$nombre, $id]);
+            $fila = $stmt->fetchAll();
+            
+            if ($fila) {
                 return true;
+            } else {
+                return false;
             }
-            else{
-                return false;;
-            }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return false;
         }
     }
+    
 
     public function eliminar($id)
     {
         $validar_evaluacion = $this->relacion_evaluacion($id);
         $validar_expresionID = $this->validar_expresion_id($id);
+        $respuesta = [];
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "La Evaluacion no Existe";
-            return $respuesta;
-        }else{
-            if($validar_evaluacion){
+            $respuesta['mensaje'] = "La Evaluación no Existe";
+        } else {
+            if ($validar_evaluacion) {
                 $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "La evaluación no puede ser borrardo, existe un vinculo con Unidad Evaluación.";
-            }else{
+                $respuesta['mensaje'] = "La evaluación no puede ser borrada, existe un vínculo con Unidad Evaluación.";
+            } else {
                 try {
-                    $this->conex->query("DELETE from evaluaciones
-                    WHERE
-                    id = '$id'
-                    ");
+                    $sql = "DELETE FROM evaluaciones WHERE id = ?";
+                    $stmt = $this->conex->prepare($sql);
+                    $stmt->execute([$id]);
                     $respuesta['resultado'] = 1;
-                    $respuesta['mensaje'] = "Eliminación exitoso";
+                    $respuesta['mensaje'] = "Eliminación exitosa";
                 } catch (Exception $e) {
                     $respuesta['resultado'] = 0;
                     $respuesta['mensaje'] = $e->getMessage();
@@ -119,6 +133,7 @@ class EvaluacionModelo extends connectDB
         }
         return $respuesta;
     }
+    
 
     public function elmininarEvaluacion_unidad($id)
     {

@@ -13,29 +13,26 @@ class RolModelo extends connectDB
         if ($validar_nombre) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El nombre ya existe.";
-        }else if ($expresiones_regulares['resultado']) {
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }else{
+        } else {
             try {
-                $this->conex->query("INSERT INTO rol(
-					nombre
-					)
-					VALUES(
-					'$nombre'
+                $values = [$nombre]; // Array de valores
+                $stmt = $this->conex->prepare("INSERT INTO rol(nombre) VALUES(?)");
+                $stmt->execute($values);
 
-				)");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Registro exitoso";
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Registro exitoso";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] =  $e->getMessage();
+                $respuesta['mensaje'] = $e->getMessage();
             }
         }
         return $respuesta;
     }
 
-    public function modificar($id,$nombre)
+    public function modificar($id, $nombre)
     {
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $expresiones_regulares = $this->validar_expresiones($nombre);
@@ -43,24 +40,26 @@ class RolModelo extends connectDB
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "El Rol no Existe";
-        }
-        else if ($validar_modificar){
+        } else if ($validar_modificar) {
             $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "El nombre ya se encuetra registrado";
-        }else if ($expresiones_regulares['resultado']) {
+            $respuesta['mensaje'] = "El nombre ya se encuentra registrado";
+        } else if ($expresiones_regulares['resultado']) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
-        }else {
+        } else {
             try {
-                $this->conex->query("UPDATE rol SET nombre = '$nombre' WHERE id = '$id'");
-                $respuesta["resultado"]=1;
-                $respuesta["mensaje"]="Modificación exitosa.";
+                $values = [$nombre, $id]; // Array de valores
+                $stmt = $this->conex->prepare("UPDATE rol SET nombre = ? WHERE id = ?");
+                $stmt->execute($values);
+
+                $respuesta["resultado"] = 1;
+                $respuesta["mensaje"] = "Modificación exitosa.";
             } catch (Exception $e) {
-                $respuesta["resultado"]=0;
-                $respuesta["mensaje"]=$e->getMessage();
+                $respuesta["resultado"] = 0;
+                $respuesta["mensaje"] = $e->getMessage();
             }
         }
         return $respuesta;
@@ -75,27 +74,26 @@ class RolModelo extends connectDB
         if ($validar_expresionID['resultado']) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
-        }else if ($this->existe($id)==false) {
+        } else if ($this->existe($id) == false) {
             $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "El Rol no Existe";
-        }else if ($validar_usuariorol) {
+        } else if ($validar_usuariorol) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "No puede ser borrado, existen usuarios registrados con este rol.";
-        } else if($validar_permisosrol){
+        } else if ($validar_permisosrol) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "No puede ser borrado, existen permisos registrados con este rol.";
-        }
-        else{
+        } else {
             try {
-                $this->conex->query("DELETE from rol
-					WHERE
-					id = '$id'
-					");
+                // Usar una consulta preparada con un array para los valores
+                $stmt = $this->conex->prepare("DELETE FROM rol WHERE id = ?");
+                $stmt->execute([$id]);
+
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Eliminacion exitosa";
+                $respuesta['mensaje'] = "Eliminación exitosa";
             } catch (Exception $e) {
-                $respuesta["resultado"]=0;
-                $respuesta["mensaje"]=$e->getMessage();
+                $respuesta["resultado"] = 0;
+                $respuesta["mensaje"] = $e->getMessage();
             }
         }
         return $respuesta;

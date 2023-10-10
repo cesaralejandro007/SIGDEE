@@ -6,10 +6,12 @@ class ChatModelo extends connectDB
     private $id;
     private $nombre;
 
-    public function incluir($id,$mensaje)
+    public function incluir($id, $mensaje)
     {
         try {
-            $this->conex->query("INSERT INTO chat_virtual(id_usuario,mensaje) VALUES('$id','$mensaje')");
+            $sql = "INSERT INTO chat_virtual(id_usuario, mensaje) VALUES(?, ?)";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id, $mensaje]);
         } catch (Exception $e) {
             $respuesta['resultado'] = 0;
             $respuesta['mensaje'] = $e->getMessage();
@@ -18,19 +20,25 @@ class ChatModelo extends connectDB
 
     public function eliminar($id)
     {
-            try {
-                $this->conex->query("DELETE from chat_virtual
-						WHERE
-						id = '$id'
-						");
-            $respuesta['resultado'] = 1;
-            $respuesta['mensaje'] = "Eliminación exitosa";
-            } catch (Exception $e) {
-                $respuesta['resultado'] = 0;
-                $respuesta['mensaje'] = $e->getMessage();
+        try {
+            $sql = "DELETE FROM chat_virtual WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $stmt->execute([$id]);
+            
+            if ($stmt->rowCount() > 0) {
+                $respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Eliminación exitosa";
+            } else {
+                $respuesta['resultado'] = 2;
+                $respuesta['mensaje'] = "El mensaje no existe";
             }
+        } catch (Exception $e) {
+            $respuesta['resultado'] = 0;
+            $respuesta['mensaje'] = $e->getMessage();
+        }
         return $respuesta;
     }
+    
 
     public function listar()
     {

@@ -11,17 +11,29 @@ class EstadoModelo extends connectDB
     {
         $validar = $this->validar_registro($id);
         if (!$validar) {
-            $this->conex->query("INSERT INTO estados(id, id_pais, nombre) VALUES('$id', '$id_pais', '$nombre')");
+            try {
+                $sql = "INSERT INTO estados(id, id_pais, nombre) VALUES (?, ?, ?)";
+                $stmt = $this->conex->prepare($sql);
+                $params = [$id, $id_pais, $nombre];
+                $stmt->execute($params);
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
         }
         return 0;
     }
+    
 
     public function validar_registro($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM estados WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM estados WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $params = [$id];
+            $stmt->execute($params);
+    
+            $fila = $stmt->fetchAll();
+    
             if ($fila) {
                 return true;
             } else {
@@ -31,23 +43,28 @@ class EstadoModelo extends connectDB
             return false;
         }
     }
+    
 
     public function existe($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM area_emprendimiento WHERE id='$id'");
-            $resultado->execute();
-            $fila = $resultado->fetchAll();
+            $sql = "SELECT * FROM area_emprendimiento WHERE id = ?";
+            $stmt = $this->conex->prepare($sql);
+            $params = [$id];
+            $stmt->execute($params);
+    
+            $fila = $stmt->fetchAll();
+    
             if ($fila) {
                 return true;
             } else {
                 return false;
             }
-
         } catch (Exception $e) {
             return false;
         }
     }
+    
 
     public function listadoestados($pais)
     {
