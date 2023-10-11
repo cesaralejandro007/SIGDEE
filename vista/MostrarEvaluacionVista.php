@@ -88,28 +88,32 @@ use config\componentes\configSistema as configSistema;
                                             <tr>
                                               <th>Opciones</th>
                                               <th>Cedula</th>
-                                              <th>Estudiante</th>                      
-                                              <th>Descripción de entrega</th>                      
-                                              <th>Fecha de entrega</th>                      
-                                              <th>Archivo adjunto</th>                      
-                                              <th>Calificación</th>                      
+                                              <th>Estudiante</th>                        
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            <?php foreach ($entregas as $valor) {
-                                            $nota = ($valor['calificacion']==0) ? '<p style="color:red;">Sin Calificar</p>' : $valor['calificacion'];  ?>
+                                            <?php  foreach ($entregas as $valor) {
+                                                /*
+                                                if(($valor['calificacion']==0)){
+                                                    $nota = '<p style="color:red;">Sin Calificar</p>';
+                                                }
+                                                else
+                                                if($valor['calificacion']== NULL){
+                                                    $nota = '<p style="color:yellow;">No ha entregado</p>';
+                                                }
+                                                else
+                                                if(($valor['calificacion']>0)){
+                                                    $nota = $valor['calificacion'];
+                                                }*/
+                                            ?>
                                               <tr>
                                                 <td class="project-actions text-left" style="width:10%;">
                                                   <div class="d-flex">
-                                                    <button class="btn btn-sm" onclick="revisar_calificacion(<?=$valor['id_evaluacion'];?>)"><i class="fas fa-edit"></i>Revisar</button>
+                                                    <button class="btn btn-sm" onclick="revisar_calificacion(<?=$valor['id_estudiante'];?>)"><i class="fas fa-edit"></i>Revisar</button>
                                                   </div>
                                                 </td>
                                                 <td><?php echo $valor['cedula'];?></td>
-                                                <td><?php echo $valor['nombre_estudiante']; ?></td>
-                                                <td><?php echo $valor['descripcion_evaluacion'];?></td>
-                                                <td><?php echo date('d-m-Y h:i:s', strtotime($valor['fecha']));?></td>                       
-                                                <td><?php echo '<a target="_blank" href="'.$url_base.'/content/entregas/'.$mostrar_unidad[0]['id'].'/'.$valor['archivo'].'"> Visualizar <i class="fas fa-eye"></i></a>'; ?></td>                       
-                                                <td><?php echo $nota;?></td>                       
+                                                <td><?php echo $valor['nombre_estudiante']; ?></td>                        
                                               </tr>
                                             <?php } ?>
                                           </tbody>
@@ -184,18 +188,44 @@ use config\componentes\configSistema as configSistema;
                 </div>
                 <div class="modal-body">
                     <form action="" id="fi" method="post" enctype='multipart/form-data'>  
-                        <input type="hidden" name="id" id="id"/>
+                        <input type="text" name="id_evaluacion" id="id_evaluacion"/>
+                        <input type="text" name="id_e" id="id_e"/>
+                        <input type="text" name="id_unidad_evaluacion" id="id_unidad_evaluacion"/>
                         <div class="form-group row">
-                            <label for="calificacion" class="col-sm-3 col-form-label">Calificación</label>
-                            <div class="col-sm-9">
-                                <input type="number" max="20" min="0" name="calificacion" id="calificacion"/>
+                            <label for="calificacion" class="col-sm-4 col-form-label">Calificación</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="number" max="20" min="0" name="calificacion" id="calificacion"/>
                             </div>
                             <span id="scalificacion"></span>
+                        </div>
+                        <div id="evaluacion-entregada">
+                            <div class="form-group row">
+                                <label for="descripcion" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="descripcion_e" id="descripcion_e" disabled></textarea>
+                                </div>
+                                <span id="sdescripcion"></span>
+                            </div>
+                            <div class="form-group row">
+                                <label for="fecha" class="col-sm-4 col-form-label">Fecha entregada</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" max="20" min="0" name="fecha_e" id="fecha_e" disabled/>
+                                </div>
+                                <span id="sdescripcion"></span>
+                            </div>
+                            <div class="form-group row" id="archivo-anterior"  style="">                             
+                                <label for="calificacion" class="col-sm-4 col-form-label">Evaluación Entregada</label>
+                                <div class="col-sm-8 mt-4" >
+                                    <a  target="_blank" id="archivo" name="archivo"><i class="fa fa-eye"></i>  Ver Archivo</a>  
+                                </div>
+                                
+                            </div>
                         </div>
                         
                         <div class="modal-footer justify-content-between">
                             <input class="btn btn-default" type="reset" value="Limpiar Campos"/>
-                            <button type="button" onclick="calificar()" class="btn btn-primary">Calificar</button>
+                            <button id="calificar" type="button" onclick="calificar()" class="btn btn-primary">Calificar</button>
+                            <button id="modificar_calificacion" type="button" onclick="modificar_calificacion()" class="btn btn-primary">Calificar</button>
                         </div>
                     </form>
                 </div>

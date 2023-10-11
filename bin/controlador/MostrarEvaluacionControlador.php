@@ -220,19 +220,62 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 exit;
             break;
             case 'mostrar-calificacion':
-                $datos = $estudiante_evaluacion->mostar_calificacion($_POST['id']);
+                //Validar que existe ese estudiante para esa evaluacion
+
+
+                //Validar que haya sido calificado
+                $datos = $estudiante_evaluacion->mostrar_calificacion($_POST['id_estudiante'], $id_evaluaciones);
                 foreach ($datos as $valor) {
-                    echo json_encode([
-                        'id' => $valor['id'],
-                        'calificacion' => $valor['calificacion'],
-                        'estudiante' => $valor['estudiante'],
-                    ]);
+                    if(isset($valor[3])){
+                        echo json_encode([
+                            'id_estudiante' => $valor[0],
+                            'estudiante' => $valor[1],
+                            'calificacion' => $valor[2],
+                            'id_evaluacion' => $valor[3],
+                            'descripcion' => $valor[4],
+                            'fecha' => date('d-m-Y h:i:s', strtotime($valor[5])),
+                            'unidad' => $valor[6],
+                            'archivo' => _URL_.'/content/entregas/'.$valor[6].'/'.$valor[7],
+                            
+                        ]);
+                    }
+                    else{
+                        echo json_encode([
+                            'id_estudiante' => $valor[0],
+                            'estudiante' => $valor[1],
+                            'calificacion' => '',
+                            'id_evaluacion' => false,
+                        ]);
+                    }
+                    return 0;
                 }
                 return 0;
                 exit;
             break;
             case 'calificar':
-                $response = $estudiante_evaluacion->calificar($_POST['id'], $_POST['calificacion']);
+                $response = $estudiante_evaluacion->calificar($_POST['id_estudiante'], $_POST['id_unidad_evaluacion'], $_POST['calificacion']);
+                if ($response['resultado']== 1) {
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => $modulo,
+                        'message' => $response['mensaje']
+                    ]);
+                    $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificacion");
+                    return 0;
+                } else {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => $modulo,
+                        'message' => $response['mensaje']
+                    ]);
+                    return 0;
+                }
+                exit;
+            break;
+            case 'modificar_calificacion':
+                $response = $estudiante_evaluacion->modificar_calificacion($_POST['id_evaluacion'], $_POST['calificacion']);
                 if ($response['resultado']== 1) {
                     echo json_encode([
                         'estatus' => '1',

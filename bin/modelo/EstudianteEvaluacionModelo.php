@@ -197,20 +197,56 @@ class EstudianteEvaluacionModelo extends connectDB{
 		}
 	}
 
-	public function mostar_calificacion($id)
-	{
-		$resultado = $this->conex->prepare("SELECT ee.id as id, ee.archivo_adjunto as archivo_adjunto, concat(e.cedula, ' / ', e.primer_nombre, ' ', e.primer_apellido) as estudiante, ee.calificacion as calificacion FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE ee.id='$id'");
+	public function mostrar_calificacion($id_estudiante, $id_evaluacion){
 		$respuestaArreglo = [];
+		try{
+			$consul = $this->conex->prepare("SELECT ee.id as id_evaluacion, u.id as id_estudiante, u.cedula as cedula, CONCAT(u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as estudiante, ee.calificacion as calificacion, ee.descripcion as descripcion_evaluacion, ee.fecha_entrega as fecha, ee.archivo_adjunto as archivo FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN estudiante_evaluacion ee ON ee.id_usuario=u.id INNER JOIN unidad_evaluaciones ue ON ue.id=ee.id_unidad_evaluacion WHERE ue.id='$id_evaluacion' AND r.nombre='Estudiante' AND u.id='$id_estudiante';");
+			$consul->execute();	
+			$filas= $consul->fetchColumn();		
+			if($filas > 0){
+				$respuestaArreglo = $this->estudiante_con_calificacion($id_estudiante, $id_evaluacion);
+			}
+			else{
+				$respuestaArreglo = $this->estudiante_sin_calificacion($id_estudiante, $id_evaluacion);
+			}
+		}
+		catch (Exception $e) {
+			$respuestaArreglo = $e->getMessage();
+		}
+		return $respuestaArreglo;
+	}
+
+	public function estudiante_con_calificacion($id_estudiante, $id_evaluacion)
+	{
 		try {
-			$resultado->execute();
-			$respuestaArreglo = $resultado->fetchAll();
+			$respuestaArreglo = [];
+			$consul = $this->conex->prepare("SELECT u.id as id_estudiante,  CONCAT(u.cedula, '/', u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as estudiante, ee.calificacion as calificacion, ee.id as id_evaluacion, ee.descripcion as descripcion_evaluacion, ee.fecha_entrega as fecha, ue.id as unidad, ee.archivo_adjunto as archivo FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN estudiante_evaluacion ee ON ee.id_usuario=u.id INNER JOIN unidad_evaluaciones ue ON ue.id=ee.id_unidad_evaluacion WHERE ue.id='$id_evaluacion' AND r.nombre='Estudiante' AND u.id='$id_estudiante';");
+			$consul->execute();
+			$respuestaArreglo = $consul->fetchAll();
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
 		return $respuestaArreglo;
 	}
 
-	public function calificar($id, $calificacion){
+	public function estudiante_sin_calificacion($id_estudiante, $id_evaluacion)
+	{
+		try {
+			$respuestaArreglo = [];
+			//$resultado = $this->conex->prepare("SELECT ee.id as id, ee.archivo_adjunto as archivo_adjunto, concat(e.cedula, ' / ', e.primer_nombre, ' ', e.primer_apellido) as estudiante, ee.calificacion as calificacion FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE ee.id='$id_estudiante'");
+			$resultado = $this->conex->query("SELECT u.id as id_estudiante, CONCAT(u.cedula, '/', u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as estudiante FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario  WHERE r.nombre='Estudiante' AND u.id='$id_estudiante';");
+			$resultado->execute();
+			if($resultado){
+				$respuestaArreglo = $resultado->fetchAll();
+			}
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+		return $respuestaArreglo;
+	}
+
+	public function modificar_calificacion($id, $calificacion){
 		$validar_evaluacion = $this->existe($id);
 		if ($validar_evaluacion==false) {
             $respuesta['resultado'] = 3;
@@ -229,12 +265,34 @@ class EstudianteEvaluacionModelo extends connectDB{
         return $respuesta;
 	}
 
+	public function calificar($id_estudiante, $id_unidad_evaluacion, $calificacion){
+		$validar_evaluacion = $this->existe_estudiantes($id_estudiante);
+		if ($validar_evaluacion==false) {
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "La evaluacion que indica no existe";
+        } 
+        else{
+			try {
+				$this->conex->query("INSERT INTO `estudiante_evaluacion` (`id`, `id_usuario`, `id_unidad_evaluacion`, `descripcion`, `archivo_adjunto`, `fecha_entrega`, `calificacion`, `retroalimentacion`) VALUES ('', $id_estudiante, $id_unidad_evaluacion, 'Corregido presencialmente', NULL, NULL, $calificacion, NULL);");
+				$respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Calificación guardada";
+			} catch(Exception $e) {
+				$respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+			}
+        }
+        return $respuesta;
+	}
+
 	public function mostrarEntregas($evaluacion){
-		$resultado = $this->conex->prepare("SELECT e.id, ee.id as id, u.id as id_estudiante, u.cedula as cedula, CONCAT(u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as nombre_estudiante, ee.id as id_evaluacion, ee.calificacion as calificacion, ee.descripcion as descripcion_evaluacion, ee.fecha_entrega as fecha, ee.archivo_adjunto as archivo FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN estudiante_evaluacion ee ON ee.id_usuario=u.id INNER JOIN unidad_evaluaciones ue ON ue.id=ee.id_unidad_evaluacion INNER JOIN evaluaciones e ON e.id= ue.id_evaluacion WHERE ue.id='$evaluacion' AND r.nombre='Estudiante' GROUP BY u.id;");
-		$respuestaArreglo = [];
 		try{
+			$respuestaArreglo = [];
+			$query = $this->conex->prepare("SELECT us.id as id_estudiante, us.cedula as cedula, CONCAT(us.primer_nombre, ' ', us.segundo_nombre, ' ', us.primer_apellido, ' ', us.segundo_apellido) as nombre_estudiante FROM usuario us INNER JOIN aula_estudiante ae ON us.id=ae.id_estudiante INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN unidad u ON a.id=u.id_aula INNER JOIN unidad_evaluaciones ue ON u.id=ue.id_unidad INNER JOIN evaluaciones e ON ue.id_evaluacion=e.id WHERE ue.id= $evaluacion;");
+			$query->execute();
+			/*$resultado = $this->conex->prepare("SELECT ee.calificacion as calificacion, us.id as id_estudiante, us.cedula as cedula, CONCAT(us.primer_nombre, ' ', us.segundo_nombre, ' ', us.primer_apellido, ' ', us.segundo_apellido) as nombre_estudiante FROM usuario us INNER JOIN aula_estudiante ae ON us.id=ae.id_estudiante INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN unidad u ON a.id=u.id_aula INNER JOIN unidad_evaluaciones ue ON u.id=ue.id_unidad INNER JOIN evaluaciones e ON ue.id_evaluacion=e.id INNER JOIN estudiante_evaluacion ee ON ee.id_unidad_evaluacion=ue.id WHERE ue.id= $evaluacion;");
 			$resultado->execute();
-			$respuestaArreglo = $resultado->fetchAll();
+			$respuestaArreglo = $resultado->fetchAll();*/
+			$respuestaArreglo = $query->fetchAll();
 		}catch(Exception $e){
 			return $e->getMessage();
 		}
@@ -266,8 +324,6 @@ class EstudianteEvaluacionModelo extends connectDB{
 
         $reprobados = $total-$aprobados;
 
-
-
         $r['aprobados']= ($aprobados/$total)* 100;
         $r['reprobados']= ($reprobados/$total)* 100;
         return $r;
@@ -290,5 +346,21 @@ class EstudianteEvaluacionModelo extends connectDB{
         }
     }
 
+	public function existe_estudiante($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id'");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
 ?>
