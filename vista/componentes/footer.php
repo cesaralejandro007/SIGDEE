@@ -33,7 +33,7 @@
 <script src="plugins/adminlte/js/adminlte.js"></script>
 <script src="content/js/scripts.js"></script>
 
-<input type="hidden" name="name" id="name" value="<?php  echo explode(" ", $decrypted["nombre"])[0] ." ". explode(" ", $decrypted["apellido"])[0] ?>" />
+<input type="hidden" name="name" id="name" value="<?php  echo explode(" ", $_SESSION['usuario']["nombre"])[0] ." ". explode(" ", $_SESSION['usuario']["apellido"])[0] ?>" />
 <?php
 $confirm = 0;
 for ($i = 0; $i < count($response1); $i++) {

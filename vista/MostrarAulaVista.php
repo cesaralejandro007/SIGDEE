@@ -271,7 +271,7 @@ use config\componentes\configSistema as configSistema;
                                                         <input type="hidden" name="accion" id="accion" />
                                                         <input type="hidden" name="id" id="id" />
                                                         <input type="hidden" name="cedula_usuario" id="cedula_usuario"
-                                                            value="<?php echo $decrypted["cedula"]?>" />
+                                                            value="<?php echo $_SESSION['usuario']["cedula"]?>" />
                                                         <div class="form-group row">
                                                             <label for="titulo"
                                                                 class="col-sm-2 col-form-label">Titulo</label>
@@ -340,7 +340,7 @@ if (isset($x)) {
                                                         <div class="float-right btn-tool">
 
                                                             <ul class="nav nav-pills ml-auto">
-                                                                <?php if ($datos['cedula'] == $decrypted["cedula"]) {?>
+                                                                <?php if ($datos['cedula'] == $_SESSION['usuario']["cedula"]) {?>
 
                                                                 <li class="nav-item dropdown">
                                                                     <a class="nav-link" data-toggle="dropdown"
@@ -403,7 +403,7 @@ if (isset($x)) {
                                                     <input type="hidden" class="idc" name="idc" id="idc"
                                                         value="<?php echo $datos['id']; ?>" />
                                                     <input type="hidden" name="cedula_usuarioc" id="cedula_usuarioc"
-                                                        value="<?php echo $decrypted["cedula"] ?>" />
+                                                        value="<?php echo $_SESSION['usuario']["cedula"] ?>" />
                                                     <div class="input-group input-group-sm mb-0 mx-1">
                                                         <input class="form-control form-control-sm"
                                                             id="comentario-<?php echo $datos['id']; ?>"

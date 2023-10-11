@@ -17,7 +17,7 @@ use config\componentes\configSistema as configSistema;
             <div class="card m-2 border border-secondary">
                 <div class="card-header pb-1 px-1">
                     <div class="container-fluid d-flex justify-content-between flex-wrap">
-                    <input type="hidden" name="cedula_usuario" id="cedula_usuario" value="<?php echo $decrypted["cedula"] ?>" />
+                    <input type="hidden" name="cedula_usuario" id="cedula_usuario" value="<?php echo $_SESSION['usuario']["cedula"] ?>" />
                         <div>
                             <h5>Respaldo de la Base de datos</h5>
                         </div>

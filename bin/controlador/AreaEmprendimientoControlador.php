@@ -5,11 +5,11 @@ use modelo\AreaEmprendimientoModelo as AreaEmprendimiento;
 use modelo\BitacoraModelo as Bitacora;
 use config\componentes\configSistema as configSistema;
 use modelo\UsuarioModelo as Usuario;
-use modelo\LoginModelo as login;
+
 
 
 $conf = new configSistema();
-$login = new login();
+
 session_start();
 if (!isset($_SESSION['usuario'])) {
 	$redirectUrl = '?pagina=' . configSistema::_LOGIN_();
@@ -24,17 +24,7 @@ if (!is_file($conf->_Dir_Model_().$pagina.$conf->_MODEL_())) {
 
 if (is_file($conf->_Dir_Vista_().$pagina.$conf->_VISTA_())) {
 
-    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
-    
-    $t_private_key = base64_decode($private_key[0]["privatekey"]);
-
-    $decrypted = [];
-    foreach ($_SESSION['usuario'] as $k => $v) {
-        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
-        $decrypted[$k] = $decrypted_data;
-    }
-
-    if(count(array_filter($decrypted)) == 0) {
+    if(count(array_filter($_SESSION['usuario'])) == 0) {
         $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
         echo '<script>window.location="' . $redirectUrl . '"</script>';
         die();
@@ -46,12 +36,12 @@ if (is_file($conf->_Dir_Vista_().$pagina.$conf->_VISTA_())) {
     $bitacora = new Bitacora();
     $config = new config();
     $modulo = 'Area de Emprendimiento';
-$response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Area de Emprendimiento");
+$response = $permiso_usuario->mostrarpermisos($_SESSION['usuario']["id"],$_SESSION['usuario']["tipo_usuario"],"Area de Emprendimiento");
     //Establecer el id_usuario_rol para bitacora
-$id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $decrypted["id"]);
+$id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_usuario"], $_SESSION['usuario']["id"]);
     $entorno = $bitacora->buscar_id_entorno('Area de Emprendimiento');
     $fecha = date('Y-m-d h:i:s', time());
-    $token = $decrypted["token"];
+    $token = $_SESSION['usuario']["token"];
 
     /********************************************
     *   VALIDAR EL TOKEN ANTE CUALQUIER PETICION
@@ -244,7 +234,7 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($decrypted["tipo_usuario"], $
                     }
                     return 0;
                 } else if ($accion == 'consultarpermisos') {
-                    $response = $permiso_usuario->mostrarpermisos($decrypted["id"],$decrypted["tipo_usuario"],"Area de Emprendimiento");
+                    $response = $permiso_usuario->mostrarpermisos($_SESSION['usuario']["id"],$_SESSION['usuario']["tipo_usuario"],"Area de Emprendimiento");
                     echo json_encode($response);
                     return 0;
                 }

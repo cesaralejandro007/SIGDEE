@@ -117,7 +117,7 @@ use config\componentes\configSistema as configSistema;
                         while (($archivo = $dirint->read()) !== false && $bandera == false)
                         {
 
-                            if($archivo == $decrypted["cedula"].".png"){
+                            if($archivo == $_SESSION['usuario']["cedula"].".png"){
                                 $imagen1 = $archivo;
                                 $bandera = true;
                             }
@@ -128,7 +128,7 @@ use config\componentes\configSistema as configSistema;
                     ?>
         <img src= "content/usuarios/<?php echo $imagen1; ?>"  alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px; height:150px;">
-            <h5 class="my-3"><?php echo $decrypted["nombre"] . " " . $decrypted['apellido'] ?></h5>
+            <h5 class="my-3"><?php echo $_SESSION['usuario']["nombre"] . " " . $_SESSION['usuario']['apellido'] ?></h5>
             <div class="d-flex justify-content-center mb-2">
             <button class="btn btn-outline-primary m-1 px-2" style="padding:3px"
                     data-toggle="modal" data-target="#foto-perfil"
@@ -313,7 +313,7 @@ use config\componentes\configSistema as configSistema;
                     <div class="modal-body p-0">
                         <form action="" method="post" id="f1">
                         <input type="hidden" name="cedula_usuario" id="cedula_usuario_foto"
-                        value="<?php echo $decrypted["cedula"] ?>" />
+                        value="<?php echo $_SESSION['usuario']["cedula"] ?>" />
                             <div class="modal-body">
                             <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
                         <div class="file-upload">

@@ -1,6 +1,5 @@
 <?php
 use modelo\PerfilModelo as Perfil;
-use modelo\LoginModelo as login;
 use modelo\configNotificacionModelo as Mensaje;
 use modelo\PermisosModelo as Permiso;
 use modelo\BitacoraModelo as Bitacora;
@@ -19,24 +18,12 @@ if (!is_file($configuracion->_Dir_Model_().$pagina.$configuracion->_MODEL_())) {
     exit;
 }
 $perfil = new Perfil();
-$login = new login();
 $config = new Mensaje();
 $modulo = 'Perfil';
 
 if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
 
-    
-    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
-    
-    $t_private_key = base64_decode($private_key[0]["privatekey"]);
-
-    $decrypted = [];
-    foreach ($_SESSION['usuario'] as $k => $v) {
-        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
-        $decrypted[$k] = $decrypted_data;
-    }
-
-    if(count(array_filter($decrypted)) == 0) {
+        if(count(array_filter($_SESSION['usuario'])) == 0) {
         $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
         echo '<script>window.location="' . $redirectUrl . '"</script>';
         die();
@@ -167,7 +154,7 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
         }
     }
 
-    $infoU = $perfil->datos_UserU($decrypted["cedula"]);
+    $infoU = $perfil->datos_UserU($_SESSION['usuario']["cedula"]);
 
     require_once "vista/" . $pagina . "Vista.php";
 } else {

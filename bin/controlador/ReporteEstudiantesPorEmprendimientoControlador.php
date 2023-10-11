@@ -6,10 +6,7 @@ use modelo\UnidadModelo as Unidad;
 use modelo\EvaluacionModelo as Evaluacion;
 use modelo\configNotificacionModelo as Mensaje;
 use config\componentes\configSistema as configSistema;
-use modelo\LoginModelo as login;
-
 $config = new configSistema();
-$login = new login();
 session_start();
 if (!isset($_SESSION['usuario'])) {
 	$redirectUrl = '?pagina=' . configSistema::_LOGIN_();
@@ -24,17 +21,7 @@ $emprendimiento = new Emprendimiento();
 $area = new AreaEmprendimiento();
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
-    $private_key = $login->obtener_clave_privada($_SESSION['id_usuario']);
-    
-    $t_private_key = base64_decode($private_key[0]["privatekey"]);
-
-    $decrypted = [];
-    foreach ($_SESSION['usuario'] as $k => $v) {
-        openssl_private_decrypt($v, $decrypted_data, $t_private_key);
-        $decrypted[$k] = $decrypted_data;
-    }
-
-    if(count(array_filter($decrypted)) == 0) {
+    if(count(array_filter($_SESSION['usuario'])) == 0) {
         $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
         echo '<script>window.location="' . $redirectUrl . '"</script>';
         die();

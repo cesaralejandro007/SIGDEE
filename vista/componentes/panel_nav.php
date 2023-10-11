@@ -1,8 +1,5 @@
 <?php
 use config\componentes\configSistema as configSistema;
-use modelo\LoginModelo as login;
-$login = new login();
-$public_key = $login->obtener_clave_publica($_SESSION['id_usuario']);
 ?>
 <style>
 .table-responsive::-webkit-scrollbar {
@@ -61,14 +58,14 @@ body::-webkit-scrollbar-track {
         </li>
         <center>
         <li class="nav-item dropdown no-arrow">
-        <?php if($decrypted["ultimo_acceso"]!=""){?>
+        <?php if($_SESSION['usuario']["ultimo_acceso"]!=""){?>
             <a class="nav-link dropdown-toggle p-0" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <div class="d-flex justify-content-end" style="font-size: 12px">
-                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($decrypted["ultimo_acceso"])); ?>
+                    <?php echo "Ultimo acceso: ". date("d/m/Y H:i:s", strtotime($_SESSION['usuario']["ultimo_acceso"])); ?>
             </div>
                 <spam class="" style="font-size: 12px">
-                    <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"]  ?>
+                    <?php echo $_SESSION['usuario']["nombre"] . " " . $_SESSION['usuario']["apellido"]  ?>
                 </spam>
             </a>
           
@@ -77,14 +74,14 @@ body::-webkit-scrollbar-track {
             aria-haspopup="true" aria-expanded="false">
 
                 <spam class="">
-                    <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"]  ?>
+                    <?php echo $_SESSION['usuario']["nombre"] . " " . $_SESSION['usuario']["apellido"]  ?>
                 </spam>
             </a>
             <?php } ?>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in p-0" aria-labelledby="userDropdown">
                 <div class="card-header m-1 p-1 d-flex justify-content-center">
-                    <div  style="top: 0;left: 0;width: 250px; height: 120px;background:#063587"></div>
+                    <div  style="top: 0;left: 0;width: 220px; height: 120px;background:#063587"></div>
 
                     <?php 
                         $directory="content/usuarios/";
@@ -93,7 +90,7 @@ body::-webkit-scrollbar-track {
                         while (($archivo = $dirint->read()) !== false && $bandera == false)
                         {
 
-                            if($archivo == $decrypted["cedula"].".png"){
+                            if($archivo == $_SESSION['usuario']["cedula"].".png"){
                                 $imagen1 = $archivo;
                                 $bandera = true;
                             }
@@ -103,24 +100,13 @@ body::-webkit-scrollbar-track {
                         $dirint->close(); 
                     ?>
                     <img class="imagen2"
-                        style="position: absolute; top: 42px; width: 120px; height: 120px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
+                        style="position: absolute; top: 42px; width: 120px; height: 130px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
                         src="content/usuarios/<?php echo $imagen1;?>">
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
                     <p class="m-0">
-                        <?php echo $decrypted["nombre"] . " " . $decrypted["apellido"] ?>
+                        <?php echo $_SESSION['usuario']["nombre"] . " " . $_SESSION['usuario']["apellido"] ?>
                     </p>
-                </div>
-                <hr class="m-1">
-                <label class="px-2 m-0" for="">Clave publica:</label>
-                <div class="input-group px-2">
-                    <input type="text" class="form-control" id="clave_publica" placeholder="Clave publica" value="<?=$public_key[0]["publickey"];?>">
-                    <button class="btn btn-outline-secondary" type="button" id="boton_copiar1"><i class="far fa-copy"></i></button>
-                </div>
-                <label class="px-2 m-0" for="">Clave privada:</label>
-                <div class="input-group px-2">
-                    <input type="text" class="form-control" id="clave_privada" placeholder="Clave privada" value="<?php if ($decrypted["tipo_usuario"] == 'Super Usuario' || $decrypted["tipo_usuario"] == 'Administrador') {  echo $private_key[0]["privatekey"];  } ?>">
-                    <button class="btn btn-outline-secondary" type="button" id="boton_copiar"><i class="far fa-copy"></i></button>
                 </div>
                 <hr class="m-1">
                 <div class="m-0 d-flex justify-content-between">

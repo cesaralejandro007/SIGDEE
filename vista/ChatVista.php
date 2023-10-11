@@ -30,7 +30,7 @@
                                 <div id="new_scroll" style="overflow-y: scroll;height:400px;scroll-behavior: smooth;">
                                     <ul id="containerMessages" class="chat-messages p-4">
                                     <?php foreach ($r1 as $valor) {?>
-                                        <?php if($valor["id_usuario"]==$decrypted["id"]){?>
+                                        <?php if($valor["id_usuario"]==$_SESSION['usuario']["id"]){?>
                                             <div id="mensaje<?php echo $valor['id'] ?>" class="d-flex justify-content-end">
                                                 <li class="meMessage small p-2 me-1 mb-1 text-white rounded-3 bg-secondary">
                                                     <p class="d-flex small">Fecha: <?php echo $valor['fecha']; ?></p>
@@ -41,7 +41,7 @@
                                                 </div>
                                             </div>
                                         <?php }?>
-                                        <?php if($valor["id_usuario"]!=$decrypted["id"]){?>
+                                        <?php if($valor["id_usuario"]!=$_SESSION['usuario']["id"]){?>
                                             <div id="mensaje<?php echo $valor['id'] ?>" class="d-flex justify-content-start">
                                                 <li class="yourMessage small p-2 me-2 mb-1 text-white rounded-3 bg-primary">
                                                     <p class="d-flex small">Fecha:<?php echo $valor['fecha']; ?></p>
