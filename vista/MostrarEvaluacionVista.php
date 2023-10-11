@@ -54,9 +54,11 @@ use config\componentes\configSistema as configSistema;
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title"><i class="fas fa-text-width"></i>Entrega de Evaluación</h3>
-                                    <?php echo $mostrar_estudiante_evaluacion!=null ? 
-                                    '<button type="button" class="float-right btn btn-secondary btn-sm" onclick="cargar_datos('.$id.');">Modificar</button><button type="button" class="d-none float-right btn btn-secondary btn-sm" onclick="entregar()">Entregar</button>' :
-                                    '<button type="button" class="float-right btn btn-secondary btn-sm" onclick="entregar()">Entregar</button><button type="button" class="d-none float-right btn btn-secondary btn-sm" onclick="cargar_datos('.$id.');">Modificar</button>' ?>
+                                    <?php if($mostrar_estudiante_evaluacion!=null){ 
+                                    echo $consultar ==null ?   
+                                    '<button type="button" class="float-right btn btn-secondary btn-sm" onclick="cargar_datos('.$id.');">Modificar</button><button type="button" class="d-none float-right btn btn-secondary btn-sm" onclick="entregar()">Entregar</button>': ''; }
+                                    else
+                                    echo '<button type="button" class="float-right btn btn-secondary btn-sm" onclick="entregar()">Entregar</button><button type="button" class="d-none float-right btn btn-secondary btn-sm" onclick="cargar_datos('.$id.');">Modificar</button>';  ?>
                                 </div>
                                 <div class="card-body clearfix">
                                     <blockquote class="quote-secondary">

@@ -174,28 +174,49 @@ class EstudianteEvaluacionModelo extends connectDB{
 		return $respuestaArreglo;
 	}
 
-	public function modificar(){
-		try {
-			//Validar que la evaluacion no haya sido evaluada
-			
-			$sql = "UPDATE estudiante_evaluacion SET id_usuario= ?, id_unidad_evaluacion = ?, fecha_entrega = ?, descripcion = ? WHERE id = ?";  
-
-			$values = [
-				$this->id_estudiante,
-				$this->id_unidad_evaluacion,
-				$this->fecha_entrega,
-				$this->descripcion,
-				$this->id,
-			];
-
-			$stmt = $this->conex->prepare($sql); 
-
-			$stmt->execute($values);
-			
-			return true;
-		} catch(Exception $e) {
-			return $e->getMessage();
+	public function modificar($id, $descripcion, $fecha_entrega, $id_estudiante, $id_unidad_evaluacion){
+		$respuesta = [];
+		//Validar las expresiones regulares y campos
+		$expresiones = $this->validar_expresiones($id_estudiante, $id_unidad_evaluacion, $descripcion);
+		//Validar que exista el id_usuario y el id_unidad_evaluacion de la entrega (id de la tabla estudiante_evaluacion)
+		$validar_existencia = $this->existe_estudiante_entrega($id_estudiante, $id, $id_unidad_evaluacion);
+		//Validar que no haya sido calificada la evaluación
+		$validar_calificacion = $this->validar_actualizacion($_POST['id']);
+		if($expresiones['resultado']){
+			$respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $expresiones['mensaje'];
+		}else
+		if(isset($validar_calificacion)){
+			$respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = 'No puede modificar su entrega, la evaluación ha sido calificada';
 		}
+		else
+		if($validar_existencia== false){
+			$respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = 'No existe la entrega de la evaluación con el estudiante indicado';
+		}
+		else{
+			try {				
+				$sql = "UPDATE estudiante_evaluacion SET id_usuario= ?, id_unidad_evaluacion = ?, fecha_entrega = ?, descripcion = ? WHERE id = ?";  
+				$values = [
+					$id_estudiante,
+					$id_unidad_evaluacion,
+					$fecha_entrega,
+					$descripcion,
+					$id
+				];
+
+				$stmt = $this->conex->prepare($sql); 
+				$stmt->execute($values);
+				$respuesta['resultado'] = 1;
+                $respuesta['mensaje'] = "Actualización exitosa";
+				
+			} catch(Exception $e) {
+				$respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+			}
+		}
+		return $respuesta;
 	}
 
 	public function mostrar_calificacion($id_estudiante, $id_evaluacion){
@@ -217,7 +238,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 		return $respuestaArreglo;
 	}
 
-	public function estudiante_con_calificacion($id_estudiante, $id_evaluacion)
+	private function estudiante_con_calificacion($id_estudiante, $id_evaluacion)
 	{
 		try {
 			$respuestaArreglo = [];
@@ -230,7 +251,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 		return $respuestaArreglo;
 	}
 
-	public function estudiante_sin_calificacion($id_estudiante, $id_unidad_evaluacion)
+	private function estudiante_sin_calificacion($id_estudiante, $id_unidad_evaluacion)
 	{
 		try {
 			$respuestaArreglo = [];
@@ -355,10 +376,10 @@ class EstudianteEvaluacionModelo extends connectDB{
         }
     }
 
-	public function existe_estudiante($id)
+	public function existe_estudiante_entrega($id_estudiante, $id, $id_unidad_evaluacion)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id'");
+            $resultado = $this->conex->prepare("SELECT *FROM estudiante_evaluacion WHERE id_usuario=$id_estudiante AND id_unidad_evaluacion=$id_unidad_evaluacion AND id=$id;");
             $resultado->execute();
             $fila = $resultado->fetchAll();
             if ($fila) {
@@ -370,6 +391,61 @@ class EstudianteEvaluacionModelo extends connectDB{
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function validar_actualizacion($id)
+    {	
+        try {
+            $resultado = $this->conex->prepare("SELECT calificacion FROM estudiante_evaluacion ee WHERE ee.id=$id;");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();	
+			foreach($fila as $r){
+				$result = $r['calificacion'];
+				
+			}
+        } catch (Exception $e) {
+            $result= false;
+        }
+		return $result;
+		
+    }
+
+    public function existe_estudiante($id)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT * FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id WHERE u.id=$id;");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+	private function validar_expresiones($id_estudiante, $id_unidad_evaluacion, $descripcion){
+        $er_descripcion = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{2,200}$/';
+        if(trim($id_estudiante)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="Indique el ID del estudiante";
+        }else if(trim($id_unidad_evaluacion)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="Indique el ID de la unidad_evaluacion";
+        }else if(!preg_match_all($er_descripcion,$descripcion) || trim($descripcion)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo descripción debe contener Solo letras de 2 a 150 caracteres.";
+        }
+		else if(trim($id_estudiante)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="Indique el ID del estudiante";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
 }
 ?>

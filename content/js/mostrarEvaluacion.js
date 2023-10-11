@@ -70,14 +70,14 @@ function enviar(){
 		datos.append('accion', $("#accion").val());
 		datos.append('id', $("#id").val());
 		datos.append('descripcion', $("#descripcion").val());
-				//Si se cambia el archivo entonces se pasa la informacion al controlador
-				if ($("#archivo_adjunto")[0].files[0]!= null) {
-					datos.append('archivo', $("#archivo_adjunto")[0].files[0]);}
-				//datos.append('id_unidad', $("id_unidad").val());
-				datos.append('id_estudiante', $("#id_estudiante").val());
-				enviaAjax(datos);
-			}
+		//Si se cambia el archivo entonces se pasa la informacion al controlador
+		if ($("#archivo_adjunto")[0].files[0]!= null) {
+			datos.append('archivo', $("#archivo_adjunto")[0].files[0]);}
+			//datos.append('id_unidad', $("id_unidad").val());
+			datos.append('id_estudiante', $("#id_estudiante").val());
+			enviaAjax(datos);
 		}
+	}
 
 		function revisar_calificacion(valor) {
 			var datos = new FormData();
@@ -216,7 +216,7 @@ function mostrar(datos){
 			var res = JSON.parse(response);
 			$("#id").val(res.id);
 			$("#descripcion").val(res.descripcion);
-			document.getElementById("archivo_antes").href = ''+res.url_base+'/content/entregas/'+res.unidad_eval+'/'+res.id_estudent;
+			document.getElementById("archivo_antes").href = res.url_base;
 			$("#enviar").text('Modificar');
 			$("#gestion-entrega").modal("show");
 			$("#accion").val('modificar_entrega');

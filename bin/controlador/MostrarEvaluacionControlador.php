@@ -67,7 +67,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $estudiante_evaluacion = new EstudianteEvaluacion();
     $aula_estudiante = new AulaEstudiante();
     $estudiante = new Estudiante();
-    $config = new Mensaje();
+    $msg = new Mensaje();
     $notificacion = new notificacion();
     $modulo = 'Evaluación';
     $permiso = new Permiso();
@@ -82,14 +82,14 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             case 'entregar':
                 $ruta = "content/entregas/".$id_evaluaciones;
                 //$nombre_archivo = $_FILES['archivo']['name'];
-                $nombre_archivo = $_POST['id_estudiante'];
+                $nombre_archivo = $_SESSION['usuario']["id"];
                 if (!file_exists($ruta)) {
                     mkdir($ruta, 0777, true);
                 }
                 $subir = $ruta."/".$nombre_archivo;
                 if(move_uploaded_file($_FILES['archivo']['tmp_name'], $subir)){
                     //Validar si el usuario no es un estudiante
-                    if (!$estudiante->existe($_POST['id_estudiante'])) {
+                    if (!$estudiante->existe($_SESSION['usuario']["id"])) {
                         echo json_encode([
                             'estatus' => '2',
                             'icon' => 'info',
@@ -100,7 +100,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }
                     else
                     //En caso de que el usuario no este cursando esa aula
-                    if($aula_estudiante->verificar($_POST['id_estudiante'], $id_evaluaciones)== false){
+                    if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
                          echo json_encode([
                             'estatus' => '2',
                             'icon' => 'info',
@@ -111,7 +111,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     }
                     //Si ese usuario pertenece al aula
                     else{
-                        $response = $estudiante_evaluacion->incluir($_POST['id_estudiante'], $id_evaluaciones, date('Y-m-d h:i:s', time()), $_POST['descripcion'], $nombre_archivo);
+                        $response = $estudiante_evaluacion->incluir($_SESSION['usuario']["id"], $id_evaluaciones, date('Y-m-d h:i:s', time()), $_POST['descripcion'], $nombre_archivo);
                         if ($response) {
                             /*Creando la notificacion de una evaluacion entregada*/
                             $notificacion->set_id_usuarios_roles($usuario_rol);
@@ -148,10 +148,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 //$response = $unidad_evaluacion->eliminar();
                 if ($response == true) {
                     $bitacora->incluir($usuario_rol,$entorno,$fecha,"Eliminación de Evaluación");
-                    $config->confirmar($modulo, 'Eliminación exitosa');
+                    $msg->confirmar($modulo, 'Eliminación exitosa');
                     return 0;
                 } else {
-                    $config->error($modulo, 'Registro no eliminado');
+                    $msg->error($modulo, 'Registro no eliminado');
                     return 0;
                 }
             break;
@@ -163,45 +163,49 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 //$response = $unidad_evaluacion->modificar();
                 if ($response == true) {
                     $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación Evaluación");
-                    $config->confirmar($modulo, 'Modificacion exitosa ');
+                    $msg->confirmar($modulo, 'Modificacion exitosa ');
                     return 0;
                 } else {
-                    $config->error($modulo, 'Registro no modificado, El nombre ya existe!');
+                    $msg->error($modulo, 'Registro no modificado, El nombre ya existe!');
                     return 0;
                 }
             break;
             case 'modificar_entrega':
-                $estudiante_evaluacion->set_id($_POST['id']);
-                $estudiante_evaluacion->set_descripcion($_POST['descripcion']);
-                $estudiante_evaluacion->set_fecha_entrega(date('Y-m-d h:i:s', time())); 
-                $estudiante_evaluacion->set_id_estudiante($_SESSION['usuario']["id"]);
-                $estudiante_evaluacion->set_id_unidad_evaluacion($id_evaluaciones);
-                
-
-                $response = $estudiante_evaluacion->modificar();
-                if ($response) {
-                    $ruta = "content/entregas/".$id_evaluaciones;
-                    //$nombre_archivo = $_FILES['archivo']['name'];
-                    $nombre_archivo = $_SESSION['usuario']["id"];
-                    if (!file_exists($ruta)) {
-                        mkdir($ruta, 0777, true);
-                    }
-                    $subir = $ruta."/".$nombre_archivo;
-                    if(isset($_FILES['archivo']['tmp_name'])){
-                        unlink($subir);
-                        move_uploaded_file($_FILES['archivo']['tmp_name'], $subir);
-                    }
-
-                    $notificacion->set_id_usuarios_roles($usuario_rol);
-                    $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
-                    $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
-                    $notificacion->set_mensaje('Entrega de evaluación modificada');
-                    $notificacion->guardar_notificacion();
-                    $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación de Entrega de Evaluación");
-                    $config->confirmar('Entrega', 'Modificación exitosa');
-                } 
-                else {
-                    $config->informacion('Entrega', 'Modificación no modificada');
+                //Validar que exista el estudiante
+                $result = $estudiante_evaluacion->existe_estudiante($_SESSION['usuario']["id"]);
+                if(!$result){
+                    $msg->informacion('Entrega de evaluación', 'No existe el estudiante');
+                    return 0;
+                }
+                                
+                $response = $estudiante_evaluacion->modificar($_POST['id'], $_POST['descripcion'], date('Y-m-d h:i:s', time()), $_SESSION['usuario']["id"], $id_evaluaciones);
+                if($response['resultado'] == 2){
+                    $msg->informacion('Entrega', $response['mensaje']);
+                }
+                else
+                if($response['resultado']== 0){
+                    $msg->error('Entrega', $response['mensaje']);
+                }
+                else{
+                        $ruta = "content/entregas/".$id_evaluaciones;
+                        //$nombre_archivo = $_FILES['archivo']['name'];
+                        $nombre_archivo = $_SESSION['usuario']["id"];
+                        if (!file_exists($ruta)) {
+                            mkdir($ruta, 0777, true);
+                        }
+                        $subir = $ruta."/".$nombre_archivo;
+                        if(isset($_FILES['archivo']['tmp_name'])){
+                            unlink($subir);
+                            move_uploaded_file($_FILES['archivo']['tmp_name'], $subir);
+                        }
+    
+                        $notificacion->set_id_usuarios_roles($usuario_rol);
+                        $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
+                        $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
+                        $notificacion->set_mensaje('Entrega de evaluación modificada');
+                        $notificacion->guardar_notificacion();
+                        $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación de Entrega de Evaluación");
+                        $msg->confirmar('Entrega', $response['mensaje']);
                 }
                 return 0; 
                 exit;
@@ -215,7 +219,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'archivo_adjunto' => $valor['archivo_adjunto'],
                         'unidad_eval' => $valor['unidad_eval'],
                         'id_estudent' => $_SESSION['usuario']["id"],
-                        'url_base' => $url_base
+                        'url_base' => _URL_.'/content/entregas/'.$valor['unidad_eval'].'/'.$_SESSION['usuario']["id"],
                     ]);
                 }
                 return 0;
@@ -319,11 +323,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
             $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
             $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
-            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'.$url_base.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
+            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'._URL_.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
             $nombre_archivo = $mostrar_unidad[0]['archivo'];
-            $examen = '<a target="_blank" href="'.$url_base.'/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
+            $examen = '<a target="_blank" href="'._URL_.'/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
     
             $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
+            $consultar = $id != null ? $estudiante_evaluacion->validar_actualizacion($id) : '';
             $entregas = $estudiante_evaluacion->mostrarEntregas($nombre_archivo = $mostrar_unidad[0]['id']);
             $status = 0;
             if($aula_estudiante->verificar_estudiante($_SESSION['usuario']["id"], $mostrar_unidad[0]['id'], date('Y-m-d h:i:s', time()))== 2){
