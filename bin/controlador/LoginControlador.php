@@ -45,14 +45,45 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return $decodec;
         }
 
+        function isBase64($str) {
+            $decoded = base64_decode($str, true);
+            return ($decoded !== false) && (base64_encode($decoded) === $str);
+        }
+        
+
         if ($accion == 'ingresar') {
+
+            
+
             $num_intentos = isset($_COOKIE['intentos'][$_POST['user']]) ? $_COOKIE['intentos'][$_POST['user']] : 1;
             $tipo = $_POST['tipo'];
             $usuario = $_POST['user'];        
-            $claveencriptada = Codificar($_POST['password']);
+            $claveencriptada = $_POST['password'];
             $login->set_tipo($tipo);
             $login->set_user($usuario);
-            $login->set_password($claveencriptada);
+
+            if (isBase64($claveencriptada)) {
+
+                $privateKeyPath = 'RSA/private.key';
+                
+                // Lee la clave privada desde el archivo
+                $privateKeyContents = file_get_contents($privateKeyPath);
+                $privateKey = openssl_pkey_get_private($privateKeyContents);
+                $encryptedData = base64_decode($_POST['password']);
+                echo 'Contraseña cifrada (Base64): ' . $_POST['password'];
+                $decryptedData = '';
+
+                openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
+                    echo 'Datos desencriptados: ' . $decryptedData;
+              
+
+                if ($privateKey === false) {
+                    die('Error al cargar la clave privada');
+                }
+                
+            } else {
+                $login->set_password($claveencriptada);
+            }
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
             if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""/*  || $_POST['captcha'] == "" */ ){
