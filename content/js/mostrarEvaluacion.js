@@ -36,8 +36,16 @@ function carga(){
 		datos.append('accion', 'modificar_calificacion');
 		datos.append('id_evaluacion', $("#id_evaluacion").val());
 		datos.append('calificacion', $("#calificacion").val());
-		alert('llego');
+		enviaAjax(datos);
+		
+	};
 
+	document.getElementById("calificar").onclick = function () {
+		var datos = new FormData();
+		datos.append('accion', 'calificar');
+		datos.append('id_estudiante', $("#id_e").val());
+		datos.append('id_unidad_evaluacion', $("#id_unidad_evaluacion").val());
+		datos.append('calificacion', $("#calificacion").val());
 		enviaAjax(datos);
 		
 	};
@@ -76,26 +84,6 @@ function enviar(){
 			datos.append('accion', 'mostrar-calificacion');
 			datos.append('id_estudiante', valor);
 			mostrar_calificacion(datos);
-		}
-
-		function calificar(valor) {
-			var datos = new FormData();
-			datos.append('accion', 'calificar');
-			datos.append('id_estudiante', $("#id_estudiante").val());
-			datos.append('id_unidad_evaluacion', $("#id_unidad_evaluacion").val());
-			datos.append('calificacion', $("#calificacion").val());
-			alert('llego');
-			enviaAjax(datos);
-		}
-
-		function modificar_calificacion() {
-			var datos = new FormData();
-			datos.append('accion', 'modificar_calificacion');
-			datos.append('id_evaluacion', $("#id_evaluacion").val());
-			datos.append('calificacion', $("#calificacion").val());
-			alert('llego');
-
-			enviaAjax(datos);
 		}
 
 		function validarkeypress(er,e){
@@ -225,7 +213,6 @@ function mostrar(datos){
 		processData: false,
 		cache: false,
 		success:function(response){
-			alert(response);
 			var res = JSON.parse(response);
 			$("#id").val(res.id);
 			$("#descripcion").val(res.descripcion);
@@ -256,13 +243,12 @@ function mostrar_calificacion(datos){
 		processData: false,
 		cache: false,
 		success:function(response){
-			alert(response);
 			var res = JSON.parse(response);
 			$("#id_e").val(res.id_estudiante);
 			$("#id_evaluacion").val(res.id_evaluacion);
 			$("#estudiante").text(res.estudiante);
 			$("#calificacion").val(res.calificacion);
-			$("#id_unidad_evaluacion").val(res.id_unidad_evaluacion);
+			$("#id_unidad_evaluacion").val(res.unidad);
 			document.getElementById("archivo").href =res.archivo;
 			$("#descripcion_e").val(res.descripcion);
 			$("#fecha_e").val(res.fecha);
@@ -270,6 +256,12 @@ function mostrar_calificacion(datos){
 				document.getElementById("evaluacion-entregada").style.display="block";
 				document.getElementById("modificar_calificacion").style.display="block";
 				document.getElementById("calificar").style.display="none";
+				if(res.doc != null){
+					$('#archivo-evaluado').show();
+				}
+				else{
+					$('#archivo-evaluado').hide();
+				}
 			}
 			else
 			{

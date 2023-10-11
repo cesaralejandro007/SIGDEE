@@ -176,7 +176,8 @@ class EstudianteEvaluacionModelo extends connectDB{
 
 	public function modificar(){
 		try {
-
+			//Validar que la evaluacion no haya sido evaluada
+			
 			$sql = "UPDATE estudiante_evaluacion SET id_usuario= ?, id_unidad_evaluacion = ?, fecha_entrega = ?, descripcion = ? WHERE id = ?";  
 
 			$values = [
@@ -229,12 +230,12 @@ class EstudianteEvaluacionModelo extends connectDB{
 		return $respuestaArreglo;
 	}
 
-	public function estudiante_sin_calificacion($id_estudiante, $id_evaluacion)
+	public function estudiante_sin_calificacion($id_estudiante, $id_unidad_evaluacion)
 	{
 		try {
 			$respuestaArreglo = [];
 			//$resultado = $this->conex->prepare("SELECT ee.id as id, ee.archivo_adjunto as archivo_adjunto, concat(e.cedula, ' / ', e.primer_nombre, ' ', e.primer_apellido) as estudiante, ee.calificacion as calificacion FROM estudiante_evaluacion as ee INNER JOIN unidad_evaluaciones as ue ON ee.id_unidad_evaluacion=ue.id INNER JOIN usuario as e ON e.id= ee.id_usuario WHERE ee.id='$id_estudiante'");
-			$resultado = $this->conex->query("SELECT u.id as id_estudiante, CONCAT(u.cedula, '/', u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as estudiante FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario  WHERE r.nombre='Estudiante' AND u.id='$id_estudiante';");
+			$resultado = $this->conex->prepare("SELECT u.id as id_estudiante, CONCAT(u.cedula, '/', u.primer_nombre, ' ', u.segundo_nombre, ' ', u.primer_apellido, ' ', u.segundo_apellido) as estudiante, ue.id as unidad FROM rol r INNER JOIN usuarios_roles ur ON r.id=ur.id_rol INNER JOIN usuario u ON u.id=ur.id_usuario INNER JOIN aula_estudiante ae ON u.id=ae.id_estudiante INNER JOIN aula a ON ae.id_aula=a.id INNER JOIN unidad un ON un.id_aula=a.id INNER JOIN unidad_evaluaciones ue ON un.id=ue.id_unidad WHERE r.nombre='Estudiante' AND u.id=$id_estudiante AND ue.id=$id_unidad_evaluacion;';");
 			$resultado->execute();
 			if($resultado){
 				$respuestaArreglo = $resultado->fetchAll();
@@ -266,14 +267,22 @@ class EstudianteEvaluacionModelo extends connectDB{
 	}
 
 	public function calificar($id_estudiante, $id_unidad_evaluacion, $calificacion){
-		$validar_evaluacion = $this->existe_estudiantes($id_estudiante);
+		$validar_evaluacion = $this->existe_estudiante($id_estudiante);
 		if ($validar_evaluacion==false) {
             $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "La evaluacion que indica no existe";
+            $respuesta['mensaje'] = "El estudiante que indica no existe";
         } 
         else{
 			try {
-				$this->conex->query("INSERT INTO `estudiante_evaluacion` (`id`, `id_usuario`, `id_unidad_evaluacion`, `descripcion`, `archivo_adjunto`, `fecha_entrega`, `calificacion`, `retroalimentacion`) VALUES ('', $id_estudiante, $id_unidad_evaluacion, 'Corregido presencialmente', NULL, NULL, $calificacion, NULL);");
+				$query = "INSERT INTO estudiante_evaluacion (id_usuario, id_unidad_evaluacion, descripcion, calificacion) VALUES (?, ?, ?, ?)";
+				$values = [
+                    $id_estudiante,
+                    $id_unidad_evaluacion,
+                    'Corregido presencialmente',
+                    $calificacion,
+                ];
+				$stmt = $this->conex->prepare($query); 
+				$stmt->execute($values);
 				$respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Calificación guardada";
 			} catch(Exception $e) {

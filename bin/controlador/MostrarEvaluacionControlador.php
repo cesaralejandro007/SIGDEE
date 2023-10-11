@@ -176,6 +176,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $estudiante_evaluacion->set_fecha_entrega(date('Y-m-d h:i:s', time())); 
                 $estudiante_evaluacion->set_id_estudiante($_SESSION['usuario']["id"]);
                 $estudiante_evaluacion->set_id_unidad_evaluacion($id_evaluaciones);
+                
+
                 $response = $estudiante_evaluacion->modificar();
                 if ($response) {
                     $ruta = "content/entregas/".$id_evaluaciones;
@@ -236,6 +238,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             'fecha' => date('d-m-Y h:i:s', strtotime($valor[5])),
                             'unidad' => $valor[6],
                             'archivo' => _URL_.'/content/entregas/'.$valor[6].'/'.$valor[7],
+                            'doc' => $valor[7],
                             
                         ]);
                     }
@@ -245,6 +248,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             'estudiante' => $valor[1],
                             'calificacion' => '',
                             'id_evaluacion' => false,
+                            'unidad' => $valor[2]
                         ]);
                     }
                     return 0;
@@ -261,7 +265,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'title' => $modulo,
                         'message' => $response['mensaje']
                     ]);
-                    $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificacion");
+                    //$bitacora->incluir($usuario_rol,$entorno,$fecha,"Calificacion de evaluacion");
                     return 0;
                 } else {
                     echo json_encode([

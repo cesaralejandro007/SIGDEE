@@ -147,7 +147,7 @@ use config\componentes\configSistema as configSistema;
                     <form action="" id="fi" method="post" enctype='multipart/form-data'>  
                         <input type="hidden" name="accion" id="accion"/>
                         <input type="hidden" name="id" id="id"/>
-                        <input type="hidden" value="<?=$_SESSION['usuario']["id"]?>" name="id_estudiante" id="id_estudiante"/>
+                        <input type="hidden" value="<?=$decrypted["id"]?>" name="id_estudiante" id="id_estudiante"/>
                         <div class="form-group row">
                             <label for="descripcion" class="col-sm-3 col-form-label">Descripción</label>
                             <div class="col-sm-9">
@@ -188,9 +188,9 @@ use config\componentes\configSistema as configSistema;
                 </div>
                 <div class="modal-body">
                     <form action="" id="fi" method="post" enctype='multipart/form-data'>  
-                        <input type="text" name="id_evaluacion" id="id_evaluacion"/>
-                        <input type="text" name="id_e" id="id_e"/>
-                        <input type="text" name="id_unidad_evaluacion" id="id_unidad_evaluacion"/>
+                        <input type="hidden" name="id_evaluacion" id="id_evaluacion"/>
+                        <input type="hidden" name="id_e" id="id_e"/>
+                        <input type="hidden" name="id_unidad_evaluacion" id="id_unidad_evaluacion"/>
                         <div class="form-group row">
                             <label for="calificacion" class="col-sm-4 col-form-label">Calificación</label>
                             <div class="col-sm-8">
@@ -213,7 +213,7 @@ use config\componentes\configSistema as configSistema;
                                 </div>
                                 <span id="sdescripcion"></span>
                             </div>
-                            <div class="form-group row" id="archivo-anterior"  style="">                             
+                            <div class="form-group row" id="archivo-evaluado"  style="">                             
                                 <label for="calificacion" class="col-sm-4 col-form-label">Evaluación Entregada</label>
                                 <div class="col-sm-8 mt-4" >
                                     <a  target="_blank" id="archivo" name="archivo"><i class="fa fa-eye"></i>  Ver Archivo</a>  
