@@ -352,9 +352,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
     }
-    $cargar_roles = $usuario->cargar_rol();
+    $cargar_roles = $rol->listar();
     $r1 = $usuario->listar();
-    $r2 = $rol->listar();
     $datos = [];
     require_once "vista/" . $pagina . "Vista.php";
 } else {

@@ -114,11 +114,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         $response = $estudiante_evaluacion->incluir($_SESSION['usuario']["id"], $id_evaluaciones, date('Y-m-d h:i:s', time()), $_POST['descripcion'], $nombre_archivo);
                         if ($response) {
                             /*Creando la notificacion de una evaluacion entregada*/
-                            $notificacion->set_id_usuarios_roles($usuario_rol);
-                            $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
-                            $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
-                            $notificacion->set_mensaje('Evaluación entregada');
-                            $notificacion->guardar_notificacion();
+                            $notificacion->guardar_notificacion($usuario_rol, $id_evaluaciones, date('Y-m-d h:i:s', time()), 'Evaluación entregada');
 
                             $bitacora->incluir($usuario_rol,$entorno,$fecha,"Entrega Evaluación");
                             echo json_encode([
@@ -157,10 +153,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             break;
             case 'modificar':
                 $unidad_evaluacion->set_id($_POST['id']);
-                //$unidad_evaluacion->set_nombre($_POST['nombre']);
-                //$unidad_evaluacion->set_descripcion($_POST['descripcion']);
-                //$unidad_evaluacion->set_id_aula($_POST['id_aula']);
-                //$response = $unidad_evaluacion->modificar();
                 if ($response == true) {
                     $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación Evaluación");
                     $msg->confirmar($modulo, 'Modificacion exitosa ');
@@ -199,11 +191,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             move_uploaded_file($_FILES['archivo']['tmp_name'], $subir);
                         }
     
-                        $notificacion->set_id_usuarios_roles($usuario_rol);
-                        $notificacion->set_id_unidad_evaluaciones($id_evaluaciones);
-                        $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
-                        $notificacion->set_mensaje('Entrega de evaluación modificada');
-                        $notificacion->guardar_notificacion();
+                        $notificacion->guardar_notificacion($usuario_rol, $id_evaluaciones, date('Y-m-d h:i:s', time()), 'Entrega de evaluación modificada');
                         $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación de Entrega de Evaluación");
                         $msg->confirmar('Entrega', $response['mensaje']);
                 }
