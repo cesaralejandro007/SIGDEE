@@ -102,7 +102,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     //En caso de que el usuario no este cursando esa aula
                     if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
                          echo json_encode([
-                            'estatus' => '2',
+                            'estatus' => '3',
                             'icon' => 'info',
                             'title' => 'Entrega',
                             'message' => 'El estudiante no pertenece al aula'
@@ -249,24 +249,48 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 exit;
             break;
             case 'calificar':
-                $response = $estudiante_evaluacion->calificar($_POST['id_estudiante'], $_POST['id_unidad_evaluacion'], $_POST['calificacion']);
-                if ($response['resultado']== 1) {
-                    echo json_encode([
-                        'estatus' => '1',
-                        'icon' => 'success',
-                        'title' => $modulo,
-                        'message' => $response['mensaje']
-                    ]);
-                    //$bitacora->incluir($usuario_rol,$entorno,$fecha,"Calificacion de evaluacion");
-                    return 0;
-                } else {
+                if (!$estudiante->existe($_SESSION['usuario']["id"])) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
-                        'title' => $modulo,
-                        'message' => $response['mensaje']
+                        'title' => 'Entrega',
+                        'message' => 'El estudiante no existe'
                     ]);
                     return 0;
+                }
+                else
+                //En caso de que el usuario no este cursando esa aula
+                if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
+                     echo json_encode([
+                        'estatus' => '3',
+                        'icon' => 'info',
+                        'title' => 'Entrega',
+                        'message' => 'El estudiante no pertenece al aula'
+                    ]);
+                    return 0;
+                }
+                //Si ese usuario pertenece al aula
+                else{
+                    $response = $estudiante_evaluacion->calificar($_POST['id_estudiante'], $_POST['id_unidad_evaluacion'], $_POST['calificacion']);
+                    if ($response['resultado']== 1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        $bitacora->incluir($usuario_rol,$entorno,$fecha,"Calificacion de evaluacion");
+                        return 0;
+                    } else {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        return 0;
+                    }
+
                 }
                 exit;
             break;

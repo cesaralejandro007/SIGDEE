@@ -25,7 +25,7 @@ class NotificacionesModelo extends connectDB
             $this->incluir();
     }
 
-    public function incluir()
+    private function incluir()
     {
         try {
             $this->conex->query("INSERT INTO notificaciones(mensaje, id_unidad_evaluaciones, id_usuarios_roles, fecha)
@@ -35,7 +35,7 @@ class NotificacionesModelo extends connectDB
         }
     }
 
-    public function modificar()
+    private function modificar()
     {
         try {
             $this->conex->query("UPDATE notificaciones SET fecha = DATE(NOW()) WHERE id_usuarios_roles = '$this->id_usuarios_roles' AND id_unidad_evaluaciones='$this->id_unidad_evaluaciones'");
