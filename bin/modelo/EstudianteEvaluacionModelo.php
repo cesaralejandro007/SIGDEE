@@ -276,10 +276,13 @@ class EstudianteEvaluacionModelo extends connectDB{
         } 
         else{
 			try {
+				$this->conex->beginTransaction();
 				$this->conex->query("UPDATE estudiante_evaluacion SET calificacion = '$calificacion' WHERE id = '$id'");
+				$this->conex->commit();
 				$respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Calificación guardada";
 			} catch(Exception $e) {
+				$this->conex->rollBack();
 				$respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
 			}

@@ -40,6 +40,7 @@ if (!isset($_SESSION['usuario'])) {
 
         }
     }
+    $resulEventos = $emprendimiento->cargar_calendario($_SESSION['usuario']["id"]);
     require_once "vista/" . $pagina . "Vista.php";
 } else {
     echo "pagina en construccion";
