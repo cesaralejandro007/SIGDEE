@@ -1,4 +1,5 @@
-$(document).ready(function() {    
+$(document).ready(function() {
+  notificaciones();
   var table = $('#paginacion').DataTable({      
       language: {
               "lengthMenu": "Mostrar _MENU_ registros",
@@ -26,11 +27,11 @@ $(document).ready(function() {
   });     
 });
 
-(function () {
+function notificaciones() {
   var datos = new FormData();
   datos.append("accion", "cargar");
   cargarnotificaciones(datos);
-})();
+};
 
 function cargarnotificaciones(datos) {
   $.ajax({

@@ -39,10 +39,13 @@ class UnidadEvaluacionModelo extends connectDB{
 	public	function get_fecha_cierre(){
 		return $this->fecha_cierre;
 	}
-	
-	
 
-	public	function incluir(){
+	public	function incluir($id_evaluacion, $id_unidad, $fecha_inicio, $fecha_cierre){
+		$this->id_evaluacion = $id_evaluacion;
+        $this->id_unidad = $id_unidad;
+        $this->fecha_inicio = $fecha_inicio;
+        $this->fecha_cierre = $fecha_cierre;
+
 		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
 		if($resf){
 		try {
@@ -55,7 +58,7 @@ class UnidadEvaluacionModelo extends connectDB{
 		}
 	}else{
 		$respuesta['resultado'] = 2;
-		$respuesta['mensaje'] = "Verifique la fecha de apertura";
+		$respuesta['mensaje'] = "Verifique las fechas de apertura";
 	}
 	return $respuesta;
 	}
@@ -74,7 +77,7 @@ class UnidadEvaluacionModelo extends connectDB{
             }
 		}else{
 				$respuesta['resultado'] = 3;
-				$respuesta['mensaje'] = "Verifique la fecha de apertura";
+				$respuesta['mensaje'] = "Verifique las fechas de apertura";
 		}
         return $respuesta;
     }

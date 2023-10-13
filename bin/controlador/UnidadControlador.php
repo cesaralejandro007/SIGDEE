@@ -283,21 +283,15 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $horac = $fc[1];
                 $ffc = explode("/", $fechac);
                 $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
-                $unidad_evaluacion->set_fecha_inicio($fisql);
-                $unidad_evaluacion->set_fecha_cierre($fcsql);
-                $response = $unidad_evaluacion->incluir();
+                $response = $unidad_evaluacion->incluir($_POST['evaluacion'], $_POST['id_unidad'], $fisql, $fcsql);
                 if ($response['resultado']==1) {
                     $id_unidad_evaluacion = $unidad_evaluacion->obtener_id_unidad_evaluacion();
                     /*Creando la notificacion de una evaluacion creada*/
-                    $notificacion->set_id_usuarios_roles($id_usuario_rolE);
-                    $notificacion->set_id_unidad_evaluaciones($id_unidad_evaluacion[0]['unidad_evaluacion']);
-                    $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
-                    $notificacion->set_mensaje('Evaluación creada');
-                    $notificacion->guardar_notificacion();
+                    $notificacion->guardar_notificacion($id_usuario_rolE, $id_unidad_evaluacion[0]['unidad_evaluacion'], date('Y-m-d h:i:s', time()), 'Evaluación creada');
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'success',
-                        'title' => 'Evaluación agregada',
+                        'title' => 'Agregar Evaluación',
                         'message' => $response['mensaje']
                     ]);
                     $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Agregar Evaluacion");
@@ -305,7 +299,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '3',
                         'icon' => 'info',
-                        'title' => 'Evaluación agregada',
+                        'title' => 'Agregar Evaluación',
                         'message' => $response['mensaje']
                     ]);
                 }

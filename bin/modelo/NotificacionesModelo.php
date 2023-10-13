@@ -8,39 +8,15 @@ class NotificacionesModelo extends connectDB
     private $id_unidad_evaluaciones;
     private $id_usuarios_roles;
     private $fecha;
+    public function __construct(){
+		parent::__construct(); 
+	}
 
-    public function set_id($valor)
-    {
-        $this->id = $valor;
-    }
-    public function set_mensaje($valor)
-    {
-        $this->mensaje = $valor;
-    }
-    public function set_id_unidad_evaluaciones ($valor)
-    {
-        $this->id_unidad_evaluaciones  = $valor;
-    }
-    public function set_id_usuarios_roles ($valor)
-    {
-        $this->id_usuarios_roles  = $valor;
-    }
-    public function set_fecha($valor)
-    {
-        $this->fecha = $valor;
-    }
-   
-    public function get_id()
-    {
-        return $this->id;
-    }
-
-    public function get_mensaje()
-    {
-        return $this->mensaje;
-    }
-
-    public function guardar_notificacion(){
+    public function guardar_notificacion($id_usuarios_roles, $id_unidad_evaluaciones, $fecha, $mensaje){
+        $this->id_usuarios_roles = $id_usuarios_roles;
+        $this->id_unidad_evaluaciones = $id_unidad_evaluaciones;
+        $this->fecha = $fecha;
+        $this->mensaje = $mensaje;
         $validar = $this->validar_registro($this->id_usuarios_roles,$this->id_unidad_evaluaciones);
         if($validar=='true'){
             $this->modificar();
@@ -49,34 +25,24 @@ class NotificacionesModelo extends connectDB
             $this->incluir();
     }
 
-    public function incluir()
+    private function incluir()
     {
-            try {
-                $this->conex->query("INSERT INTO notificaciones(
-        					mensaje,
-        					id_unidad_evaluaciones ,
-        					id_usuarios_roles ,
-        					fecha
-        					)
-        				VALUES(
-        					'$this->mensaje',
-        					'$this->id_unidad_evaluaciones ',
-        					'$this->id_usuarios_roles ',
-        					'$this->fecha'
-        				)");
-            } catch (Exception $e) {
-                return $e->getMessage();
-            }
+        try {
+            $this->conex->query("INSERT INTO notificaciones(mensaje, id_unidad_evaluaciones, id_usuarios_roles, fecha)
+        		VALUES('$this->mensaje', '$this->id_unidad_evaluaciones', '$this->id_usuarios_roles ', '$this->fecha')");
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
-    public function modificar()
+    private function modificar()
     {
-            try {
-                $this->conex->query("UPDATE notificaciones SET fecha = DATE(NOW()) WHERE id_usuarios_roles = '$this->id_usuarios_roles' AND id_unidad_evaluaciones='$this->id_unidad_evaluaciones'");
-                return true;
-            } catch (Exception $e) {
-                return $e->getMessage();
-            }
+        try {
+            $this->conex->query("UPDATE notificaciones SET fecha = DATE(NOW()) WHERE id_usuarios_roles = '$this->id_usuarios_roles' AND id_unidad_evaluaciones='$this->id_unidad_evaluaciones'");
+            return true;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     public function listar($id_usuario, $rol)
@@ -92,7 +58,7 @@ class NotificacionesModelo extends connectDB
             if($buscar){        
                 $x = array();
                 foreach($buscar as $data){
-                    $resultado = $this->conex->prepare("SELECT n.id, n.mensaje as mensaje, us.nombre as nombre, us.apellido as apellido, r.nombre as rol, n.fecha as fecha, ur.id as id_usuarios_roles, ue.id as id_unidad_evaluaciones FROM notificaciones n INNER JOIN usuarios_roles ur ON n.id_usuarios_roles=ur.id INNER JOIN unidad_evaluaciones ue ON n.id_unidad_evaluaciones=ue.id INNER JOIN usuario us ON us.id=ur.id_usuario INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN unidad u ON u.id=ue.id_unidad INNER JOIN aula a ON a.id=u.id_aula INNER JOIN aula_docente ad ON ad.id_aula=a.id  WHERE r.nombre='".$rol_buscar."'ORDER BY  fecha DESC LIMIT 4");
+                    $resultado = $this->conex->prepare("SELECT n.id, n.mensaje as mensaje, us.primer_nombre as nombre, us.primer_apellido as apellido, r.nombre as rol, n.fecha as fecha, ur.id as id_usuarios_roles, ue.id as id_unidad_evaluaciones FROM notificaciones n INNER JOIN usuarios_roles ur ON n.id_usuarios_roles=ur.id INNER JOIN unidad_evaluaciones ue ON n.id_unidad_evaluaciones=ue.id INNER JOIN usuario us ON us.id=ur.id_usuario INNER JOIN rol r ON ur.id_rol=r.id INNER JOIN unidad u ON u.id=ue.id_unidad INNER JOIN aula a ON a.id=u.id_aula INNER JOIN aula_docente ad ON ad.id_aula=a.id  WHERE r.nombre='".$rol_buscar."'ORDER BY  fecha DESC LIMIT 4");
                     $resultado->execute();
                     $respuestaArreglo = $resultado->fetchAll();   
                 }
@@ -102,8 +68,7 @@ class NotificacionesModelo extends connectDB
                 foreach($respuestaArreglo as $r => $valor){
                     $x["icono"][] = '<a style="text-decoration: none;" href=?pagina=MostrarEvaluacion&id_unidad_evaluacion='.$valor['id_unidad_evaluaciones'].'><div class="mx-1 alert alert-secondary alert-dismissible fade show" role="alert"> '.$valor['mensaje'].' <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></a>';
                 }
-            }
-                
+            }  
         } catch (Exception $e) {
             $x['resultado'] = 'error';
             $x['mensaje'] = $e->getMessage();

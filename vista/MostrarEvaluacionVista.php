@@ -34,7 +34,7 @@ use config\componentes\configSistema as configSistema;
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title"><i class="fas fa-text-width"></i><?php echo $mostrar_unidad[0]['nombre']; ?></h3>
+                                    <h3 class="card-title"><i class="fa fa-sticky-note"></i> <?php echo $mostrar_unidad[0]['nombre']; ?></h3>
                                 </div>
                                 <div class="card-body">
                                     <blockquote>
@@ -53,7 +53,7 @@ use config\componentes\configSistema as configSistema;
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title"><i class="fas fa-text-width"></i>Entrega de Evaluación</h3>
+                                    <h3 class="card-title"><i class="fa fa-sticky-note"></i> Entrega de Evaluación</h3>
                                     <?php if($mostrar_estudiante_evaluacion!=null){ 
                                     echo $consultar ==null ?   
                                     '<button type="button" class="float-right btn btn-secondary btn-sm" onclick="cargar_datos('.$id.');">Modificar</button><button type="button" class="d-none float-right btn btn-secondary btn-sm" onclick="entregar()">Entregar</button>': ''; }
@@ -78,7 +78,7 @@ use config\componentes\configSistema as configSistema;
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title"><i class="fas fa-text-width"></i>Entregas</h3>
+                                    <h3 class="card-title"><i class="fa fa-clipboard"></i> Entregas</h3>
                                 </div>
                                 <div class="card-body">
                                    <div class="card border border-secondary">

@@ -508,5 +508,17 @@ class EmprendimientoModelo extends connectDB
 
         return $r;
     }
+    public function cargar_calendario($id_estudiante)
+    {
+        $respuestaArreglo = [];
+        try {
+            $resultado = $this->conex->query("SELECT ue.id as id, a.nombre as aula, un.nombre as unidad, e.nombre as nombre, e.descripcion as descripcion, ue.fecha_inicio, ue.fecha_cierre from usuario u inner join aula_estudiante ae on u.id= ae.id_estudiante inner join aula a on ae.id_aula= a.id inner join unidad un on un.id_aula= a.id inner join unidad_evaluaciones ue on ue.id_unidad = un.id inner join evaluaciones as e on e.id= ue.id_evaluacion where u.id = $id_estudiante");
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return $respuestaArreglo;
+    }
 
 }

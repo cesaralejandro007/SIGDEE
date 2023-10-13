@@ -42,17 +42,6 @@ use config\componentes\configSistema as configSistema;
                 </h3>  
               </div>
               <div class="card-body">
-                <?php
-                $usuario  = "root";
-                $password = "";
-                $servidor = "localhost";
-                $basededatos = "bdsystem";
-                $con = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al Servidor");
-                $db = mysqli_select_db($con, $basededatos) or die("Upps! Error en conectar a la Base de Datos");
-
-                $SqlEventos   = ("SELECT ue.id as id, a.nombre as aula, un.nombre as unidad, e.nombre as nombre, e.descripcion as descripcion, ue.fecha_inicio, ue.fecha_cierre from usuario u inner join aula_estudiante ae on u.id= ae.id_estudiante inner join aula a on ae.id_aula= a.id inner join unidad un on un.id_aula= a.id inner join unidad_evaluaciones ue on ue.id_unidad = un.id inner join evaluaciones as e on e.id= ue.id_evaluacion where u.id = ".$_SESSION['usuario']["id"]."");
-                $resulEventos = mysqli_query($con, $SqlEventos);
-                ?>
                 <div id="calendar"></div>
               </div>
             </div>
@@ -250,11 +239,11 @@ use config\componentes\configSistema as configSistema;
 
             events: [
               <?php
-              while($dataEvento = mysqli_fetch_array($resulEventos)){ ?>
+              foreach($resulEventos as $dataEvento){ ?>
                 {
                   _id: '<?php echo $dataEvento['id']; ?>',
                   title: '<?php echo $dataEvento['nombre']; ?>',
-                  start: '<?php echo '2023-07-25 09:00:00'; ?>',
+                  start: '<?php echo $dataEvento['fecha_cierre']; ?>',
                   end:   '<?php echo $dataEvento['fecha_cierre']; ?>',  
                   color: '#0D47AD'
                 },

@@ -116,7 +116,7 @@ class UsuarioModelo extends connectDB
                     $stmt->execute($values);
 
                     $respuesta["resultado"]=1;
-                    $respuesta["mensaje"]="Roles Registrados.";
+                    $respuesta["mensaje"]="Rol activado.";
                 } catch (Exception $e) {
                     $respuesta['resultado'] = 0;
                     $respuesta['mensaje'] = $e->getMessage();
@@ -133,7 +133,7 @@ class UsuarioModelo extends connectDB
                     $stmt->execute($values);
 
                     $respuesta["resultado"]=2;
-                    $respuesta["mensaje"]="Roles Eliminados.";
+                    $respuesta["mensaje"]="Rol desactivado.";
                 } catch (Exception $e) {
                     $respuesta['resultado'] = 0;
                     $respuesta['mensaje'] = $e->getMessage();
@@ -490,21 +490,6 @@ class UsuarioModelo extends connectDB
         return $respuestaArreglo;
     }
 
-
-
-    public function cargar_rol()
-    {
-        try {
-            $modulo = $this->conex->query("SELECT * from rol");
-            if ($modulo) {
-                return $modulo;
-            } else {
-                return '';
-            }
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
 
     public function cargar($id)
     {

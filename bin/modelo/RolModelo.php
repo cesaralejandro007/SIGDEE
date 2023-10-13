@@ -100,7 +100,7 @@ class RolModelo extends connectDB
     }
 
     public function listar()
-    {        $resultado = $this->conex->prepare("SELECT id, nombre FROM rol");
+    {        $resultado = $this->conex->prepare("SELECT *FROM rol");
         $respuestaArreglo = [];
         try {
             $resultado->execute();

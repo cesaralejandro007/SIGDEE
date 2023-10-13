@@ -276,10 +276,13 @@ class EstudianteEvaluacionModelo extends connectDB{
         } 
         else{
 			try {
+				$this->conex->beginTransaction();
 				$this->conex->query("UPDATE estudiante_evaluacion SET calificacion = '$calificacion' WHERE id = '$id'");
+				$this->conex->commit();
 				$respuesta['resultado'] = 1;
                 $respuesta['mensaje'] = "Calificación guardada";
 			} catch(Exception $e) {
+				$this->conex->rollBack();
 				$respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
 			}
@@ -288,20 +291,14 @@ class EstudianteEvaluacionModelo extends connectDB{
 	}
 
 	public function calificar($id_estudiante, $id_unidad_evaluacion, $calificacion){
-		$validar_evaluacion = $this->existe_estudiante($id_estudiante);
-		if ($validar_evaluacion==false) {
-            $respuesta['resultado'] = 3;
-            $respuesta['mensaje'] = "El estudiante que indica no existe";
-        } 
-        else{
-			try {
-				$query = "INSERT INTO estudiante_evaluacion (id_usuario, id_unidad_evaluacion, descripcion, calificacion) VALUES (?, ?, ?, ?)";
-				$values = [
-                    $id_estudiante,
-                    $id_unidad_evaluacion,
-                    'Corregido presencialmente',
-                    $calificacion,
-                ];
+		try {
+			$query = "INSERT INTO estudiante_evaluacion (id_usuario, id_unidad_evaluacion, descripcion, calificacion) VALUES (?, ?, ?, ?)";
+			$values = [
+                $id_estudiante,
+                $id_unidad_evaluacion,
+                'Corregido presencialmente',
+                $calificacion,
+            ];
 				$stmt = $this->conex->prepare($query); 
 				$stmt->execute($values);
 				$respuesta['resultado'] = 1;
@@ -310,7 +307,6 @@ class EstudianteEvaluacionModelo extends connectDB{
 				$respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
 			}
-        }
         return $respuesta;
 	}
 
