@@ -52,9 +52,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         
 
         if ($accion == 'ingresar') {
-
-            
-
             $num_intentos = isset($_COOKIE['intentos'][$_POST['user']]) ? $_COOKIE['intentos'][$_POST['user']] : 1;
             $tipo = $_POST['tipo'];
             $usuario = $_POST['user'];        
@@ -70,13 +67,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $privateKeyContents = file_get_contents($privateKeyPath);
                 $privateKey = openssl_pkey_get_private($privateKeyContents);
                 $encryptedData = base64_decode($_POST['password']);
-                echo 'Contraseña cifrada (Base64): ' . $_POST['password'];
+                
                 $decryptedData = '';
 
                 openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
-                    echo 'Datos desencriptados: ' . $decryptedData;
-              
-
+                    $claveencriptada = $decryptedData;
+                    $login->set_password($decryptedData);
                 if ($privateKey === false) {
                     die('Error al cargar la clave privada');
                 }
@@ -86,7 +82,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
-            if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""/*  || $_POST['captcha'] == "" */ ){
+            if($_POST['tipo']=="" || $_POST['user']==""  || $claveencriptada==""/*  || $_POST['captcha'] == "" */ ){
                 echo json_encode([
                     'estatus' => '3',
                     'message' => "Complete los datos solicitados."
@@ -120,15 +116,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     if ($num_intentos >= 3) {
                         $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
                         return 0; 
-                    }
-           /*          else if($securimage->check($_POST['captcha']) == false){
-                        echo json_encode([
-                            'estatus' => '2',
-                            'message' => 'Captcha incorrecto.'
-                        ]);   
-                    } */
-                    //VERIFICAR CLAVE (password_hash)
-                    else if(password_verify($_POST['password'], $infoU[0]['clave'])){
+                    }else if(password_verify($claveencriptada, $infoU[0]['clave'])){
 
                         setcookie('intentos', 0, time() - 3600);
 
@@ -203,7 +191,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         }else if ($accion == 'codificarURL') {
             echo configSistema::_M01_();
             return 0;
-        }else if($accion = "generar_llaves_rsa") {
+        }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
             $config = [
                 "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
                 "private_key_bits" => 2048,
