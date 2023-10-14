@@ -269,6 +269,7 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     success: function (response) {
+      alert(response);
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({

@@ -97,7 +97,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'title' => "Unidad: ",
                     'message' => $response['mensaje']
                 ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
+                //$bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Eliminación");
                 return 0;
             } else  {
                 echo json_encode([
@@ -118,7 +118,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'title' => $modulo,
                     'message' => $response['mensaje']
                 ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
+                //$bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
                 return 0;
             } else {
                 echo json_encode([
@@ -269,9 +269,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_usuario"],$_SESSION['usuario']["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Agregar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
-
-                $unidad_evaluacion->set_id_evaluacion($_POST['evaluacion']);
-                $unidad_evaluacion->set_id_unidad($_POST['id_unidad']);
                 $fi = explode(" ", $_POST['fecha_inicio']);
                 $fechai = $fi[0];
                 $horai = $fi[1];
@@ -310,9 +307,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_usuario"],$_SESSION['usuario']["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Modificar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
-                $unidad_evaluacion->set_id($_POST['id']);
-                $unidad_evaluacion->set_id_evaluacion($_POST['evaluacion']);
-                $unidad_evaluacion->set_id_unidad($_POST['id_unidad']);
                 $fi = explode(" ", $_POST['fecha_inicio']);
                 $fechai = $fi[0];
                 $horai = $fi[1];
@@ -324,29 +318,23 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $horac = $fc[1];
                 $ffc = explode("/", $fechac);
                 $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
-                $unidad_evaluacion->set_fecha_inicio($fisql);
-                $unidad_evaluacion->set_fecha_cierre($fcsql);
-                $response = $unidad_evaluacion->modificarEvaluacion();
+                $response = $unidad_evaluacion->modificarEvaluacion($_POST['id'], $_POST['evaluacion'], $_POST['id_unidad'], $fisql, $fcsql);
                 if ($response['resultado']==1) {
                     $id_unidad_evaluacion = $unidad_evaluacion->obtener_id_unidad_evaluacion();
                     /*Creando la notificacion de una evaluacion creada*/
-                    $notificacion->set_id_usuarios_roles($id_usuario_rolE);
-                    $notificacion->set_id_unidad_evaluaciones($id_unidad_evaluacion[0]['unidad_evaluacion']);
-                    $notificacion->set_fecha(date('Y-m-d h:i:s', time()));
-                    $notificacion->set_mensaje('Evaluación Modificada');
-                    $notificacion->guardar_notificacion();
+                    $notificacion->guardar_notificacion($id_usuario_rolE, $id_unidad_evaluacion[0]['unidad_evaluacion'], date('Y-m-d h:i:s', time()), 'Evaluación modificada');
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
-                        'title' => 'Evaluación modificada',
+                        'title' => 'Modificar Evaluación',
                         'message' => $response['mensaje']
                     ]);
-                    $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Modificar Evaluación");
+                    //$bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Modificar Evaluación");
                 }else if ($response['resultado']==2) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
-                        'title' => 'Evaluación modificada',
+                        'title' => 'Modificar Evaluación',
                         'message' => $response['mensaje']
                     ]);
                 }
@@ -354,7 +342,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '3',
                         'icon' => 'info',
-                        'title' => 'Evaluación modificada',
+                        'title' => 'Modificar Evaluación',
                         'message' => $response['mensaje']
                     ]);
                 }

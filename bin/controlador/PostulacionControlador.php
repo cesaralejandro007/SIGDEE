@@ -20,7 +20,7 @@ if (!is_file($config->_Dir_Model_().$pagina.$config->_MODEL_())) {
 }
 
 if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
-    //$o = new Postulacion();
+    $ciudad = new Ciudad();
     $usuario = new Usuario();
     $aspirante = new Aspirante();
     $aspirante_emprendimiento = new AspiranteEmprendimiento();
@@ -59,6 +59,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         $pais = new Pais();
         $estado = new Estado();
         $ciudad = new Ciudad();
+
         foreach ($array as $key) {
             if($key['id'] == $id){
                 switch($clase){
@@ -79,23 +80,31 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         $accion = $_POST['accion'];
         if ($accion == 'buscar-usuario') {
             $datos = $usuario->buscar_cedula($_POST['cedula']);
-            print_r($datos);
-            return 0;
-            foreach ($datos as $valor) {
+            if($datos != []){
+                foreach ($datos as $valor) {
+                    echo json_encode([
+                        'id' => $valor['id'],
+                        'cedula' => $valor['cedula'],
+                        'ciudad' => $valor['id_ciudad'],
+                        'primer_nombre' => $valor['primer_nombre'],
+                        'segundo_nombre' => $valor['segundo_nombre'],
+                        'primer_apellido' => $valor['primer_apellido'],
+                        'segundo_apellido' => $valor['segundo_apellido'],
+                        'genero' => $valor['genero'],
+                        'correo' => $valor['correo'],
+                        'telefono' => $valor['telefono'],
+                        'direccion' => $valor['direccion'],
+                        'datos' => 1
+                    ]);
+                }
+            }
+            else{
                 echo json_encode([
-                    'id' => $valor['id'],
-                    'cedula' => $valor['cedula'],
-                    'ciudad' => $valor['id_ciudad'],
-                    'primer_nombre' => $valor['primer_nombre'],
-                    'segundo_nombre' => $valor['segundo_nombre'],
-                    'primer_apellido' => $valor['primer_apellido'],
-                    'segundo_apellido' => $valor['segundo_apellido'],
-                    'genero' => $valor['genero'],
-                    'correo' => $valor['correo'],
-                    'telefono' => $valor['telefono'],
-                    'direccion' => $valor['direccion']
+                 'datos' => 0,
+                 'cedula' => $_POST['cedula']
                 ]);
             }
+            
             return 0;
         }
         else if ($accion == 'registrar') {
@@ -103,22 +112,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $id_emprendimiento = json_decode($_POST['emprendimientos']);
             $id_aspirante = $_POST['id'];
             $cantidad_emprendimientos = $id_emprendimiento !=null ? count(json_decode($_POST['emprendimientos'])) : 0;
-            //Funcion que verifica que exista la ciudad seleccionada
-            $id_ciudad = $ciudad->validar_registro($_POST['ciudad']);
-            //Buscar el emprendimiento_modulo de acuerdo al id_emprendimiento y el id_modulo
-
-            /****Validacion --->  En caso de que no exista la ciudad del estudiante ****/
-            if($id_ciudad == 0){
-                  $respuesta = [
-                    'estatus' => '0',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => 'No existe ciudad seleccionada'
-                ];
-                echo json_encode($respuesta);
-                return 0;  
-            }
-            /******Fin de la validacion ********/       
+    
 
             /****Validacion --->  En caso de que no hayan elegido algun estudiante en la lista ****/
             if($id_emprendimiento== null || $cantidad_emprendimientos == 0 || $cantidad_emprendimientos  < 0){
@@ -154,49 +148,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             /******Fin de la validacion ********/   
 
-            //Registrar el aula con su nombre, y id_emprendimiento_modulo
-            //Debo validar a ciudad
-            $respuesta = $aspirante->registrar_aspirante($_POST['cedula'], $_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'], $clave);
-            if ($respuesta) {
-                //$buscar_id = $aula->buscar_ultimo();
-                //$aula_docente->incluir($buscar_id[0]['id'], $_POST['docente']);
-                foreach ($id_emprendimiento as $dato) {
-                    $response = $aspirante_emprendimiento->incluir($id_aspirante, $dato);
-                }
-                $respuesta = [
-                    'estatus' => '1',
-                    'icon' => 'success',
-                    'title' => $modulo,
-                    'message' => $respuesta['mensaje']
-                ];
-                echo json_encode($respuesta);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
-
-                return 0;
-            } else {
-                $respuesta = [
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $respuesta['mensaje']
-                ];
-                echo json_encode($respuesta);
-                return 0;
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
+            //Registrar pais, estado y ciudad si no existen
+            buscar_elemento($array_paises, $_POST['pais'], 'pais');
+            buscar_elemento($array_estados, $_POST['estado'], 'estado');
+            buscar_elemento($array_ciudades, $_POST['ciudad'], 'ciudad');
+            
             if ($_POST['id'] != '') {
                 $id_aspirante = $_POST['id'];
             }
@@ -224,9 +180,11 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }else{
                 $mensaje->error('Postulación', 'No ha elegido un emprendimiento');
                 exit();
-            }*/
-            //$config->confirmar('Postulación', 'Registro exitoso');
-            //return 0; 
+            }
+            $config->confirmar('Postulación', 'Registro exitoso');
+            return 0; 
+
+
         }else if($accion == 'listadopaises'){
             $r = array();
             $x = '<option disabled selected>Seleccione</option>';
@@ -276,30 +234,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }
         
-    } /*
-        else if ($accion == 'recuperar') {
-            $aspirante_emprendimiento->set_user($_POST['user']);
-            $infoRD = $o->datos_UserRU();
-            if (!empty($infoRD)) {
-                foreach ($infoRD as $datos) {
-                    $nombre = $datos['nombre'];
-                    $apellido = $datos['apellido'];
-                    $correo = $datos['correo'];
-                    $telefono = $datos['telefono'];
-                    $clave = $datos['clave'];
-                }
-                if ($_POST['nombre'] == $nombre && $_POST['apellido'] == $apellido && $_POST['correo'] == $correo && $_POST['telefono'] == $telefono) {
-                    mail($correo, 'Recuperación de contraseña', 'Su contraseña es: ' . $clave, 'Aula virtual-diplomado', 'Aula virtual-diplomado');
-                    $config->confirmar('Correo gmail:', 'Se envio la clave al correo: ' . $correo);
-                } else {
-                    $config->informacion($modulo, 'Verifique sus datos');
-                }
-                return 0;
-            } else {
-                $config->informacion($modulo, 'Verifique sus datos');
-            }
-            return 0;
-        }*/
+    } 
         $r3 = $emprendimiento->listar();
     $listar_emprendimientos = $postulacion->emprendimientos_propuestos();
     require_once "vista/" . $pagina . "Vista.php";

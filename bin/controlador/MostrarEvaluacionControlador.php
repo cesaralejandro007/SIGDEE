@@ -164,21 +164,36 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             break;
             case 'modificar_entrega':
                 //Validar que exista el estudiante
-                $result = $estudiante_evaluacion->existe_estudiante($_SESSION['usuario']["id"]);
-                if(!$result){
-                    $msg->informacion('Entrega de evaluación', 'No existe el estudiante');
+                if (!$estudiante->existe($_SESSION['usuario']["id"])) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'info',
+                        'title' => 'Modificar calificación',
+                        'message' => 'El estudiante no existe'
+                    ]);
                     return 0;
                 }
-                                
-                $response = $estudiante_evaluacion->modificar($_POST['id'], $_POST['descripcion'], date('Y-m-d h:i:s', time()), $_SESSION['usuario']["id"], $id_evaluaciones);
-                if($response['resultado'] == 2){
-                    $msg->informacion('Entrega', $response['mensaje']);
-                }
                 else
-                if($response['resultado']== 0){
-                    $msg->error('Entrega', $response['mensaje']);
+                //En caso de que el usuario no este cursando esa aula
+                if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
+                     echo json_encode([
+                        'estatus' => '3',
+                        'icon' => 'info',
+                        'title' => 'Modificar calificación',
+                        'message' => 'El estudiante no pertenece al aula'
+                    ]);
+                    return 0;
                 }
-                else{
+                else{            
+                    $response = $estudiante_evaluacion->modificar($_POST['id'], $_POST['descripcion'], date('Y-m-d h:i:s', time()), $_SESSION['usuario']["id"], $id_evaluaciones);
+                    if($response['resultado'] == 2){
+                        $msg->informacion('Entrega', $response['mensaje']);
+                    }
+                    else
+                    if($response['resultado']== 0){
+                        $msg->error('Entrega', $response['mensaje']);
+                    }
+                    else{
                         $ruta = "content/entregas/".$id_evaluaciones;
                         //$nombre_archivo = $_FILES['archivo']['name'];
                         $nombre_archivo = $_SESSION['usuario']["id"];
@@ -194,7 +209,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         $notificacion->guardar_notificacion($usuario_rol, $id_evaluaciones, date('Y-m-d h:i:s', time()), 'Entrega de evaluación modificada');
                         $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificación de Entrega de Evaluación");
                         $msg->confirmar('Entrega', $response['mensaje']);
-                }
+                    }
+                    
+                } 
                 return 0; 
                 exit;
             break;
@@ -253,7 +270,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
-                        'title' => 'Entrega',
+                        'title' => 'Calificar Evaluación',
                         'message' => 'El estudiante no existe'
                     ]);
                     return 0;
@@ -264,7 +281,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                      echo json_encode([
                         'estatus' => '3',
                         'icon' => 'info',
-                        'title' => 'Entrega',
+                        'title' => 'Calificar Evaluación',
                         'message' => 'El estudiante no pertenece al aula'
                     ]);
                     return 0;
@@ -279,7 +296,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             'title' => $modulo,
                             'message' => $response['mensaje']
                         ]);
-                        $bitacora->incluir($usuario_rol,$entorno,$fecha,"Calificacion de evaluacion");
+                        $bitacora->incluir($usuario_rol,$entorno,$fecha,"Calificación de evaluacion");
                         return 0;
                     } else {
                         echo json_encode([
@@ -295,24 +312,47 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 exit;
             break;
             case 'modificar_calificacion':
-                $response = $estudiante_evaluacion->modificar_calificacion($_POST['id_evaluacion'], $_POST['calificacion']);
-                if ($response['resultado']== 1) {
-                    echo json_encode([
-                        'estatus' => '1',
-                        'icon' => 'success',
-                        'title' => $modulo,
-                        'message' => $response['mensaje']
-                    ]);
-                    $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificacion");
-                    return 0;
-                } else {
+                if (!$estudiante->existe($_SESSION['usuario']["id"])) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
-                        'title' => $modulo,
-                        'message' => $response['mensaje']
+                        'title' => 'Modificar calificación',
+                        'message' => 'El estudiante no existe'
                     ]);
                     return 0;
+                }
+                else
+                //En caso de que el usuario no este cursando esa aula
+                if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
+                     echo json_encode([
+                        'estatus' => '3',
+                        'icon' => 'info',
+                        'title' => 'Modificar calificación',
+                        'message' => 'El estudiante no pertenece al aula'
+                    ]);
+                    return 0;
+                }
+                //Si ese usuario pertenece al aula
+                else{
+                    $response = $estudiante_evaluacion->modificar_calificacion($_POST['id_evaluacion'], $_POST['calificacion']);
+                    if ($response['resultado']== 1) {
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        $bitacora->incluir($usuario_rol,$entorno,$fecha,"Modificacion");
+                        return 0;
+                    } else {
+                        echo json_encode([
+                            'estatus' => '2',
+                            'icon' => 'info',
+                            'title' => $modulo,
+                            'message' => $response['mensaje']
+                        ]);
+                        return 0;
+                    }
                 }
                 exit;
             break;

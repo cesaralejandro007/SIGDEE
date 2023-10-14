@@ -119,6 +119,7 @@ class BitacoraModelo extends connectDB
     }
 
     public function buscar_id_entorno($entorno){
+        $dato;
         $resultado = $this->conex->prepare("SELECT id FROM entorno_sistema WHERE nombre='$entorno';");
         $respuestaArreglo = [];
         try {

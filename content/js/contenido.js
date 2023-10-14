@@ -385,8 +385,7 @@ function mostrar(datos) {
       $("#nombre").val(res.nombre);
       $("#descripcion").val(res.descripcion);
       $("#nombre_antes").val(res.archivo_adjunto);
-      document.getElementById("archivo_antes").href =
-        "../content/contenidos/" + res.archivo_adjunto;
+      document.getElementById("archivo_antes").href = res.archivo_adjunto;
       $("#enviar").text("Modificar");
       $("#gestion-contenido").modal("show");
       $("#archivo-anterior").show();

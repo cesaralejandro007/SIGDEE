@@ -181,7 +181,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 		//Validar que exista el id_usuario y el id_unidad_evaluacion de la entrega (id de la tabla estudiante_evaluacion)
 		$validar_existencia = $this->existe_estudiante_entrega($id_estudiante, $id, $id_unidad_evaluacion);
 		//Validar que no haya sido calificada la evaluación
-		$validar_calificacion = $this->validar_actualizacion($_POST['id']);
+		$validar_calificacion = $this->validar_actualizacion($id);
 		if($expresiones['resultado']){
 			$respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $expresiones['mensaje'];
@@ -406,10 +406,10 @@ class EstudianteEvaluacionModelo extends connectDB{
 		
     }
 
-    public function existe_estudiante($id)
+    public function existe_estudiante($id_estudiante)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id WHERE u.id=$id;");
+            $resultado = $this->conex->prepare("SELECT * FROM usuario u INNER JOIN aula_estudiante ae ON ae.id_estudiante=u.id WHERE u.id=$id_estudiante;");
             $resultado->execute();
             $fila = $resultado->fetchAll();
             if ($fila) {

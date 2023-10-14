@@ -150,6 +150,8 @@ $("#registrar").click(function (e) {
     datos.append('accion', 'registrar');
     datos.append('id', $("#id").val());
     datos.append('cedula', $("#cedula").val());
+    datos.append('pais', $("#pais").val());
+    datos.append('estado', $("#estado").val());
     datos.append('ciudad', $("#ciudad").val());
     datos.append('primer_nombre', $("#primer_nombre").val());
     datos.append('segundo_nombre', $("#segundo_nombre").val());
@@ -412,9 +414,8 @@ function cargar(datos){
     processData: false,
     cache: false,
     success:function(response){
-      if(response){
-        alert(response);
         var res = JSON.parse(response);
+      if(res.datos == 1){
         $("#id").val(res.id);
         $("#cedula").val(res.cedula);
         $("#nombre").val(res.primer_nombre);
@@ -426,6 +427,9 @@ function cargar(datos){
         $("#correo").val(res.correo);
         $("#telefono").val(res.telefono);
         $("#direccion").val(res.direccion);
+      }
+      else{
+        $("#cedula").val(res.cedula);
       }
 
       $('#information-part').addClass('active');
@@ -459,11 +463,8 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     success: function (response) {
-      alert(response);
       //si resulto exitosa la transmision
-      alert(response);
       var res = JSON.parse(response);
-      //alert(res.title);
       if (res.resultado == "listadopaises") {
         $("#pais").html(res.mensaje);
       } 

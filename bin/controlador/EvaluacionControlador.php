@@ -215,7 +215,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     'id' => $_POST['id'],
                     'nombre' => $valor['nombre'],
                     'descripcion' => $valor['descripcion'],
-                    'archivo_adjunto' => $valor['archivo_adjunto'],
+                    'archivo_adjunto' => _URL_.'/content/evaluaciones/'.$valor['archivo_adjunto'],
                 ]);
             }
             return 0;

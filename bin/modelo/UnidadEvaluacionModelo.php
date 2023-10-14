@@ -63,8 +63,13 @@ class UnidadEvaluacionModelo extends connectDB{
 	return $respuesta;
 	}
 
-	public function modificarEvaluacion()
+	public function modificarEvaluacion($id, $id_evaluacion, $id_unidad, $fecha_inicio, $fecha_cierre)
     {
+		$this->id = $id;
+		$this->id_evaluacion = $id_evaluacion;
+        $this->id_unidad = $id_unidad;
+        $this->fecha_inicio = $fecha_inicio;
+        $this->fecha_cierre = $fecha_cierre;
 		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
 		if($resf){
             try {
