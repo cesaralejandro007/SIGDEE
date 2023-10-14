@@ -49,44 +49,46 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $decoded = base64_decode($str, true);
             return ($decoded !== false) && (base64_encode($decoded) === $str);
         }
+
+        function RSA($data){
+            $privateKeyPath = 'RSA/private.key';
+            // Lee la clave privada desde el archivo
+            $privateKeyContents = file_get_contents($privateKeyPath);
+            $privateKey = openssl_pkey_get_private($privateKeyContents);
+            $encryptedData = base64_decode($data);            
+            $decryptedData = '';
+            openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
+            if ($privateKey === false) {
+                die('Error al cargar la clave privada');
+            }
+            return $decryptedData;
+        }
         
-
         if ($accion == 'ingresar') {
-
-            
-
-            $num_intentos = isset($_COOKIE['intentos'][$_POST['user']]) ? $_COOKIE['intentos'][$_POST['user']] : 1;
             $tipo = $_POST['tipo'];
             $usuario = $_POST['user'];        
-            $claveencriptada = $_POST['password'];
-            $login->set_tipo($tipo);
-            $login->set_user($usuario);
-
-            if (isBase64($claveencriptada)) {
-
-                $privateKeyPath = 'RSA/private.key';
-                
-                // Lee la clave privada desde el archivo
-                $privateKeyContents = file_get_contents($privateKeyPath);
-                $privateKey = openssl_pkey_get_private($privateKeyContents);
-                $encryptedData = base64_decode($_POST['password']);
-                echo 'Contraseña cifrada (Base64): ' . $_POST['password'];
-                $decryptedData = '';
-
-                openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
-                    echo 'Datos desencriptados: ' . $decryptedData;
-              
-
-                if ($privateKey === false) {
-                    die('Error al cargar la clave privada');
-                }
-                
-            } else {
-                $login->set_password($claveencriptada);
+            $clave = $_POST['password'];
+            if (isBase64($tipo)==false || isBase64($usuario)==false || isBase64($clave)==false) {
+                $tipo = $_POST['tipo'];
+                $usuario = $_POST['user'];        
+                $clave = $_POST['password'];
+                $num_intentos = isset($_COOKIE['intentos'][$usuario]) ? $_COOKIE['intentos'][$usuario] : 1;
+                $login->set_tipo($tipo);
+                $login->set_user($usuario);
+                $login->set_password($clave);
+            }else {
+                $tipo = RSA($_POST['tipo']);
+                $usuario = RSA($_POST['user']);
+                $clave = RSA($_POST['password']);
+                $num_intentos = isset($_COOKIE['intentos'][$usuario]) ? $_COOKIE['intentos'][$usuario] : 1;
+                $login->set_tipo($tipo);
+                $login->set_user($usuario);
+                $login->set_password($clave);
             }
+            
             $responseU = $login->verificarU();
             $infoU = $login->datos_UserU();
-            if($_POST['tipo']=="" || $_POST['user']=="" || $_POST['password']==""/*  || $_POST['captcha'] == "" */ ){
+            if($clave=="" || $usuario==""  || $clave==""/*  || $_POST['captcha'] == "" */ ){
                 echo json_encode([
                     'estatus' => '3',
                     'message' => "Complete los datos solicitados."
@@ -94,10 +96,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }else if($responseU == 0){   
                 if($login->comprobar_usuario($usuario)){  
                     if($num_intentos <= 3){             
-                        setcookie('intentos[' . $_POST['user'] . ']', $num_intentos + 1, time() + 30); 
+                        setcookie('intentos[' . $usuario . ']', $num_intentos + 1, time() + 30); 
                     } 
                     if ($num_intentos >= 3) {
-                        $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
+                        $mensaje->error($modulo,"El usuario: ".$usuario." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
                         return 0; 
                     }
                     $contador = 3 - $num_intentos;
@@ -118,17 +120,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             else if ($responseU == 1) {
                 if (!empty($infoU)) {
                     if ($num_intentos >= 3) {
-                        $mensaje->error($modulo,"El usuario: ".$_POST['user']." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
+                        $mensaje->error($modulo,"El usuario: ".$usuario." se encuentra bloqueado, Intente nuevamente en 30 segundos.");
                         return 0; 
-                    }
-           /*          else if($securimage->check($_POST['captcha']) == false){
-                        echo json_encode([
-                            'estatus' => '2',
-                            'message' => 'Captcha incorrecto.'
-                        ]);   
-                    } */
-                    //VERIFICAR CLAVE (password_hash)
-                    else if(password_verify($_POST['password'], $infoU[0]['clave'])){
+                    }else if(password_verify($clave, $infoU[0]['clave'])){
 
                         setcookie('intentos', 0, time() - 3600);
 
@@ -140,18 +134,18 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             }
                             $token = $login->token($datos['id'], $datos['correo'], $datos['idrol']);
 
-                            $login->actualizar_fecha_acceso($_POST['user']);
+                            $login->actualizar_fecha_acceso($usuario);
                             $_SESSION['usuario'] = array('token' => $token['token'], 'id' => $datos['id'], 'nombre' => $datos['nombre'], 'apellido' => $datos['apellido'], 'genero' => $datos['genero'], 'cedula' => $datos['cedula'], 'correo' => $datos['correo'], 'telefono' => $datos['telefono'], 'idrol' => $datos['idrol'], 'tipo_usuario' => $datos['nombreusuario'], 'ultimo_acceso' => $datos['ultimo_acceso']);
                             
                             $_SESSION['rol'] = $id_rol;
                             
                         }
                         $mensaje->confirmar($modulo, 'Inicio exitoso');
-                        $login->actualizar_fecha_acceso($_POST['user']);
+                        $login->actualizar_fecha_acceso($usuario);
                         return 0;
                     }else{
                         if($num_intentos <= 3){             
-                            setcookie('intentos[' . $_POST['user'] . ']', $num_intentos + 1, time() + 30); 
+                            setcookie('intentos[' . $usuario . ']', $num_intentos + 1, time() + 30); 
                         }  
                         $contador = 3 - $num_intentos;
                         $error_message = "Credenciales incorrectas, tiene ".$contador." intentos.";
@@ -203,7 +197,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
         }else if ($accion == 'codificarURL') {
             echo configSistema::_M01_();
             return 0;
-        }else if($accion = "generar_llaves_rsa") {
+        }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
             $config = [
                 "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
                 "private_key_bits" => 2048,
@@ -226,8 +220,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo base64_encode($pubKey);
             return 0;
         }else if($accion = "obtener_datos") {
-            $login->set_tipo($_POST['tipo']);
-            $login->set_user($_POST['user']);
+            $login->set_tipo(RSA($_POST['tipo']));
+            $login->set_user(RSA($_POST['user']));
             $infoU = $login->datos_UserU();
             echo json_encode($infoU);
             return 0;
