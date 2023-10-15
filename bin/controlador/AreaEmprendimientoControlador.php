@@ -52,7 +52,7 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_us
         *****************************************/
         //MODELO DE COMO DEBEN SER LAS RESPUESTAS
         $json =  array(
-            'status' => '404',
+            'status' => '403',
             'icon' => 'info',
             'title' => $modulo,
             'message' => 'La autorizacion es requerida'
