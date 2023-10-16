@@ -198,26 +198,60 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo configSistema::_M01_();
             return 0;
         }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
-            $config = [
-                "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
-                "private_key_bits" => 2048,
-                'private_key_type' => OPENSSL_KEYTYPE_RSA
-            ];
+            $privateKeyPath = 'RSA/private.key';
+            $publicKeyPath = 'RSA/publikey.key';
             
-            $res = openssl_pkey_new($config);
-            openssl_pkey_export($res, $privKey, NULL, $config);
-            
-            $details = openssl_pkey_get_details($res);
-            $pubKey = $details['key'];
-        
-            
-            // Guardar la clave privada en un archivo .key
-            file_put_contents('RSA/private.key', $privKey);
-            
-            // Guardar la clave pública en un archivo .pub
-            file_put_contents('RSA/public.key', $pubKey);
+            if (file_exists($privateKeyPath) && file_exists($publicKeyPath)) {
+                $publiKeyPath = 'RSA/publikey.key';
+                // Lee la clave privada desde el archivo
+                $publiKeyContents = file_get_contents($publiKeyPath);
+                $publicKey = openssl_pkey_get_public($publiKeyContents);
+                $publicKeyPem = openssl_pkey_get_details($publicKey)['key'];
+                $publicKeybase64encode = base64_encode($publicKeyPem);
 
-            echo base64_encode($pubKey);
+                echo json_encode([
+                    'status' => 2,
+                    'message' => "Las claves ya existen.",
+                    'clave_publica'=> $publicKeybase64encode
+                ]);
+            } else {
+                $config = [
+                    "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
+                    "private_key_bits" => 2048,
+                    'private_key_type' => OPENSSL_KEYTYPE_RSA
+                ];
+                $res = openssl_pkey_new($config);
+                if ($res) {
+                    openssl_pkey_export($res, $privKey, NULL, $config);
+                    
+                    $details = openssl_pkey_get_details($res);
+                    $pubKey = $details['key'];
+            
+                    if (!empty($privKey) && !empty($pubKey)) {
+                        // Guardar la clave privada en un archivo .key
+                        file_put_contents($privateKeyPath, $privKey);
+                        
+                        // Guardar la clave pública en un archivo .pub
+                        file_put_contents($publicKeyPath, $pubKey);
+                        $publicKeybase64encode = base64_encode($pubKey);
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => "Claves generadas con éxito.",
+                            'clave_publica'=> $publicKeybase64encode
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => "Error al exportar las claves."
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        'status' => 0,
+                        'message' => "Error al generar las claves."
+                    ]);
+                }
+            }
             return 0;
         }else if($accion = "obtener_datos") {
             $login->set_tipo(RSA($_POST['tipo']));
