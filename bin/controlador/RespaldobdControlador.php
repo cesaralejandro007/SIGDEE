@@ -91,6 +91,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo $response;
             }
             return 0;
+        }else if ($accion == 'respaldo_parcial') {
+            $response = $respaldobd->respaldo_parcial();
+            if ($response){
+            echo $response;
+            }
+            return 0;
         }
     } 
     require_once "vista/" . $pagina . "Vista.php";

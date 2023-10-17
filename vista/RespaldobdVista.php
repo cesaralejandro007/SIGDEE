@@ -31,21 +31,19 @@ use config\componentes\configSistema as configSistema;
                     <div class="row">
                         <div class="col-12">
                             
-                        <div class="card-body">
-                            <div class="d-flex justify-content-center">
-                                <div class="row d-flex justify-content-center">
-                                                <button class="btn btn-outline-primary mx-1" id="verificar_password" type="button">Respaldar bases de datos</button>
-                                        </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <div class=" d-flex justify-content-center">
+                                        <button class="btn btn-outline-primary mx-1" id="verificar_password" type="button">Generar respaldo completo</button>
+                                    </div>
+                                    <div class=" d-flex justify-content-center">
+                                        <button class="btn btn-outline-primary mx-1" id="respaldo_parcial" type="button">Generar respaldo parcial (semanal)</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                            <!-- /.card-body -->
-                    
-                    <!-- /.col -->
-                
-                <!-- /.row -->
+                </div>
             </div>
             <!-- /.container-fluid -->
         </div>

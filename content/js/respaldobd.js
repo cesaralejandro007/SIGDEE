@@ -1,4 +1,11 @@
-
+document.onload = carga();
+function carga(){
+  document.getElementById("respaldo_parcial").onclick = function () {
+    var datos = new FormData();
+    datos.append('accion', 'respaldo_parcial');
+    enviaAjax(datos);
+  };
+}
 
 document.getElementById("verificar_password"). onclick = function(){
   Swal.fire({
@@ -25,7 +32,7 @@ document.getElementById("verificar_password"). onclick = function(){
               }).done(function (result) {
                 var res = JSON.parse(result);
                   if(res.estatus==1){
-                      verificarClave();
+                      respaldarBD();
                       return true;
                   }else if(res.estatus==2){
                       document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Usted no posee permisos para realizar el respaldo de la BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
@@ -132,6 +139,53 @@ document.getElementById("verificar_password"). onclick = function(){
     document.getElementById("inputclave").value = publickey;
   }
   
+  function enviaAjax(datos) {
+    var toastMixin = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true
+    });
+    $.ajax({
+      url: '',
+      type: 'POST',
+      contentType: false,
+      data: datos,
+      processData: false,
+      cache: false,
+      success: function(response) {
+        alert(response);
+        var res = JSON.parse(response);
+        if (res.estatus == 1) {
+          toastMixin.fire({
+            animation: true,
+            title: res.title,
+            text: res.message,
+            icon: res.icon
+          });
+          
+          limpiar();
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
+        }
+        else {
+          toastMixin.fire({
+            animation: true,
+            text: res.message,
+            title: res.title,
+            icon: res.icon
+          });
+        }
+      },
+      error: function(err) {
+        
+        alert(err);
+      }
+    });
+  }
+
 function respaldarBD(){
 $(function() {
     var toastMixin = Swal.mixin({
@@ -159,8 +213,41 @@ $(function() {
       toastMixin.fire({
         title: "Respaldo BD",
         text: "La Base de datos fue respaldado con exito",
-        icon: "success",
+         icon: "success",
       });
-});
-});
+    });
+  });
 }
+
+function respaldoBD_semanal(){
+  $(function() {
+      var toastMixin = Swal.mixin({
+        showConfirmButton: false,
+        width: 450,
+        padding: '3.5em',
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      var formData = new FormData();
+      formData.append("accion", "respaldo_parcial");
+    $.ajax({
+      url: "",
+      type: "POST",
+      contentType: false,
+      data: formData,
+      processData: false,
+      cache: false
+    }).done(function(datos) {
+        var blob = new Blob([datos]);
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "respaldo.sql";
+        link.click();
+        toastMixin.fire({
+          title: "Respaldo BD",
+          text: "La Base de datos fue respaldado con exito",
+           icon: "success",
+        });
+      });
+    });
+  }

@@ -20,7 +20,7 @@ if (!isset($_SESSION['usuario'])) {
   if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
     if(count(array_filter($_SESSION['usuario'])) == 0) {
-        $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+        $redirectUrl = '?pagina=' . configSistema::_M18_();
         echo '<script>window.location="' . $redirectUrl . '"</script>';
         die();
     }
@@ -40,6 +40,12 @@ if (!isset($_SESSION['usuario'])) {
 
         }
     }
+
+    date_default_timezone_set('America/Caracas');
+    $dia_actual = date("l");  
+    
+    $dia_inicial = strtotime("-1 week");
+    $fecha = date('d m Y H:i:s', $dia_inicial);
     $resulEventos = $emprendimiento->cargar_calendario($_SESSION['usuario']["id"]);
     require_once "vista/" . $pagina . "Vista.php";
 } else {

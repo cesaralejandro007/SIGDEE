@@ -97,4 +97,24 @@ class RespaldobdModelo extends connectDB
     return $retornar;
   }
 
+  public function respaldo_parcial(){
+      $db_port = '3306'; //Host del Servidor MySQL
+      $db_name = 'bdsystem'; //Nombre de la Base de datos
+      $db_user = 'admin'; //Usuario de MySQL
+      $db_pass = '123456'; //Password de Usuario MySQL
+      
+      $fecha = date("Ymd"); //Obtenemos la fecha y hora para identificar el respaldo
+
+      // Construimos el nombre de archivo SQL Ejemplo: mibase_20170101-081120.sql
+      $salida_sql = 'content/respaldos/'.$db_name.'_'.$fecha.'.sql'; 
+      
+      //Comando para genera respaldo de MySQL, enviamos las variales de conexion y el destino
+      $dump = "mysqldump --user=$db_user --port=$db_port -p--no-create-info $db_name > $salida_sql";
+      system($dump, $output); //Ejecutamos el comando para respaldo
+      return $dump;
+
+
+  }
+
+
 }

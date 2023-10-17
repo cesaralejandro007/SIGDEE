@@ -31,8 +31,7 @@ use config\componentes\configSistema as configSistema;
       <!-- Content Header (Page header) -->
       <div class="content-header">
         <h1 class="m-0">¡Bienvenido/a de nuevo,<?php echo $_SESSION['usuario']["nombre"] ?>!  👋</h1>
-        <div class="row">
-   
+        <div class="row">   
           <div class="col-md-8" style="margin-top:30px;">
             <!-- Line chart -->
             <div class="card card-primary card-outline">
@@ -164,7 +163,24 @@ use config\componentes\configSistema as configSistema;
           </div>
         </div>
 
+        <div class="modal" id="modalReporte"  tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">¡Recordatorio!</h5> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="m-4" style="text-align: center;">
+                <h4>Recuerda hacer el respaldo de BD de esta semana</h4>
+                <a id="" href="?pagina='<?php echo configSistema::_M18_()?>">Ir a respaldar</a>
+              </div>
+                
 
+            </div>
+          </div>
+        </div>
 
         <div class="modal" id="modalUpdateEvento"  tabindex="-1" role="dialog">
           <div class="modal-dialog" role="document">
@@ -221,6 +237,11 @@ use config\componentes\configSistema as configSistema;
 
       <script>
         $(document).ready(function() {
+          <?php 
+          if($dia_actual == 'Tuesday'){ ?> 
+            $("#modalReporte").modal();
+            <?php }
+        ?>  
           $("#calendar").fullCalendar({
             header: {
               left: "prev,next today",
