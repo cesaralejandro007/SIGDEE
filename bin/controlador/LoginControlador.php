@@ -224,7 +224,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         file_put_contents($privateKeyPath, $privKey);
                         
                         // Guardar la clave pública en un archivo .pub
-                        file_put_contents('C:/xampp/htdocs/dashboard/www/SIGDEE-App/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
+                        file_put_contents('C:/xampp/htdocs/app-sigdee/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
                         echo json_encode([
                             'status' => 1,
                             'message' => "Claves generadas con éxito."

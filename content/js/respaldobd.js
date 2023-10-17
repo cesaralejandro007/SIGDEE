@@ -1,11 +1,63 @@
-document.onload = carga();
-function carga(){
-  document.getElementById("respaldo_parcial").onclick = function () {
-    var datos = new FormData();
-    datos.append('accion', 'respaldo_parcial');
-    enviaAjax(datos);
-  };
-}
+
+document.getElementById("respaldo_parcial"). onclick = function(){
+  Swal.fire({
+      title: 'Ingrese su contraseña:',
+      html:                     
+        '<span id="validarcontrasena1"></span>' +
+        '<span id="v1" style="font-size:14px"></span><div class="input-group mt-1"><input id="input1" maxlength="15" class="form-control mb-2" type="password" placeholder="Ingrese la contraseña actual"/><div class="input-group-append"><button id="show_password" class="btn border border-left-0 mb-2" type="button" onclick="mostrarPassword()"><i class="fas fa-low-vision" style="font-size:16px; color:#8C8F92"></i></div></div>',
+      confirmButtonColor: '#007BFF',
+      confirmButtonText: "Continuar",
+      focusConfirm: true,
+      preConfirm: () => {
+          if(document.getElementById('input1').value != ""){
+            var formData = new FormData();
+            formData.append("accion", "verificar_password");
+            formData.append("clave_actual", document.getElementById("input1").value);
+            formData.append("cedula", document.getElementById("cedula_usuario").value);
+            $.ajax({
+              url: '',
+              type: 'POST',
+              contentType: false,
+              data:formData,
+              processData: false,
+              cache: false,
+              }).done(function (result) {
+                var res = JSON.parse(result);
+                  if(res.estatus==1){
+                      respaldarBD();
+                      return true;
+                  }else if(res.estatus==2){
+                      document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Usted no posee permisos para realizar el respaldo de la BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                      setTimeout(function () {
+                          $("#cerraralert").click();
+                        }, 3000);
+                      return false;
+                  }else if(res.estatus == 0){
+                    document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">La contraseña no coincide.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                    setTimeout(function () {
+                        $("#cerraralert").click();
+                      }, 3000);
+                    return false;
+                  }else{
+                      document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Error BD.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+                      setTimeout(function () {
+                          $("#cerraralert").click();
+                        }, 3000);
+                      return false;
+                  }
+              });
+              return false;
+        }else{
+          document.getElementById("validarcontrasena1").innerHTML = '<div class="alert alert-dismissible fade show pl-5" style="background:#9D2323; color:white" role="alert">Complete los campos solicitados.<i class="far fa-backspace p-0 m-0 d-none" id="cerraralert" data-dismiss="alert" aria-label="Close"></i></div>';
+          setTimeout(function () {
+              $("#cerraralert").click();
+            }, 3000);
+          return false;
+        }
+      }
+    })
+  }
+
 
 document.getElementById("verificar_password"). onclick = function(){
   Swal.fire({
@@ -129,15 +181,6 @@ document.getElementById("verificar_password"). onclick = function(){
     })
   }
 
-  function copiar_clave_privada(){
-    let privadakey= document.getElementById("clave_privada").value;
-    document.getElementById("inputclave").value = privadakey;
-  }
-
-  function copiar_clave_publica(){
-    let publickey = document.getElementById("clave_publica").value;
-    document.getElementById("inputclave").value = publickey;
-  }
   
   function enviaAjax(datos) {
     var toastMixin = Swal.mixin({
