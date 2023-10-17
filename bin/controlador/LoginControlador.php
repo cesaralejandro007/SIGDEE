@@ -199,20 +199,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             return 0;
         }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
             $privateKeyPath = 'RSA/private.key';
-            $publicKeyPath = 'RSA/publikey.key';
+            $publicKeyPath = 'C:/xampp/htdocs/dashboard/www/SIGDEE-App/RSA/public.js';
             
             if (file_exists($privateKeyPath) && file_exists($publicKeyPath)) {
-                $publiKeyPath = 'RSA/publikey.key';
-                // Lee la clave privada desde el archivo
-                $publiKeyContents = file_get_contents($publiKeyPath);
-                $publicKey = openssl_pkey_get_public($publiKeyContents);
-                $publicKeyPem = openssl_pkey_get_details($publicKey)['key'];
-                $publicKeybase64encode = base64_encode($publicKeyPem);
-
                 echo json_encode([
                     'status' => 2,
-                    'message' => "Las claves ya existen.",
-                    'clave_publica'=> $publicKeybase64encode
+                    'message' => "Las claves ya existen."
                 ]);
             } else {
                 $config = [
@@ -232,12 +224,10 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         file_put_contents($privateKeyPath, $privKey);
                         
                         // Guardar la clave pública en un archivo .pub
-                        file_put_contents($publicKeyPath, $pubKey);
-                        $publicKeybase64encode = base64_encode($pubKey);
+                        file_put_contents('C:/xampp/htdocs/dashboard/www/SIGDEE-App/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
                         echo json_encode([
                             'status' => 1,
-                            'message' => "Claves generadas con éxito.",
-                            'clave_publica'=> $publicKeybase64encode
+                            'message' => "Claves generadas con éxito."
                         ]);
                     } else {
                         echo json_encode([
