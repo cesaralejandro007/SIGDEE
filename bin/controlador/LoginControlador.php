@@ -22,39 +22,12 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
 
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
-        //encriptacion
-        function Codificar($string)
-        {
-            $codec = '';
-            for ($i = 0; $i < strlen($string); $i++) {
-                $codec = $codec . base64_encode($string[$i]) . "#";
-            }
-            $string = base64_encode(base64_encode($codec));
-            $string = base64_encode($string);
-            return $string;
-        }
-        function Decodificar($string)
-        {
-            $decodec = '';
-            $string  = base64_decode(base64_decode($string));
-            $string  = base64_decode($string);
-            $string  = explode("#", $string);
-            foreach ($string as $str) {
-                $decodec = $decodec . base64_decode($str);
-            }
-            return $decodec;
-        }
-
-        function isBase64($str) {
-            $decoded = base64_decode($str, true);
-            return ($decoded !== false) && (base64_encode($decoded) === $str);
-        }
-        
+        //encriptacion        
         if ($accion == 'ingresar') {
             $tipo = $_POST['tipo'];
             $usuario = $_POST['user'];        
             $clave = $_POST['password'];
-            if (isBase64($tipo)==false || isBase64($usuario)==false || isBase64($clave)==false) {
+            if ($login->isBase64($tipo)==false || $login->isBase64($usuario)==false || $login->isBase64($clave)==false) {
                 $tipo = $_POST['tipo'];
                 $usuario = $_POST['user'];        
                 $clave = $_POST['password'];
@@ -153,7 +126,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'cedula' => $valor['cedula'],
                         'primer_nombre' => $valor['primer_nombre'],
                         'primer_apellido' => $valor['primer_apellido'],
-                        'preguntas_seguridad' => Decodificar($valor['preguntas_seguridad'])
+                        'preguntas_seguridad' => $login->Decodificar($valor['preguntas_seguridad'])
                     ]);
                 }
             }else{
@@ -164,7 +137,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             }
             return 0;
         } else if ($accion == 'Verificar_preguntas') {
-            $preguntas_ingresadas = Codificar($_POST['preguntas_ingresadas']);
+            $preguntas_ingresadas = $login->Codificar($_POST['preguntas_ingresadas']);
             $respuestavp = $login->Verificar_preguntas($_POST['cedula'],$preguntas_ingresadas);
             echo json_encode([
                 'status' => $respuestavp,

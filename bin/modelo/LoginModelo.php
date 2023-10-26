@@ -146,7 +146,34 @@ class LoginModelo extends connectDB
         }
         return $respuesta;
     }
-    
+
+    public function Codificar($string)
+    {
+        $codec = '';
+        for ($i = 0; $i < strlen($string); $i++) {
+            $codec = $codec . base64_encode($string[$i]) . "#";
+        }
+        $string = base64_encode(base64_encode($codec));
+        $string = base64_encode($string);
+        return $string;
+    }
+
+    public function Decodificar($string)
+    {
+        $decodec = '';
+        $string  = base64_decode(base64_decode($string));
+        $string  = base64_decode($string);
+        $string  = explode("#", $string);
+        foreach ($string as $str) {
+            $decodec = $decodec . base64_decode($str);
+        }
+        return $decodec;
+    }
+
+    public function isBase64($str) {
+        $decoded = base64_decode($str, true);
+        return ($decoded !== false) && (base64_encode($decoded) === $str);
+    }
     
     public function actualizar_fecha_acceso($cedula)
     {   
