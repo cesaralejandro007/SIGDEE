@@ -49,20 +49,6 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $decoded = base64_decode($str, true);
             return ($decoded !== false) && (base64_encode($decoded) === $str);
         }
-
-        function RSA($data){
-            $privateKeyPath = 'RSA/private.key';
-            // Lee la clave privada desde el archivo
-            $privateKeyContents = file_get_contents($privateKeyPath);
-            $privateKey = openssl_pkey_get_private($privateKeyContents);
-            $encryptedData = base64_decode($data);            
-            $decryptedData = '';
-            openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
-            if ($privateKey === false) {
-                die('Error al cargar la clave privada');
-            }
-            return $decryptedData;
-        }
         
         if ($accion == 'ingresar') {
             $tipo = $_POST['tipo'];
@@ -77,9 +63,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $login->set_user($usuario);
                 $login->set_password($clave);
             }else {
-                $tipo = RSA($_POST['tipo']);
-                $usuario = RSA($_POST['user']);
-                $clave = RSA($_POST['password']);
+                $tipo =  $login->RSA($_POST['tipo']);
+                $usuario =  $login->RSA($_POST['user']);
+                $clave =  $login->RSA($_POST['password']);
                 $num_intentos = isset($_COOKIE['intentos'][$usuario]) ? $_COOKIE['intentos'][$usuario] : 1;
                 $login->set_tipo($tipo);
                 $login->set_user($usuario);
@@ -171,8 +157,18 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     ]);
                 }
             }else{
-                echo 0;
+                echo json_encode([
+                    'status' => 0,
+                    'message' => "Usuario no válido"
+                ]);
             }
+            return 0;
+        } else if ($accion == 'Verificar_preguntas') {
+            $preguntas_ingresadas = Codificar($_POST['preguntas_ingresadas']);
+            $respuestavp = $login->Verificar_preguntas($_POST['cedula'],$preguntas_ingresadas);
+            echo json_encode([
+                'status' => $respuestavp,
+            ]);
             return 0;
         }else if ($accion == 'cambiar_clave') {
              //ENCRIPTAR CLAVE (password_hash)
@@ -198,54 +194,33 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo configSistema::_M01_();
             return 0;
         }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
-            $privateKeyPath = 'RSA/private.key';
-            $publicKeyPath = 'C:/xampp/htdocs/dashboard/www/SIGDEE-App/RSA/public.js';
+            $config = [
+                "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
+                "private_key_bits" => 2048,
+                'private_key_type' => OPENSSL_KEYTYPE_RSA
+            ];
             
-            if (file_exists($privateKeyPath) && file_exists($publicKeyPath)) {
-                echo json_encode([
-                    'status' => 2,
-                    'message' => "Las claves ya existen."
-                ]);
-            } else {
-                $config = [
-                    "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
-                    "private_key_bits" => 2048,
-                    'private_key_type' => OPENSSL_KEYTYPE_RSA
-                ];
-                $res = openssl_pkey_new($config);
-                if ($res) {
-                    openssl_pkey_export($res, $privKey, NULL, $config);
-                    
-                    $details = openssl_pkey_get_details($res);
-                    $pubKey = $details['key'];
+            $res = openssl_pkey_new($config);
+            openssl_pkey_export($res, $privKey, NULL, $config);
             
-                    if (!empty($privKey) && !empty($pubKey)) {
-                        // Guardar la clave privada en un archivo .key
-                        file_put_contents($privateKeyPath, $privKey);
-                        
-                        // Guardar la clave pública en un archivo .pub
-                        file_put_contents('C:/xampp/htdocs/app-sigdee/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
-                        echo json_encode([
-                            'status' => 1,
-                            'message' => "Claves generadas con éxito."
-                        ]);
-                    } else {
-                        echo json_encode([
-                            'status' => 0,
-                            'message' => "Error al exportar las claves."
-                        ]);
-                    }
-                } else {
-                    echo json_encode([
-                        'status' => 0,
-                        'message' => "Error al generar las claves."
-                    ]);
-                }
-            }
+            $details = openssl_pkey_get_details($res);
+            $pubKey = $details['key'];
+        
+            
+            // Guardar la clave privada en un archivo .key
+            file_put_contents('RSA/private.key', $privKey);
+            
+            // Guardar la clave pública en un archivo .pub
+            
+            file_put_contents('C:/xampp/htdocs/dashboard/www/SIGDEE-app/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
+
+            echo 1;
             return 0;
         }else if($accion = "obtener_datos") {
-            $login->set_tipo(RSA($_POST['tipo']));
-            $login->set_user(RSA($_POST['user']));
+            $tipo_user = $login->RSA($_POST['tipo']);
+            $usuario = $login->RSA($_POST['user']);
+            $login->set_tipo($tipo_user);
+            $login->set_user($usuario);
             $infoU = $login->datos_UserU();
             echo json_encode($infoU);
             return 0;

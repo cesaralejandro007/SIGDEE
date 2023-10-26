@@ -178,9 +178,9 @@ document.getElementById("modificarContrasenia").onclick = function() {
                 processData: false,
             }).done(function(result) {
               var resultado = JSON.parse(result);
-                if (result == 0) {
+                if (resultado.status == 0) {
                     document.getElementById("cedulaEmergente").style.borderColor = "red";
-                    document.getElementById("textoCedula").innerHTML = "Usuario no válido";
+                    document.getElementById("textoCedula").innerHTML = resultado.message;
                     document.getElementById("textoCedula").style.color = 'red';
                     document.getElementById("cedulaEmergente").focus();
                 } else {
@@ -215,8 +215,21 @@ document.getElementById("modificarContrasenia").onclick = function() {
               icon: "error",
             });
         } else {
-            var pregunta = document.getElementById("colorFav").value + document.getElementById("animFav").value + document.getElementById("mascota").value;
-            if (pregunta.toLowerCase() == pregunta_bd.toLowerCase()) {
+
+          var pregunta = document.getElementById("colorFav").value + document.getElementById("animFav").value + document.getElementById("mascota").value;
+          var formData = new FormData();
+          formData.append("accion", "Verificar_preguntas");
+          formData.append("cedula", document.getElementById("cedulaEmergente").value);
+          formData.append("preguntas_ingresadas", pregunta.toLowerCase());
+          $.ajax({
+              url: '',
+              type: 'POST',
+              contentType: false,
+              data:formData,
+              processData: false,
+          }).done(function(result) {
+            var resultado = JSON.parse(result);
+            if (resultado.status == 1) {
                 if (document.getElementById("passwordEmergente").value == "" || document.getElementById("passwordEmergente2").value == "" || document.getElementById("passwordEmergente").value != document.getElementById("passwordEmergente2").value) {
                     toastMixin.fire({
                       title: "Error",
@@ -256,7 +269,6 @@ document.getElementById("modificarContrasenia").onclick = function() {
                         }
                     })
                 }
-              
             } else {
               toastMixin.fire({
                 title: "Error",
@@ -264,6 +276,10 @@ document.getElementById("modificarContrasenia").onclick = function() {
                 icon: "error",
               });
             }
+      
+
+          });
+
         }
       }
     }

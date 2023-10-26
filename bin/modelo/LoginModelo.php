@@ -85,50 +85,18 @@ class LoginModelo extends connectDB
         return $respuestaArreglo;
     }
 
-    public function guardar_clave_private($privatekey,$cedula)
-    {
-        $resultado = $this->conex->query("UPDATE usuario SET privatekey = '$privatekey' WHERE cedula = '$cedula'");
-        try {
-            $resultado->execute();
-            return 1;
-        } catch (Exception $e) {
-            return $e->getMessage();
+    public function RSA($data){
+        $privateKeyPath = 'RSA/private.key';
+        // Lee la clave privada desde el archivo
+        $privateKeyContents = file_get_contents($privateKeyPath);
+        $privateKey = openssl_pkey_get_private($privateKeyContents);
+        $encryptedData = base64_decode($data);            
+        $decryptedData = '';
+        openssl_private_decrypt($encryptedData, $decryptedData, $privateKey);
+        if ($privateKey === false) {
+            die('Error al cargar la clave privada');
         }
-    }
-
-    public function guardar_clave_publica($publickey,$cedula)
-    {
-        $resultado = $this->conex->query("UPDATE usuario SET publickey = '$publickey' WHERE cedula = '$cedula'");
-        try {
-            $resultado->execute();
-            return 1;
-        } catch (Exception $e){
-            return $e->getMessage();
-        }
-    }
-
-    public function obtener_clave_privada($id)
-    {
-        $resultado = $this->conex->prepare("SELECT privatekey  FROM usuario WHERE id= $id");
-        try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-        return $respuestaArreglo;
-    }
-
-    public function obtener_clave_publica($id)
-    {
-        $resultado = $this->conex->prepare("SELECT publickey  FROM usuario WHERE id= $id");
-        try {
-            $resultado->execute();
-            $respuestaArreglo = $resultado->fetchAll();
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-        return $respuestaArreglo;
+        return $decryptedData;
     }
 
     public function comprobar_usuario($cedula)
@@ -161,7 +129,25 @@ class LoginModelo extends connectDB
         return $respuestaArreglo;
     }
 
-
+    public function Verificar_preguntas($cedula, $preguntas_ingresadas)
+    {
+        $respuesta = "";
+        $resultado = $this->conex->prepare("SELECT preguntas_seguridad FROM usuario WHERE cedula ='$cedula'");
+        try {
+            $resultado->execute();
+            $respuestaArreglo = $resultado->fetchAll();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        if($preguntas_ingresadas == $respuestaArreglo[0]["preguntas_seguridad"]){
+            $respuesta = 1;
+        }else{
+            $respuesta = 0;
+        }
+        return $respuesta;
+    }
+    
+    
     public function actualizar_fecha_acceso($cedula)
     {   
         $resultado = $this->conex->query("UPDATE usuario SET ultimo_acceso = NOW()  WHERE cedula = '$cedula'");
@@ -172,7 +158,7 @@ class LoginModelo extends connectDB
             return $e->getMessage();
         }
     }
-
+    
     public function cambiar_password($cedula,$clave_encriptada)
     {   
         $resultado = $this->conex->query("UPDATE usuario SET clave = '$clave_encriptada' WHERE cedula = '$cedula'");
@@ -184,7 +170,7 @@ class LoginModelo extends connectDB
         }
         return $respuestaArreglo;
     }
-
+    
     public function listartipo_usuario()
     {
         $resultado = $this->conex->prepare("SELECT nombre FROM rol");
@@ -199,8 +185,8 @@ class LoginModelo extends connectDB
     }
     
     /**************************************
-    *  CREAR TOKEN DE SEGURIDAD AL ACCEDER
-    **************************************/
+     *  CREAR TOKEN DE SEGURIDAD AL ACCEDER
+     **************************************/
     public function token($id, $email){
         //VALIDAR QUE ID DEL USUARIO EXISTA EN LA BD
         if ($this->existe($id)==false) {
@@ -211,7 +197,7 @@ class LoginModelo extends connectDB
             //ESTABLECER LA ZONA HORARIA
             date_default_timezone_set('America/Caracas');
             $time = time();
-
+            
             //CREAR LA FECHA DE EXPIRACION (A 1 HORA)
             $fecha = date('Y-m-d H:i:s', $time + (60*60));
             //CREAR EL TOKEN CON RESPECTO A LA FECHA EN UNIX, CORREO Y ID DE USUARIO
@@ -240,10 +226,57 @@ class LoginModelo extends connectDB
             } else {
                 return false;
             }
-
+            
         } catch (Exception $e) {
             return false;
         }
     }
 
+    /* 
+    public function guardar_clave_private($privatekey,$cedula)
+    {
+        $resultado = $this->conex->query("UPDATE usuario SET privatekey = '$privatekey' WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function guardar_clave_publica($publickey,$cedula)
+    {
+        $resultado = $this->conex->query("UPDATE usuario SET publickey = '$publickey' WHERE cedula = '$cedula'");
+        try {
+            $resultado->execute();
+            return 1;
+        } catch (Exception $e){
+            return $e->getMessage();
+        }
+    }
+     */
+    
+/*     public function obtener_clave_privada($id)
+{
+            $resultado = $this->conex->prepare("SELECT privatekey  FROM usuario WHERE id= $id");
+            try {
+                $resultado->execute();
+                $respuestaArreglo = $resultado->fetchAll();
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+            return $respuestaArreglo;
+        }
+    
+        public function obtener_clave_publica($id)
+        {
+            $resultado = $this->conex->prepare("SELECT publickey  FROM usuario WHERE id= $id");
+            try {
+                $resultado->execute();
+                $respuestaArreglo = $resultado->fetchAll();
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+            return $respuestaArreglo;
+        } */
 }
