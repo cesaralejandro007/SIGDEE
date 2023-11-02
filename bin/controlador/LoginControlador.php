@@ -167,27 +167,36 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             echo configSistema::_M01_();
             return 0;
         }else if($accion = "generar_llaves_rsa" && isset($_POST['counter'])) {
-            $config = [
-                "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
-                "private_key_bits" => 2048,
-                'private_key_type' => OPENSSL_KEYTYPE_RSA
-            ];
+            try {
+                $config = [
+                    "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
+                    "private_key_bits" => 2048,
+                    'private_key_type' => OPENSSL_KEYTYPE_RSA
+                ];
             
-            $res = openssl_pkey_new($config);
-            openssl_pkey_export($res, $privKey, NULL, $config);
+                $res = openssl_pkey_new($config);
+                if (!$res) {
+                    throw new Exception("Error al generar la clave privada.");
+                }
             
-            $details = openssl_pkey_get_details($res);
-            $pubKey = $details['key'];
-        
+                openssl_pkey_export($res, $privKey, NULL, $config);
             
-            // Guardar la clave privada en un archivo .key
-            file_put_contents('RSA/private.key', $privKey);
+                $details = openssl_pkey_get_details($res);
+                $pubKey = $details['key'];
             
-            // Guardar la clave pública en un archivo .pub
+                // Guardar la clave privada en un archivo .key
+                file_put_contents('RSA/private.key', $privKey);
             
-            file_put_contents('C:/xampp/htdocs/dashboard/www/SIGDEE-app/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
-
-            echo 1;
+                // Guardar la clave pública en un archivo .pub
+                file_put_contents('C:/xampp/htdocs/dashboard/www/SIGDEE-app/RSA/public.js', 'export const publicKey = "' . str_replace(["\r", "\n"], '', $pubKey) . '";');
+                echo json_encode([
+                    'status' => 1,
+                    'message' => "Las claves se generaron y guardaron correctamente."
+                ]);
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            
             return 0;
         }else if($accion = "obtener_datos") {
             $tipo_user = $login->RSA($_POST['tipo']);
