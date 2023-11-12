@@ -259,6 +259,32 @@ class AreaEmprendimientoModelo extends connectDB
         }
         return $r;
     }
+
+    public function listadoareas_app()
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT area_emprendimiento.id, area_emprendimiento.nombre FROM area_emprendimiento");
+            $resultado->execute();
+            $x = [];
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x[] = array(
+                        'value' => $f[0],
+                        'text' => $f[1]
+                    ); 
+                }
+            }
+            $r['resultado'] = 'listadoareas_app';
+            $r['datos'] = $x;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['datos'] = $e->getMessage();
+
+        }
+        return $r;
+    }
+
     public function reporteUbicacionArea($pais, $estado, $ciudad, $id_area){
         $total_estudiantes = 0;
         $aprobados = 0;

@@ -435,7 +435,7 @@ class EmprendimientoModelo extends connectDB
         return $r;
     }
 
-        public function listadoemprendimientos($area)
+    public function listadoemprendimientos($area)
     {
         $r = array();
         try {
@@ -460,6 +460,37 @@ class EmprendimientoModelo extends connectDB
         } catch (Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+
+        }
+        return $r;
+    }
+
+    public function listadoemprendimientos_app($area)
+    {
+        $r = array();
+        try {
+
+            $resultado = $this->conex->prepare("select emprendimiento.id, emprendimiento.nombre from emprendimiento
+            where id_area =:area AND estatus='true'");
+	        $resultado->BindParam(":area", $area);
+            $resultado->execute();
+
+            $x = [];
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x[] = array(
+                        'value' => $f[0],
+                        'text' => $f[1]
+                    ); 
+                }
+            }
+
+            $r['resultado'] = 'listadoemprendimientos_app';
+            $r['datos'] = $x;
+
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['datos'] = $e->getMessage();
 
         }
         return $r;

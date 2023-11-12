@@ -448,6 +448,32 @@ class AulaModelo extends connectDB
         return $r;
     }
 
+    public function listarAulas_app($id_area_emprendimiento, $id_emprendimiento)
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT a.id as id, a.nombre as nombre FROM area_emprendimiento ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo em ON em.id_emprendimiento=e.id INNER JOIN aula a ON a.id_emprendimiento_modulo=em.id WHERE ae.id='$id_area_emprendimiento' AND e.id='$id_emprendimiento'");
+            $resultado->execute();
+            $x = [];
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x[] = array(
+                        'value' => $f[0],
+                        'text' => $f[1]
+                    ); 
+                }
+            }
+            $r['resultado'] = 'listadoaulas_app';
+            $r['datos'] = $x;
+
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['datos'] = $e->getMessage();
+
+        }
+        return $r;
+    }
+
     public function listarAulasMenu($id_area_emprendimiento, $id_emprendimiento)
     {
         $resultado = $this->conex->prepare("SELECT a.id as id, m.nombre as nombre FROM area_emprendimiento ae INNER JOIN emprendimiento e ON ae.id=e.id_area INNER JOIN emprendimiento_modulo em ON em.id_emprendimiento=e.id INNER JOIN aula a ON a.id_emprendimiento_modulo=em.id INNER JOIN modulo m ON em.id_modulo=m.id WHERE ae.id='$id_area_emprendimiento' AND e.id='$id_emprendimiento'");

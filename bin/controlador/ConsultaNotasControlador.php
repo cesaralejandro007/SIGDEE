@@ -52,14 +52,33 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode($respuesta);
                 return 0;
             break;
+            case 'listadoareas_app':
+                //llamo al metodo de la clase aulajuan que lista las aulas
+                $respuesta = $area->listadoareas_app();
+                usleep(5);
+                echo json_encode($respuesta);
+                return 0;
+            break;
             case 'listadoemprendimientos':
                 $respuesta = $emprendimiento->listadoemprendimientos($_POST['area']);
                 usleep(5);
                 echo json_encode($respuesta);
                 return 0;
             break;
+            case 'listadoemprendimientos_app':
+                $respuesta = $emprendimiento->listadoemprendimientos_app($_POST['area']);
+                usleep(5);
+                echo json_encode($respuesta);
+                return 0;
+            break;
             case 'listadoaulas':
                 $respuesta = $aula->listarAulas($_POST['area'], $_POST['emprendimiento']);
+                usleep(5);
+                echo json_encode($respuesta);
+                return 0;
+            break;
+            case 'listadoaulas_app':
+                $respuesta = $aula->listarAulas_app($_POST['area'], $_POST['emprendimiento']);
                 usleep(5);
                 echo json_encode($respuesta);
                 return 0;
