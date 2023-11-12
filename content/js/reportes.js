@@ -112,7 +112,7 @@ function enviaAjax(datos) {
       else
       if (lee.grafica == "aprobados_reprobados_aula") 
       {
-        if(lee.estudiantes){
+        if(lee.estudiantes > 0){
           grafica_torta(lee.aprobados, lee.reprobados);
         }
         else 

@@ -353,6 +353,12 @@ $response1 = $permiso->mostrarentronos($_SESSION['usuario']["id"],$_SESSION['usu
                   <p>Reporte de Estudiantes Por Ubicación</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="?pagina=<?php configSistema::_M23_();?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Consulta de notas</p>
+                </a>
+              </li>
             </ul>
           </li>
 

@@ -172,6 +172,10 @@
 		public static function _MERROR_() {
 			echo self::Seguridad('Error404', 'codificar');
 		}
+
+		public static function _M23_() {
+			echo self::Seguridad('ConsultaNotas', 'codificar');
+		}
 		
 		public function _URL_(){
 			return _URL_;

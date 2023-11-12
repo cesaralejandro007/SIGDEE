@@ -542,15 +542,70 @@ class AulaModelo extends connectDB
             $reprobados = $total_estudiantes-$aprobados;
             //$r['aprobados']= $ejemplo;
             if($total_estudiantes!=0){
+            $r['estudiantes']= $total_estudiantes;
             $r['aprobados']= ($aprobados/$total_estudiantes)* 100;
             $r['reprobados']= ($reprobados/$total_estudiantes)* 100;
         }else{
+            $r['estudiantes']= 0;
             $r['resultado'] = 1;
             $r['mensaje'] = "No existen registros";
         }
         }
         return $r;
     } 
+
+
+    public function mostrar_notas_estudiantes($id_aula)
+    {
+        try {
+            $res = '';
+            $array = [];
+            $head = [];
+            $estudiantes = [];
+            $evaluaciones = $this->conex->query("SELECT ue.id id, e.nombre as nombre FROM aula a INNER JOIN unidad u ON u.id_aula= a.id INNER JOIN unidad_evaluaciones ue ON u.id= ue.id_unidad INNER JOIN evaluaciones e ON e.id=ue.id_evaluacion WHERE a.id=$id_aula;");
+            if ($evaluaciones) {
+                $head[] = 'Cedula';
+                $head[] = 'Nombres';
+                foreach ($evaluaciones as $e) {
+                    $head[] = $e['nombre'];
+                }
+            }
+            $estudiantes_evaluaciones = $this->conex->query("SELECT us.id as id, us.cedula as cedula, CONCAT(us.primer_nombre, ' ', us.segundo_nombre, ' ', us.primer_apellido, ' ', us.segundo_apellido) as nombre FROM usuario us INNER JOIN aula_estudiante ae ON us.id=ae.id_estudiante INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN unidad u ON a.id=u.id_aula INNER JOIN unidad_evaluaciones ue ON u.id=ue.id_unidad INNER JOIN evaluaciones e ON ue.id_evaluacion=e.id WHERE a.id= $id_aula GROUP BY us.id;");
+            if ($estudiantes_evaluaciones) {
+                foreach ($estudiantes_evaluaciones as $r) { 
+                    $notas = [];
+                    $evaluaciones_unidades = $this->conex->query("SELECT e.nombre evaluacion, ue.id FROM unidad_evaluaciones ue INNER JOIN evaluaciones e ON e.id=ue.id_evaluacion INNER JOIN unidad un ON un.id=ue.id_unidad INNER JOIN aula a ON a.id= un.id_aula WHERE a.id= $id_aula;");
+
+                    if ($evaluaciones_unidades) {
+                        foreach ($evaluaciones_unidades as $eu) { 
+                            $calificacion = $this->conex->query("SELECT ee.calificacion as calificacion FROM estudiante_evaluacion ee INNER JOIN unidad_evaluaciones ue ON ue.id= ee.id_unidad_evaluacion WHERE ee.id_usuario=".$r['id']." AND ue.id=".$eu['id'].";");
+                            $valor = '0';
+                            if ($calificacion){
+                                foreach ($calificacion as $e) {
+                                    $valor = $e['calificacion'];
+                                }
+                            }
+                            $notas[] = $valor;
+                        }
+                    }
+                    $estudiantes[] = array(
+                        'cedula' => $r['cedula'],
+                        'nombres' => $r['nombre'],
+                        'notas' => $notas
+                    );
+                    
+                }
+            } else {
+                $estudiantes = [];
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        $array['head'] = $head;
+        $array['estudiantes'] = $estudiantes;
+        return $array;
+    }
 
     public function validar_expresiones($nombre){
         $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú0-9,.#%$^&*:\s]{3,40}$/';
