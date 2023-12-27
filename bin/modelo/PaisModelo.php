@@ -76,4 +76,29 @@ class PaisModelo extends connectDB
         }
         return $r;
     }
+
+    public function listadopaises_app()
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT paises.id, paises.nombre FROM paises");
+            $resultado->execute();
+            $x = [];
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x[] = array(
+                        'value' => $f[0],
+                        'text' => $f[1]
+                    ); 
+                }
+            }
+            $r['resultado'] = 'listadopaises_app';
+            $r['datos'] = $x;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['datos'] = $e->getMessage();
+
+        }
+        return $r;
+    }
 }

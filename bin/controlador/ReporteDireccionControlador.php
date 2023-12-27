@@ -162,8 +162,21 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode($respuesta);
                 return 0;
             break;
+            case 'listadopaises_app':
+                //llamo al metodo de la clase aulajuan que lista las aulas
+                $respuesta = $pais->listadopaises_app();
+                usleep(5);
+                echo json_encode($respuesta);
+                return 0;
+            break;
             case 'listadoestados':
                 $respuesta = $estado->listadoestados($_POST['pais']);
+                usleep(5);
+                echo json_encode($respuesta);
+                return 0;
+            break;
+            case 'listadoestados_app':
+                $respuesta = $estado->listadoestados_app($_POST['pais']);
                 usleep(5);
                 echo json_encode($respuesta);
                 return 0;
