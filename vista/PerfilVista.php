@@ -126,7 +126,7 @@ use config\componentes\configSistema as configSistema;
                         }
                         $dirint->close(); 
                     ?>
-        <img src= "content/usuarios/<?php echo $imagen1; ?>"  alt="avatar"
+        <img src= "content/usuarios/<?php echo $imagen1; ?>?timestamp=<?php echo time(); ?>"  alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px; height:150px;">
             <h5 class="my-3"><?php echo $_SESSION['usuario']["nombre"] . " " . $_SESSION['usuario']['apellido'] ?></h5>
             <div class="d-flex justify-content-center mb-2">

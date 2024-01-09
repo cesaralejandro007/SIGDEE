@@ -101,7 +101,7 @@ body::-webkit-scrollbar-track {
                     ?>
                     <img class="imagen2"
                         style="position: absolute; top: 42px; width: 120px; height: 130px; border-radius: 50%; border: 5px solid #fff; background-color: #fff;"
-                        src="content/usuarios/<?php echo $imagen1;?>">
+                        src="content/usuarios/<?php echo $imagen1;?>?timestamp=<?php echo time(); ?>">
                 </div>
                 <div class="d-flex justify-content-center" style="margin-top:40px; margin-bottom:0px">
                     <p class="m-0">
