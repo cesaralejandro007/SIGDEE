@@ -252,7 +252,10 @@ $id_usuario_rol = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_us
             ); 
             //PARA MOSTRARLAS CON SU RESPECTIVO STATUS
             echo json_encode($json, http_response_code($json['status']));
-            return 0;
+            echo  '<script>alert("Token expirado");</script>';
+            $redirectUrl = '?pagina=' . configSistema::_LOGIN_();
+            echo '<script>window.location="' . $redirectUrl . '"</script>';
+            die();
         } 
         else
         {

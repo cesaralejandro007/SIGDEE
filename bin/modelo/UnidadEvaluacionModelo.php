@@ -45,23 +45,73 @@ class UnidadEvaluacionModelo extends connectDB{
         $this->id_unidad = $id_unidad;
         $this->fecha_inicio = $fecha_inicio;
         $this->fecha_cierre = $fecha_cierre;
-
+		$existeevaluacion = $this->validarevaluacion($this->id_evaluacion);
+        $existeunidad = $this->validarunidad($this->id_unidad);
+		$relacion = $this->validar_unidad_evaluacion($this->id_unidad,$this->id_evaluacion);
 		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
-		if($resf){
-		try {
-			$this->conex->query("INSERT INTO unidad_evaluaciones(id_unidad, id_evaluacion, fecha_inicio, fecha_cierre)
-			VALUES('$this->id_unidad', '$this->id_evaluacion', '$this->fecha_inicio', '$this->fecha_cierre')");
-			$respuesta['resultado'] = 1;
-			$respuesta['mensaje'] = 'Evaluación agregada';
-		} catch(Exception $e) {
-			return $e->getMessage();
+
+        if ($existeevaluacion == false) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "No existe la evaluación";
+        }else if($existeunidad == false){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe la unidad";
+        }
+		else if(!$resf){
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = "Verifique la fecha de apertura";
+        }
+		else if($relacion){
+            $respuesta['resultado'] = 5;
+            $respuesta['mensaje'] = "Ya existe esta evaluación registrada en la unidad";
+        }		
+		else{
+			try {
+				$this->conex->query("INSERT INTO unidad_evaluaciones(id_unidad, id_evaluacion, fecha_inicio, fecha_cierre)
+				VALUES('$this->id_unidad', '$this->id_evaluacion', '$this->fecha_inicio', '$this->fecha_cierre')");
+				$respuesta['resultado'] = 1;
+				$respuesta['mensaje'] = 'Evaluación agregada';
+			} catch(Exception $e) {
+				return $e->getMessage();
+			}
 		}
-	}else{
-		$respuesta['resultado'] = 2;
-		$respuesta['mensaje'] = "Verifique las fechas de apertura";
+		return $respuesta;
 	}
-	return $respuesta;
-	}
+
+	public function validarevaluacion($id)
+    {
+        try {
+            $sql = "SELECT * FROM evaluaciones WHERE id = ?";  
+            $values = [$id];
+            $stmt = $this->conex->prepare($sql); 
+            $stmt->execute($values);
+            $fila = $stmt->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function validarunidad($id)
+    {
+        try {
+            $sql = "SELECT * FROM unidad WHERE id = ?";  
+            $values = [$id];
+            $stmt = $this->conex->prepare($sql); 
+            $stmt->execute($values);
+            $fila = $stmt->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 
 	public function modificarEvaluacion($id, $id_evaluacion, $id_unidad, $fecha_inicio, $fecha_cierre)
     {
@@ -125,23 +175,25 @@ class UnidadEvaluacionModelo extends connectDB{
         return $respuestaArreglo;
     }
 
-	public	function relacion_modulo($id_unidad, $id_evaluacion){
-		try{
-			
-			$resultado = $this->conex->prepare("SELECT p.id as unidad_evaluaciones FROM unidad_evaluaciones p
-				INNER JOIN rol r ON p.id_unidad= r.id INNER JOIN modulo_sistema m ON m.id=p.id_evaluacion WHERE r.id= '$id_unidad' AND m.id= '$id_evaluacion'");
-			$resultado->execute();	
-			$fila = $resultado->fetchAll();
-			if($fila){
-				return true;    
-			}
-			else{
-				return false;;
-			}
-		}catch(Exception $e){
-			return false;
-		}
-	}
+    public function validar_unidad_evaluacion($unidad, $id_evaluacion)
+    {
+
+        try {
+            $sql = "SELECT * FROM unidad_evaluaciones ue WHERE ue.id_unidad = ? and ue.id_evaluacion = ? "; 
+            $values = [$unidad, $id_evaluacion];
+            $stmt = $this->conex->prepare($sql); 
+            $stmt->execute($values);
+            $fila = $stmt->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 	public function cargar($id_unidad_evaluacion)
     {
         $resultado = $this->conex->prepare("SELECT ue.id as id, e.descripcion as descripcion, e.nombre as nombre, e.archivo_adjunto as archivo, ue.fecha_inicio as inicio, ue.fecha_cierre as cierre FROM unidad as u INNER JOIN unidad_evaluaciones as ue ON u.id=ue.id_unidad INNER JOIN evaluaciones as e ON e.id=ue.id_evaluacion WHERE ue.id= '$id_unidad_evaluacion'

@@ -228,13 +228,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                     return 0;
                     break;
             case 'mostrar_contenidos':
-                $listar = $contenidos->mostrar($_GET['id_unidad']);
+                $listar = $contenidos->mostrar($_POST['id_unidad']);
                 print_r($listar);
-                return 0;
-                break;
-            case 'mostrar_evaluaciones':
-                $listar = $evaluaciones->mostrar($_GET['id_unidad']);
-                echo $listar;
                 return 0;
                 break;
             case 'guardar_contenidos':
@@ -243,24 +238,42 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $fechaC = date('Y-m-d h:i:s', time());
 
                 $valores = json_decode($_POST['contenidos']);
+                $unidad_contenido->set_id_unidad($_POST['id_unidad']);
+                $unidad_contenido->limpiar();
+                $error = false;
+                $codigo_error = 0;
+                $mensaje_error = '';
                 if(isset($valores)){
-                    $unidad_contenido->set_id_unidad($_POST['id_unidad']);
-                    $unidad_contenido->limpiar();
+                    
                     foreach ($valores as $id_contenido) {
-                            $unidad_contenido->set_id_unidad($_POST['id_unidad']);
-                            $unidad_contenido->set_id_contenido($id_contenido);
-                            $unidad_contenido->incluir();
+                        $unidad_contenido->set_id_unidad($_POST['id_unidad']);
+                        $unidad_contenido->set_id_contenido($id_contenido);
+                        $respuesta = $unidad_contenido->incluir();
+                        if($respuesta["resultado"] != 1){
+                            $error = true;
+                            $codigo_error = $respuesta["resultado"];
+                            $mensaje_error = $respuesta["mensaje"];
                         }
-                    }else{
-                        $unidad_contenido->limpiar();
+                    }
+                    
                 }
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'success',
-                    'title' => 'Contenidos',
-                    'message' => 'Registro Exitoso'
-                ]);
-                $bitacora->incluir($id_usuario_rolC,$entornoC,$fechaC,"Agregar Contenido");
+                if($error == true){
+                    echo json_encode([
+                        'estatus' => $codigo_error,
+                        'icon' => 'error',
+                        'title' => 'Contenidos',
+                        'message' => $mensaje_error
+                    ]);
+                } else{
+                    echo json_encode([
+                        'estatus' => '1',
+                        'icon' => 'success',
+                        'title' => 'Contenidos',
+                        'message' => 'Registro Exitoso'
+                    ]);
+                    $bitacora->incluir($id_usuario_rolC,$entornoC,$fechaC,"Agregar Contenido");
+                }
+                
                 return 0;
                 break;
                 
@@ -292,9 +305,9 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'message' => $response['mensaje']
                     ]);
                     $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Agregar Evaluacion");
-                }else if ($response['resultado']==2) {
+                }else{
                     echo json_encode([
-                        'estatus' => '3',
+                        'estatus' => $response['resultado'],
                         'icon' => 'info',
                         'title' => 'Agregar Evaluación',
                         'message' => $response['mensaje']

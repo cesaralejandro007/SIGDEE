@@ -27,17 +27,86 @@ class UnidadContenidoModelo extends connectDB{
 	}
 	
 	
+    public function incluir()
+    {
+        $existecontenido = $this->validarcontenido($this->id_contenido);
+        $existeunidad = $this->validarunidad($this->id_unidad);
+        if ($existecontenido == false) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = "No existe el contenido";
+        }else if($existeunidad == false){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe la unidad";
+        }else{
+                try {
 
-	public function incluir(){
-		try {
-			$this->conex->query("INSERT INTO unidad_contenido(id_unidad, id_contenido)
-			VALUES('$this->id_unidad', '$this->id_contenido')");
-			return true;
-		} catch(Exception $e) {
-			return $e->getMessage();
-		}
-		
-	}
+                    $sql = "INSERT INTO unidad_contenido(id_unidad, id_contenido)
+                    VALUES(?, ?)";        
+
+                    $values = [$this->id_unidad, $this->id_contenido];
+
+                    $stmt = $this->conex->prepare($sql); 
+
+                    $stmt->execute($values);
+
+                    $respuesta["resultado"]=1;
+                    $respuesta["mensaje"]="";
+                } catch (Exception $e) {
+                    $respuesta['resultado'] = 0;
+                    $respuesta['mensaje'] = $e->getMessage();
+                }
+            
+        }
+        return $respuesta;
+    }
+
+
+	public function validarcontenido($id)
+    {
+        try {
+
+            $sql = "SELECT * FROM contenido WHERE id = ?";  
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function validarunidad($id)
+    {
+        try {
+
+            $sql = "SELECT * FROM unidad WHERE id = ?";  
+
+            $values = [$id];
+
+            $stmt = $this->conex->prepare($sql); 
+
+            $stmt->execute($values);
+
+            $fila = $stmt->rowCount();
+
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
 
 	public function limpiar(){
 
@@ -63,22 +132,5 @@ class UnidadContenidoModelo extends connectDB{
         }
         return $respuestaArreglo;
     }
-	public function relacion_modulo($id_unidad, $id_contenido){
-		try{
-			
-			$resultado = $this->conex->prepare("SELECT p.id as unidad_contenido FROM unidad_contenido p
-				INNER JOIN rol r ON p.id_unidad= r.id INNER JOIN modulo_sistema m ON m.id=p.id_contenido WHERE r.id= '$id_unidad' AND m.id= '$id_contenido'");
-			$resultado->execute();	
-			$fila = $resultado->fetchAll();
-			if($fila){
-				return true;    
-			}
-			else{
-				return false;;
-			}
-		}catch(Exception $e){
-			return false;
-		}
-	}
 }
 ?>

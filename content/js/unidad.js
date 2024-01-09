@@ -53,10 +53,10 @@ function carga() {
   $("#fecha_apertura").val("");
   $("#fecha_cierre").val("");
 }
-  document.getElementById("Evaluacionesactive").onclick = function () {
+ /* document.getElementById("Evaluacionesactive").onclick = function () {
     $("#guardar-evaluacion").text("Agregar");
     document.getElementById("accion_evaluacion").value = "guardar_evaluacion";
-  }
+  }*/
   
   document.getElementById("guardar-evaluacion").onclick = function () {
     var datos = new FormData();
@@ -66,7 +66,7 @@ function carga() {
     datos.append("evaluacion", $("#id_evaluacion").val());
     datos.append("fecha_inicio", $("#fecha_apertura").val());
     datos.append("fecha_cierre", $("#fecha_cierre").val());
-    enviaAjax(datos);
+    AjaxUnidad(datos);
   };
 
   document.getElementById("buscar").onclick = function () {
@@ -88,7 +88,7 @@ document.getElementById("guardar-contenidos").onclick = function () {
   datos.append("accion", "guardar_contenidos");
   datos.append("id_unidad", $("#id_unidad").val());
   datos.append("contenidos", arrayValores);
-  enviaAjax(datos);
+  AjaxUnidad(datos);
 };
 
 /*--------------------FIN DE CRUD DEL MODULO----------------------*/
@@ -171,14 +171,6 @@ function contenidos(valor) {
   datos.append("accion", "mostrar_contenidos");
   datos.append("id_unidad", valor);
   mostrar_contenidos(datos);
-}
-
-function evaluaciones(valor) {
-  //$('.val').remove();
-  var datos = new FormData();
-  datos.append("accion", "mostrar_evaluaciones");
-  datos.append("id_unidad", valor);
-  mostrar_evaluaciones(datos);
 }
 
 function eliminarUnidad(idnombre) {
@@ -309,6 +301,52 @@ function enviaAjax(datos) {
   });
 }
 
+function AjaxUnidad(datos) {
+  var toastMixin = Swal.mixin({
+
+    showConfirmButton: false,
+    width: 450,
+    padding: '3.5em',
+    timer: 2500,
+    timerProgressBar: true,
+  });
+  $.ajax({
+    url: "",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    success: function (response) {
+      var res = JSON.parse(response);
+      if (res.estatus == 1) {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      } else {
+        toastMixin.fire({
+
+          title: res.title,
+          text: res.message,
+          icon: res.icon,
+        });
+      }
+    },
+    error: function (err) {
+      Toast.fire({
+        icon: res.error,
+      });
+    },
+  });
+}
+
 function confirm_eliminar(datos) {
   var toastMixin = Swal.mixin({
 
@@ -326,6 +364,7 @@ function confirm_eliminar(datos) {
     processData: false,
     cache: false,
     success: function (response) {
+      alert(response);
       var res = JSON.parse(response);
       //alert(res.title);
       if (res.estatus == 1) {
