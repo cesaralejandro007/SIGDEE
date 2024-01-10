@@ -64,7 +64,6 @@ class EstadoModelo extends connectDB
             return false;
         }
     }
-    
 
     public function listadoestados($pais)
     {
@@ -87,6 +86,33 @@ class EstadoModelo extends connectDB
         } catch (Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
+
+    public function listadoestados_app($pais)
+    {
+        $r = array();
+        try {
+            $resultado = $this->conex->prepare("SELECT estados.id, estados.nombre FROM estados
+            where id_pais =:pais");
+             $resultado->BindParam(":pais", $pais);
+            $resultado->execute();
+            $x = [];
+            if ($resultado) {
+                foreach ($resultado as $f) {
+                    $x[] = array(
+                        'value' => $f[0],
+                        'text' => $f[1]
+                    ); 
+                }
+            }
+            $r['resultado'] = 'listadoestados_app';
+            $r['datos'] = $x;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['datos'] = $e->getMessage();
+
         }
         return $r;
     }
