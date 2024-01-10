@@ -17,7 +17,7 @@ class eliminarAreaEmprendimientoTest extends TestCase{
 	}
 	
 	//3-Cuando se intenta eliminar un area de emprendimiento que posee relacion con registros de emprendimiento
-	public function testExpresiones(){
+	public function testRelacionEmprendimiento(){
 		$respuesta = $this->area->eliminar(1);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}

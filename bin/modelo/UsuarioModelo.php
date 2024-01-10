@@ -258,7 +258,7 @@ class UsuarioModelo extends connectDB
         $validacion_aula_docente = $this->validar_docente_aula($id);
         $validar_expresionID = $this->validar_expresion_id($id);
         if ($validar_expresionID['resultado']) {
-            $respuesta['resultado'] = 6;
+            $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = $validar_expresionID['mensaje'];
         }else if ($this->existe_usuario_rol($cedula)==false) {
             $respuesta['resultado'] = 6;

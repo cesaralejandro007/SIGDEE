@@ -9,9 +9,9 @@ class RespaldoBdTest extends TestCase{
 		$this->respaldobd = new Respaldobd();
 	}
 
-	//1-Cuando se intenta ingresar una fecha incorrecta en los campos fechas
+	//1-Cuando se intenta generar respaldo con la cedula de un usuario que no existe
 	public function testValidacionUsuario(){
-		$respuesta = $this->respaldobd->verificar_password("28055655asd");
+		$respuesta = $this->respaldobd->verificar_password("10000000");
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
