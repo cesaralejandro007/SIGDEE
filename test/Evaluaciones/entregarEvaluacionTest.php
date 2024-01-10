@@ -19,21 +19,21 @@ class entregarEvaluacionTest extends TestCase{
 	public function testValidarUsuario(){
 		$id_estudiante = 1;
 		$resultado = $this->Estudiante->existe($id_estudiante);
-		$this->assertEquals('false', $resultado);
+		$this->assertEquals(false, $resultado);
 	}
 
 	//2-En caso de que el usuario no este cursando esa aula
 	public function testVerificarEstudiante(){
-		$id_estudiante = 1;
-		$id_unidad_evaluacion = 100;
+		$id_estudiante = 50;
+		$id_unidad_evaluacion = 2;
 		$resultado = $this->AulaEstudiante->verificar($id_estudiante, $id_unidad_evaluacion);
 		$this->assertEquals('false', $resultado);
 	}
 
 	//3-Registro exitoso
 	public function testEntregaExitosa(){
-		$id_estudiante = 153;
-		$id_unidad_evaluacion = 4980;
+		$id_estudiante = 85;
+		$id_unidad_evaluacion = 3;
 		$descripcion = 'Ejemplo de la entrega';
 		$nombre_archivo = 'ejemplo.png';
 		$resultado = $this->EstudianteEvaluacion->incluir($id_estudiante, $id_unidad_evaluacion, date('Y-m-d h:i:s', time()), $descripcion, $nombre_archivo);

@@ -488,19 +488,27 @@ class AulaModelo extends connectDB
     }
     public function actualizarstatus($id,$status)
     {
-        try {
-            $this->conex->query("UPDATE aula SET estatus = '$status' WHERE id = '$id'");
-            if($status =="true"){
-                $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Activado";
-            }else{
-                $respuesta['resultado'] = 2;
-                $respuesta['mensaje'] = "Desactivado";
-            }
+        $validar_aula = $this->existe($id);       
+        if (!$validar_aula) {
+            $respuesta['resultado'] = 0;
+            $respuesta['mensaje'] = "No existe el aula";
+        } else 
+        {
+            try {
+                $this->conex->query("UPDATE aula SET estatus = '$status' WHERE id = '$id'");
+                if($status =="true"){
+                    $respuesta['resultado'] = 1;
+                    $respuesta['mensaje'] = "Activado";
+                }else{
+                    $respuesta['resultado'] = 2;
+                    $respuesta['mensaje'] = "Desactivado";
+                }
 
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
+            
+        } 
         return $respuesta;
     }
 

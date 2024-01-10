@@ -8,20 +8,32 @@ class UnidadModelo extends connectDB
     private $descripcion;
     private $id_aula;
 
-    public function incluir($id, $nombre, $descripcion, $id_aula)
+    public function incluir($nombre, $descripcion, $id_aula)
     {
-        $validar_nombre = $this->validar_registro($nombre);
+        $this->nombre = $nombre;
+        $this->descripcion = $descripcion;
+        $this->id_aula = $id_aula;
+
+        $existeaula = $this->validar_aula($this->id_aula);
+        $validar_nombre = $this->validar_registro($this->nombre);
+        $expresiones_regulares = $this->validar_expresiones($this->nombre, $this->descripcion);
         if ($validar_nombre) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "Nombre ya existe";
-        }    
+        }else if($existeaula == false){
+            $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = "No existe el aula";
+        }
+        else if ($expresiones_regulares['resultado']) {
+            $respuesta['resultado'] = 4;
+            $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
+        } 
         else {
             try {
-                $sql = "INSERT INTO unidad (nombre, descripcion, id_aula) VALUES (?, ?, ?)";
-                $stmt = $this->conex->prepare($sql);
-                $stmt->execute([$nombre, $descripcion, $id_aula]);
+                $this->conex->query("INSERT INTO unidad (nombre, descripcion, id_aula) VALUES ('$this->nombre', '$this->descripcion', '$this->id_aula')");
+                
                 $respuesta['resultado'] = 1;
-                $respuesta['mensaje'] = "Registro exitoso";
+                $respuesta['mensaje'] = "INSERT INTO unidad (nombre, descripcion, id_aula) VALUES ('$this->nombre', '$this->descripcion', '$this->id_aula')";
             } catch (Exception $e) {
                 $respuesta['resultado'] = 0;
                 $respuesta['mensaje'] = $e->getMessage();
@@ -30,19 +42,56 @@ class UnidadModelo extends connectDB
         return $respuesta;
     }
 
+	public function validar_aula($id)
+    {
+        try {
+            $sql = "SELECT * FROM aula WHERE id = ?";  
+            $values = [$id];
+            $stmt = $this->conex->prepare($sql); 
+            $stmt->execute($values);
+            $fila = $stmt->rowCount();
+            if ($fila > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public function modificar($id, $nombre, $descripcion, $id_aula)
     {
+        $validar_expresionID = $this->validar_expresion_id($id);
+        $validar_expresionIdAula = $this->validar_expresion_id($id_aula);
         $validar_modificar = $this->validar_modificar($nombre, $id);
         $validar_unidad = $this->existe($id);
-        if ($validar_unidad == false) {
+        $existeaula = $this->validar_aula($id_aula);
+        $expresiones_regulares = $this->validar_expresiones($nombre, $descripcion);
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else
+        if ($validar_expresionIdAula['resultado']) {
             $respuesta['resultado'] = 3;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else
+        if ($validar_unidad == false) {
+            $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "La unidad no Existe";
         } 
         else if ($validar_modificar) {
-            $respuesta['resultado'] = 2;
-            $respuesta['mensaje'] = "Nombre ya existe";
+            $respuesta['resultado'] = 5;
+            $respuesta['mensaje'] = "Nombre de la unidad ya existe";
         } 
-        else {
+        else if($existeaula == false){
+            $respuesta['resultado'] = 6;
+            $respuesta['mensaje'] = "No existe el aula";
+        }
+        else if ($expresiones_regulares['resultado']) {
+            $respuesta['resultado'] = 7;
+            $respuesta['mensaje'] = $expresiones_regulares['mensaje'];
+        }else {
             try {
                 $sql = "UPDATE unidad SET nombre = ?, descripcion = ?, id_aula = ? WHERE id = ?";
                 $stmt = $this->conex->prepare($sql);
@@ -59,19 +108,23 @@ class UnidadModelo extends connectDB
 
     public function eliminar($id)
     {
+        $validar_expresionID = $this->validar_expresion_id($id);
         $validar_contenido = $this->relacion_contenido($id);
         $validar_evaluacion = $this->relacion_evaluacion($id);
-        if (!$this->existe($id)) {
+        if ($validar_expresionID['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresionID['mensaje'];
+        }else if (!$this->existe($id)) {
             $respuesta['resultado'] = 3;
             $respuesta['mensaje'] = "La unidad no Existe";
             return $respuesta;
         } 
         else if ($validar_contenido) {
-            $respuesta['resultado'] = 2;
+            $respuesta['resultado'] = 4;
             $respuesta['mensaje'] = "No puede ser borrada, existe un vínculo con un contenido";
         }
         else if ($validar_evaluacion) {
-            $respuesta['resultado'] = 2;
+            $respuesta['resultado'] = 5;
             $respuesta['mensaje'] = "No puede ser borrada, existe un vínculo con una evaluación";
         } 
         else {
@@ -233,14 +286,32 @@ class UnidadModelo extends connectDB
         }
     }
     
-    private function validar_expresiones($valor)
-    {
-        $er_nombre = '/^[a-zA-Z\x{00f1}\x{00d1}\x{00E0}-\x{00FC}\b ]*$/u';
-        $m = false;
-        if (!preg_match_all($er_nombre, $valor) || trim($valor) == '') {
-            $m = true;
+    public function validar_expresion_id($id){
+        if(!preg_match('/^[0-9]+$/', $id)){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo ID solo debe contener números";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
         }
-        return $m;
+        return $respuesta;
+    }
+
+    public function validar_expresiones($nombre,$descripcion){
+        $er_nombre = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,30}$/';
+        $er_descripcion = '/^[A-ZÁÉÍÓÚa-zñáéíóú,.#%$^&*:\s]{3,200}$/';
+        if(!preg_match_all($er_nombre,$nombre) || trim($nombre)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo Nombre de contener solo letras de 3 a 30 caracteres, siendo la primera en mayúscula.";
+        }
+        else if(!preg_match_all($er_descripcion,$descripcion) || trim($descripcion)==''){
+            $respuesta["resultado"]=true;
+            $respuesta["mensaje"]="El campo descripción debe contener de 3 a 200 letras.";
+        }else{
+            $respuesta["resultado"]=false;
+            $respuesta["mensaje"]="";
+        }
+        return $respuesta;
     }
     
 

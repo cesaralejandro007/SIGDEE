@@ -42,8 +42,6 @@ class incluirAulaTest extends TestCase{
 		$id_emprendimiento = 10;
 		$id_modulo = 10;
 		$id_emprendimiento_modulo = $this->emprendimiento_modulo->buscar_emprendimiento_modulo($id_emprendimiento, $id_modulo);
-
-		/****Validacion --->  En caso de que no exista el id_emprendimiento_modulo ****/
 		if($id_emprendimiento_modulo == 0){
 			$respuesta = [
 				'estatus' => '0',
@@ -52,7 +50,6 @@ class incluirAulaTest extends TestCase{
 				'message' => 'No existe el emprendimiento modulo'
 			];
 		}
-		/******Fin de la validacion ********/  
 		$this->assertEquals(0, $respuesta['estatus']);
 	}
 
@@ -61,7 +58,6 @@ class incluirAulaTest extends TestCase{
 		$respuesta = [];
 		$estudiantes = [124, 145, 2, 10];
 		$cantidad_estudiantes = count($estudiantes);
-		/****Validacion --->  En caso de que supere la cantidad de estudiantes****/
 		if($cantidad_estudiantes > 3){
 			$respuesta = [
 				'estatus' => '0',
@@ -70,7 +66,6 @@ class incluirAulaTest extends TestCase{
 				'message' => 'El limite de estudiante es de 30'
 			];
 		}
-		/******Fin de la validacion ********/  
 		$this->assertEquals(0, $respuesta['estatus']);
 	}
 
@@ -78,8 +73,6 @@ class incluirAulaTest extends TestCase{
 	public function testEstudiantesVacio(){
 		$respuesta = [];
 		$id_estudiantes = [];
-
-		/****Validacion --->  En caso de que no hayan elegido algun estudiante en la lista ****/
 		if($id_estudiantes== null){
 			$respuesta = [
 				'estatus' => '3',
@@ -88,7 +81,6 @@ class incluirAulaTest extends TestCase{
 				'message' => 'Debe asignar estudiantes al aula'
 			];
 		}
-		/******Fin de la validacion ********/ 
 		$this->assertEquals(3, $respuesta['estatus']);
 	}
 
@@ -96,8 +88,6 @@ class incluirAulaTest extends TestCase{
 	public function testIdsEstudiantes(){
 		$respuesta = [];
 		$id_estudiantes = [11, 15];
-
-		/****Validacion --->  En caso de que se reciba un id de usuario que no exista ****/
 		$encontrado = true;
 		foreach ($id_estudiantes as $id_estudiante) {
 			$id_estudiante = $this->usuario->buscar_id($id_estudiante);
@@ -113,7 +103,6 @@ class incluirAulaTest extends TestCase{
 				'message' => 'El usuario no existe'
 			];
 		}
-		/******Fin de la validacion ********/  
 		$this->assertEquals(4, $respuesta['estatus']);
 	}
 
@@ -121,8 +110,6 @@ class incluirAulaTest extends TestCase{
 	public function testIdDocente(){
 		$respuesta = [];
 		$id_docente = 100;
-
-		/****Validacion --->  En caso de que se reciba un id de docente que no exista ****/
 		$validar_docente = $this->docente->buscar_docente($id_docente);   
 		if($validar_docente== 0 || empty($id_docente)){
 			$respuesta = [
@@ -132,88 +119,19 @@ class incluirAulaTest extends TestCase{
 				'message' => 'Se debe elegir un docente que exista'
 			];
 		}
-		/******Fin de la validacion ********/
 		$this->assertEquals(5, $respuesta['estatus']);
 	}
 
 	//6-Registro correcto
 	public function testCreacionCorrecta(){
 		$respuesta = [];
-		$id_estudiantes = [144,148];
-		$id_emprendimiento = 2;
-		$id_modulo = 1;
-		$id_docente = 147;
+		$id_estudiantes = [51];
+		$id_emprendimiento = 34;
+		$id_modulo = 39;
+		$id_docente = 50;
 		$nombre = 'Nueva aula';
 		$cantidad_estudiantes = $id_estudiantes !=null ? count($id_estudiantes) : 0;
-        //Buscar el emprendimiento_modulo de acuerdo al id_emprendimiento y el id_modulo
 		$id_emprendimiento_modulo = $this->emprendimiento_modulo->buscar_emprendimiento_modulo($id_emprendimiento, $id_modulo);
-
-		/****Validacion --->  En caso de que supere la cantidad de estudiantes****/
-		if($cantidad_estudiantes > 30){
-			$respuesta = [
-				'estatus' => '0',
-				'icon' => 'info',
-				'title' => $this->modulo,
-				'message' => 'El limite de estudiante es de 30'
-			];
-		}
-		/******Fin de la validacion ********/       
-
-		/****Validacion --->  En caso de que no exista el id_emprendimiento_modulo ****/
-		if($id_emprendimiento_modulo == 0){
-			$respuesta = [
-				'estatus' => '0',
-				'icon' => 'info',
-				'title' => $this->modulo,
-				'message' => 'No existe el emprendimiento modulo'
-			];  
-		}
-		/******Fin de la validacion ********/       
-
-		/****Validacion --->  En caso de que no hayan elegido algun estudiante en la lista ****/
-		if($id_estudiantes== null){
-			$respuesta = [
-				'estatus' => '3',
-				'icon' => 'info',
-				'title' => $this->modulo,
-				'message' => 'Debe asignar estudiantes al aula'
-			]; 
-		}
-		/******Fin de la validacion ********/   
-
-
-		/****Validacion --->  En caso de que se reciba un id de usuario que no exista ****/
-		$encontrado = true;
-		foreach ($id_estudiantes as $id_estudiante) {
-			$id_estudiante = $this->usuario->buscar_id($id_estudiante);
-			if($id_estudiante == 0){
-				$encontrado = false;
-			}
-		}
-		if($encontrado== false){
-			$respuesta = [
-				'estatus' => '4',
-				'icon' => 'info',
-				'title' => $this->modulo,
-				'message' => 'El usuario no existe'
-			]; 
-		}
-		/******Fin de la validacion ********/   
-
-		/****Validacion --->  En caso de que se reciba un id de docente que no exista ****/
-		$validar_docente = $this->docente->buscar_docente($id_docente);   
-		if($validar_docente== 0 || empty($id_docente)){
-			$respuesta = [
-				'estatus' => '5',
-				'icon' => 'info',
-				'title' => $this->modulo,
-				'message' => 'Se debe elegir un docente que exista'
-			]; 
-		}
-		/******Fin de la validacion ********/  
-
-
-        //Registrar el aula con su nombre, y id_emprendimiento_modulo
 		$respuesta = $this->aula->incluir($nombre, $id_emprendimiento_modulo);
 		if ($respuesta['resultado']==1) {
 			$buscar_id = $this->aula->buscar_ultimo();

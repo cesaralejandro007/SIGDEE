@@ -41,8 +41,6 @@ class modificarAulaTest extends TestCase{
 	public function testEstudiantesVacio(){
 		$respuesta = [];
 		$id_estudiantes = [];
-
-		/****Validacion --->  En caso de que no hayan elegido algun estudiante en la lista ****/
 		if($id_estudiantes== null){
 			$respuesta = [
 				'estatus' => '3',
@@ -51,7 +49,6 @@ class modificarAulaTest extends TestCase{
 				'message' => 'Debe asignar estudiantes al aula'
 			];
 		}
-		/******Fin de la validacion ********/ 
 		$this->assertEquals(3, $respuesta['estatus']);
 	}
 
@@ -60,7 +57,6 @@ class modificarAulaTest extends TestCase{
 		$respuesta = [];
 		$estudiantes = [124, 145, 2, 10];
 		$cantidad_estudiantes = count($estudiantes);
-		/****Validacion --->  En caso de que supere la cantidad de estudiantes****/
 		if($cantidad_estudiantes > 3){
 			$respuesta = [
 				'estatus' => '0',
@@ -69,18 +65,12 @@ class modificarAulaTest extends TestCase{
 				'message' => 'El limite de estudiante es de 30'
 			];
 		}
-		/******Fin de la validacion ********/  
 		$this->assertEquals(0, $respuesta['estatus']);
 	}
-
-
-
 	//3-No se encuentra los usuarios con el id de los estudiantes indicados
 	public function testIdsEstudiantes(){
 		$respuesta = [];
 		$id_estudiantes = [11, 15];
-
-		/****Validacion --->  En caso de que se reciba un id de usuario que no exista ****/
 		$encontrado = true;
 		foreach ($id_estudiantes as $id_estudiante) {
 			$id_estudiante = $this->usuario->buscar_id($id_estudiante);
@@ -96,7 +86,6 @@ class modificarAulaTest extends TestCase{
 				'message' => 'El usuario no existe'
 			];
 		}
-		/******Fin de la validacion ********/  
 		$this->assertEquals(4, $respuesta['estatus']);
 	}
 
@@ -104,8 +93,6 @@ class modificarAulaTest extends TestCase{
 	public function testIdDocente(){
 		$respuesta = [];
 		$id_docente = 100;
-
-		/****Validacion --->  En caso de que se reciba un id de docente que no exista ****/
 		$validar_docente = $this->docente->buscar_docente($id_docente);   
 		if($validar_docente== 0 || empty($id_docente)){
 			$respuesta = [
@@ -115,7 +102,6 @@ class modificarAulaTest extends TestCase{
 				'message' => 'Se debe elegir un docente que exista'
 			];
 		}
-		/******Fin de la validacion ********/
 		$this->assertEquals(5, $respuesta['estatus']);
 	}
 
@@ -123,8 +109,6 @@ class modificarAulaTest extends TestCase{
 	public function testNombreAula(){
 		$respuesta = [];
 		$nombre = '';
-
-		/****Validacion --->  En caso de que reciba el nombre el blanco ****/   
 		if(empty($nombre)){
 			$respuesta = [
 				'estatus' => '5',
@@ -133,7 +117,6 @@ class modificarAulaTest extends TestCase{
 				'message' => 'Debe identificar el nombre del aula'
 			];
 		}
-		/******Fin de la validacion ********/
 		$this->assertEquals(5, $respuesta['estatus']);
 	}
 
@@ -239,11 +222,11 @@ class modificarAulaTest extends TestCase{
 	//9-Modificacion exitosa
 	public function testModificacionCorrecto(){
 		$respuesta = [];
-		$nombre = 'dulc ima01';
-		$id = 7;
-		$id_estudiantes = [148];
-		$id_docente = 45;
-		$id_aula_docente = 5;
+		$nombre = 'Nuevo nombre';
+		$id = 10;
+		$id_estudiantes = [51];
+		$id_docente = 79;
+		$id_aula_docente = 9;
 
 		$response = $this->aula->modificar($nombre, $id);
 		if ($response['resultado']==1) {

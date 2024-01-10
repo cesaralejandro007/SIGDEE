@@ -187,12 +187,12 @@ class EstudianteEvaluacionModelo extends connectDB{
             $respuesta['mensaje'] = $expresiones['mensaje'];
 		}else
 		if(isset($validar_calificacion)){
-			$respuesta['resultado'] = 2;
+			$respuesta['resultado'] = 3;
             $respuesta['mensaje'] = 'No puede modificar su entrega, la evaluación ha sido calificada';
 		}
 		else
 		if($validar_existencia== false){
-			$respuesta['resultado'] = 2;
+			$respuesta['resultado'] = 4;
             $respuesta['mensaje'] = 'No existe la entrega de la evaluación con el estudiante indicado';
 		}
 		else{
@@ -391,6 +391,7 @@ class EstudianteEvaluacionModelo extends connectDB{
 
     public function validar_actualizacion($id)
     {	
+		$result = false;
         try {
             $resultado = $this->conex->prepare("SELECT calificacion FROM estudiante_evaluacion ee WHERE ee.id=$id;");
             $resultado->execute();

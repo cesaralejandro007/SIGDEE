@@ -191,7 +191,7 @@ class EstudianteModelo extends connectDB
     public function existe($id)
     {
         try {
-            $resultado = $this->conex->prepare("SELECT * FROM usuario WHERE id='$id'");
+            $resultado = $this->conex->prepare("SELECT * FROM usuario u INNER JOIN aula_estudiante ae ON u.id=ae.id_estudiante WHERE u.id='$id' GROUP BY u.id;");
             $resultado->execute();
             $fila = $resultado->fetchAll();
             if ($fila) {

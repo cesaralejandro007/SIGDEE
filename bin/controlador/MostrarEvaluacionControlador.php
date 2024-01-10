@@ -133,7 +133,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => 'Entrega',
-                        'message' => 'Erro en el archivo que desea entregar'
+                        'message' => 'Error en el archivo que desea entregar'
                     ]);
                 }
                 return 0;
@@ -186,12 +186,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 }
                 else{            
                     $response = $estudiante_evaluacion->modificar($_POST['id'], $_POST['descripcion'], date('Y-m-d h:i:s', time()), $_SESSION['usuario']["id"], $id_evaluaciones);
-                    if($response['resultado'] == 2){
+                    if($response['resultado'] != 1){
                         $msg->informacion('Entrega', $response['mensaje']);
-                    }
-                    else
-                    if($response['resultado']== 0){
-                        $msg->error('Entrega', $response['mensaje']);
                     }
                     else{
                         $ruta = "content/entregas/".$id_evaluaciones;

@@ -93,8 +93,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $entornoU = $bitacora->buscar_id_entorno('Unidad');
                 $fechaU = date('Y-m-d h:i:s', time());
 
-                $response = $unidad->incluir($_POST['id'],$_POST['nombre'],$_POST['descripcion'],$_POST['id_aula']);
-                if ($response) {
+                $response = $unidad->incluir($_POST['nombre'],$_POST['descripcion'],$_POST['id_aula']);
+                if ($response['resultado']==1) {
                     echo json_encode([
                         'estatus' => '1',
                         'icon' => 'success',
@@ -108,7 +108,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => $modulo_unidad,
-                        'message' => 'La Unidad esta repetida'
+                        'message' => $response['mensaje']
                     ]);
                     return 0;
                 }
@@ -468,7 +468,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'estatus' => '1',
                     'icon' => 'success',
-                    'title' => $modulo,
+                    'title' => 'Unidad',
                     'message' => $response['mensaje']
                 ]);
                 $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Modificacion");
@@ -477,7 +477,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 echo json_encode([
                     'estatus' => '2',
                     'icon' => 'info',
-                    'title' => $modulo,
+                    'title' => 'Unidad',
                     'message' => $response['mensaje']
                 ]);
                 return 0;
