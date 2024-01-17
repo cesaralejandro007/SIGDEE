@@ -9,15 +9,14 @@ class eliminarCensoTest extends TestCase{
 		$this->censo = new Censo();
 	}
 
-	//2-Cuando se intenta eliminar un censo que no existe
-	public function testNombreRepetido(){
+	//Cuando se intenta eliminar un censo que no existe
+	public function testExiste(){
 		$respuesta = $this->censo->eliminar(88);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	
-	//1-Cuando el usuario elimina una censo que existe 
-
-	public function testCreacionCorrecta(){
+	//Cuando el usuario elimina una censo que existe 
+	public function testEliminacionCorrecta(){
 		$respuesta = $this->censo->eliminar(6);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}

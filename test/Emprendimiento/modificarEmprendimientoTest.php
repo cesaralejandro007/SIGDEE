@@ -9,7 +9,7 @@ class modificarEmprendimientoTest extends TestCase{
 		$this->Emprendimiento = new Emprendimiento();
 	}
 
-	//1-Cuando el usuario modifica un Emprendimiento que no existe y con nombre diferente a los otros registros
+	//1-Cuando el usuario trata de modificar un Emprendimiento que no existe
 	public function testExiste(){
 		$respuesta = $this->Emprendimiento->modificar(188,'Panaderia',1);
 		$this->assertEquals(5, $respuesta['resultado']);
@@ -22,7 +22,7 @@ class modificarEmprendimientoTest extends TestCase{
 	}
 	//3-Cuando el usuario intenta modificar un Emprendimiento con el mismo nombre de otro registro
 	public function testNombreRepetido(){
-		$respuesta = $this->Emprendimiento->modificar(9,'Marketingd',1);
+		$respuesta = $this->Emprendimiento->modificar(9,'Marketing',1);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 

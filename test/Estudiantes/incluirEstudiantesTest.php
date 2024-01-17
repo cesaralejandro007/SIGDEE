@@ -10,24 +10,24 @@ class incluirEstudiantesTest extends TestCase{
 		$this->Estudiantes = new Estudiantes();
 	}
 
-	//2-Cuando se intenta incluir un Estudiantes existe y no repetido
+	//2-Cuando se intenta asignar como estudiante a un usuario que no existe
 
 	public function testCreacionIncorrecta(){
 		$respuesta = $this->Estudiantes->incluirEstudiantes(2002,5);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 
-	//2-Cuando se intenta incluir un Estudiantes repetido
+	//2-Cuando se intenta asignar como estudiante a un usuario que ya es estudiante
 
 	public function testCreacionRepetida(){
-		$respuesta = $this->Estudiantes->incluirEstudiantes(2002,5);
-		$this->assertEquals(3, $respuesta['resultado']);
+		$respuesta = $this->Estudiantes->incluirEstudiantes(51,5);
+		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	
-	//2-Cuando se intenta incluir un Estudiantes que no existe
+	//2-Asignación correcta
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Estudiantes->incluirEstudiantes(2002,5);
-		$this->assertEquals(3, $respuesta['resultado']);
+		$respuesta = $this->Estudiantes->incluirEstudiantes(79,5);
+		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
 

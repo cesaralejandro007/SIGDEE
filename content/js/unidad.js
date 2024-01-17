@@ -364,7 +364,6 @@ function confirm_eliminar(datos) {
     processData: false,
     cache: false,
     success: function (response) {
-      alert(response);
       var res = JSON.parse(response);
       //alert(res.title);
       if (res.estatus == 1) {

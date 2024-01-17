@@ -297,4 +297,20 @@ class AulaDocenteModelo extends connectDB
         }
         return $r;
     }
+    public function verificar($id_docente, $id_unidad)
+    {
+        try {
+            $resultado = $this->conex->prepare("SELECT *FROM usuario u INNER JOIN aula_docente ae ON u.id=ae.id_docente INNER JOIN aula a ON a.id=ae.id_aula INNER JOIN unidad un ON a.id=un.id_aula INNER JOIN unidad_evaluaciones ue ON un.id=ue.id_unidad INNER JOIN evaluaciones e ON e.id=ue.id_evaluacion WHERE ue.id='$id_unidad' AND u.id='$id_docente';");
+            $resultado->execute();
+            $fila = $resultado->fetchAll();
+            if ($fila) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+
+        } catch (Exception $e) {
+            return 'false';
+        }
+    }
 }

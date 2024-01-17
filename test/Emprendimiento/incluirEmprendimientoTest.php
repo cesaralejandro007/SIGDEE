@@ -9,10 +9,10 @@ class incluirEmprendimientoTest extends TestCase{
 		$this->Emprendimiento = new Emprendimiento();
 	}
 
-	//1-Cuando el usuario intenta incluir un Emprendimiento con el mismo nombre de otro registro
+	//1-Registro correcto
 	public function testNombreRepetido(){
-		$respuesta = $this->Emprendimiento->incluir('Batender',1);
-		$this->assertEquals(3, $respuesta['resultado']);
+		$respuesta = $this->Emprendimiento->incluir('Panaderia',1);
+		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario intenta incluir una Emprendimiento con un nombre que involucre caracteres especiales

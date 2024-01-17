@@ -101,24 +101,36 @@ if (is_file($configuracion->_Dir_Vista_().$pagina.$configuracion->_VISTA_())) {
                     return 0;
                     exit;
                 }else if ($accion == 'modificarfotoperfil') {
-                if (isset($_FILES['archivo']['tmp_name'])) {
-                    $ruta = "content/usuarios/";
-                    move_uploaded_file($_FILES['archivo']['tmp_name'], 
-                    $ruta.$_POST['cedula'].'.png');
+                    if (isset($_FILES['archivo']['tmp_name'])) {
+                        $allowedExtensions = ['jpg', 'png'];
+                        $fileExtension = strtolower(pathinfo($_FILES['archivo']['name'], PATHINFO_EXTENSION));
+                    
+                        if (in_array($fileExtension, $allowedExtensions)) {
+                            $ruta = "content/usuarios/";
+                            move_uploaded_file($_FILES['archivo']['tmp_name'], $ruta . $_POST['cedula'] . '.png');
+                            echo json_encode([
+                                'estatus' => '1',
+                                'icon' => 'success',
+                                'title' => $modulo,
+                                'message' => 'Modificación exitosa'
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'estatus' => '3',
+                                'icon' => 'info',
+                                'title' => $modulo,
+                                'message' => 'Seleccione archivos con extensiones JPG o PNG'
+                            ]);
+                        }
+                    } else {
                         echo json_encode([
-                            'estatus' => '1',
-                            'icon' => 'success',
+                            'estatus' => '2',
+                            'icon' => 'info',
                             'title' => $modulo,
-                            'message' => 'Modificacion exitosa'
+                            'message' => 'Seleccione archivos'
                         ]);
-                } else {
-                    echo json_encode([
-                        'estatus' => '2',
-                        'icon' => 'info',
-                        'title' => $modulo,
-                        'message' => 'Seleccione Archivos'
-                    ]);
-                } 
+                    }
+                     
                     return 0;
                 }else if ($accion == 'verificar_perfil') {
                     $response = $perfil->verificarcambio_password($_POST['cedula']);

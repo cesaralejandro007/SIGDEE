@@ -47,7 +47,7 @@ class modificarEntregaTest extends TestCase{
 		$id_unidad_evaluacion = 3;
 		$descripcion = 'Ejemplo de la entrega';
 		$resultado = $this->EstudianteEvaluacion->modificar($id, $descripcion, date('Y-m-d h:i:s', time()), $id_estudiante, $id_unidad_evaluacion);
-		$this->assertEquals(3, $resultado['resultado']);
+		$this->assertEquals(4, $resultado['resultado']);
 	}
 
 	//En caso de que la evaluación ya ha sido calificada

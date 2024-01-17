@@ -7,6 +7,8 @@ use modelo\EstudianteEvaluacionModelo as EstudianteEvaluacion;
 use modelo\NotificacionesModelo as notificacion;
 use modelo\AulaEstudianteModelo as AulaEstudiante;
 use modelo\EstudianteModelo as Estudiante;
+use modelo\AulaDocenteModelo as AulaDocente;
+use modelo\DocenteModelo as Docente;
 use config\componentes\configSistema as configSistema;
 
 $config = new configSistema();
@@ -67,6 +69,8 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     $estudiante_evaluacion = new EstudianteEvaluacion();
     $aula_estudiante = new AulaEstudiante();
     $estudiante = new Estudiante();
+    $aula_docente = new AulaDocente();
+    $docente = new Docente();
     $msg = new Mensaje();
     $notificacion = new notificacion();
     $modulo = 'Evaluación';
@@ -262,18 +266,19 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 exit;
             break;
             case 'calificar':
-                if (!$estudiante->existe($_SESSION['usuario']["id"])) {
+                $result = $docente->existe($_SESSION['usuario']["id"]);
+                if (!$result) {
                     echo json_encode([
                         'estatus' => '2',
                         'icon' => 'info',
                         'title' => 'Calificar Evaluación',
-                        'message' => 'El estudiante no existe'
+                        'message' => $result
                     ]);
                     return 0;
                 }
                 else
                 //En caso de que el usuario no este cursando esa aula
-                if($aula_estudiante->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
+                if($aula_docente->verificar($_SESSION['usuario']["id"], $id_evaluaciones)== false){
                      echo json_encode([
                         'estatus' => '3',
                         'icon' => 'info',
