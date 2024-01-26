@@ -12,18 +12,24 @@ class eliminarDocentesTest extends TestCase{
 	
 	//2-Cuando se intenta eliminar un Docente que no existe
 	public function testNombreRepetido(){
-		$respuesta = $this->Docente->eliminarD(200,5);
+		$id_docente = 200;
+		$id_rol = 5;
+		$respuesta = $this->Docente->eliminarD($id_docente,$id_rol);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
 	//3-Cuando se intenta eliminar un Docente que posee relacion con aula Docente
 	public function testExpresiones(){
-		$respuesta = $this->Docente->eliminarD(45,5);
+		$id_docente = 45;
+		$id_rol = 5;
+		$respuesta = $this->Docente->eliminarD($id_docente,$id_rol);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//1-Cuando el usuario elimina una Docente de emprendimiento que existe y no se encuentra vinculado con registros de emprendimiento
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Docente->eliminarD(43,5);
+		$id_docente = 43;
+		$id_rol = 5;
+		$respuesta = $this->Docente->eliminarD($id_docente,$id_rol);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

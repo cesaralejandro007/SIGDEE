@@ -11,7 +11,9 @@ class ConsultarBitacoraTest extends TestCase{
 
 	//1-Cuando se intenta ingresar una fecha incorrecta en los campos fechas
 	public function testValidacionFecha(){
-		$respuesta = $this->Bitacora->listar_bitacora_rango("32423dfsgr45","43534gfdgfd");
+		$fecha_inicio = "32423dfsgr45";
+		$fecha_fin = "43534gfdgfd";
+		$respuesta = $this->Bitacora->listar_bitacora_rango($fecha_inicio,$fecha_fin);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	

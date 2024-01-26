@@ -9,27 +9,47 @@ class agregarEvaluacionTest extends TestCase{
     //Inserción correcta
     //id_evaluacion, id_unidad, fecha_inicio, fecha_final
 	public function testAgregar(){
-		$respuesta = $this->unidad_evaluacion->incluir(5, 3, '2024-01-09 00:33:00', '2024-01-15 00:33:00');
+		$id_unidad_evaluacion = 5;
+		$id_unidad = 3;
+		$fecha_inicio = "2024-01-09 00:33:00";
+		$fecha_fin = "2024-01-15 00:33:00"; 
+		$respuesta = $this->unidad_evaluacion->incluir($id_unidad_evaluacion, $id_unidad, $fecha_inicio, $fecha_fin);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
     //Enviando un evaluacion que no existe
 	public function testValidarEvaluacion(){
-        $respuesta = $this->unidad_evaluacion->incluir(100, 3, '2024-01-09 00:33:00', '2024-01-15 00:33:00');
+		$id_unidad_evaluacion = 100;
+		$id_unidad = 3;
+		$fecha_inicio = "2024-01-09 00:33:00";
+		$fecha_fin = "2024-01-15 00:33:00"; 
+        $respuesta = $this->unidad_evaluacion->incluir($id_unidad_evaluacion, $id_unidad, $fecha_inicio, $fecha_fin);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
     //Enviando una unidad que no existe
 	public function testValidarUnidad(){
-		$respuesta = $this->unidad_evaluacion->incluir(5, 100, '2024-01-09 00:33:00', '2024-01-15 00:33:00');
+		$id_unidad_evaluacion = 5;
+		$id_unidad = 100;
+		$fecha_inicio = "2024-01-09 00:33:00";
+		$fecha_fin = "2024-01-15 00:33:00"; 
+		$respuesta = $this->unidad_evaluacion->incluir($id_unidad_evaluacion, $id_unidad, $fecha_inicio, $fecha_fin);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
     //Enviando una fecha que de apertura anterior a la actual
 	public function testValidarFecha(){
-        $respuesta = $this->unidad_evaluacion->incluir(5, 3, '2023-01-09 00:33:00', '2024-01-15 00:33:00');
+		$id_unidad_evaluacion = 5;
+		$id_unidad = 3;
+		$fecha_inicio = "2023-01-09 00:33:00";
+		$fecha_fin = "2024-01-15 00:33:00"; 
+        $respuesta = $this->unidad_evaluacion->incluir($id_unidad_evaluacion, $id_unidad, $fecha_inicio, $fecha_fin);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
     //Ya existe la evaluacion en la unidad
 	public function testValidarRelacion(){
-        $respuesta = $this->unidad_evaluacion->incluir(4, 3, '2024-01-09 00:33:00', '2024-01-15 00:33:00');
+		$id_unidad_evaluacion = 4;
+		$id_unidad = 3;
+		$fecha_inicio = "2024-01-09 00:33:00";
+		$fecha_fin = "2024-01-15 00:33:00"; 
+        $respuesta = $this->unidad_evaluacion->incluir($id_unidad_evaluacion, $id_unidad, $fecha_inicio, $fecha_fin);
 		$this->assertEquals(5, $respuesta['resultado']);
 	}
 }

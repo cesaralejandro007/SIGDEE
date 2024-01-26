@@ -11,19 +11,28 @@ class modificarEvaluacionesTest extends TestCase{
 
 	//1-Cuando el usuario modifica una Evaluacion que no existe
 	public function testExiste(){
-		$respuesta = $this->Evaluacion->modificar(61, 'otra Evaluacion mas','conceptos');
+		$id = 61;
+		$nombre_evaluacion = "otra Evaluacion mas";
+		$descripcion_evaluacion = "conceptos";
+		$respuesta = $this->Evaluacion->modificar($id,$nombre_evaluacion,$descripcion_evaluacion);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario intenta modificar una Evaluacion con el mismo nombre de otro registro
 	public function testNombreRepetido(){
-		$respuesta = $this->Evaluacion->modificar(2, 'Nueva evaluacion','conceptos');
+		$id = 2;
+		$nombre_evaluacion = "Nueva evaluacion";
+		$descripcion_evaluacion = "conceptos";
+		$respuesta = $this->Evaluacion->modificar($id,$nombre_evaluacion,$descripcion_evaluacion);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	//3-Cuando el usuario intenta modificar una Evaluacion que existe
 	public function testExpresiones(){
-		$respuesta = $this->Evaluacion->modificar(20,'Evaluacion Modificacion','conceptos');
+		$id = 20;
+		$nombre_evaluacion = "Evaluacion Modificacion";
+		$descripcion_evaluacion = "conceptos";
+		$respuesta = $this->Evaluacion->modificar($id,$nombre_evaluacion,$descripcion_evaluacion);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

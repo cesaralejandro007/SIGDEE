@@ -10,22 +10,34 @@ class registrarUnidadTest extends TestCase{
 	}
 	//1-El nombre de la unidad es repetido
 	public function testNombreRepetido(){
-		$respuesta = $this->Unidad->incluir('Conociendo del curso', 'Es solo de prueba', 3);
+		$nombre_unidad = "Conociendo del curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->incluir($nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//2-El caso en que no existe el aula que se desea asignarle la unidad
 	public function testValidaAula(){
-		$respuesta = $this->Unidad->incluir('Unidad nueva', 'Es solo de prueba', 100);
+		$nombre_unidad = "Unidad nueva";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 100;
+		$respuesta = $this->Unidad->incluir($nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//3-El caso en que no se cumpla con las expresiones regulares
 	public function testValidaExpresion(){
-		$respuesta = $this->Unidad->incluir('**sjaja', '12/sa', 3);
+		$nombre_unidad = "**sjaja";
+		$descripcion_unidad = "12/sa";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->incluir($nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 	//4-Los datos son correctos
 	public function testIncluir(){
-		$respuesta = $this->Unidad->incluir('Unidad nueva', 'Es solo de prueba', 3);
+		$nombre_unidad = "Unidad nueva";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->incluir($nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

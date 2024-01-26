@@ -9,21 +9,23 @@ class eliminarContenidoTest extends TestCase{
 		$this->contenido = new Contenido();
 	}
 
-	
 	//2-Cuando se intenta eliminar un contenido que no existe
 	public function testNombreRepetido(){
-		$respuesta = $this->contenido->eliminar(100);
+		$id = 100;
+		$respuesta = $this->contenido->eliminar($id);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
 	//3-Cuando se intenta eliminar un contenido que posee relacion con unidad contenido
 	public function testExpresiones(){
-		$respuesta = $this->contenido->eliminar(1);
+		$id = 1;
+		$respuesta = $this->contenido->eliminar($id);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//1-Cuando el usuario elimina una contenido que existe y no se encuentra vinculado con unidad contenido
 	public function testCreacionCorrecta(){
-		$respuesta = $this->contenido->eliminar(14);
+		$id = 14;
+		$respuesta = $this->contenido->eliminar($id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

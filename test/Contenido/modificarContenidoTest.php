@@ -12,22 +12,34 @@ class modificarContenidoTest extends TestCase{
 
 	//Cuando se modifica con datos correctos
 	public function testCreacionCorrecta(){
-		$respuesta = $this->contenido->modificar(2, 'Electiva','websocket');
+		$id = 2;
+		$nombre_contenido = "Electiva";
+		$nombre_descripcion = "websocket"; 
+		$respuesta = $this->contenido->modificar($id, $nombre_contenido,$nombre_descripcion);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 	//Cuando el usuario intenta modificar una contenido con un nombre que involucre caracteres especiales
 	public function testExpresiones(){
-		$respuesta = $this->contenido->modificar(1,'Nuevo Servicio***','Websocket');
+		$id = 1;
+		$nombre_contenido = "Nuevo Servicio**";
+		$nombre_descripcion = "websocket"; 
+		$respuesta = $this->contenido->modificar($id, $nombre_contenido,$nombre_descripcion);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//Cuando el usuario intenta modificar un contenido con el mismo nombre de otro registro
 	public function testNombreRepetido(){
-		$respuesta = $this->contenido->modificar(1, 'Conceptos','websocket');
+		$id = 1;
+		$nombre_contenido = "Conceptos";
+		$nombre_descripcion = "websocket"; 
+		$respuesta = $this->contenido->modificar($id, $nombre_contenido,$nombre_descripcion);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//Cuando se intenta modificar un contenido que no existe
 	public function testModificacion(){
-		$respuesta = $this->contenido->modificar(45, 'Electiva','websocket');
+		$id = 45;
+		$nombre_contenido = "Electiva";
+		$nombre_descripcion = "websocket"; 
+		$respuesta = $this->contenido->modificar($id, $nombre_contenido,$nombre_descripcion);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 
