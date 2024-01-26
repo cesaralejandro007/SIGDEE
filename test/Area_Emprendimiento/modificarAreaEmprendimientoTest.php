@@ -11,19 +11,25 @@ class modificarAreaEmprendimientoTest extends TestCase{
 
 	//1-Cuando el usuario modifica un area que existe y con nombre diferente a los otros registros
 	public function testCreacionCorrecta(){
-		$respuesta = $this->area->modificar(16, 'otra Area mas');
+		$id = 16;
+		$nombre = 'otra Area mas';
+		$respuesta = $this->area->modificar($id, $nombre);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario intenta modificar un area con el mismo nombre de otro registro
 	public function testNombreRepetido(){
-		$respuesta = $this->area->modificar(16, 'Servicio');
+		$id = 16;
+		$nombre = 'Servicio';
+		$respuesta = $this->area->modificar($id, $nombre);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	//3-Cuando el usuario intenta modificar una area con un nombre que involucre caracteres especiales
 	public function testExpresiones(){
-		$respuesta = $this->area->modificar(16,'Nuevo Servicio***');
+		$id = 16;
+		$nombre = 'Nuevo Servicio***';
+		$respuesta = $this->area->modificar($id, $nombre);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 }

@@ -9,26 +9,78 @@ class modificarUsuarioTest extends TestCase{
 		$this->Usuario = new Usuario();
 	}
 
-	//1-Cuando el usuario modifica un Usuario que no existe 
+	//1-Cuando el usuario no cumple con las expresiones regulares
 	public function testExpresiones(){
-		$respuesta = $this->Usuario->modificar(46,"*32423432","/cesar","vides","cesar@gmail.com","yucatan","04120318406","123345");
+		$id = 46;
+		$id_ciudad = 591284;
+		$cedula = "*32423432";
+		$primer_nombre = "/cesar";
+		$segundo_nombre = "Jose";
+		$primer_apellido = "Vides";
+		$segundo_apellido = "Morles";
+		$genero = "Masculino";
+		$correo = "cesar@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$respuesta = $this->Usuario->modificar(
+			$id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono
+		);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//2-Cuando el usuario modifica un Usuario que no existe 
 	public function testExiste(){
-		$respuesta = $this->Usuario->modificar(209,"75673246","cesar","vides","cesar@gmail.com","yucatan","04120318406","123345");
+		$id = 209;
+		$id_ciudad = 591284;
+		$cedula = "75673248";
+		$primer_nombre = "Cesar";
+		$segundo_nombre = "Jose";
+		$primer_apellido = "Vides";
+		$segundo_apellido = "Morles";
+		$genero = "Masculino";
+		$correo = "cesar@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$respuesta = $this->Usuario->modificar(
+			$id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono
+		);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 
 	//3-Cuando el usuario intenta modificar un Usuario con la misma cedula de otro registro
 	public function testcedulaRepetida(){
-		$respuesta = $this->Usuario->modificar(50,"28055655","cesar","vides","cesar@gmail.com","yucatan","04120318406","123345");
+		$id = 50;
+		$id_ciudad = 591284;
+		$cedula = "28055655";
+		$primer_nombre = "Cesar";
+		$segundo_nombre = "Jose";
+		$primer_apellido = "Vides";
+		$segundo_apellido = "Morles";
+		$genero = "Masculino";
+		$correo = "cesar@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$respuesta = $this->Usuario->modificar(
+			$id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono
+		);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 
 	//4-Cuando el usuario intenta modificar una Usuario con un nombre que involucre caracteres especiales
 	public function testIncluir(){
-		$respuesta = $this->Usuario->modificar(46,"32423432","cesar","vides","cesar@gmail.com","yucatan","04120318406","123345");
+		$id = 46;
+		$id_ciudad = 591284;
+		$cedula = "32423432";
+		$primer_nombre = "Cesar";
+		$segundo_nombre = "Jose";
+		$primer_apellido = "Vides";
+		$segundo_apellido = "Morles";
+		$genero = "Masculino";
+		$correo = "cesar@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$respuesta = $this->Usuario->modificar(
+			$id,$id_ciudad, $cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono
+		);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

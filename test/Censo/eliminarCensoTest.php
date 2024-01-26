@@ -11,13 +11,15 @@ class eliminarCensoTest extends TestCase{
 
 	//Cuando se intenta eliminar un censo que no existe
 	public function testExiste(){
-		$respuesta = $this->censo->eliminar(88);
+		$id = 88;
+		$respuesta = $this->censo->eliminar($id);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	
 	//Cuando el usuario elimina una censo que existe 
 	public function testEliminacionCorrecta(){
-		$respuesta = $this->censo->eliminar(6);
+		$id = 6;
+		$respuesta = $this->censo->eliminar($id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

@@ -9,16 +9,19 @@ class modificarModuloTest extends TestCase{
 		$this->Modulo = new Modulo();
 	}
 
-
 	//1-Cuando el usuario desea modificar un Modulo con el mismo nombre de otra que ya existe
 	public function testNombreRepetido(){
-		$respuesta = $this->Modulo->modificar(14,'Filosofía de Gestión');
+		$id = 14;
+		$nombre = 'Filosofía de Gestión';
+		$respuesta = $this->Modulo->modificar($id,$nombre);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario modificar un Modulo correctamente
 	public function testIncluir(){
-		$respuesta = $this->Modulo->modificar(11,'Nueva gestion');
+		$id = 11;
+		$nombre = 'Modulo modificado';
+		$respuesta = $this->Modulo->modificar($id,$nombre);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

@@ -1,42 +1,51 @@
 <?php 
 use PHPUnit\Framework\TestCase;
 use modelo\UsuarioModelo as Usuario;
-
 class eliminarUsuarioTest extends TestCase{
 	private $Usuario;
-
 	public function setUp():void{
 		$this->Usuario = new Usuario();
 	}
-
-	//2-Cuando se intenta eliminar un Usuario que no existe
+	//Cuando se intenta eliminar un Usuario que no existe
 	public function testExiste(){
-		$respuesta = $this->Usuario->eliminar('13445023133',200);
+		$cedula = '13445023133';
+		$id = 200;
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
 		$this->assertEquals(6, $respuesta['resultado']);
 	}
-		//2-El Usuario no puede ser borrado, existe un vinculo con Rol.
-		public function testRelacion1(){
-			$respuesta = $this->Usuario->eliminar('26197135',49);
-			$this->assertEquals(5, $respuesta['resultado']);
-		}
-		//2-El Usuario no puede ser borrado, existe un vinculo con Aspirante.
-		public function testRelacion2(){
-			$respuesta = $this->Usuario->eliminar('209776333',90);
-			$this->assertEquals(4, $respuesta['resultado']);
-		}		
-		//2-El Usuario no puede ser borrado, existe un vinculo con Censo.
-		public function testRelacion3(){
-			$respuesta = $this->Usuario->eliminar('32423432',46);
-			$this->assertEquals(3, $respuesta['resultado']);
-		}	
-		//2-Cuando se intenta eliminar un Usuario con un id que no es numerico
-		public function testExpresion(){
-			$respuesta = $this->Usuario->eliminar('2129388','**50');
-			$this->assertEquals(2, $respuesta['resultado']);
-		}		
-	//1-Cuando el usuario elimina una Usuario de emprendimiento que existe y no se encuentra vinculado con registros de emprendimiento
+	//El Usuario no puede ser borrado, existe un vinculo con Rol.
+	public function testRelacion1(){
+		$cedula = '26197135';
+		$id = 49;
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
+		$this->assertEquals(5, $respuesta['resultado']);
+	}
+	//El Usuario no puede ser borrado, existe un vinculo con Aspirante.
+	public function testRelacion2(){
+		$cedula = '209776333';
+		$id = 90;
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
+		$this->assertEquals(4, $respuesta['resultado']);
+	}		
+	//El Usuario no puede ser borrado, existe un vinculo con Censo.
+	public function testRelacion3(){
+		$cedula = '32423432';
+		$id = 46;
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
+		$this->assertEquals(3, $respuesta['resultado']);
+	}	
+	//Cuando se intenta eliminar un Usuario con un id que no es numerico
+	public function testExpresion(){
+		$cedula = '2129388';
+		$id = '**50';
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
+		$this->assertEquals(2, $respuesta['resultado']);
+	}		
+	//Cuando el usuario elimina una Usuario de emprendimiento que existe y no se encuentra vinculado con registros de emprendimiento
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Usuario->eliminar('28055655',97);
+		$cedula = '27123121';
+		$id = 87;
+		$respuesta = $this->Usuario->eliminar($cedula,$id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

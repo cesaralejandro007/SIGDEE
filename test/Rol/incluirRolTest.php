@@ -1,27 +1,28 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-use modelo\ModuloModelo as Modulo;
-
-class incluirModuloTest extends TestCase{
-	private $Modulo;
+use modelo\ModuloModelo as Modulo;	
+class incluirRolTest extends TestCase{
+	private $Rol;
 
 	public function setUp():void{
-		$this->Modulo = new Modulo();
+		$this->Rol = new Rol();
 	}
-	//1-Cuando el usuario Ingresa un modulo con el mismo nombre de otro registro
+	//3-Cuando el usuario ingresa el mismo nombre de otro rol
 	public function testNombreRepetido(){
-		$respuesta = $this->Modulo->incluir('Nuevo');
-		$this->assertEquals(2, $respuesta['resultado']);
-	}
-	//2-Cuando el usuario envia al nombre del Modulo con un valor con caracteres especiales
-	public function testexpresiones(){
-		$respuesta = $this->Modulo->incluir('Filosofia1');
+		$nombre = "Administrador";
+		$respuesta = $this->Rol->incluir($nombre);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
-
-	//3-Cuando el usuario registra un modulo correctamente
-	public function testIncluir(){
-		$respuesta = $this->Modulo->incluir('Filosofia');
+	//2-El nombre del rol posee caracteres especiales
+	public function testExpresiones(){
+		$nombre = "Admin/&%$";
+		$respuesta = $this->Rol->incluir($nombre);
+		$this->assertEquals(2, $respuesta['resultado']);
+	}
+	//1-Cuando el usuario elimina una Rol que existe y no se encuentra vinculado
+	public function testModificacionCorrecta(){
+		$nombre = "Administradores";
+		$respuesta = $this->Rol->modificar($nombre);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }
