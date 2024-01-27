@@ -12,18 +12,21 @@ class eliminarEvaluacionesTest extends TestCase{
 	
 	//2-Cuando se intenta eliminar una Evaluacion que no existe
 	public function testExiste(){
-		$respuesta = $this->Evaluacion->eliminar(200);
+		$id = 200;
+		$respuesta = $this->Evaluacion->eliminar($id);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
 	//3-Cuando se intenta eliminar una evaluacion que posee relacion con registros de unidad Evaluacion
 	public function testRelacion(){
-		$respuesta = $this->Evaluacion->eliminar(2);
+		$id = 2;
+		$respuesta = $this->Evaluacion->eliminar($id);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//1-Cuando el usuario elimina una Evaluacion que existe y no se encuentra vinculado
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Evaluacion->eliminar(6);
+		$id = 6;
+		$respuesta = $this->Evaluacion->eliminar($id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

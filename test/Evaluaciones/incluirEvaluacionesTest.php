@@ -10,17 +10,26 @@ class incluirEvaluacionesTest extends TestCase{
 	}
 	//1-Cuando el usuario Ingresa Una evaluacion con el mismo nombre de otro registro
 	public function testExiste(){
-		$respuesta = $this->Evaluacion->incluir('Nueva evaluacion','Conociendo el modulo','Evaluacion.jpg');
+		$nombre_evaluacion = "Nueva evaluacion";
+		$descripcion_evaluacion = "Conociendo el modulo";
+		$nombre_archivo = "Evaluacion.jpg";
+		$respuesta = $this->Evaluacion->incluir($nombre_evaluacion,$descripcion_evaluacion,$nombre_archivo);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//2-Cuando el usuario envia al nombre del Evaluacion un valor con caracteres especiales
 	public function testExpresiones(){
-		$respuesta = $this->Evaluacion->incluir('Ejemplo***','Conceptos de la psicologia','Evaluacion.jpg');
+		$nombre_evaluacion = "Ejemplo***";
+		$descripcion_evaluacion = "Conceptos de la psicologia";
+		$nombre_archivo = "Evaluacion.jpg";
+		$respuesta = $this->Evaluacion->incluir($nombre_evaluacion,$descripcion_evaluacion,$nombre_archivo);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//3-Cuando el usuario registra una Evaluacion correctamente
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Evaluacion->incluir('Ejemplo','Conceptos de la psicologia','Evaluacion.jpg');
+		$nombre_evaluacion = "Ejemplo";
+		$descripcion_evaluacion = "Conceptos de la psicologia";
+		$nombre_archivo = "Evaluacion.jpg";
+		$respuesta = $this->Evaluacion->incluir($nombre_evaluacion,$descripcion_evaluacion,$nombre_archivo);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

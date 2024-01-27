@@ -11,19 +11,28 @@ class incluirContenidoTest extends TestCase{
 
 	//1-Cuando el usuario Ingresa los datos correctamente
 	public function testCreacionCorrecta(){
-		$respuesta = $this->contenido->incluir('Electiva','websocket','contenido.pdf');
+		$nombre_contenido = "Electiva";
+		$descripcion_contenido = "websocket";
+		$nombre_archivo = "contenido.pdf";
+		$respuesta = $this->contenido->incluir($nombre_contenido,$descripcion_contenido,$nombre_archivo);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario desea registrar un contenido con el mismo nombre de otra que ya existe
 	public function testNombreRepetido(){
-		$respuesta = $this->contenido->incluir('Conceptos','websocket','contenido.pdf');
+		$nombre_contenido = "Conceptos";
+		$descripcion_contenido = "websocket";
+		$nombre_archivo = "contenido.pdf";
+		$respuesta = $this->contenido->incluir($nombre_contenido,$descripcion_contenido,$nombre_archivo);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	//3-Cuando el usuario envia al nombre del contenido un valor con caracteres especiales
 	public function testExpresiones(){
-		$respuesta = $this->contenido->incluir('Electiva***','websocket','contenido.pdf');
+		$nombre_contenido = "Electiva***";
+		$descripcion_contenido = "websocket";
+		$nombre_archivo = "contenido.pdf";
+		$respuesta = $this->contenido->incluir($nombre_contenido,$descripcion_contenido,$nombre_archivo);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 }

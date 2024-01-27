@@ -11,23 +11,31 @@ class incluirEmprendimientoTest extends TestCase{
 
 	//1-Registro correcto
 	public function testNombreRepetido(){
-		$respuesta = $this->Emprendimiento->incluir('Panaderia',1);
+		$nombre = 'Panaderia';
+		$area = 1;
+		$respuesta = $this->Emprendimiento->incluir($nombre,$area);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
 	//2-Cuando el usuario intenta incluir una Emprendimiento con un nombre que involucre caracteres especiales
 	public function testExpresiones(){
-		$respuesta = $this->Emprendimiento->incluir('Panaderia***',1);
+		$nombre = 'Panaderia****';
+		$area = 1;
+		$respuesta = $this->Emprendimiento->incluir($nombre,$area);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//3-Cuando el usaurio intenta incluir un emprendimiento con el mismo nombre en la bd
 	public function testExisteEmprendimiento(){
-		$respuesta = $this->Emprendimiento->incluir('Batender',1);
+		$nombre = 'Batender';
+		$area = 1;
+		$respuesta = $this->Emprendimiento->incluir($nombre,$area);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//3-Cuando el usaurio intenta incluir un area de emprendimiento que no existe
 	public function testExisteAreaEmprendimiento(){
-		$respuesta = $this->Emprendimiento->incluir('Telematica',2);
+		$nombre = 'Telematica';
+		$area = 2;
+		$respuesta = $this->Emprendimiento->incluir($nombre,$area);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 	}

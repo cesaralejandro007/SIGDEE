@@ -8,8 +8,10 @@ class agregarContenidoTest extends TestCase{
         $this->unidad_contenido = new UnidadContenido();
 	}
 	public function testAgregar(){
-        $this->unidad_contenido->set_id_unidad(3);
-        $this->unidad_contenido->set_id_contenido(8);
+		$id_unidad = 3;
+		$id_contenido = 8;
+        $this->unidad_contenido->set_id_unidad($id_unidad);
+        $this->unidad_contenido->set_id_contenido($id_contenido);
 
 		$respuesta = $this->unidad_contenido->incluir();
 		$this->assertEquals(1, $respuesta['resultado']);
@@ -17,8 +19,10 @@ class agregarContenidoTest extends TestCase{
 
     //Enviando un contenido que no existe
 	public function testValidarContenido(){
-        $this->unidad_contenido->set_id_unidad(3);
-        $this->unidad_contenido->set_id_contenido(100);
+		$id_unidad = 3;
+		$id_contenido = 100;
+        $this->unidad_contenido->set_id_unidad($id_unidad);
+        $this->unidad_contenido->set_id_contenido($id_contenido);
 
 		$respuesta = $this->unidad_contenido->incluir();
 		$this->assertEquals(2, $respuesta['resultado']);
@@ -26,8 +30,10 @@ class agregarContenidoTest extends TestCase{
 
     //Enviando una unidad que no existe
 	public function testValidarUnidad(){
-        $this->unidad_contenido->set_id_unidad(100);
-        $this->unidad_contenido->set_id_contenido(8);
+		$id_unidad = 100;
+		$id_contenido = 8;
+        $this->unidad_contenido->set_id_unidad($id_unidad);
+        $this->unidad_contenido->set_id_contenido($id_contenido);
 
 		$respuesta = $this->unidad_contenido->incluir();
 		$this->assertEquals(3, $respuesta['resultado']);

@@ -8,20 +8,58 @@ class incluirUsuarioTest extends TestCase{
 	public function setUp():void{
 		$this->Usuario = new Usuario();
 	}
-	//1-Cuando el usuario Ingresa los datos correctamente
+	
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Usuario->incluir("28204989","Luis","Quevedo","jbrcesarvides@gmail.com","yucatan","04120318406","123123");
+		$cedula = "28204989";
+		$id_ciudad = 591284;
+		$primer_nombre = "Luis";
+		$segundo_nombre = "Alberto";
+		$primer_apellido = "Quevedo";
+		$segundo_apellido = "Gomez";
+		$genero = "Masculino";
+		$correo = "jbrcesarvides@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$clave = "123123";
+		$respuesta = $this->Usuario->incluir(
+			$cedula,$id_ciudad,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave
+		);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
-
 	public function testExpresionRegular(){
-		$respuesta = $this->Usuario->incluir("**21341dsa","Cesar1","Vides1","jbrcesarvides@gmail.com^","yucatan","04120318406d","123123sdas");
+		$cedula = "**21341dsa";
+		$id_ciudad = 591284;
+		$primer_nombre = "Luis//";
+		$segundo_nombre = "Alberto";
+		$primer_apellido = "Quevedo";
+		$segundo_apellido = "Gomez";
+		$genero = "Masculino";
+		$correo = "jbrcesarvides@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$clave = "123123";
+		$respuesta = $this->Usuario->incluir(
+			$cedula,$id_ciudad,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave
+		);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	public function testCedulaRepetido(){
-		$respuesta = $this->Usuario->incluir("28055655","Cesar","Vides","jbrcesarvides@gmail.com","yucatan","04120318406","123123");
+		$cedula = "28055655";
+		$id_ciudad = 591284;
+		$primer_nombre = "Luis//";
+		$segundo_nombre = "Alberto";
+		$primer_apellido = "Quevedo";
+		$segundo_apellido = "Gomez";
+		$genero = "Masculino";
+		$correo = "jbrcesarvides@gmail.com";
+		$direccion = "Yucatan";
+		$telefono = "04120318406";
+		$clave = "123123";
+		$respuesta = $this->Usuario->incluir(
+			$cedula,$id_ciudad,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono,$clave
+		);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 

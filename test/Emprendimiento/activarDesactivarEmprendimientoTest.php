@@ -10,7 +10,9 @@ class activarDesactivarEmprendimientoTest extends TestCase{
 	
 	//1-cuando el usuairo activa o desactiva un emprendimiento que no existe
 		public function testValidarEmprendimientoStatus(){
-		$respuesta = $this->emprendimiento->actualizarstatus(20,"true");
+		$id = 20;
+		$status = "true" ;
+		$respuesta = $this->emprendimiento->actualizarstatus($id,$status);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 }

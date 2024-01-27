@@ -10,6 +10,8 @@ class EliminacionBitacoraTest extends TestCase{
 	}
 	//1-Cuando se intenta ingresar una fecha incorrecta en los campos fechas
 	public function testValidacionFecha(){
+		$fecha_inicio = "32423dfsgr45";
+		$fecha_fin = "43534gfdgfd";
 		$respuesta = $this->Bitacora->limpieza_bitacora("32423dfsgr45","43534gfdgfd");
 		$this->assertEquals(2, $respuesta['resultado']);
 	}	

@@ -11,28 +11,33 @@ class eliminarUnidadTest extends TestCase{
 
     //El ID de la unidad no es un numero
 	public function testValidarExpresionIdUnidad(){
-		$respuesta = $this->Unidad->eliminar('x');
+		$id = "x";
+		$respuesta = $this->Unidad->eliminar($id);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//Cuando se intenta eliminar un Unidad que no existe
 	public function testExisteUnidad(){
-		$respuesta = $this->Unidad->eliminar(100);
+		$id = 100;
+		$respuesta = $this->Unidad->eliminar($id);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
 	//Cuando se intenta eliminar un Unidad que posee relacion con un contenido
 	public function testRelacionContenido(){
-		$respuesta = $this->Unidad->eliminar(3);
+		$id = 3;
+		$respuesta = $this->Unidad->eliminar($id);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 	//Cuando se intenta eliminar un Unidad que posee relacion con un evaluacion
 	public function testRelacionEvaluacion(){
-		$respuesta = $this->Unidad->eliminar(4);
+		$id = 4;
+		$respuesta = $this->Unidad->eliminar($id);
 		$this->assertEquals(5, $respuesta['resultado']);
 	}
     //Correcta eliminacion
 	public function testEliminacion(){
-		$respuesta = $this->Unidad->eliminar(7);
+		$id = 7;
+		$respuesta = $this->Unidad->eliminar($id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

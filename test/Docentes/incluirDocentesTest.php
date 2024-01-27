@@ -9,21 +9,27 @@ class incluirDocentesTest extends TestCase{
 		$this->Docente = new Docente();
 	}
 
-	
+
 	//2-Cuando se intenta incluir un Docente que no existe
 	public function testCreacionIncorrecta(){
-		$respuesta = $this->Docente->incluirDocentes(200,5);
+		$id_docente = 200;
+		$id_rol = 5;
+		$respuesta = $this->Docente->incluirDocentes($id_docente,$id_rol);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//2-Cuando se intenta incluir un Docente repetido
-		public function CreacionRepetida(){
-			$respuesta = $this->Docente->incluirDocentes(90,5);
-			$this->assertEquals(2, $respuesta['resultado']);
-		}
+	public function CreacionRepetida(){
+		$id_docente = 90;
+		$id_rol = 5;
+		$respuesta = $this->Docente->incluirDocentes($id_docente,$id_rol);
+		$this->assertEquals(2, $respuesta['resultado']);
+	}
 	
 	//2-Cuando se intenta incluir un Docente existe y no repetido
 	public function CreacionCorrecta(){
-		$respuesta = $this->Docente->incluirDocentes(43,5);
+		$id_docente = 43;
+		$id_rol = 5;
+		$respuesta = $this->Docente->incluirDocentes($id_docente,$id_rol);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 	

@@ -10,24 +10,59 @@ class asignarPermisosTest extends TestCase{
 	}
 	
 	public function testInclir(){
-		$respuesta = $this->Permisos->gestionarpermisos(5,17,"true","true","true","true","true");
+		$id_rol = 5;
+		$id_entorno = 17;
+		$entorno = "true";
+		$registrar = "true";
+		$consultar = "true";
+		$eliminar = "true";
+		$modificar = "true";
+		$respuesta = $this->Permisos->gestionarpermisos($id_rol,$id_entorno,$entorno,$registrar,$consultar,$eliminar,$modificar);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 	
 	public function testEliminar(){
-		$respuesta = $this->Permisos->gestionarpermisos(5,17,"false","true","true","true","true");
+		$id_rol = 5;
+		$id_entorno = 17;
+		$entorno = "false";
+		$registrar = "true";
+		$consultar = "true";
+		$eliminar = "true";
+		$modificar = "true";
+		$respuesta = $this->Permisos->gestionarpermisos($id_rol,$id_entorno,$entorno,$registrar,$consultar,$eliminar,$modificar);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 
 	public function testActualizar(){
-		$respuesta = $this->Permisos->gestionarpermisos(5,2,"true","true","false","false","true");
+		$id_rol = 5;
+		$id_entorno = 2;
+		$entorno = "true";
+		$registrar = "true";
+		$consultar = "true";
+		$eliminar = "false";
+		$modificar = "false";
+		$respuesta = $this->Permisos->gestionarpermisos($id_rol,$id_entorno,$entorno,$registrar,$consultar,$eliminar,$modificar);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	public function testExisteRol(){
-		$respuesta = $this->Permisos->gestionarpermisos(523423,2,"true","true","false","false","true");
+		$id_rol = 523423;
+		$id_entorno = 2;
+		$entorno = "true";
+		$registrar = "true";
+		$consultar = "true";
+		$eliminar = "false";
+		$modificar = "false";
+		$respuesta = $this->Permisos->gestionarpermisos($id_rol,$id_entorno,$entorno,$registrar,$consultar,$eliminar,$modificar);
 		$this->assertEquals(5, $respuesta['resultado']);
 	}
 	public function testExisteEntorno(){
+		$id_rol = 5;
+		$id_entorno = 223423;
+		$entorno = "true";
+		$registrar = "true";
+		$consultar = "true";
+		$eliminar = "true";
+		$modificar = "true";
 		$respuesta = $this->Permisos->gestionarpermisos(5,223423,"true","true","false","false","true");
 		$this->assertEquals(6, $respuesta['resultado']);
 	}

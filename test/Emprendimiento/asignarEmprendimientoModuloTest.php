@@ -1,10 +1,8 @@
 <?php 
 use PHPUnit\Framework\TestCase;
 use modelo\EmprendimientoModuloModelo as EmprendimientoModulo;
-use modelo\EmprendimientoModelo as Emprendimiento;
 class asignarEmprendimientoModuloTest extends TestCase{
 	private $emprendimiento_Modulo;
-    private $emprendimiento;
 
 	public function setUp():void{
 		$this->emprendimiento_Modulo = new EmprendimientoModulo();
@@ -13,13 +11,19 @@ class asignarEmprendimientoModuloTest extends TestCase{
 	
 	//1-Cuando se intenta asignar un  emprendimiento modulo y no existe el modulo
 		public function testValidarModulo(){
-		$respuesta = $this->emprendimiento_Modulo->incluir(20,1,"true");
+		$id_modulo = 20;
+		$id_emprendimiento = 1;
+		$status = "true";
+		$respuesta = $this->emprendimiento_Modulo->incluir($id_modulo, $id_emprendimiento, $status);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 	
 	//2-Cuando se intenta asignar un emprendimiento modulo y no existe el emprendimiento
 	 public function testValidarEmprendimiento(){
-		$respuesta = $this->emprendimiento_Modulo->incluir(16,9,"true");
+		$id_modulo = 16;
+		$id_emprendimiento = 9;
+		$status = "true";
+		$respuesta = $this->emprendimiento_Modulo->incluir($id_modulo, $id_emprendimiento, $status);
 		$this->assertEquals(5, $respuesta['resultado']);
     }
 }

@@ -12,18 +12,21 @@ class eliminarAreaEmprendimientoTest extends TestCase{
 	
 	//2-Cuando se intenta eliminar un area de emprendimiento que no existe
 	public function testNombreNoexiste(){
-		$respuesta = $this->area->eliminar(20);
+		$id = 20;
+		$respuesta = $this->area->eliminar($id);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	
 	//3-Cuando se intenta eliminar un area de emprendimiento que posee relacion con registros de emprendimiento
 	public function testRelacionEmprendimiento(){
-		$respuesta = $this->area->eliminar(1);
+		$id = 1;
+		$respuesta = $this->area->eliminar($id);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//1-Cuando el usuario elimina una area de emprendimiento que existe y no se encuentra vinculado con registros de emprendimiento
 	public function testCreacionCorrecta(){
-		$respuesta = $this->area->eliminar(19);
+		$id = 19;
+		$respuesta = $this->area->eliminar($id);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

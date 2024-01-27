@@ -11,7 +11,8 @@ class RespaldoBdTest extends TestCase{
 
 	//1-Cuando se intenta generar respaldo con la cedula de un usuario que no existe
 	public function testValidacionUsuario(){
-		$respuesta = $this->respaldobd->verificar_password("10000000");
+		$password = "10000000";
+		$respuesta = $this->respaldobd->verificar_password($password);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	

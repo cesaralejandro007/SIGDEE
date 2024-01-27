@@ -10,37 +10,65 @@ class modificarUnidadTest extends TestCase{
 	}
 	//1-El ID de la unidad no es un numero
 	public function testValidarExpresionIdUnidad(){
-		$respuesta = $this->Unidad->modificar('x','Conociendo el curso', 'Es solo de prueba', 3);
+		$id = "x";
+		$nombre_unidad = "Conociendo el curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	//2-El ID de la aula no es un numero
 	public function testValidarExpresionIdAula(){
-		$respuesta = $this->Unidad->modificar(3,'Conociendo el curso', 'Es solo de prueba', 'x');
+		$id = 3;
+		$nombre_unidad = "Conociendo el curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = "x";
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 	//3-La unidad a modificar no existe
 	public function testExisteUnidad(){
-		$respuesta = $this->Unidad->modificar(100,'Conociendo el curso', 'Es solo de prueba', 3);
+		$id = 100;
+		$nombre_unidad = "Conociendo el curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(4, $respuesta['resultado']);
 	}
 	//4-El nombre de la unidad ya existe
 	public function testNombreUnidad(){
-		$respuesta = $this->Unidad->modificar(3,'Otro mas', 'Es solo de prueba', 3);
+		$id = 3;
+		$nombre_unidad = "Otro mas";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(5, $respuesta['resultado']);
 	}
     //5-No existe el aula
 	public function testExisteAula(){
-		$respuesta = $this->Unidad->modificar(3,'Conociendo el curso', 'Es solo de prueba', 100);
+		$id = 3;
+		$nombre_unidad = "Conociendo el curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 100;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(6, $respuesta['resultado']);
 	}
     //6-Nombre o descripcion no cumplen expresiones regulares
 	public function testExpresiones(){
-		$respuesta = $this->Unidad->modificar(3,'***Otro mas', '///Es solo de prueba', 3);
+		$id = 3;
+		$nombre_unidad = "***Otro mas";
+		$descripcion_unidad = "///Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(7, $respuesta['resultado']);
 	}
     //7-Datos correctos
 	public function testModificar(){
-		$respuesta = $this->Unidad->modificar(3,'Conociendo del curso', 'Es solo de prueba', 3);
+		$id = 3;
+		$nombre_unidad = "Conociendo del curso";
+		$descripcion_unidad = "Es solo de prueba";
+		$id_aula = 3;
+		$respuesta = $this->Unidad->modificar($id,$nombre_unidad, $descripcion_unidad, $id_aula);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 }

@@ -13,20 +13,26 @@ class incluirEstudiantesTest extends TestCase{
 	//2-Cuando se intenta asignar como estudiante a un usuario que no existe
 
 	public function testCreacionIncorrecta(){
-		$respuesta = $this->Estudiantes->incluirEstudiantes(2002,5);
+		$id_estudiante = 2002;
+		$id_rol = 5;
+		$respuesta = $this->Estudiantes->incluirEstudiantes($id_estudiante, $id_rol);
 		$this->assertEquals(3, $respuesta['resultado']);
 	}
 
 	//2-Cuando se intenta asignar como estudiante a un usuario que ya es estudiante
 
 	public function testCreacionRepetida(){
-		$respuesta = $this->Estudiantes->incluirEstudiantes(51,5);
+		$id_estudiante = 51;
+		$id_rol = 5;
+		$respuesta = $this->Estudiantes->incluirEstudiantes($id_estudiante, $id_rol);
 		$this->assertEquals(2, $respuesta['resultado']);
 	}
 	
 	//2-Asignación correcta
 	public function testCreacionCorrecta(){
-		$respuesta = $this->Estudiantes->incluirEstudiantes(79,5);
+		$id_estudiante = 79;
+		$id_rol = 5;
+		$respuesta = $this->Estudiantes->incluirEstudiantes($id_estudiante, $id_rol);
 		$this->assertEquals(1, $respuesta['resultado']);
 	}
 
