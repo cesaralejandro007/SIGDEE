@@ -63,6 +63,19 @@ $("#entrar").click(function (e) {
   enviaAjax(datos);
 });
 
+
+$("#floatingPassword").on("keydown", function (e) {
+  if (e.which === 13 || e.keyCode === 13) {
+    // La tecla presionada es "Enter", ejecutar la función enviaAjax
+    var datos = new FormData();
+    datos.append("accion", "ingresar");
+    datos.append("tipo", $("#tipodeusuario").val());
+    datos.append("user", $("#floatingInput").val());
+    datos.append("password", $("#floatingPassword").val());
+    enviaAjax(datos);
+  }
+});
+
 function limpiar() {
   setTimeout(function () {
     $("#floatingCapcha").val("");
