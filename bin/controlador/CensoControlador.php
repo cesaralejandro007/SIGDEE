@@ -44,39 +44,28 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         if ($accion == 'registrar') {
-            $respuesta = $censo->incluir($_POST["idusuario"], $_POST['fecha_apertura'],$_POST['fecha_cierre'], $_POST['descripcion']);
-            if ($respuesta['resultado']==1) {
-                echo json_encode([
+            $respuesta = $censo->incluir($_POST["idusuario"], $_POST['fecha_apertura'], $_POST['fecha_cierre'], $_POST['descripcion']);
+
+            if ($respuesta['resultado'] == 1) {
+                $responseArray = [
                     'estatus' => '1',
                     'icon' => 'success',
                     'title' => $modulo,
                     'message' => $respuesta['mensaje']
-                ]);
-                $bitacora->incluir($id_usuario_rol,$entorno,$fecha,"Registro");
-            }else if($respuesta['resultado']==2){
-                echo json_encode([
+                ];
+                $bitacora->incluir($id_usuario_rol, $entorno, $fecha, "Registro");
+            } else {
+                $responseArray = [
                     'estatus' => '2',
                     'icon' => 'info',
                     'title' => $modulo,
                     'message' => $respuesta['mensaje']
-                ]);
-            }else if($respuesta['resultado']==3){
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => $respuesta['mensaje']
-                ]);
-            }else {
-                echo json_encode([
-                    'estatus' => '2',
-                    'icon' => 'info',
-                    'title' => $modulo,
-                    'message' => 'El registro no fue procesado'
-                ]); 
+                ];
             }
+            
+            echo json_encode($responseArray);
             return 0;
-            exit;
+            
         }else if ($accion == 'eliminar') {
             $respuesta = $censo->eliminar($_POST['id']);
             if ($respuesta['resultado']==1) {
