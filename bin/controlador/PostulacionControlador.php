@@ -159,6 +159,26 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             else
             {
                 $response = $aspirante->registrar_aspirante($_POST['cedula'], $_POST['ciudad'],$_POST['primer_nombre'],$_POST['segundo_nombre'],$_POST['primer_apellido'],$_POST['segundo_apellido'],$_POST['genero'],$_POST['correo'],$_POST['direccion'],$_POST['telefono'], $clave);
+                if ($response["resultado"]==1) {
+                    $datos = $usuario->buscar_cedula($_POST['cedula']);
+                    $id_aspirante = $datos[0]['id'];
+                } else if ($response["resultado"]==2) {
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => $modulo,
+                        'message' => $response["mensaje"]
+                    ]);
+                    return 0;
+                }else{
+                    echo json_encode([
+                        'estatus' => '2',
+                        'icon' => 'error',
+                        'title' => $modulo,
+                        'message' => $response["mensaje"]
+                    ]);
+                    return 0;
+                }
                 if($response)
                 {
                     $datos = $usuario->buscar_cedula($_POST['cedula']);

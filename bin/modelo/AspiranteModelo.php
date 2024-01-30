@@ -18,29 +18,38 @@ class AspiranteModelo extends connectDB
 
     public function registrar_aspirante($cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave)
     {
-        try {
-            $query = "INSERT INTO usuario(
-                cedula,
-                id_ciudad,
-                primer_nombre,
-                segundo_nombre,
-                primer_apellido,
-                segundo_apellido,
-                genero,
-                correo,
-                direccion,
-                telefono,
-                clave
-            )
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-            $stmt = $this->conex->prepare($query);
-            $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave]);
-    
-            return true;
-        } catch (Exception $e) {
-            return false;
+        $validar_expresion = $this->validar_expresiones($cedula,$primer_nombre,$segundo_nombre,$primer_apellido,$segundo_apellido,$genero,$correo,$direccion,$telefono);
+         if ($validar_expresion['resultado']) {
+            $respuesta['resultado'] = 2;
+            $respuesta['mensaje'] = $validar_expresion['mensaje'];
+        } else {
+            try {
+                $query = "INSERT INTO usuario(
+                    cedula,
+                    id_ciudad,
+                    primer_nombre,
+                    segundo_nombre,
+                    primer_apellido,
+                    segundo_apellido,
+                    genero,
+                    correo,
+                    direccion,
+                    telefono,
+                    clave
+                )
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+                $stmt = $this->conex->prepare($query);
+                $stmt->execute([$cedula, $id_ciudad, $primer_nombre, $segundo_nombre, $primer_apellido, $segundo_apellido, $genero, $correo, $direccion, $telefono, $clave]);
+        
+                $respuesta["resultado"]=1;
+                $respuesta["mensaje"]="Registro Exitoso.";
+            } catch (Exception $e) {
+                $respuesta['resultado'] = 0;
+                $respuesta['mensaje'] = $e->getMessage();
+            }
         }
+        return $respuesta;
     }
     
 
