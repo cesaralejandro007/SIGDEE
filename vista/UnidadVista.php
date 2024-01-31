@@ -134,7 +134,7 @@ if (isset($response3[0]["consultar"])) {
                                                     <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>
-                                                        <a href="">Documento Ajunto <i
+                                                        <a target="_blank" href="<?php echo _URL_ . "/content/contenidos/". $contenido['archivo']?>">Documento Ajunto <i
                                                         class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                 </div>
@@ -193,7 +193,7 @@ if (isset($response3[0]["consultar"])) {
                                                         <p>Fecha de cierre:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['cierre']));?>
                                                         </p>
-                                                        <a href="">Documento Ajunto <i
+                                                        <a target="_blank" href="<?php echo _URL_ . "/content/evaluaciones/". $evaluacion['archivo']?>">Documento Ajunto <i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                     <div class="card-footer">
@@ -233,7 +233,7 @@ if (isset($response3[0]["consultar"])) {
                                                     <blockquote style="border-radius: 4px 0px 0px 0px;">
                                                         <h4><?php echo $contenido['nombre'] ?></h4>
                                                         <p><?php echo $contenido['descripcion'] ?></p>
-                                                        <a href="">Documento Ajunto <i
+                                                        <a target="_blank" href="<?php echo _URL_ . "/content/contenidos/". $contenido['archivo']?>">Documento Ajunto <i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                 </div>
@@ -282,7 +282,7 @@ if (isset($response3[0]["consultar"])) {
                                                         <p>Fecha de cierre:
                                                             <?=date('d-m-Y h:i:s', strtotime($evaluacion['cierre']));?>
                                                         </p>
-                                                        <a href="">Documento Ajunto<i
+                                                        <a target="_blank" href="<?php echo _URL_ . "/content/evaluaciones/". $evaluacion['archivo']?>">Documento Ajunto<i
                                                                 class="fas fa-cloud-download-alt"></i></a>
                                                     </blockquote>
                                                     <div class="card-footer">
