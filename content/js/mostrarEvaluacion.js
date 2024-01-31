@@ -243,7 +243,6 @@ function mostrar_calificacion(datos){
 		processData: false,
 		cache: false,
 		success:function(response){
-			alert(response);
 			var res = JSON.parse(response);
 			$("#id_e").val(res.id_estudiante);
 			$("#id_evaluacion").val(res.id_evaluacion);
