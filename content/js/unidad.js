@@ -318,18 +318,14 @@ function AjaxUnidad(datos) {
     processData: false,
     cache: false,
     success: function (response) {
+      alert(response);
       var res = JSON.parse(response);
       if (res.estatus == 1) {
         toastMixin.fire({
-
           title: res.title,
           text: res.message,
           icon: res.icon,
         });
-
-        setTimeout(function () {
-          window.location.reload();
-        }, 2000);
       } else {
         toastMixin.fire({
 
@@ -338,6 +334,9 @@ function AjaxUnidad(datos) {
           icon: res.icon,
         });
       }
+      setTimeout(function () {
+        window.location.reload();
+      }, 2000);
     },
     error: function (err) {
       Toast.fire({
