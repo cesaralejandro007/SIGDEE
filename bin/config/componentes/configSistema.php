@@ -2,7 +2,7 @@
 
 	namespace config\componentes;
 
-	define("_URL_", "http://localhost/SIGDEE");
+	define("URL", "http://localhost/dashboard/www/SIGDEE");
 	define("_BD_", "bdsystem");
 	define("_PASS_", "");
 	define("_USER_", "root");
