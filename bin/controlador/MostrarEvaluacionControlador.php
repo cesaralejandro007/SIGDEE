@@ -378,7 +378,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
             $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'._URL_.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
             $nombre_archivo = $mostrar_unidad[0]['archivo'];
-            $examen = '<a target="_blank" href="'._URL_.'/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
+            $examen = '<a target="_blank" href="http://localhost/dashboard/www/SIGDEE/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
     
             $id = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['id'] : '';
             $consultar = $id != null ? $estudiante_evaluacion->validar_actualizacion($id) : '';
