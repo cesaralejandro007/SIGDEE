@@ -14,7 +14,7 @@ class modificarDocentesTest extends TestCase{
 		$id = 206;
 		$cedula= "28055655";
 		$nombre = "Cesar";
-		$Apellido = "Vides";
+		$apellido = "Vides";
 		$telefono = "04120318406";
 		$gmail = "cesar@gmail.com";
 		$direccion = "123345";
@@ -27,7 +27,7 @@ class modificarDocentesTest extends TestCase{
 		$id = 49;
 		$cedula= "28055659";
 		$nombre = "cesar";
-		$Apellido = "vides";
+		$apellido = "vides";
 		$telefono = "04120318406";
 		$gmail = "vides@gmail.com";
 		$direccion = "yucatan";
