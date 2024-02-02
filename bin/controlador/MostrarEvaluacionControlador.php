@@ -224,7 +224,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                         'archivo_adjunto' => $valor['archivo_adjunto'],
                         'unidad_eval' => $valor['unidad_eval'],
                         'id_estudent' => $_SESSION['usuario']["id"],
-                        'url_base' => _URL_.'/content/entregas/'.$valor['unidad_eval'].'/'.$_SESSION['usuario']["id"],
+                        'url_base' => 'http://localhost/dashboard/www/SIGDEE/content/entregas/'.$valor['unidad_eval'].'/'.$_SESSION['usuario']["id"],
                     ]);
                 }
                 return 0;
@@ -246,7 +246,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                             'descripcion' => $valor[4],
                             'fecha' => date('d-m-Y h:i:s', strtotime($valor[5])),
                             'unidad' => $valor[6],
-                            'archivo' => _URL_.'/content/entregas/'.$valor[6].'/'.$valor[7],
+                            'archivo' => 'http://localhost/dashboard/www/SIGDEE/content/entregas/'.$valor[6].'/'.$valor[7],
                             'doc' => $valor[7],
                             
                         ]);
@@ -376,7 +376,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             $fecha_entrega = $mostrar_estudiante_evaluacion!=null ?date('d-m-Y h:i:s', strtotime($mostrar_estudiante_evaluacion[0]['fecha'])) : '';
             $calificacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['calificacion'] : '';
             $descripcion_evaluacion = $mostrar_estudiante_evaluacion!=null ? $mostrar_estudiante_evaluacion[0]['descripcion']: '';
-            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="'._URL_.'/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
+            $archivo_evaluacion = $mostrar_estudiante_evaluacion!=null ? '<a target="_blank" href="http://localhost/dashboard/www/SIGDEE/content/entregas/'.$id_unidad_evaluacion.'/'.$_SESSION['usuario']["id"].'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>'  : '';
             $nombre_archivo = $mostrar_unidad[0]['archivo'];
             $examen = '<a target="_blank" href="http://localhost/dashboard/www/SIGDEE/content/evaluaciones/'.$nombre_archivo.'"> Documento Ajunto <i class="fas fa-cloud-download-alt"></i></a>';
     

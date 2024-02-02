@@ -318,7 +318,7 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
             case 'modificarevaluacion':
 
                 $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_usuario"],$_SESSION['usuario']["id"]);
-                $entornoE = $bitacora->buscar_id_entorno('Modificar Evaluacion');
+                $entornoE = $bitacora->buscar_id_entorno('Agregar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
                 $fi = explode(" ", $_POST['fecha_inicio']);
                 $fechai = $fi[0];
