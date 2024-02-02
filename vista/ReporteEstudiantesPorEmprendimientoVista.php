@@ -65,7 +65,7 @@
                 <div class="card-header">
                     <div class="container-fluid d-flex justify-content-start">
                         <div>
-                            <h5>Reportes Estadisticos</h5>
+                            <h5>Reportes Estadisticos por emprendimiento</h5>
                         </div>
                         <div class="px-5">
                             <a href="#" style="font-size:18px;">Inicio</a> >
