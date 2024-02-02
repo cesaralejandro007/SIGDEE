@@ -49,7 +49,7 @@ class UnidadEvaluacionModelo extends connectDB{
         $existeunidad = $this->validarunidad($this->id_unidad);
 		$relacion = $this->validar_unidad_evaluacion($this->id_unidad,$this->id_evaluacion);
 		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
-        if($this->id_evaluacion == null || $this->id_unidad == null || $this->fecha_inicio== null || $this->fecha_cierre== null){
+        if($this->id_evaluacion == "" || $this->id_unidad == "" || $this->fecha_inicio== "" || $this->fecha_cierre== ""){
             $respuesta['resultado'] = 5;
             $respuesta['mensaje'] = "Todos los campos son requeridos";
         } else

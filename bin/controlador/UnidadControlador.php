@@ -282,35 +282,44 @@ if (is_file($config->_Dir_Vista_().$pagina.$config->_VISTA_())) {
                 $id_usuario_rolE = $bitacora->buscar_id_usuario_rol($_SESSION['usuario']["tipo_usuario"],$_SESSION['usuario']["id"]);
                 $entornoE = $bitacora->buscar_id_entorno('Agregar Evaluacion');
                 $fechaE = date('Y-m-d h:i:s', time());
-                $fi = explode(" ", $_POST['fecha_inicio']);
-                $fechai = $fi[0];
-                $horai = $fi[1];
-                $ffi = explode("/", $fechai);
-                $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
-
-                $fc = explode(" ", $_POST['fecha_cierre']);
-                $fechac = $fc[0];
-                $horac = $fc[1];
-                $ffc = explode("/", $fechac);
-                $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
-                $response = $unidad_evaluacion->incluir($_POST['evaluacion'], $_POST['id_unidad'], $fisql, $fcsql);
-                if ($response['resultado']==1) {
-                    $id_unidad_evaluacion = $unidad_evaluacion->obtener_id_unidad_evaluacion();
-                    /*Creando la notificacion de una evaluacion creada*/
-                    $notificacion->guardar_notificacion($id_usuario_rolE, $id_unidad_evaluacion[0]['unidad_evaluacion'], date('Y-m-d h:i:s', time()), 'Evaluación creada');
-                    echo json_encode([
-                        'estatus' => '2',
-                        'icon' => 'success',
-                        'title' => 'Agregar Evaluación',
-                        'message' => $response['mensaje']
-                    ]);
-                    $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Agregar Evaluacion");
+                if (!empty($_POST['fecha_inicio']) && !empty($_POST['fecha_cierre'])) {
+                    $fi = explode(" ", $_POST['fecha_inicio']);
+                    $fechai = $fi[0];
+                    $horai = $fi[1];
+                    $ffi = explode("/", $fechai);
+                    $fisql = $ffi[2] . "-" . $ffi[1] . "-" . $ffi[0] . " " . $horai;
+    
+                    $fc = explode(" ", $_POST['fecha_cierre']);
+                    $fechac = $fc[0];
+                    $horac = $fc[1];
+                    $ffc = explode("/", $fechac);
+                    $fcsql = $ffc[2] . "-" . $ffc[1] . "-" . $ffc[0] . " " . $horac;
+                    $response = $unidad_evaluacion->incluir($_POST['evaluacion'], $_POST['id_unidad'], $fisql, $fcsql);
+                    if ($response['resultado']==1) {
+                        $id_unidad_evaluacion = $unidad_evaluacion->obtener_id_unidad_evaluacion();
+                        /*Creando la notificacion de una evaluacion creada*/
+                        $notificacion->guardar_notificacion($id_usuario_rolE, $id_unidad_evaluacion[0]['unidad_evaluacion'], date('Y-m-d h:i:s', time()), 'Evaluación creada');
+                        echo json_encode([
+                            'estatus' => '1',
+                            'icon' => 'success',
+                            'title' => 'Agregar Evaluación',
+                            'message' => $response['mensaje']
+                        ]);
+                        $bitacora->incluir($id_usuario_rolE,$entornoE,$fechaE,"Agregar Evaluacion");
+                    }else{
+                        echo json_encode([
+                            'estatus' => $response['resultado'],
+                            'icon' => 'info',
+                            'title' => 'Agregar Evaluación',
+                            'message' => $response['mensaje']
+                        ]);
+                    }
                 }else{
                     echo json_encode([
-                        'estatus' => $response['resultado'],
+                        'estatus' => "2",
                         'icon' => 'info',
                         'title' => 'Agregar Evaluación',
-                        'message' => $response['mensaje']
+                        'message' => "Complete los campos fecha"
                     ]);
                 }
                 return 0;
