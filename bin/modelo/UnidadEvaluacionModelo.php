@@ -49,7 +49,10 @@ class UnidadEvaluacionModelo extends connectDB{
         $existeunidad = $this->validarunidad($this->id_unidad);
 		$relacion = $this->validar_unidad_evaluacion($this->id_unidad,$this->id_evaluacion);
 		$resf = $this->validarfecha($this->fecha_inicio,$this->fecha_cierre);
-
+        if($this->id_evaluacion == null || $this->id_unidad == null || $this->fecha_inicio== null || $this->fecha_cierre== null){
+            $respuesta['resultado'] = 5;
+            $respuesta['mensaje'] = "Todos los campos son requeridos";
+        } else
         if ($existeevaluacion == false) {
             $respuesta['resultado'] = 2;
             $respuesta['mensaje'] = "No existe la evaluación";
@@ -64,7 +67,7 @@ class UnidadEvaluacionModelo extends connectDB{
 		else if($relacion){
             $respuesta['resultado'] = 5;
             $respuesta['mensaje'] = "Ya existe esta evaluación registrada en la unidad";
-        }		
+        }	
 		else{
 			try {
 				$this->conex->query("INSERT INTO unidad_evaluaciones(id_unidad, id_evaluacion, fecha_inicio, fecha_cierre)

@@ -617,6 +617,9 @@ class AulaModelo extends connectDB
                             if ($calificacion){
                                 foreach ($calificacion as $e) {
                                     $valor = $e['calificacion'];
+                                    if($valor == null){
+                                        $valor =0;
+                                    }
                                 }
                             }
                             $notas[] = $valor;
